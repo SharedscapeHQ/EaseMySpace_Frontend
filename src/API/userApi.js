@@ -1,0 +1,18 @@
+import axios from "axios";
+
+// Axios instance for user-related APIs
+const axiosInstance = axios.create({
+  baseURL: "http://localhost:3000/api/user",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true, // Required to send cookies
+});
+
+// API to fetch user's properties
+export const getUserProperties = async () => {
+  const res = await axiosInstance.get("/my-properties");
+  return res.data;
+};
+
+export default axiosInstance;

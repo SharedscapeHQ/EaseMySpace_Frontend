@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: -5px; 
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent 0%, #5fa5fa 70%, #5fa5fa 100%);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+  transform: scaleY(0.9); 
+  transform-origin: left;
+}
+
+.nav-link:hover::before {
+  width: 100%;
+  transform: scaleY(1.8);
+}
+
+/* scrollbar styling  */
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #5fa5fa;
+    border-radius: 100px;
+}
+
+/* In your global CSS file (e.g., index.css) or Tailwind configuration file */
+
+/* Scrollable Container */
+.testimonial-container {
+  display: flex;
+  gap: 2rem;
+  animation: scrollTestimonials 3s linear forwards;
+  scroll-behavior: smooth;
+}
+
+/* Animation for horizontal scroll */
+@keyframes scrollTestimonials {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Each testimonial card */
+.testimonial-card {
+  flex-shrink: 0;
+  width: 300px; /* You can adjust the width of the cards */
+  margin-right: 2rem; /* Adds space between cards */
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.4s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow linear infinite;
+}
+
+@layer utilities {
+  .perspective {
+    perspective: 1200px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+
