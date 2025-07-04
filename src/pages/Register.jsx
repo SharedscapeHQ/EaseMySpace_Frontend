@@ -40,18 +40,17 @@ function Register() {
     }
   };
 
-
   const handleChangePhn = (e) => {
-  const { name, value } = e.target;
-  if (name === "phone") {
-    // Allow only digits
-    if (/^\d*$/.test(value)) {
+    const { name, value } = e.target;
+    if (name === "phone") {
+      // Allow only digits
+      if (/^\d*$/.test(value)) {
+        setForm({ ...form, [name]: value });
+      }
+    } else {
       setForm({ ...form, [name]: value });
     }
-  } else {
-    setForm({ ...form, [name]: value });
-  }
-};
+  };
 
   // Login page input styles
   const inputClasses =
@@ -67,11 +66,14 @@ function Register() {
     >
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-white rounded-xl shadow-xl p-10 flex flex-col gap-6"
+        className="w-full max-w-lg bg-white rounded-xl shadow-xl p-10 flex flex-col gap-6
+          sm:p-8 sm:max-w-md
+          xs:p-6 xs:max-w-full xs:mx-2"
       >
         <h1 className="text-2xl font-bold text-center text-blue-500">Register</h1>
 
-        <div className="flex gap-8">
+        {/* Responsive stacking for first & last name */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
           <input
             name="firstName"
             value={form.firstName}
@@ -103,21 +105,23 @@ function Register() {
         />
 
         <input
-  name="phone"
-  value={form.phone}
-  required
-  onChange={handleChangePhn}
-  className={inputClasses}
-  type="tel"
-  placeholder="Phone Number"
-  inputMode="numeric"
-  pattern="[0-9]*"
-/>
+          name="phone"
+          value={form.phone}
+          required
+          onChange={handleChangePhn}
+          className={inputClasses}
+          type="tel"
+          placeholder="Phone Number"
+          inputMode="numeric"
+          pattern="[0-9]*"
+        />
 
-        {/* Gender section with label and radios inline */}
-        <div className="flex items-center gap-6">
-          <label className="font-semibold text-gray-700 whitespace-nowrap">Gender</label>
-          <div className="flex gap-5">
+        {/* Gender section */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+          <label className="font-semibold text-gray-700 whitespace-nowrap">
+            Gender
+          </label>
+          <div className="flex flex-wrap gap-3">
             {["male", "female", "others"].map((gender) => (
               <label
                 key={gender}
@@ -154,7 +158,7 @@ function Register() {
 
         <button
           type="submit"
-          className="relative group px-6 w-[100px] h-[50px] py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold ml-5 overflow-hidden shadow-lg transition-all duration-200 ease-in-out self-center"
+          className="relative group px-6 w-full sm:w-[100px] h-[50px] py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold overflow-hidden shadow-lg transition-all duration-200 ease-in-out self-center"
         >
           <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 group-hover:-translate-x-full">
             Submit
@@ -166,7 +170,10 @@ function Register() {
 
         <p className="text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 font-medium hover:underline">
+          <Link
+            to="/login"
+            className="text-blue-600 font-medium hover:underline"
+          >
             Login
           </Link>
         </p>
