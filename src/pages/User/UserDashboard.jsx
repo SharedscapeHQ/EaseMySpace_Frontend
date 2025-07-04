@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getUserProperties } from "../../API/userApi";
+import { logoutUser } from "../../API/authAPI";
 
 const UserDashboard = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProperties();
@@ -17,79 +20,80 @@ const UserDashboard = () => {
       setProperties(data);
       setError(null);
     } catch {
-      setError("Failed to load properties");
+      setError("Failed to load your properties.");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleLogout = async () => {
+  try {
+    await logoutUser(); // Optional backend logout
+  } catch (err) {
+    console.error("Logout failed:", err);
+  } finally {
+    const savedUser = localStorage.getItem("user"); // get current user before removing
+    localStorage.removeItem("user");
+
+    // Force storage event manually for same-tab update
+    window.dispatchEvent(new StorageEvent("storage", {
+      key: "user",
+      oldValue: savedUser,
+      newValue: null,
+    }));
+
+    navigate("/"); // or navigate("/login")
+  }
+};
+
+
+
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "Arial, sans-serif" }}>
+    <div className="flex min-h-screen bg-gray-100 font-sans">
       {/* Sidebar */}
-      <aside style={{
-        width: 220,
-        background: "#1e293b",
-        color: "#fff",
-        padding: "30px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 20,
-      }}>
-        <h2 style={{ fontSize: 22, fontWeight: "bold" }}>Dashboard</h2>
-        <nav style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <button style={navBtnStyle}>Your Properties</button>
-          <button style={navBtnStyle}>Add New</button>
-          <button style={navBtnStyle}>Settings</button>
-          <button style={{ ...navBtnStyle, marginTop: 20, backgroundColor: "#ef4444" }}>Logout</button>
+      <aside className="w-60 bg-gray-800 text-white p-6 flex flex-col">
+        <h2 className="text-2xl font-bold mb-8">Dashboard</h2>
+        <nav className="flex flex-col gap-4">
+          <button className="text-left px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">Your Properties</button>
+          <button className="text-left px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">Add New Property</button>
+          <button className="text-left px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">Settings</button>
+          <button
+            onClick={handleLogout}
+            className="text-left px-4 py-2 rounded bg-red-600 hover:bg-red-500 mt-6 transition font-medium"
+          >
+            Logout
+          </button>
         </nav>
       </aside>
 
-      {/* Main content */}
-      <main style={{ flex: 1, padding: "40px 30px" }}>
-        <h2 style={{ marginBottom: 30, fontSize: 26, color: "#1e293b" }}>Your Properties</h2>
+      {/* Main Content */}
+      <main className="flex-1 p-10">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-8">Your Listed Properties</h2>
 
         {loading ? (
           <p>Loading your properties...</p>
         ) : error ? (
-          <p style={{ color: "red" }}>{error}</p>
+          <p className="text-red-500">{error}</p>
         ) : properties.length === 0 ? (
-          <p style={{ color: "#555" }}>You haven't added any properties yet.</p>
+          <div className="text-center mt-20 text-gray-600">
+            <p>You haven't added any properties yet.</p>
+          </div>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 20,
-            }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((p) => (
-              <div
-                key={p.id}
-                style={{
-                  background: "#fff",
-                  borderRadius: 10,
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
-                  overflow: "hidden",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
+              <div key={p.id} className="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
                 <img
                   src={p.image || "https://via.placeholder.com/300x160?text=No+Image"}
                   alt={p.title}
-                  style={{ height: 160, objectFit: "cover", width: "100%" }}
+                  className="w-full h-48 object-cover"
                 />
-                <div style={{ padding: "15px 20px", flex: 1 }}>
-                  <h3 style={{ margin: 0, fontSize: 18 }}>{p.title}</h3>
-                  <p style={{ margin: "8px 0", color: "#666" }}>
-                    Price: ${p.price}<br />
-                    Location: {p.location}<br />
-                    Status: {p.flat_status}
+                <div className="p-5">
+                  <h3 className="text-lg font-semibold text-gray-800">{p.title}</h3>
+                  <p className="mt-2 text-gray-600 text-sm">
+                    <strong>Price:</strong> ${p.price}<br />
+                    <strong>Location:</strong> {p.location}<br />
+                    <strong>Status:</strong> {p.flat_status}
                   </p>
-                  <div style={{ display: "flex", gap: 10 }}>
-                    <button style={btnStyle}>Edit</button>
-                    <button style={{ ...btnStyle, backgroundColor: "#ef4444" }}>Delete</button>
-                  </div>
                 </div>
               </div>
             ))}
@@ -98,27 +102,6 @@ const UserDashboard = () => {
       </main>
     </div>
   );
-};
-
-const navBtnStyle = {
-  padding: "10px 15px",
-  borderRadius: 6,
-  background: "#334155",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-  textAlign: "left",
-};
-
-const btnStyle = {
-  flex: 1,
-  padding: "8px 10px",
-  backgroundColor: "#3b82f6",
-  color: "#fff",
-  border: "none",
-  borderRadius: 5,
-  fontSize: 14,
-  cursor: "pointer",
 };
 
 export default UserDashboard;

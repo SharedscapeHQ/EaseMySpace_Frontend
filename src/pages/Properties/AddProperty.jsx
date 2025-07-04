@@ -78,7 +78,7 @@ const AddProperty = () => {
   };
 
   return (
-    <div className="pt-28 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center items-start px-4">
+    <div className="pt-20 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center items-start px-4">
       <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-10 bg-white rounded-3xl shadow-2xl p-10">
         <form onSubmit={handleSubmit} className="flex-1">
           <h2 className="flex items-center text-3xl font-extrabold mb-8 text-indigo-700">

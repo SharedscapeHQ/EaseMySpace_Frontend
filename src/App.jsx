@@ -10,6 +10,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPropertyDetails from "./pages/Admin/AdminPropertyDetails";
 import ContactPage from "./pages/ContactPage";
+import PropertyDetail from "./pages/Properties/PropertyDetail";
 import OwnerDashboard from "./pages/Owner/OwnerDashboard";
 import UserDashboard from "./pages/User/UserDashboard";
 import CancellationRefundPolicy from "./components/FooterSectionComp/CancellationRefundPolicy";
@@ -48,10 +49,21 @@ function App() {
           <Route path="/privacy-policy" element={<PolicyPrivacy />} />
 
           {/* Protected Routes */}
-          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={"user"}>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/view-properties"
             element={<ViewAllProperties />}
+          />
+          <Route
+       path="/properties/:id"
+         element={<PropertyDetail />}
           />
           <Route
             path="/add-properties"

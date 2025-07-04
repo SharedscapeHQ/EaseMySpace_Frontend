@@ -1,31 +1,39 @@
 import axios from "axios";
 
-// Create axios instance
-const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api/properties",
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
   withCredentials: true,
 });
 
-// Authorization headers helper
 const authHeaders = () => {
   const token = localStorage.getItem("token");
-  return token
-    ? { headers: { Authorization: `Bearer ${token}` } }
-    : {};
+  return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 };
 
-// API functions
 export const getMyProperties = () =>
-  axiosInstance.get(`/my-properties`, authHeaders());
+  api.get("/properties/my-properties", authHeaders());
 
 export const newlyListedProperties = () =>
-  axiosInstance.get(`/newly-listed-properties`);
+  api.get("/properties/newly-listed-properties");
 
-export const addProperty = (data) =>
-  axiosInstance.post(`/add-property`, data, authHeaders());
+export const addProperty = data =>
+  api.post("/properties/add-property", data, authHeaders());
 
 export const updateProperty = (id, data) =>
-  axiosInstance.put(`/${id}`, data, authHeaders());
+  api.put(`/properties/${id}`, data, authHeaders());
 
-export const deleteProperty = (id) =>
-  axiosInstance.delete(`/${id}`, authHeaders());
+export const deleteProperty = id =>
+  api.delete(`/properties/${id}`, authHeaders());
+
+export const getPropertyById = id =>
+  api.get(`/properties/${id}`);
+
+export const sendLeadOtp = (phone, propertyId) =>
+  api.post("/leads/send-otp", {
+    phone,
+    source: "property-detail",
+    metadata: { propertyId },
+  });
+
+export const verifyLeadOtp = (phone, code) =>
+  api.post("/leads/verify-otp", { phone, code });

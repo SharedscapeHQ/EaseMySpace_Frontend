@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiLogOut, FiMenu, FiX } from "react-icons/fi";
-import { logoutUser } from "../API/authAPI";
+import { FiMenu, FiX } from "react-icons/fi";
 import brandLogo from "/navbar-assets/brand-logo.png";
 
 function Navbar() {
@@ -26,19 +25,6 @@ function Navbar() {
     return () => window.removeEventListener("storage", syncUser);
   }, [syncUser]);
 
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-    } catch (err) {
-      console.error("Logout failed:", err);
-    } finally {
-      localStorage.removeItem("user");
-      setUser(null);
-      navigate("/");
-    }
-  };
-
-  // Handle outside click to close dropdown
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -53,14 +39,13 @@ function Navbar() {
     };
   }, [shouldRenderDropdown]);
 
-  // Manage fade-in/out animations
   useEffect(() => {
     if (isMobileMenuOpen) {
       setDropdownAnimation("animate-fade-in-down");
       setShouldRenderDropdown(true);
     } else {
       setDropdownAnimation("animate-fade-out-up");
-      const timeout = setTimeout(() => setShouldRenderDropdown(false), 300); // match animation duration
+      const timeout = setTimeout(() => setShouldRenderDropdown(false), 300);
       return () => clearTimeout(timeout);
     }
   }, [isMobileMenuOpen]);
@@ -84,7 +69,7 @@ function Navbar() {
           <img src={brandLogo} alt="Brand Logo" className="md:w-48 lg:h-24 w-32" />
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <ul className="hidden lg:flex items-center gap-7 text-zinc-700 font-semibold" role="navigation" aria-label="Main Navigation">
           <li><Link className="hover:text-zinc-900" to="/">Home</Link></li>
           <li><Link className="hover:text-zinc-900" to="/about">About</Link></li>
@@ -97,16 +82,7 @@ function Navbar() {
               </Link>
             </li>
           )}
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="px-2 w-[30px] h-[30px] bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold shadow-lg transition duration-200"
-              title="Log out"
-              aria-label="Log out"
-            >
-              <FiLogOut />
-            </button>
-          ) : (
+          {!user && (
             <Link
               to="/login"
               className="px-6 py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold shadow-lg transition duration-200"
@@ -116,7 +92,7 @@ function Navbar() {
           )}
         </ul>
 
-        {/* Mobile Hamburger/X Button */}
+        {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="lg:hidden text-3xl text-zinc-700 z-[999]"
@@ -126,7 +102,7 @@ function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Dropdown Menu Below Navbar */}
+      {/* Mobile Dropdown Menu */}
       {shouldRenderDropdown && (
         <div
           ref={menuRef}
@@ -142,17 +118,7 @@ function Navbar() {
             )}
           </ul>
 
-          {user ? (
-            <button
-              onClick={() => {
-                handleLogout();
-                setIsMobileMenuOpen(false);
-              }}
-              className="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md transition"
-            >
-              Logout
-            </button>
-          ) : (
+          {!user && (
             <Link
               to="/login"
               onClick={() => setIsMobileMenuOpen(false)}
