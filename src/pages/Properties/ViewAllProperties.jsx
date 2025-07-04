@@ -102,7 +102,7 @@ export default function ViewAllProperties() {
   return (
     <>
 
-      <div className="pt-28 flex min-h-screen bg-indigo-50">
+      <div className="md:pt-28 pt-14 flex min-h-screen bg-indigo-50">
         {/* Sidebar */}
         <aside
           className="hidden md:flex flex-col fixed top-28 left-0 h-[calc(100vh-7rem)] w-72 bg-white shadow-lg rounded-r-3xl p-6 overflow-y-auto z-20"
@@ -247,6 +247,7 @@ export default function ViewAllProperties() {
             </div>
           )}
         </main>
+        
       </div>
     </>
   );

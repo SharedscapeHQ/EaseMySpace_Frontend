@@ -12,6 +12,8 @@ function Navbar() {
   });
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [shouldRenderDropdown, setShouldRenderDropdown] = useState(false);
+  const [dropdownAnimation, setDropdownAnimation] = useState("animate-fade-in-down");
   const menuRef = useRef();
 
   const syncUser = useCallback(() => {
@@ -36,40 +38,50 @@ function Navbar() {
     }
   };
 
+  // Handle outside click to close dropdown
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setIsMobileMenuOpen(false);
       }
     };
-    if (isMobileMenuOpen) {
+    if (shouldRenderDropdown) {
       document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, [shouldRenderDropdown]);
+
+  // Manage fade-in/out animations
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      setDropdownAnimation("animate-fade-in-down");
+      setShouldRenderDropdown(true);
+    } else {
+      setDropdownAnimation("animate-fade-out-up");
+      const timeout = setTimeout(() => setShouldRenderDropdown(false), 300); // match animation duration
+      return () => clearTimeout(timeout);
+    }
   }, [isMobileMenuOpen]);
 
   const getDashboardRoute = () => {
-  if (!user) return "/login";
-  switch (user.role) {
-    case "admin":
-      return "/admin-dashboard";
-    case "owner":
-      return "/owner-dashboard";
-    default:
-      return "/dashboard";
-  }
-};
+    if (!user) return "/login";
+    switch (user.role) {
+      case "admin":
+        return "/admin-dashboard";
+      case "owner":
+        return "/owner-dashboard";
+      default:
+        return "/dashboard";
+    }
+  };
 
   return (
     <header>
       <nav className="lg:pl-20 lg:pr-10 px-4 fixed top-0 w-full h-[5rem] flex items-center justify-between bg-white/40 backdrop-blur-md z-50 shadow-sm">
         <Link to="/" className="lg:text-3xl mt-4 text-xl font-bold text-shadow-lg" aria-label="Homepage">
-          <img src={brandLogo} alt="Brand Logo" className="md:w-48 lg:h-24 w-32 " />
+          <img src={brandLogo} alt="Brand Logo" className="md:w-48 lg:h-24 w-32" />
         </Link>
 
         {/* Desktop Nav */}
@@ -78,14 +90,13 @@ function Navbar() {
           <li><Link className="hover:text-zinc-900" to="/about">About</Link></li>
           <li><Link className="hover:text-zinc-900" to="/view-properties">Listing</Link></li>
           <li><Link className="hover:text-zinc-900" to="/contact">Contact</Link></li>
- {user && (
-    <li>
-      <Link className="hover:text-zinc-900" to={getDashboardRoute()}>
-        Dashboard
-      </Link>
-    </li>
-  )}
-
+          {user && (
+            <li>
+              <Link className="hover:text-zinc-900" to={getDashboardRoute()}>
+                Dashboard
+              </Link>
+            </li>
+          )}
           {user ? (
             <button
               onClick={handleLogout}
@@ -115,20 +126,20 @@ function Navbar() {
         </button>
       </nav>
 
-      {/* Slide-in Mobile Menu from Right */}
-      <aside
-        ref={menuRef}
-        className={`fixed top-0 right-0  rounded-2xl bg-white/40 backdrop-blur-md  shadow-sm transition-transform duration-300 ease-in-out z-40 ${
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        } lg:hidden`}
-        aria-hidden={!isMobileMenuOpen}
-      >
-        <nav className="pt-24 px-5 flex flex-col items-center  gap-6 text-lg font-semibold text-zinc-800">
-          <ul className="flex space-x-6 flex-col justify-center items-center overflow-x-auto whitespace-nowrap">
+      {/* Mobile Dropdown Menu Below Navbar */}
+      {shouldRenderDropdown && (
+        <div
+          ref={menuRef}
+          className={`fixed top-[4rem] left-0 w-full bg-white/40 backdrop-blur-md z-50 shadow-sm px-6 py-4 flex flex-col items-center gap-4 lg:hidden rounded-b-2xl ${dropdownAnimation}`}
+        >
+          <ul className="flex flex-col gap-4 text-zinc-800 text-lg font-semibold text-center w-full">
             <li><Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link></li>
             <li><Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link></li>
             <li><Link to="/view-properties" onClick={() => setIsMobileMenuOpen(false)}>Listing</Link></li>
             <li><Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link></li>
+            {user && (
+              <li><Link to={getDashboardRoute()} onClick={() => setIsMobileMenuOpen(false)}>Dashboard</Link></li>
+            )}
           </ul>
 
           {user ? (
@@ -137,7 +148,7 @@ function Navbar() {
                 handleLogout();
                 setIsMobileMenuOpen(false);
               }}
-              className="mt-8 px-6 py-2 mb-10  bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md transition"
+              className="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md transition"
             >
               Logout
             </button>
@@ -145,18 +156,18 @@ function Navbar() {
             <Link
               to="/login"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-8 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md transition"
+              className="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md transition"
             >
               Login
             </Link>
           )}
-        </nav>
-      </aside>
+        </div>
+      )}
 
       {/* Greeting Badge */}
       {user && (
         <div
-          className="fixed top-[5rem] right-5 mr-12 bg-indigo-900 text-white px-5 py-2 rounded-xl shadow-lg z-50 text-sm font-semibold flex items-center gap-2 select-none ring-2 ring-indigo-400 animate-pulse-slow"
+          className="fixed top-[5rem] right-5 mr-12 bg-indigo-900 text-white px-5 py-2 rounded-xl shadow-lg z-40 text-sm font-semibold flex items-center gap-2 select-none ring-2 ring-indigo-400 animate-pulse-slow"
           style={{ animationDuration: "3s" }}
         >
           <span className="text-2xl">👋</span>

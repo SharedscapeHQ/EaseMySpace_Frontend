@@ -14,10 +14,12 @@ import OwnerDashboard from "./pages/Owner/OwnerDashboard";
 import UserDashboard from "./pages/User/UserDashboard";
 import CancellationRefundPolicy from "./components/FooterSectionComp/CancellationRefundPolicy";
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
-import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy"
+import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
+import useLenis from "./hooks/useLenis";
 
 
 function Layout({ children }) {
+  useLenis(); 
   const location = useLocation();
   // Hide Navbar on login and register pages
   const hideNavbar = ["/login", "/register"].includes(location.pathname);

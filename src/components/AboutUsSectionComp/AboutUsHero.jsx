@@ -8,7 +8,7 @@ export default function AboutUsHero() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9 }}
-        className="max-w-5xl text-center md:-mt-20 mt-3"
+        className="max-w-5xl text-center md:-mt-20 mt-10"
       >
         {/* Headline */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-blue-700 leading-tight mb-6 tracking-wide drop-shadow-lg">
