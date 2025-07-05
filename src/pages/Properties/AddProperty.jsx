@@ -1,22 +1,31 @@
-import React, { useState } from "react";
-import { FaHome, FaRupeeSign, FaMapMarkerAlt, FaInfoCircle, FaCheckCircle } from "react-icons/fa";
-import { addProperty } from "../../API/propertiesApi";  // Import the API function
+import React, { useState, useEffect } from "react";
+import {
+  FaHome,
+  FaInfoCircle,
+  FaCheckCircle,
+} from "react-icons/fa";
+import { addProperty } from "../../API/propertiesApi"; // Your API function
+import { loginUser } from "../../API/authAPI"; // Your auth API
 
 const AddProperty = () => {
   const [formData, setFormData] = useState({
-    title: "",
+    title: "", // will hold logged-in user's name
     price: "",
     location: "",
     flat_status: "",
-    image_base64: "",
-    image_mime: "",
-    video_base64: "",
-    video_mime: "",
+    image_base64: [],
+    video_base64: [],
+    looking_for: "",
+    bhk: "",
+    occupancy: "",
+    distance_from_station: "",
   });
 
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
 
+  // Convert file to base64 helper
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -25,31 +34,56 @@ const AddProperty = () => {
       reader.onerror = reject;
     });
 
+  // Load logged-in user info on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await loginUser(); 
+        setFormData((prev) => ({ ...prev, title: user.firstName + " " + user.lastName }));
+      } catch (err) {
+        console.error("Failed to load user info", err);
+        setError("Failed to load user info");
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+    fetchUser();
+  }, []);
+
   const handleInputChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleFileChange = async (e, type) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
+    const files = Array.from(e.target.files);
     try {
-      const dataUrl = await toBase64(file);
-      const [, mime, base64] = dataUrl.match(/^data:(.+);base64,(.*)$/);
+      const base64s = await Promise.all(
+        files.map(async (file) => {
+          const result = await toBase64(file);
+          const [, , base64] = result.match(/^data:(.+);base64,(.*)$/);
+          return base64;
+        })
+      );
+
       setFormData((prev) => ({
         ...prev,
-        [`${type}_mime`]: mime,
-        [`${type}_base64`]: base64,
+        [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
       }));
     } catch {
-      setError(`Failed to read ${type} file.`);
+      setError(`Failed to read ${type} files.`);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.price || !formData.location || !formData.flat_status || !formData.image_base64) {
-      setError("Please fill in all required fields and upload an image.");
+    if (
+      !formData.title ||
+      !formData.price ||
+      !formData.location ||
+      !formData.flat_status ||
+      formData.image_base64.length === 0
+    ) {
+      setError("Please fill all required fields and upload at least one image.");
       return;
     }
 
@@ -57,17 +91,19 @@ const AddProperty = () => {
     setUploading(true);
 
     try {
-      const response = await addProperty(formData);  // Use the imported API function
+      await addProperty(formData);
       alert("Property submitted successfully!");
       setFormData({
-        title: "",
+        title: formData.title, // keep the user name after submit
         price: "",
         location: "",
         flat_status: "",
-        image_base64: "",
-        image_mime: "",
-        video_base64: "",
-        video_mime: "",
+        image_base64: [],
+        video_base64: [],
+        looking_for: "",
+        bhk: "",
+        occupancy: "",
+        distance_from_station: "",
       });
     } catch (err) {
       console.error(err);
@@ -76,6 +112,14 @@ const AddProperty = () => {
       setUploading(false);
     }
   };
+
+  if (loadingUser) {
+    return (
+      <div className="pt-20 flex justify-center items-center min-h-screen">
+        <p>Loading user info...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-20 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center items-start px-4">
@@ -86,132 +130,156 @@ const AddProperty = () => {
           </h2>
 
           {error && (
-            <p className="mb-6 text-center text-red-600 font-semibold bg-red-100 p-3 rounded">{error}</p>
+            <p className="mb-6 text-center text-red-600 font-semibold bg-red-100 p-3 rounded">
+              {error}
+            </p>
           )}
 
-          {/* Title */}
-          <div className="mb-6 relative">
-            <label htmlFor="title" className="block mb-2 font-semibold text-gray-700">
-              Title <span className="text-red-600">*</span>
-            </label>
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-400">
-              <FaHome className="text-gray-400 ml-3" />
-              <input
-                id="title"
-                name="title"
-                type="text"
-                value={formData.title}
-                onChange={handleInputChange}
-                placeholder="Spacious 2BHK Flat in Bandra"
-                className="w-full px-4 py-3 focus:outline-none"
-                required
-              />
-            </div>
+          {/* Title (User Name, uneditable) */}
+          <div className="mb-6">
+            <label className="font-semibold">Title (User Name) *</label>
+            <input
+              name="title"
+              value={formData.title}
+              readOnly
+              className="w-full px-4 py-3 border rounded-lg bg-gray-100 cursor-not-allowed"
+            />
           </div>
 
           {/* Price */}
-          <div className="mb-6 relative">
-            <label htmlFor="price" className="block mb-2 font-semibold text-gray-700">
-              Price (₹ per month) <span className="text-red-600">*</span>
-            </label>
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-400">
-              <FaRupeeSign className="text-gray-400 ml-3" />
-              <input
-                id="price"
-                name="price"
-                type="number"
-                min="0"
-                value={formData.price}
-                onChange={handleInputChange}
-                placeholder="12000"
-                className="w-full px-4 py-3 focus:outline-none"
-                required
-              />
-            </div>
+          <div className="mb-6">
+            <label className="font-semibold">Price (₹/month) *</label>
+            <input
+              name="price"
+              type="number"
+              min="0"
+              value={formData.price}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border rounded-lg"
+              placeholder="12000"
+              required
+            />
           </div>
 
           {/* Location */}
-          <div className="mb-6 relative">
-            <label htmlFor="location" className="block mb-2 font-semibold text-gray-700">
-              Location <span className="text-red-600">*</span>
-            </label>
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-400">
-              <FaMapMarkerAlt className="text-gray-400 ml-3" />
-              <input
-                id="location"
-                name="location"
-                type="text"
-                value={formData.location}
-                onChange={handleInputChange}
-                placeholder="Andheri West, Mumbai"
-                className="w-full px-4 py-3 focus:outline-none"
-                required
-              />
-            </div>
+          <div className="mb-6">
+            <label className="font-semibold">Location *</label>
+            <input
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border rounded-lg"
+              placeholder="Andheri West, Mumbai"
+              required
+            />
           </div>
 
           {/* Flat Status */}
-          <div className="mb-6 relative">
-            <label htmlFor="flat_status" className="block mb-2 font-semibold text-gray-700">
-              Flat Status <span className="text-red-600">*</span>
-            </label>
+          <div className="mb-6">
+            <label className="font-semibold">Flat Status *</label>
             <input
-              id="flat_status"
               name="flat_status"
-              type="text"
               value={formData.flat_status}
               onChange={handleInputChange}
-              placeholder="Ex: Available, Booked, Under Renovation"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full px-4 py-3 border rounded-lg"
+              placeholder="Available / Booked"
               required
+            />
+          </div>
+
+          {/* Looking For (Dropdown) */}
+          <div className="mb-6">
+            <label className="font-semibold">Looking For</label>
+            <select
+              name="looking_for"
+              value={formData.looking_for}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border rounded-lg"
+            >
+              <option value="">Select</option>
+              <option value="flatmate">Flatmate</option>
+              <option value="vacant">Vacant Flat</option>
+            </select>
+          </div>
+
+          {/* BHK (Dropdown) */}
+          <div className="mb-6">
+            <label className="font-semibold">BHK</label>
+            <select
+              name="bhk"
+              value={formData.bhk}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border rounded-lg"
+            >
+              <option value="">Select</option>
+              <option value="1">1</option>
+              <option value="1.5">1.5</option>
+              <option value="2">2</option>
+              <option value="2.5">2.5</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+
+          {/* Occupancy (Dropdown) */}
+          <div className="mb-6">
+            <label className="font-semibold">Occupancy</label>
+            <select
+              name="occupancy"
+              value={formData.occupancy}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border rounded-lg"
+            >
+              <option value="">Select</option>
+              <option value="single">Single</option>
+              <option value="double">Double</option>
+              <option value="triple">Triple</option>
+            </select>
+          </div>
+
+          {/* Distance from Station */}
+          <div className="mb-6">
+            <label className="font-semibold">Distance from Station</label>
+            <input
+              name="distance_from_station"
+              value={formData.distance_from_station}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border rounded-lg"
+              placeholder="e.g. 500 meters"
             />
           </div>
 
           {/* Image Upload */}
-          <div className="mb-6 relative">
-            <label className="block mb-2 font-semibold text-gray-700">
-              Image (jpg/png) <span className="text-red-600">*</span>
-            </label>
+          <div className="mb-6">
+            <label className="font-semibold">Upload Images *</label>
             <input
               type="file"
               accept="image/*"
+              multiple
               onChange={(e) => handleFileChange(e, "image")}
+              className="block w-full mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
               required
-              className="block w-full text-sm text-gray-600
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-lg file:border-0
-                file:text-sm file:font-semibold
-                file:bg-indigo-50 file:text-indigo-700
-                hover:file:bg-indigo-100
-                cursor-pointer"
             />
-            {formData.image_base64 && (
+            {formData.image_base64.length > 0 && (
               <p className="mt-2 text-green-600 flex items-center gap-2">
-                <FaCheckCircle /> Image loaded successfully
+                <FaCheckCircle /> {formData.image_base64.length} image(s) selected
               </p>
             )}
           </div>
 
           {/* Video Upload */}
-          <div className="mb-8 relative">
-            <label className="block mb-2 font-semibold text-gray-700">
-              Video (mp4) – optional
-            </label>
+          <div className="mb-8">
+            <label className="font-semibold">Upload Videos</label>
             <input
               type="file"
               accept="video/*"
+              multiple
               onChange={(e) => handleFileChange(e, "video")}
-              className="block w-full text-sm text-gray-600
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-lg file:border-0
-                file:text-sm file:font-semibold
-                file:bg-indigo-50 file:text-indigo-700
-                hover:file:bg-indigo-100
-                cursor-pointer"
+              className="block w-full mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
             />
-            {formData.video_base64 && (
+            {formData.video_base64.length > 0 && (
               <p className="mt-2 text-green-600 flex items-center gap-2">
-                <FaCheckCircle /> Video loaded successfully
+                <FaCheckCircle /> {formData.video_base64.length} video(s) selected
               </p>
             )}
           </div>
@@ -220,7 +288,7 @@ const AddProperty = () => {
           <button
             type="submit"
             disabled={uploading}
-            className={`w-full bg-indigo-600 text-white font-bold py-4 rounded-lg shadow-md transition duration-300 ease-in-out ${
+            className={`w-full bg-indigo-600 text-white font-bold py-4 rounded-lg transition duration-300 ${
               uploading ? "opacity-60 cursor-not-allowed" : "hover:bg-indigo-700"
             }`}
           >
@@ -239,7 +307,7 @@ const AddProperty = () => {
           <p className="mb-4">- Include an accurate location to attract the right tenants.</p>
           <p className="mb-4">- Specify the current status of the flat (e.g., Available, Booked).</p>
           <p className="mb-4">- Upload a clear image for the best first impression.</p>
-          <p>- Adding a video is optional but can help showcase the property better.</p>
+          <p>- Adding a video is optional but can help show the property better.</p>
         </aside>
       </div>
     </div>

@@ -21,22 +21,34 @@ function Login() {
   const navigate = useNavigate();
 
   // Login submit handler
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-      return alert("Enter a valid email");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await loginUser({ email, password });
-      const { user, message } = res.data ?? res;
-      localStorage.setItem("user", JSON.stringify(user));
-      alert(message || "Login successful");
-      navigate("/");
-    } catch (err) {
-      const msg = err?.response?.data?.message || "Email or password is incorrect";
-      alert(msg);
-    }
-  };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    return alert("Enter a valid email");
+  }
+
+  if (!password.trim()) {
+    return alert("Password cannot be empty");
+  }
+
+  try {
+    const res = await loginUser({ email, password });
+    console.log(res);
+
+    const { user, message } = res.data ?? res;
+console.log(user);
+
+    localStorage.setItem("user", JSON.stringify(user));
+    alert(message || "Login successful");
+    navigate("/");
+    
+  } catch (err) {
+    const msg = err?.response?.data?.message || "Email or password is incorrect";
+    alert(msg);
+  }
+};
+
 
   // Send OTP
   const handleSendOtp = async () => {
