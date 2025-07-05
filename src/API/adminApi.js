@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios instance for admin-related API requests
 const adminAxios = axios.create({
-  baseURL: "http://localhost:3000/api/admin",
+  baseURL: "https://api.easemyspace.in/api/admin",
   withCredentials: true, // Send cookies automatically
 });
 
@@ -28,7 +28,7 @@ export const approveProperty = (id) => {
 
 // Edit property with full URL and cookies
 export const editProperty = (id, formData) => {
-  return axios.put(`http://localhost:3000/api/properties/edit-property/${id}`, formData, {
+  return axios.put(`https://api.easemyspace.in/api/properties/edit-property/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -38,7 +38,7 @@ export const editProperty = (id, formData) => {
 
 // Delete property with full URL and cookies
 export const deleteProperty = (id) => {
-  return axios.delete(`http://localhost:3000/api/properties/${id}`, {
+  return axios.delete(`https://api.easemyspace.in/api/properties/${id}`, {
     withCredentials: true, // cookies sent automatically
   });
 };

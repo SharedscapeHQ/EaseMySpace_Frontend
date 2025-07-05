@@ -11,7 +11,7 @@ export default function ProtectedRoute({ allowedRoles = [], children }) {
 
     const checkAuth = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3000/api/auth/me", {
+        const { data } = await axios.get("https://api.easemyspace.in/api/auth/me", {
           withCredentials: true,
         });
 

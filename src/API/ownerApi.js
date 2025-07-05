@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/owner";
+const BASE_URL = "https://api.easemyspace.in/api/owner";
 
 // Requests will send cookies automatically
 const config = {
@@ -19,5 +19,5 @@ export const deleteUserById = (userId) => {
 
 // ✅ Get all users (re-using admin endpoint)
 export const getAllUsers = () => {
-  return axios.get("http://localhost:3000/api/admin/users", config);
+  return axios.get("https://api.easemyspace.in/api/admin/users", config);
 };

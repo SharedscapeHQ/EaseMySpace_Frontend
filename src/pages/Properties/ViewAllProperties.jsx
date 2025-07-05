@@ -22,7 +22,7 @@ export default function ViewAllProperties() {
     (async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:3000/api/properties/all",
+          "https://api.easemyspace.in/api/properties/all",
           { withCredentials: true }
         );
         setProperties(data);

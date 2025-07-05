@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios instance for user-related APIs
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api/user",
+  baseURL: "https://api.easemyspace.in/api/user",
   headers: {
     "Content-Type": "application/json",
   },

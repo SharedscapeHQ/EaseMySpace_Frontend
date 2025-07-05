@@ -36,6 +36,7 @@ function Register() {
       alert("Registration successful");
       navigate("/login");
     } catch (err) {
+      console.error('❌ Registration failed:', err);
       console.log("Registration failed:", err.response?.data || err.message);
     }
   };
