@@ -17,6 +17,7 @@ import CancellationRefundPolicy from "./components/FooterSectionComp/Cancellatio
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import useLenis from "./hooks/useLenis";
+import { Toaster } from "react-hot-toast";
 
 
 function Layout({ children }) {
@@ -37,6 +38,7 @@ function App() {
   return (
     <BrowserRouter>
       <Layout>
+          <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />

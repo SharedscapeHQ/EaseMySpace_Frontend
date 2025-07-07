@@ -1,23 +1,46 @@
+// ViewAllProperties.jsx – listing page (query‑param‑aware)
+/* eslint react/prop-types:0 */
 import React, { useEffect, useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
+/* ───────── helpers ─────────────────────────────────────── */
+const parseImages = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === "string" && raw.startsWith("{"))
+    return raw
+      .slice(1, -1)
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  return [];
+};
+const pickCover = (arr = []) =>
+  arr.find((u) => /\.(jpe?g|png|webp)$/i.test(u)) || null;
+
+/* ───────── component ──────────────────────────────────── */
 export default function ViewAllProperties() {
-  const [properties, setProperties] = useState([]);
-  const [filteredProps, setFilteredProps] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  /* read filters from URL only once */
+  const { search } = useLocation();
+  const qs = new URLSearchParams(search);
 
-  /* ---------------- filters & sort ---------------- */
+  const [properties, setProperties] = useState([]);
+  const [filtered,   setFiltered]   = useState([]);
+  const [loading,    setLoading]    = useState(true);
+  const [error,      setError]      = useState(null);
+
   const [filters, setFilters] = useState({
-    location: "",
-    minPrice: "",
-    maxPrice: "",
-    flatStatus: "",
+    location:   qs.get("location")   || "",
+    minPrice:   qs.get("min")        || "",
+    maxPrice:   qs.get("max")        || "",
+    flatStatus: qs.get("status")     || "",
+    gender:     qs.get("gender")     || "",
+    lookingFor: qs.get("type")       || "",
   });
   const [sort, setSort] = useState("newest");
 
-  /* -------------- fetch properties --------------- */
+  /* fetch data once */
   useEffect(() => {
     (async () => {
       try {
@@ -25,8 +48,12 @@ export default function ViewAllProperties() {
           "https://api.easemyspace.in/api/properties/all",
           { withCredentials: true }
         );
-        setProperties(data);
-        setFilteredProps(data);
+        const prepared = data.map((p) => {
+          const images = parseImages(p.image);
+          return { ...p, images, cover: pickCover(images) };
+        });
+        setProperties(prepared);
+        setFiltered(prepared);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch properties");
       } finally {
@@ -35,199 +62,280 @@ export default function ViewAllProperties() {
     })();
   }, []);
 
-  /* -------- filter / sort whenever state changes -------- */
+  /* filtering + sorting */
   useEffect(() => {
-    let filtered = [...properties];
+    let list = [...properties];
+    const { location, flatStatus, gender, lookingFor, minPrice, maxPrice } =
+      filters;
 
-    if (filters.location.trim() !== "")
-      filtered = filtered.filter((p) =>
-        p.location.toLowerCase().includes(filters.location.toLowerCase())
+    if (location.trim())
+      list = list.filter((p) =>
+        p.location.toLowerCase().includes(location.toLowerCase())
       );
 
-    if (filters.flatStatus.trim() !== "")
-      filtered = filtered.filter(
+    if (flatStatus)
+      list = list.filter(
         (p) =>
           p.flat_status &&
-          p.flat_status.toLowerCase() === filters.flatStatus.toLowerCase()
+          p.flat_status.toLowerCase() === flatStatus.toLowerCase()
       );
 
-    const min = parseInt(filters.minPrice, 10);
-    const max = parseInt(filters.maxPrice, 10);
-    if (!isNaN(min)) filtered = filtered.filter((p) => p.price >= min);
-    if (!isNaN(max)) filtered = filtered.filter((p) => p.price <= max);
+    if (gender)
+      list = list.filter(
+        (p) => p.gender && p.gender.toLowerCase() === gender
+      );
 
-    if (sort === "price_asc") filtered.sort((a, b) => a.price - b.price);
-    else if (sort === "price_desc") filtered.sort((a, b) => b.price - a.price);
-    else if (sort === "newest") filtered.reverse();
+    if (lookingFor)
+      list = list.filter(
+        (p) => p.looking_for && p.looking_for.toLowerCase() === lookingFor
+      );
 
-    setFilteredProps(filtered);
+    const min = parseInt(minPrice, 10);
+    const max = parseInt(maxPrice, 10);
+    if (!isNaN(min)) list = list.filter((p) => p.price >= min);
+    if (!isNaN(max)) list = list.filter((p) => p.price <= max);
+
+    if (sort === "price_asc") list.sort((a, b) => a.price - b.price);
+    else if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
+    else list.reverse();
+
+    setFiltered(list);
   }, [filters, sort, properties]);
 
-  /* ---------------- handlers ---------------- */
   const handleFilterChange = (e) =>
     setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  /* ---------------- render ---------------- */
+  /* early states */
   if (loading)
     return (
       <div className="pt-28 text-center text-sky-600">Loading properties…</div>
     );
   if (error)
     return <div className="pt-28 text-center text-red-600">{error}</div>;
-  if (properties.length === 0)
+  if (!properties.length)
     return <div className="pt-28 text-center">No properties found.</div>;
 
+  /* ───────── JSX ───────────────────────────────────────── */
   return (
-    <>
-      <div className="md:pt-28 pt-14 flex min-h-screen bg-indigo-50">
-        {/* -------- sidebar -------- */}
-        <aside
-          className="hidden md:flex flex-col fixed top-28 left-0 h-[calc(100vh-7rem)] w-72 bg-white shadow-lg rounded-r-3xl p-6 overflow-y-auto z-20"
-          style={{ scrollbarGutter: "stable" }}
-        >
-          <h2 className="text-2xl font-bold mb-6 text-indigo-700">
-            Filters & Sort
-          </h2>
-          {/* location */}
-          <div className="mb-6">
-            <label className="block mb-2 font-semibold text-gray-700">
-              Location
-            </label>
-            <input
-              type="text"
-              name="location"
-              value={filters.location}
-              onChange={handleFilterChange}
-              placeholder="e.g. Mumbai"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-          </div>
-          {/* status */}
-          <div className="mb-6">
-            <label className="block mb-2 font-semibold text-gray-700">
-              Flat Status
-            </label>
-            <select
-              name="flatStatus"
-              value={filters.flatStatus}
-              onChange={handleFilterChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            >
-              <option value="">All</option>
-              <option value="available">Available</option>
-              <option value="booked">Booked</option>
-              <option value="under renovation">Under Renovation</option>
-            </select>
-          </div>
-          {/* price */}
-          <div className="mb-6">
-            <label className="block mb-2 font-semibold text-gray-700">
-              Price Range (₹)
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="number"
-                name="minPrice"
-                value={filters.minPrice}
-                onChange={handleFilterChange}
-                placeholder="Min"
-                min={0}
-                className="w-1/2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-              <input
-                type="number"
-                name="maxPrice"
-                value={filters.maxPrice}
-                onChange={handleFilterChange}
-                placeholder="Max"
-                min={0}
-                className="w-1/2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
-          </div>
-          {/* sort */}
-          <div>
-            <label className="block mb-2 font-semibold text-gray-700">
-              Sort by
-            </label>
-            <select
-              id="sort"
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            >
-              <option value="newest">Newest</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-            </select>
-          </div>
-        </aside>
+    <div className="md:pt-28 pt-14 flex bg-indigo-50 min-h-screen">
+      {/* ---------- sidebar ---------- */}
+      <aside className="hidden md:block fixed top-28 left-0 w-72 h-[calc(100vh-7rem)] overflow-y-auto bg-white shadow-lg rounded-r-3xl p-6 z-20">
+        <h2 className="text-2xl font-bold mb-6 text-indigo-700">
+          Filters &amp; Sort
+        </h2>
 
-        {/* -------- main grid -------- */}
-        <main className="flex-1 ml-0 md:ml-72 px-6 pb-12 max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-indigo-900 mb-3">
-            Explore Our Listings
-          </h1>
-          <p className="text-gray-600 mb-8 max-w-xl">
-            Find your perfect space among verified properties
+        <Input label="Location" name="location" />
+        <Select
+          label="Flat Status"
+          name="flatStatus"
+          opts={[
+            ["", "All"],
+            ["available", "Available"],
+            ["booked", "Booked"],
+            ["under renovation", "Under Renovation"],
+          ]}
+        />
+        <Select
+          label="Gender"
+          name="gender"
+          opts={[
+            ["", "Any"],
+            ["male", "Male"],
+            ["female", "Female"],
+            ["unisex", "Unisex"],
+          ]}
+        />
+        <Select
+          label="Looking For"
+          name="lookingFor"
+          opts={[
+            ["", "Any"],
+            ["flatmate", "Flat‑mate"],
+            ["vacant", "Vacant Flat"],
+          ]}
+        />
+        <div className="mb-6">
+          <label className="block mb-2 font-semibold text-gray-700">
+            Price Range (₹)
+          </label>
+          <div className="flex gap-2">
+            <Input name="minPrice" type="number" placeholder="Min" />
+            <Input name="maxPrice" type="number" placeholder="Max" />
+          </div>
+        </div>
+        <Select
+          label="Sort by"
+          name="sortControl"
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          opts={[
+            ["newest", "Newest"],
+            ["price_asc", "Price Low → High"],
+            ["price_desc", "Price High → Low"],
+          ]}
+        />
+      </aside>
+
+      {/* ---------- main ---------- */}
+      <main className="flex-1 ml-0 md:ml-72 px-6 pb-12 max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-indigo-900 mt-4 md:mt-0 mb-3">
+          Explore Our Listings
+        </h1>
+        <p className="text-gray-600 mb-8 max-w-xl">
+          Find your perfect space among verified properties
+        </p>
+
+        {filtered.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg mt-20">
+            No properties match your filters.
           </p>
+        ) : (
+          <div className="space-y-8">
+            {filtered.map((p) => (
+              <PropertyCard key={p.id} p={p} />
+            ))}
+          </div>
+        )}
+      </main>
+    </div>
+  );
 
-          {filteredProps.length === 0 ? (
-            <p className="text-center text-gray-500 text-lg mt-20">
-              No properties match your filters.
-            </p>
+  /* --- tiny sidebar controls --- */
+  function Input({ label, name, className = "", ...rest }) {
+    return (
+      <div className={`mb-6 ${className}`}>
+        {label && (
+          <label className="block mb-2 font-semibold text-gray-700">
+            {label}
+          </label>
+        )}
+        <input
+          name={name}
+          value={filters[name]}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-indigo-400 outline-none"
+          {...rest}
+        />
+      </div>
+    );
+  }
+
+  function Select({ label, name, opts, className = "", ...rest }) {
+    return (
+      <div className={`mb-6 ${className}`}>
+        <label className="block mb-2 font-semibold text-gray-700">
+          {label}
+        </label>
+        <select
+          name={name}
+          value={filters[name] ?? rest.value}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-indigo-400 outline-none"
+          {...rest}
+        >
+          {opts.map(([v, t]) => (
+            <option key={v} value={v}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+}
+
+/* ───────── card component ─────────────────────────────── */
+const PropertyCard = ({ p }) => {
+  const thumbs = p.images.filter((img) => img !== p.cover).slice(0, 3);
+  const extra = p.images.length - 1 - thumbs.length;
+
+  return (
+    <Link
+      to={`/properties/${p.id}`}
+      state={{ property: p }}
+      className="bg-white rounded-xl shadow hover:shadow-lg transition flex flex-col"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-start px-5 pt-4 pb-2 border-b">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800">
+            {p.gender?.toUpperCase() || "UNISEX"} Room –{" "}
+            <span className="text-indigo-600">{p.project}</span>
+          </h2>
+          <p className="text-sm text-gray-500 truncate">• {p.location}</p>
+          {p.looking_for && (
+            <span className="inline-block mt-1 bg-indigo-50 text-indigo-600 text-xs font-medium px-2 py-[2px] rounded-full">
+              {p.looking_for === "flatmate" ? "Flat‑mate" : "Vacant Flat"}
+            </span>
+          )}
+        </div>
+
+        <button className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-lg">
+          Get Owner Details
+        </button>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-3 text-center text-sm border-b">
+        <Stat label="Rent"     value={`₹ ${p.price.toLocaleString()}`} />
+        <Stat label="Deposit"  value={`₹ ${p.deposit?.toLocaleString() || "-"}`} />
+        <Stat label="Built‑up" value={`${p.sqft || "-"} sqft`} />
+      </div>
+
+      {/* Images & features */}
+      <div className="flex w-full flex-col sm:flex-row">
+        {/* cover + thumbs */}
+        <div className="flex w-full sm:w-2/3 gap-2 p-4 pb-2">
+          {p.cover ? (
+            <img src={p.cover} alt={p.title} className="h-56 sm:h-64 flex-1 object-cover rounded-lg" />
           ) : (
-            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {filteredProps.map((p) => (
-                <Link
-                  to={"/properties/" + p.id}
-                  state={{ property: p }}
-                  key={p.id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
-                >
-                  {p.image ? (
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-400 italic">
-                      No Image
-                    </div>
-                  )}
-
-                  <div className="p-4">
-                    <h2
-                      className="text-lg font-semibold text-indigo-900 truncate"
-                      title={p.title}
-                    >
-                      {p.title}
-                    </h2>
-                    <p className="text-indigo-600 font-bold text-lg mt-1">
-                      ₹ {p.price.toLocaleString()}
-                    </p>
-                    <p className="text-gray-500 text-sm mt-1">{p.location}</p>
-                    {p.flat_status && (
-                      <p
-                        className={`mt-2 inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                          p.flat_status.toLowerCase() === "available"
-                            ? "bg-green-100 text-green-700"
-                            : p.flat_status.toLowerCase() === "booked"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
-                        {p.flat_status}
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              ))}
+            <div className="h-56 sm:h-64 flex-1 bg-gray-200 flex items-center justify-center italic text-gray-400 rounded-lg">
+              No Image
             </div>
           )}
-        </main>
+          <div className="hidden sm:flex flex-col gap-2 w-28">
+            {thumbs.map((t, idx) => (
+              <div key={idx} className="relative h-20 w-full">
+                <img src={t} alt="" className="h-full w-full object-cover rounded-lg" />
+                {idx === thumbs.length - 1 && extra > 0 && (
+                  <span className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xs font-semibold rounded-lg">
+                    +{extra}
+                  </span>
+                )}
+              </div>
+            ))}
+            {Array.from({ length: 3 - thumbs.length }).map((_, i) => (
+              <div key={`emp-${i}`} className="h-20 w-full bg-gray-100 rounded-lg" />
+            ))}
+          </div>
+        </div>
+
+        {/* features */}
+        <div className="sm:w-1/3 h-64 flex items-center">
+          <div className="grid grid-cols-2 gap-4 w-full px-4">
+            <Feature icon="🛋️" label="Furnish"   value={p.furnishing    || "-"} />
+            <Feature icon="🏠" label="Type"      value={p.bhk          || "-"} />
+            <Feature icon="🛁" label="Bath"      value={p.attachedBath  || "-"} />
+            <Feature icon="🔑" label="Available" value={p.availableFrom || "-"} />
+          </div>
+        </div>
       </div>
-    </>
+    </Link>
   );
-}
+};
+
+const Stat = ({ label, value }) => (
+  <div className="py-3 border-r last:border-r-0">
+    <p className="font-semibold text-gray-800">{value}</p>
+    <p className="text-xs text-gray-500">{label}</p>
+  </div>
+);
+const Feature = ({ icon, label, value }) => (
+  <div className="flex items-center gap-2 p-4 border rounded-xl">
+    <span>{icon}</span>
+    <div>
+      <p className="text-sm font-medium text-gray-700">{value}</p>
+      <p className="text-xs text-gray-500">{label}</p>
+    </div>
+  </div>
+);

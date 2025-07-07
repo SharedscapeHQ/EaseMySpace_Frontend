@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import { registerUser } from "../API/authAPI";
 
 function Register() {
@@ -24,27 +25,31 @@ function Register() {
     const phoneOK = /^\d{10}$/.test(form.phone);
 
     if (!emailOK) {
-      alert("Enter a valid email");
+      toast.error("Enter a valid email");
       return;
     }
     if (!phoneOK) {
-      alert("Phone must be 10 digits");
+      toast.error("Phone must be 10 digits");
       return;
     }
+
+    const toastId = toast.loading("Registering…");
     try {
       await registerUser(form);
-      alert("Registration successful");
+      toast.success("Registration successful", { id: toastId });
       navigate("/login");
     } catch (err) {
-      console.error('❌ Registration failed:', err);
-      console.log("Registration failed:", err.response?.data || err.message);
+      toast.error(
+        err?.response?.data?.message || "Registration failed",
+        { id: toastId }
+      );
+      console.error("❌ Registration failed:", err);
     }
   };
 
   const handleChangePhn = (e) => {
     const { name, value } = e.target;
     if (name === "phone") {
-      // Allow only digits
       if (/^\d*$/.test(value)) {
         setForm({ ...form, [name]: value });
       }
@@ -53,7 +58,6 @@ function Register() {
     }
   };
 
-  // Login page input styles
   const inputClasses =
     "w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
 
@@ -73,7 +77,6 @@ function Register() {
       >
         <h1 className="text-2xl font-bold text-center text-blue-500">Register</h1>
 
-        {/* Responsive stacking for first & last name */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
           <input
             name="firstName"
@@ -117,7 +120,6 @@ function Register() {
           pattern="[0-9]*"
         />
 
-        {/* Gender section */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <label className="font-semibold text-gray-700 whitespace-nowrap">
             Gender

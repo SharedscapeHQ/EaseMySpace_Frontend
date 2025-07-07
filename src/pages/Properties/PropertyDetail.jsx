@@ -1,4 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+/* ----------------------------------------------------------------
+   PropertyDetail.jsx   –   full page with gallery + OTP flow
+---------------------------------------------------------------- */
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import {
   getPropertyById,
@@ -6,320 +9,315 @@ import {
   verifyLeadOtp,
 } from "../../API/propertiesApi";
 
-function PropertyDetail() {
+/* ------------ tiny helpers (reuse everywhere) ----------------- */
+const parseImages = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === "string" && raw.startsWith("{"))
+    return raw
+      .slice(1, -1)
+      .split(",")
+      .map((s) => s.trim().replace(/^"|"$/g, ""))
+      .filter(Boolean);
+  return [raw];
+};
+const pickCover = (arr = []) =>
+  arr.find((u) => /\.(jpe?g|png|webp|gif)$/i.test(u)) || null;
+
+/* =============================================================== */
+export default function PropertyDetail() {
   const { id } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
 
-  const [property, setProperty] = useState(location.state?.property || null);
-  const [loading, setLoading] = useState(!property);
-  const [error, setError] = useState(null);
+  /* ---------- initial data (maybe passed from list) ------------ */
+  const init = location.state?.property
+    ? enrich(location.state.property)
+    : null;
 
+  const [property, setProperty] = useState(init);
+  const [loading,   setLoading] = useState(!init);
+  const [error,     setError]   = useState(null);
+
+  /* ---------- OTP modal flow (UNCHANGED logic) ----------------- */
   const [isVerified, setIsVerified] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [stage, setStage] = useState("phone");
-  const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
-  const [progressMsg, setProgressMsg] = useState("");
-
+  const [showOtp,    setShowOtp]    = useState(false);
+  const [stage,      setStage]      = useState("phone");
+  const [phone,      setPhone]      = useState("");
+  const [code,       setCode]       = useState("");
+  const [progress,   setProgress]   = useState("");
   const RESEND = 30;
-  const [counter, setCounter] = useState(0);
-  const modalRef = useRef(null);
+  const [wait, setWait] = useState(0);
+  useEffect(() => { if (wait) setTimeout(()=>setWait(wait-1),1000); }, [wait]);
 
-  /* ---------- fetch property ---------- */
+  /* ---------- gallery overlay ---------------------------------- */
+  const [lightboxIdx, setLightboxIdx] = useState(null);
+  const openLightbox  = (idx) => setLightboxIdx(idx);
+  const closeLightbox = () => setLightboxIdx(null);
+
+  /* ---------- fetch if needed ---------------------------------- */
   useEffect(() => {
     if (property) return;
     getPropertyById(id)
-      .then((res) => setProperty(res.data))
-      .catch((err) =>
-        setError(err.response?.data?.message || "Failed to load property.")
-      )
-      .finally(() => setLoading(false));
+      .then(({ data }) => setProperty(enrich(data)))
+      .catch((err)=>setError(err.response?.data?.message || "Failed to load"))
+      .finally(()=>setLoading(false));
   }, [id, property]);
 
-  /* ---------- esc key closes modal ---------- */
-  useEffect(() => {
-    if (!showModal) return;
-    const esc = (e) => e.key === "Escape" && closeModal();
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
-  }, [showModal]);
-
-  /* ---------- resend countdown ---------- */
-  useEffect(() => {
-    if (counter === 0) return;
-    const t = setTimeout(() => setCounter(counter - 1), 1000);
-    return () => clearTimeout(t);
-  }, [counter]);
-
-  const closeModal = () => {
-    setShowModal(false);
-    setStage("phone");
-    setProgressMsg("");
-    setCounter(0);
+  /* ---------- local util --------------------------------------- */
+  function enrich(row){
+    const images = parseImages(row.image);
+    return { ...row, images, cover: pickCover(images) };
+  }
+  const badge = (st) => {
+    if (!st) return null;
+    const s=st.toLowerCase();
+    const style =
+      s==="available" ? "bg-green-100 text-green-700" :
+      s==="booked"    ? "bg-red-100 text-red-700"   :
+                       "bg-yellow-100 text-yellow-800";
+    return <span className={`px-3 py-[2px] text-sm rounded-full font-medium ${style}`}>{st}</span>;
   };
 
-  const statusBadge = (status) => {
-    if (!status) return null;
-    const m = status.toLowerCase();
-    const cls =
-      m === "available"
-        ? "bg-green-100 text-green-700"
-        : m === "booked"
-        ? "bg-red-100 text-red-700"
-        : "bg-yellow-100 text-yellow-800";
-    return (
-      <span className={`px-4 py-1 rounded-full text-sm font-semibold ${cls}`}>
-        {status}
-      </span>
-    );
-  };
-
+  /* ---------- OTP handlers (unchanged) ------------------------- */
   const sendOtp = (e) => {
     e.preventDefault();
-    setProgressMsg("Sending OTP…");
+    setProgress("Sending OTP…");
     sendLeadOtp(phone, id)
-      .then(() => {
-        setStage("otp");
-        setProgressMsg("OTP sent. Check your phone.");
-        setCounter(RESEND);
-      })
-      .catch(() => setProgressMsg("Failed to send OTP."));
+      .then(()=>{setStage("otp"); setProgress("OTP sent"); setWait(RESEND);})
+      .catch(()=>setProgress("Failed to send OTP"));
   };
-
-  const resendOtp = () => {
-    if (counter !== 0) return;
-    setProgressMsg("Resending OTP…");
-    sendLeadOtp(phone, id)
-      .then(() => {
-        setProgressMsg("OTP re‑sent.");
-        setCounter(RESEND);
-      })
-      .catch(() => setProgressMsg("Failed to resend OTP."));
+  const resendOtp = ()=>{
+    if (wait) return;
+    setProgress("Resending…");
+    sendLeadOtp(phone,id)
+      .then(()=>{setProgress("OTP re‑sent"); setWait(RESEND);})
+      .catch(()=>setProgress("Failed"));
   };
-
-  const verifyOtp = (e) => {
+  const verifyOtp = (e)=>{
     e.preventDefault();
-    setProgressMsg("Verifying…");
-    verifyLeadOtp(phone, code)
-      .then(() => {
-        setIsVerified(true);
-        closeModal();
-      })
-      .catch(() => setProgressMsg("Invalid or expired OTP."));
+    setProgress("Verifying…");
+    verifyLeadOtp(phone,code)
+      .then(()=>{setIsVerified(true); setShowOtp(false);})
+      .catch(()=>setProgress("Invalid / expired OTP"));
   };
 
-  const handleEnquire = () => (isVerified ? navigate(-1) : setShowModal(true));
-
+  /* ---------- early UI states ---------------------------------- */
   if (loading)
-    return (
-      <div className="pt-28 text-center text-sky-600">
-        Loading property details…
-      </div>
-    );
-
+    return <p className="pt-28 text-center text-sky-600">Loading details…</p>;
   if (error)
     return (
       <div className="pt-28 text-center text-red-600">
         {error}
-        <button className="ml-2 underline" onClick={() => navigate(-1)}>
-          Go back
-        </button>
+        <button className="underline ml-2" onClick={()=>navigate(-1)}>go back</button>
       </div>
     );
+  if (!property) return <p className="pt-28 text-center">Not found</p>;
 
-  if (!property)
-    return (
-      <div className="pt-28 text-center text-gray-500">Property not found.</div>
-    );
-
+  /* ======================  JSX  ================================= */
   return (
     <>
-      {/* ---------- modal ---------- */}
-      {showModal && (
+      {/* ---------- FULL‑SCREEN LIGHTBOX ---------- */}
+      {lightboxIdx!==null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-          onClick={(e) => e.target === e.currentTarget && closeModal()}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 "
+          onClick={closeLightbox}
         >
-          <div
-            ref={modalRef}
-            className="bg-white w-[90%] max-w-xs sm:max-w-sm p-6 rounded-2xl shadow-xl relative"
-          >
-            {stage === "phone" && (
-              <form onSubmit={sendOtp} className="space-y-4">
-                <h3 className="text-lg font-semibold text-center">
-                  Enter Phone
-                </h3>
+          <button
+            onClick={(e)=>{e.stopPropagation();setLightboxIdx((lightboxIdx-1+property.images.length)%property.images.length);}}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl font-light select-none"
+          >‹</button>
+
+          <img
+            src={property.images[lightboxIdx]}
+            alt=""
+            className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
+          />
+
+          <button
+            onClick={(e)=>{e.stopPropagation();setLightboxIdx((lightboxIdx+1)%property.images.length);}}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl font-light select-none"
+          >›</button>
+          <button className="absolute top-6 right-6 text-white text-3xl" onClick={closeLightbox}>×</button>
+        </div>
+      )}
+
+      {/* ---------- OTP MODAL ---------- */}
+      {showOtp && (
+        <div
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          onClick={(e)=>e.currentTarget===e.target && setShowOtp(false)}
+        >
+          <div className="bg-white w-[90%] max-w-sm p-6 rounded-2xl shadow-xl space-y-4 relative">
+            <button className="absolute top-3 right-4 text-gray-400 text-xl" onClick={()=>setShowOtp(false)}>×</button>
+
+            {stage==="phone" && (
+              <form className="space-y-4" onSubmit={sendOtp}>
+                <h3 className="text-center text-lg font-semibold">Verify your phone</h3>
                 <input
-                  type="tel"
-                  required
-                  placeholder="+91XXXXXXXXXX"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  type="tel" required placeholder="+91XXXXXXXXXX"
+                  value={phone} onChange={(e)=>setPhone(e.target.value)}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none"
                 />
+                <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded">Send OTP</button>
+              </form>
+            )}
+
+            {stage==="otp" && (
+              <form className="space-y-4" onSubmit={verifyOtp}>
+                <h3 className="text-center text-lg font-semibold">Enter OTP</h3>
+                <input
+                  type="text" maxLength={6} required placeholder="6‑digit code"
+                  value={code} onChange={(e)=>setCode(e.target.value)}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none"
+                />
+                <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded">Verify</button>
                 <button
-                  type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded"
+                  type="button" onClick={resendOtp} disabled={wait}
+                  className={`w-full border py-2 rounded ${wait? "text-gray-400 border-gray-300" : "text-indigo-600 border-indigo-600 hover:bg-indigo-50"}`}
                 >
-                  Send OTP
+                  {wait? `Resend in ${wait}s` : "Resend OTP"}
                 </button>
               </form>
             )}
 
-            {stage === "otp" && (
-              <form onSubmit={verifyOtp} className="space-y-4">
-                <h3 className="text-lg font-semibold text-center">
-                  Enter OTP
-                </h3>
-                <input
-                  type="text"
-                  required
-                  maxLength={6}
-                  placeholder="6-digit code"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                />
-                <button
-                  type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded"
-                >
-                  Verify
-                </button>
-                <button
-                  type="button"
-                  disabled={counter !== 0}
-                  onClick={resendOtp}
-                  className={`w-full border mt-2 py-2 rounded ${
-                    counter === 0
-                      ? "text-indigo-600 border-indigo-600 hover:bg-indigo-50"
-                      : "text-gray-400 border-gray-300 cursor-not-allowed"
-                  }`}
-                >
-                  {counter === 0 ? "Resend OTP" : `Resend in ${counter}s`}
-                </button>
-              </form>
-            )}
-
-            {progressMsg && (
-              <p className="mt-4 text-center text-sm text-gray-600">
-                {progressMsg}
-              </p>
-            )}
-            <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-              onClick={closeModal}
-            >
-              ×
-            </button>
+            {progress && <p className="text-center text-sm text-gray-500">{progress}</p>}
           </div>
         </div>
       )}
 
-      {/* ---------- page ---------- */}
-      <div className="pt-20 pb-16 px-4 md:px-8 max-w-6xl mx-auto">
-        <div className="relative h-64 sm:h-80 lg:h-[420px] w-full overflow-hidden rounded-3xl shadow-lg">
-          {property.image ? (
-            <img
-              src={property.image}
-              alt={property.title}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="h-full w-full flex items-center justify-center bg-gray-200 text-gray-400 italic">
-              No Image
-            </div>
-          )}
-          <div
-            className={`absolute bottom-4 right-4 bg-white/70 backdrop-blur-md rounded-xl px-6 py-4 shadow-lg space-y-1 ${
-              !isVerified ? "filter blur-sm select-none" : ""
-            }`}
-          >
+      {/* ---------- PAGE ---------- */}
+      <div className=" pb-16 px-4 md:px-8 max-w-6xl mx-auto">
+
+        {/* === hero + thumbs === */}
+        <div className="relative">
+          {/* hero */}
+          <img
+            src={property.cover || property.images[0] || ""}
+            alt={property.title}
+            className="w-full h-72 sm:h-96 lg:h-[460px] object-cover rounded-3xl shadow-lg"
+            onClick={()=>openLightbox(property.images.findIndex(i=>i===property.cover))}
+          />
+
+          {/* glass price badge */}
+          <div className="absolute bottom-4 right-4 bg-white/70 backdrop-blur px-6 py-4 rounded-xl shadow space-y-1">
             <p className="text-xl sm:text-2xl font-bold text-indigo-800">
-              ₹ {property.price?.toLocaleString()}
+              ₹ {property.price?.toLocaleString()}
             </p>
-            {statusBadge(property.flat_status)}
+            {badge(property.flat_status)}
           </div>
         </div>
 
+        {/* thumbs (desktop) */}
+        {property.images.length>1 && (
+          <div className="hidden sm:flex mt-4 gap-3 overflow-x-auto pb-2">
+            {property.images.map((img,i)=>(
+              <img
+                key={i}
+                src={img}
+                alt=""
+                onClick={()=>openLightbox(i)}
+                className="h-20 w-32 object-cover rounded-lg cursor-pointer hover:brightness-110 transition"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* thumbs (mobile carousel) */}
+        {property.images.length>1 && (
+          <div className="sm:hidden mt-4 flex gap-2 overflow-x-auto pb-2">
+            {property.images.map((img,i)=>(
+              <img
+                key={i}
+                src={img}
+                alt=""
+                onClick={()=>openLightbox(i)}
+                className="h-16 w-24 flex-none object-cover rounded-lg"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* === main grid === */}
         <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {/* left */}
-          <div className="md:col-span-2 space-y-4">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-indigo-900">
-              {property.title}
-            </h1>
-            <p className="text-base sm:text-lg text-gray-600">
-              {property.location}
-            </p>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-gray-700">
-              <div>
-                <p className="font-medium">Property ID</p>
-                <p>{property.id}</p>
-              </div>
+          {/* ---------- text block ---------- */}
+          <section className="md:col-span-2 space-y-6">
+            <header className="space-y-2">
+              <h1 className="text-3xl lg:text-4xl font-extrabold text-indigo-900">
+                {property.title}
+              </h1>
+              <p className="text-gray-600 text-lg">{property.location}</p>
+            </header>
+
+            {/* quick facts grid */}
+            <div className="bg-white rounded-2xl shadow grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-6 px-6 py-8">
+              <Info label="Property ID" value={property.id} />
               {property.built_up_area && (
-                <div>
-                  <p className="font-medium">Built‑up Area</p>
-                  <p>{property.built_up_area} sq ft</p>
-                </div>
+                <Info label="Built‑up" value={`${property.built_up_area} sq ft`} />
               )}
-              {property.rooms && (
-                <div>
-                  <p className="font-medium">Rooms</p>
-                  <p>{property.rooms}</p>
-                </div>
-              )}
+              {property.rooms && <Info label="Rooms" value={property.rooms} />}
               {property.available_from && (
-                <div>
-                  <p className="font-medium">Available From</p>
-                  <p>
-                    {new Date(
-                      property.available_from
-                    ).toLocaleDateString("en-IN")}
-                  </p>
-                </div>
+                <Info
+                  label="Available From"
+                  value={new Date(property.available_from).toLocaleDateString("en-IN")}
+                />
+              )}
+              {property.bhk && <Info label="Configuration" value={property.bhk} />}
+              {property.furnishing && <Info label="Furnishing" value={property.furnishing} />}
+              {property.attachedBath && <Info label="Bath" value={property.attachedBath} />}
+              {property.deposit && <Info label="Deposit" value={`₹ ${property.deposit.toLocaleString()}`} />}
+            </div>
+
+            {/* description */}
+            <div>
+              <h2 className="text-2xl font-semibold text-indigo-800 mb-2">Description</h2>
+              <p className={`whitespace-pre-line leading-relaxed text-gray-700 ${!isVerified && "filter blur-[2px] select-none"}`}>
+                {property.description || "No description provided."}
+              </p>
+              {!isVerified && (
+                <p className="mt-4 italic text-sm text-gray-500">Verify your phone to view full details.</p>
               )}
             </div>
-          </div>
+          </section>
 
-          {/* right */}
-          <div className="md:col-span-1">
-            <div className="sticky top-28 bg-white rounded-2xl shadow p-6 space-y-4">
-              <p
-                className={`text-lg sm:text-xl font-semibold text-indigo-800 ${
-                  !isVerified ? "filter blur-sm select-none" : ""
-                }`}
-              >
-                ₹ {property.price?.toLocaleString()}
+          {/* ---------- sticky action card ---------- */}
+          <aside className="md:col-span-1">
+            <div className="sticky top-24 bg-white rounded-2xl shadow-xl p-6 space-y-4">
+              <p className="text-2xl font-bold text-indigo-800">
+                ₹ {property.price?.toLocaleString()}
               </p>
-              {statusBadge(property.flat_status)}
-              <button
-                type="button"
-                className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition"
-                onClick={handleEnquire}
-              >
-                {isVerified ? "Go Back" : "Show Details"}
-              </button>
-            </div>
-          </div>
-        </div>
+              {badge(property.flat_status)}
+              {property.deposit && (
+                <p className="text-sm text-gray-600">
+                  Deposit: <span className="font-medium">₹ {property.deposit.toLocaleString()}</span>
+                </p>
+              )}
 
-        <div className="mt-14">
-          <h2 className="text-xl sm:text-2xl font-bold text-indigo-800 mb-4">
-            Description
-          </h2>
-          <p
-            className={`leading-relaxed text-gray-700 whitespace-pre-line ${
-              !isVerified ? "filter blur-sm select-none" : ""
-            }`}
-          >
-            {property.description || "No description provided."}
-          </p>
+              <button
+                onClick={()=> isVerified ? alert("Integrate payment here!") : setShowOtp(true)}
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:to-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg transition"
+              >
+                {isVerified ? "Book / Pay Deposit" : "Show Owner Details"}
+              </button>
+
+              {!isVerified && (
+                <p className="text-xs text-gray-500 text-center">
+                  Secure your visit by verifying your phone
+                </p>
+              )}
+            </div>
+          </aside>
         </div>
       </div>
     </>
   );
 }
 
-export default PropertyDetail;
+/* ---------- small presentational bits ---------- */
+const Info = ({ label, value }) => (
+  <div className="space-y-1">
+    <p className="text-xs uppercase tracking-wide text-gray-500">{label}</p>
+    <p className="font-medium text-gray-800">{value}</p>
+  </div>
+);

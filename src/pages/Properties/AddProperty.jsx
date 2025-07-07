@@ -1,57 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   FaHome,
   FaInfoCircle,
   FaCheckCircle,
+  FaUpload,
 } from "react-icons/fa";
-import { addProperty } from "../../API/propertiesApi"; // Your API function
-import { loginUser } from "../../API/authAPI"; // Your auth API
+import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { Listbox, Transition } from "@headlessui/react";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+
+import { addProperty } from "../../API/propertiesApi";
+import { loginUser } from "../../API/authAPI";
 
 const AddProperty = () => {
   const [formData, setFormData] = useState({
-    title: "", // will hold logged-in user's name
+    title: "",
     price: "",
     location: "",
     flat_status: "",
-    image_base64: [],
-    video_base64: [],
+    gender: "",
     looking_for: "",
     bhk: "",
     occupancy: "",
     distance_from_station: "",
+    image_base64: [],
+    video_base64: [],
   });
 
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // Convert file to base64 helper
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
+      reader.onerror = () => reject();
     });
 
-  // Load logged-in user info on mount
   useEffect(() => {
-    const fetchUser = async () => {
+    (async () => {
       try {
-        const user = await loginUser(); 
-        setFormData((prev) => ({ ...prev, title: user.firstName + " " + user.lastName }));
-      } catch (err) {
-        console.error("Failed to load user info", err);
+        const user = await loginUser();
+        setFormData((p) => ({
+          ...p,
+          title: `${user.firstName} ${user.lastName}`,
+        }));
+      } catch {
         setError("Failed to load user info");
       } finally {
         setLoadingUser(false);
       }
-    };
-    fetchUser();
+    })();
   }, []);
 
-  const handleInputChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleFileChange = async (e, type) => {
     const files = Array.from(e.target.files);
@@ -59,259 +65,297 @@ const AddProperty = () => {
       const base64s = await Promise.all(
         files.map(async (file) => {
           const result = await toBase64(file);
-          const [, , base64] = result.match(/^data:(.+);base64,(.*)$/);
-          return base64;
+          const [, , data] = result.match(/^data:(.+);base64,(.*)$/);
+          return data;
         })
       );
-
-      setFormData((prev) => ({
-        ...prev,
-        [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
+      setFormData((p) => ({
+        ...p,
+        [`${type}_base64`]: [...p[`${type}_base64`], ...base64s],
       }));
     } catch {
-      setError(`Failed to read ${type} files.`);
+      toast.error(`Failed to read ${type} files`);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (
       !formData.title ||
       !formData.price ||
       !formData.location ||
       !formData.flat_status ||
+      !formData.gender ||
       formData.image_base64.length === 0
     ) {
-      setError("Please fill all required fields and upload at least one image.");
+      toast.error("Fill all required fields & upload at least one image");
       return;
     }
 
-    setError("");
     setUploading(true);
-
     try {
       await addProperty(formData);
-      alert("Property submitted successfully!");
-      setFormData({
-        title: formData.title, // keep the user name after submit
+      toast.success("Property submitted!");
+      setFormData((p) => ({
+        ...p,
         price: "",
         location: "",
         flat_status: "",
-        image_base64: [],
-        video_base64: [],
+        gender: "",
         looking_for: "",
         bhk: "",
         occupancy: "",
         distance_from_station: "",
-      });
-    } catch (err) {
-      console.error(err);
-      setError("Upload failed. Please try again.");
+        image_base64: [],
+        video_base64: [],
+      }));
+    } catch {
+      toast.error("Upload failed – please try again");
     } finally {
       setUploading(false);
     }
   };
 
-  if (loadingUser) {
+  if (loadingUser)
     return (
       <div className="pt-20 flex justify-center items-center min-h-screen">
-        <p>Loading user info...</p>
+        Loading user…
       </div>
     );
-  }
 
   return (
-    <div className="pt-20 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center items-start px-4">
-      <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-10 bg-white rounded-3xl shadow-2xl p-10">
+    <div className="pt-4 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="max-w-6xl w-full flex flex-col lg:flex-row gap-10 bg-white rounded-3xl shadow-2xl p-10"
+      >
         <form onSubmit={handleSubmit} className="flex-1">
           <h2 className="flex items-center text-3xl font-extrabold mb-8 text-indigo-700">
             <FaHome className="mr-3 text-indigo-500" /> Add New Property
           </h2>
 
-          {error && (
-            <p className="mb-6 text-center text-red-600 font-semibold bg-red-100 p-3 rounded">
-              {error}
+          <Label>Title (User) *</Label>
+          <Input readOnly value={formData.title} name="title" disabled />
+
+          <Label>Rent (₹/month) *</Label>
+          <Input type="number" name="price" placeholder="12000" value={formData.price} onChange={handleChange} />
+
+          <Label>Location *</Label>
+          <Input name="location" placeholder="Andheri West, Mumbai" value={formData.location} onChange={handleChange} />
+
+          <Label>Flat Status *</Label>
+          <Input name="flat_status" placeholder="Available / Booked" value={formData.flat_status} onChange={handleChange} />
+
+          <Label>Gender *</Label>
+          <div className="flex gap-6 mb-6">
+            {["male", "female", "unisex"].map((g) => (
+              <label key={g} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={g}
+                  checked={formData.gender === g}
+                  onChange={handleChange}
+                  className="accent-indigo-600"
+                />
+                <span className="capitalize">{g}</span>
+              </label>
+            ))}
+          </div>
+
+          <FancySelect
+            label="Looking For"
+            name="looking_for"
+            value={formData.looking_for}
+            onChange={handleChange}
+            options={[
+              { value: "", label: "Select" },
+              { value: "flatmate", label: "Flat-mate" },
+              { value: "vacant", label: "Vacant Flat" },
+            ]}
+          />
+
+          <FancySelect
+            label="BHK"
+            name="bhk"
+            value={formData.bhk}
+            onChange={handleChange}
+            options={[
+              { value: "", label: "Select" },
+              { value: "1", label: "1 BHK" },
+              { value: "1.5", label: "1.5 BHK" },
+              { value: "2", label: "2 BHK" },
+              { value: "2.5", label: "2.5 BHK" },
+              { value: "3", label: "3 BHK" },
+              { value: "4", label: "4 BHK" },
+            ]}
+          />
+
+          <FancySelect
+            label="Occupancy"
+            name="occupancy"
+            value={formData.occupancy}
+            onChange={handleChange}
+            options={[
+              { value: "", label: "Select" },
+              { value: "single", label: "Single (1 person)" },
+              { value: "double", label: "Double (2 people)" },
+              { value: "triple", label: "Triple (3 people)" },
+            ]}
+          />
+
+          <Label>Distance from Station</Label>
+          <Input
+            name="distance_from_station"
+            placeholder="e.g. 500 meters"
+            value={formData.distance_from_station}
+            onChange={handleChange}
+          />
+
+          <Label>Upload Images *</Label>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => handleFileChange(e, "image")}
+            className="block mb-2 mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
+            required
+          />
+          {formData.image_base64.length > 0 && (
+            <p className="mb-6 text-green-600 flex items-center gap-2">
+              <FaCheckCircle /> {formData.image_base64.length} image(s) selected
             </p>
           )}
 
-          {/* Title (User Name, uneditable) */}
-          <div className="mb-6">
-            <label className="font-semibold">Title (User Name) *</label>
-            <input
-              name="title"
-              value={formData.title}
-              readOnly
-              className="w-full px-4 py-3 border rounded-lg bg-gray-100 cursor-not-allowed"
-            />
-          </div>
+          <Label>Upload Videos</Label>
+          <input
+            type="file"
+            accept="video/*"
+            multiple
+            onChange={(e) => handleFileChange(e, "video")}
+            className="block mb-8 mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
+          />
+          {formData.video_base64.length > 0 && (
+            <p className="mb-8 -mt-6 text-green-600 flex items-center gap-2">
+              <FaCheckCircle /> {formData.video_base64.length} video(s) selected
+            </p>
+          )}
 
-          {/* Price */}
-          <div className="mb-6">
-            <label className="font-semibold">Price (₹/month) *</label>
-            <input
-              name="price"
-              type="number"
-              min="0"
-              value={formData.price}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-              placeholder="12000"
-              required
-            />
-          </div>
-
-          {/* Location */}
-          <div className="mb-6">
-            <label className="font-semibold">Location *</label>
-            <input
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-              placeholder="Andheri West, Mumbai"
-              required
-            />
-          </div>
-
-          {/* Flat Status */}
-          <div className="mb-6">
-            <label className="font-semibold">Flat Status *</label>
-            <input
-              name="flat_status"
-              value={formData.flat_status}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-              placeholder="Available / Booked"
-              required
-            />
-          </div>
-
-          {/* Looking For (Dropdown) */}
-          <div className="mb-6">
-            <label className="font-semibold">Looking For</label>
-            <select
-              name="looking_for"
-              value={formData.looking_for}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-            >
-              <option value="">Select</option>
-              <option value="flatmate">Flatmate</option>
-              <option value="vacant">Vacant Flat</option>
-            </select>
-          </div>
-
-          {/* BHK (Dropdown) */}
-          <div className="mb-6">
-            <label className="font-semibold">BHK</label>
-            <select
-              name="bhk"
-              value={formData.bhk}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-            >
-              <option value="">Select</option>
-              <option value="1">1</option>
-              <option value="1.5">1.5</option>
-              <option value="2">2</option>
-              <option value="2.5">2.5</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-
-          {/* Occupancy (Dropdown) */}
-          <div className="mb-6">
-            <label className="font-semibold">Occupancy</label>
-            <select
-              name="occupancy"
-              value={formData.occupancy}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-            >
-              <option value="">Select</option>
-              <option value="single">Single</option>
-              <option value="double">Double</option>
-              <option value="triple">Triple</option>
-            </select>
-          </div>
-
-          {/* Distance from Station */}
-          <div className="mb-6">
-            <label className="font-semibold">Distance from Station</label>
-            <input
-              name="distance_from_station"
-              value={formData.distance_from_station}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-              placeholder="e.g. 500 meters"
-            />
-          </div>
-
-          {/* Image Upload */}
-          <div className="mb-6">
-            <label className="font-semibold">Upload Images *</label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => handleFileChange(e, "image")}
-              className="block w-full mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
-              required
-            />
-            {formData.image_base64.length > 0 && (
-              <p className="mt-2 text-green-600 flex items-center gap-2">
-                <FaCheckCircle /> {formData.image_base64.length} image(s) selected
-              </p>
-            )}
-          </div>
-
-          {/* Video Upload */}
-          <div className="mb-8">
-            <label className="font-semibold">Upload Videos</label>
-            <input
-              type="file"
-              accept="video/*"
-              multiple
-              onChange={(e) => handleFileChange(e, "video")}
-              className="block w-full mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
-            />
-            {formData.video_base64.length > 0 && (
-              <p className="mt-2 text-green-600 flex items-center gap-2">
-                <FaCheckCircle /> {formData.video_base64.length} video(s) selected
-              </p>
-            )}
-          </div>
-
-          {/* Submit Button */}
-          <button
+          <motion.button
+            whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={uploading}
-            className={`w-full bg-indigo-600 text-white font-bold py-4 rounded-lg transition duration-300 ${
+            className={`w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-4 rounded-lg transition ${
               uploading ? "opacity-60 cursor-not-allowed" : "hover:bg-indigo-700"
             }`}
           >
-            {uploading ? "Uploading..." : "Submit Property"}
-          </button>
+            {uploading && (
+              <motion.span
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ ease: "linear", duration: 1, repeat: Infinity }}
+              >
+                <FaUpload />
+              </motion.span>
+            )}
+            {uploading ? "Uploading…" : "Submit Property"}
+          </motion.button>
         </form>
 
-        {/* Info Sidebar */}
-        <aside className="hidden lg:flex flex-col bg-indigo-50 rounded-3xl p-8 max-w-md text-indigo-900 shadow-lg">
+        <aside className="hidden lg:flex flex-col bg-indigo-50 rounded-3xl p-8 max-w-xs text-indigo-900 shadow-lg">
           <div className="flex items-center mb-6">
             <FaInfoCircle className="text-indigo-600 mr-3 text-3xl" />
-            <h3 className="text-xl font-bold">Need help filling the form?</h3>
+            <h3 className="text-xl font-bold">Need tips?</h3>
           </div>
-          <p className="mb-4">- Make sure your title is catchy and descriptive.</p>
-          <p className="mb-4">- Set a competitive price based on the market rates.</p>
-          <p className="mb-4">- Include an accurate location to attract the right tenants.</p>
-          <p className="mb-4">- Specify the current status of the flat (e.g., Available, Booked).</p>
-          <p className="mb-4">- Upload a clear image for the best first impression.</p>
-          <p>- Adding a video is optional but can help show the property better.</p>
+          {[
+            "Use a catchy, descriptive title",
+            "Set a competitive rent",
+            "Pin‑point the exact location",
+            "Clarify current flat status",
+            "Upload bright, well‑lit photos",
+            "A short video tour really helps!",
+          ].map((tip) => (
+            <p key={tip} className="mb-3 leading-relaxed before:content-['•'] before:mr-2">
+              {tip}
+            </p>
+          ))}
         </aside>
-      </div>
+      </motion.div>
     </div>
   );
 };
+
+/* ────── Reusable UI ────── */
+const Label = ({ children }) => (
+  <label className="font-semibold block mb-2">{children}</label>
+);
+
+const Input = (props) => (
+  <input
+    {...props}
+    className={`w-full px-4 py-3 border rounded-lg mb-6 ${props.className || ""}`}
+  />
+);
+
+const FancySelect = ({ label, name, value, onChange, options }) => (
+  <div className="mb-6">
+    {label && <Label>{label}</Label>}
+    <Listbox value={value} onChange={(val) => onChange({ target: { name, value: val } })}>
+      {({ open }) => (
+        <>
+          <div className="relative">
+            <Listbox.Button className="w-full cursor-pointer rounded-lg bg-white py-3 pl-4 pr-10 text-left border shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <span className="block truncate">
+                {options.find((o) => o.value === value)?.label || "Select"}
+              </span>
+              <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
+              </span>
+            </Listbox.Button>
+            <Transition
+              as={Fragment}
+              show={open}
+              enter="transition ease-out duration-100"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                {options.map((opt) => (
+                  <Listbox.Option
+                    key={opt.value}
+                    value={opt.value}
+                    className={({ active }) =>
+                      `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
+                        active ? "bg-indigo-100 text-indigo-900" : "text-gray-900"
+                      }`
+                    }
+                  >
+                    {({ selected }) => (
+                      <>
+                        <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
+                          {opt.label}
+                        </span>
+                        {selected && (
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
+                            <CheckIcon className="h-5 w-5" />
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </Transition>
+          </div>
+        </>
+      )}
+    </Listbox>
+  </div>
+);
 
 export default AddProperty;

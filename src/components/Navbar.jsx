@@ -1,147 +1,174 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FiMenu, FiX } from "react-icons/fi";
+//------------------------------------------------------------
+// Navbar.jsx – right‑drawer + animated hamburger ↔ X icon
+//------------------------------------------------------------
+import React, { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import brandLogo from "/navbar-assets/brand-logo.png";
 
-function Navbar() {
-  const navigate = useNavigate();
+export default function Navbar() {
+  /* ───────── auth sync ───────── */
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem("user");
-    return saved ? JSON.parse(saved) : null;
+    const cache = localStorage.getItem("user");
+    return cache ? JSON.parse(cache) : null;
   });
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [shouldRenderDropdown, setShouldRenderDropdown] = useState(false);
-  const [dropdownAnimation, setDropdownAnimation] = useState("animate-fade-in-down");
-  const menuRef = useRef();
-
   const syncUser = useCallback(() => {
-    const saved = localStorage.getItem("user");
-    setUser(saved ? JSON.parse(saved) : null);
+    const cache = localStorage.getItem("user");
+    setUser(cache ? JSON.parse(cache) : null);
   }, []);
-
   useEffect(() => {
     window.addEventListener("storage", syncUser);
     return () => window.removeEventListener("storage", syncUser);
   }, [syncUser]);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    if (shouldRenderDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [shouldRenderDropdown]);
+  /* ───────── state ───────── */
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      setDropdownAnimation("animate-fade-in-down");
-      setShouldRenderDropdown(true);
-    } else {
-      setDropdownAnimation("animate-fade-out-up");
-      const timeout = setTimeout(() => setShouldRenderDropdown(false), 300);
-      return () => clearTimeout(timeout);
-    }
-  }, [isMobileMenuOpen]);
-
-  const getDashboardRoute = () => {
+  const dashRoute = () => {
     if (!user) return "/login";
     switch (user.role) {
-      case "admin":
-        return "/admin-dashboard";
-      case "owner":
-        return "/owner-dashboard";
-      default:
-        return "/dashboard";
+      case "admin":  return "/admin-dashboard";
+      case "owner":  return "/owner-dashboard";
+      default:       return "/dashboard";
     }
   };
 
+  /* ───────── motion variants ───────── */
+  const drawerV = {
+    hidden:  { x: "100%" },
+    visible: { x: 0, transition: { type: "spring", stiffness: 230, damping: 26 } },
+    exit:    { x: "100%", transition: { duration: 0.28 } }
+  };
+
+  /* ───────── JSX ───────── */
   return (
     <header>
-      <nav className="lg:pl-20 lg:pr-10 px-4 fixed top-0 w-full h-[5rem] flex items-center justify-between bg-white/40 backdrop-blur-md z-50 shadow-sm">
-        <Link to="/" className="lg:text-3xl mt-4 text-xl font-bold text-shadow-lg" aria-label="Homepage">
-          <img src={brandLogo} alt="Brand Logo" className="md:w-48 lg:h-24 w-32" />
+      {/* Top bar */}
+      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 lg:pl-16 lg:pr-8 bg-white/40 backdrop-blur-md shadow-sm z-50">
+        <Link to="/" aria-label="Homepage" className="flex items-center">
+          <img src={brandLogo} alt="brand logo" className="w-32 md:w-48 lg:h-24 mt-4" />
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden lg:flex items-center gap-7 text-zinc-700 font-semibold" role="navigation" aria-label="Main Navigation">
-          <li><Link className="hover:text-zinc-900" to="/">Home</Link></li>
-          <li><Link className="hover:text-zinc-900" to="/about">About</Link></li>
-          <li><Link className="hover:text-zinc-900" to="/view-properties">Listing</Link></li>
-          <li><Link className="hover:text-zinc-900" to="/contact">Contact</Link></li>
-          {user && (
-            <li>
-              <Link className="hover:text-zinc-900" to={getDashboardRoute()}>
-                Dashboard
-              </Link>
-            </li>
-          )}
-          {!user && (
+        {/* CTAs */}
+        <div className="flex items-center gap-3">
+          <Link
+            to="/add-properties"
+            className="px-4 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg font-semibold shadow transition"
+          >
+            Add Property
+          </Link>
+
+          {user ? (
+            <Link
+              to={dashRoute()}
+              className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow transition"
+            >
+              Dashboard
+            </Link>
+          ) : (
             <Link
               to="/login"
-              className="px-6 py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold shadow-lg transition duration-200"
+              className="px-5 py-2 bg-blue-400 hover:bg-blue-600 text-white rounded-lg font-semibold shadow transition"
             >
               Login
             </Link>
           )}
-        </ul>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden text-3xl text-zinc-700 z-[999]"
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <FiX /> : <FiMenu />}
-        </button>
+          {/* Hamburger / X */}
+          <button
+            aria-label="Toggle menu"
+            className="w-10 h-10 relative text-zinc-700 "
+            onClick={() => setOpen((p) => !p)}
+          >
+            <Hamburger animatedOpen={open} />
+          </button>
+        </div>
       </nav>
 
-      {/* Mobile Dropdown Menu */}
-      {shouldRenderDropdown && (
-        <div
-          ref={menuRef}
-          className={`fixed top-[4rem] left-0 w-full bg-white/40 backdrop-blur-md z-50 shadow-sm px-6 py-4 flex flex-col items-center gap-4 lg:hidden rounded-b-2xl ${dropdownAnimation}`}
-        >
-          <ul className="flex flex-col gap-4 text-zinc-800 text-lg font-semibold text-center w-full">
-            <li><Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link></li>
-            <li><Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link></li>
-            <li><Link to="/view-properties" onClick={() => setIsMobileMenuOpen(false)}>Listing</Link></li>
-            <li><Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link></li>
-            {user && (
-              <li><Link to={getDashboardRoute()} onClick={() => setIsMobileMenuOpen(false)}>Dashboard</Link></li>
-            )}
-          </ul>
+      {/* Drawer + overlay */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* overlay */}
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.35 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setOpen(false)}
+            />
 
-          {!user && (
-            <Link
-              to="/login"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md transition"
+            {/* right drawer */}
+            <motion.aside
+              key="drawer"
+              variants={drawerV}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed top-[5rem] right-0 h-[calc(100vh-5rem)] w-[70vw] max-w-[18rem] bg-white/95 backdrop-blur-lg shadow-xl z-50 rounded-l-2xl px-6 py-8 flex flex-col"
             >
-              Login
-            </Link>
-          )}
-        </div>
-      )}
+              <ul className="flex flex-col gap-6 font-semibold text-zinc-800 text-lg">
+                {[
+                  ["Home", "/"],
+                  ["About", "/about"],
+                  ["Listing", "/view-properties"],
+                  ["Contact", "/contact"],
+                ].map(([label, href]) => (
+                  <li key={href}>
+                    <Link to={href} onClick={() => setOpen(false)}>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
-      {/* Greeting Badge */}
+      {/* Greeting badge */}
       {user && (
         <div
           className="fixed top-[5rem] right-5 mr-12 bg-indigo-900 text-white px-5 py-2 rounded-xl shadow-lg z-40 text-sm font-semibold flex items-center gap-2 select-none ring-2 ring-indigo-400 animate-pulse-slow"
           style={{ animationDuration: "3s" }}
         >
           <span className="text-2xl">👋</span>
-          Hello, <span className="font-bold">{user.firstName}</span>!
+          Hello,&nbsp;<span className="font-bold">{user.firstName}</span>!
         </div>
       )}
     </header>
   );
 }
 
-export default Navbar;
+/* ───────── animated hamburger ↔ X ───────── */
+function Hamburger({ animatedOpen }) {
+  const topV = {
+    closed: { rotate: 0, translateY: 0 },
+    open:   { rotate: 45, translateY: 8 }
+  };
+  const centerV = {
+    closed: { opacity: 1 },
+    open:   { opacity: 0 }
+  };
+  const bottomV = {
+    closed: { rotate: 0, translateY: 0 },
+    open:   { rotate: -45, translateY: -8 }
+  };
+
+  return (
+    <motion.svg
+      width="24" height="24" viewBox="0 0 24 24" strokeWidth="2"
+      stroke="currentColor" strokeLinecap="round"
+      className="absolute inset-0 m-auto"
+    >
+      <motion.line x1="3"  x2="21" y1="6"  y2="6"
+        variants={topV}    initial="closed" animate={animatedOpen ? "open" : "closed"} />
+      <motion.line x1="3"  x2="21" y1="12" y2="12"
+        variants={centerV} initial="closed" animate={animatedOpen ? "open" : "closed"} />
+      <motion.line x1="3"  x2="21" y1="18" y2="18"
+        variants={bottomV} initial="closed" animate={animatedOpen ? "open" : "closed"} />
+    </motion.svg>
+  );
+}
