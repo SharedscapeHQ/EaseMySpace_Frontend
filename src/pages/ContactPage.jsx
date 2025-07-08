@@ -10,10 +10,8 @@ export default function ContactPage() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleChange = (e) =>
+    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,109 +21,99 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-24 flex items-center justify-center p-4">
-      <div className="relative max-w-4xl w-full grid grid-cols-1 md:grid-cols-3 gap-8">
-
-        {/* Sidebar panel */}
-        <motion.div
+    <div className=" py-5  bg-indigo-50 flex items-center justify-center md:px-0  px-5">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-8">
+        {/* info panel */}
+        <motion.aside
           initial={{ opacity: 0, x: -60, rotate: -6 }}
           animate={{ opacity: 1, x: 0, rotate: 0 }}
           transition={{ duration: 0.6 }}
-          className="col-span-1 bg-blue-400 text-zinc-800 rounded-2xl p-6 flex flex-col justify-center relative overflow-hidden"
-          style={{ clipPath: "polygon(0 0, 100% 7%, 100% 93%, 0% 100%)" }}
+          className="lg:col-span-2 bg-gradient-to-br from-indigo-600 to-indigo-400 text-white rounded-3xl p-8 md:p-10 shadow-xl relative overflow-hidden"
         >
           <h1 className="text-4xl md:text-5xl font-extrabold leading-tight uppercase drop-shadow-lg">
             Contact<br />Us
           </h1>
-          <p className="mt-4 font-mono text-zinc-800 tracking-wide text-sm md:text-base">
-            Drop a line or just say hi. We’re here.
+          <p className="mt-4 font-light tracking-wide text-sm md:text-base max-w-xs">
+            Drop a line or just say hi. We’re here to help.
           </p>
 
-          <div
-            aria-hidden="true"
-            className="absolute top-0 left-0 w-full h-full pointer-events-none"
+          {/* subtle grid lines */}
+          <svg
+            aria-hidden
+            width="100%"
+            height="100%"
+            viewBox="0 0 200 200"
+            className="absolute inset-0 opacity-10"
           >
-            <svg
-              width="100%"
-              height="100%"
-              viewBox="0 0 200 200"
-              fill="none"
-              className="opacity-10"
-            >
-              <line x1="0" y1="50" x2="200" y2="50" stroke="blue" strokeWidth="1.5" />
-              <line x1="0" y1="150" x2="200" y2="150" stroke="blue" strokeWidth="1.5" />
-              <line x1="50" y1="0" x2="50" y2="200" stroke="blue" strokeWidth="1.5" />
-              <line x1="150" y1="0" x2="150" y2="200" stroke="blue" strokeWidth="1.5" />
-            </svg>
-          </div>
+            <line x1="0" y1="50" x2="200" y2="50" stroke="white" strokeWidth="1" />
+            <line x1="0" y1="150" x2="200" y2="150" stroke="white" strokeWidth="1" />
+            <line x1="50" y1="0" x2="50" y2="200" stroke="white" strokeWidth="1" />
+            <line x1="150" y1="0" x2="150" y2="200" stroke="white" strokeWidth="1" />
+          </svg>
 
-          <div className="mt-8 space-y-4 font-mono text-xs md:text-sm tracking-wide text-zinc-800">
+          <div className="mt-10 space-y-4 text-sm font-medium">
             <div>
-              <strong>Address:</strong> 123 Mumbai Street, India
+              <span className="font-semibold">Address:</span> WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400025
             </div>
             <div>
-              <strong>Phone:</strong> +91 98765 43210
+              <span className="font-semibold">Phone:</span> +91 9867637509, +91 9004463371
             </div>
             <div>
-              <strong>Email:</strong> contact@example.com
+              <span className="font-semibold">Email:</span> hello@easemyspace.in
             </div>
           </div>
-        </motion.div>
+        </motion.aside>
 
-        {/* Contact Form */}
-        <motion.div
+        {/* form */}
+        <motion.section
           initial={{ opacity: 0, x: 60, rotate: 6 }}
           animate={{ opacity: 1, x: 0, rotate: 0 }}
           transition={{ duration: 0.6 }}
-          className="col-span-2 bg-white border-2 border-black rounded-2xl p-8 shadow-lg"
+          className="lg:col-span-3 bg-white rounded-3xl p-6 md:p-10 shadow-xl border-2 border-indigo-600"
         >
           {submitted && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="bg-black text-white px-5 py-2 rounded mb-5 text-center font-semibold text-sm md:text-base"
-              role="alert"
+              initial={{ y: -16, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -16, opacity: 0 }}
+              className="mb-6 bg-indigo-600 text-white px-5 py-3 rounded-lg text-center font-semibold"
             >
               Thank you! Your message has been sent.
             </motion.div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-            {["name", "email", "subject"].map((field) => (
-              <motion.div key={field} whileFocusWithin={{ scale: 1.02 }} className="relative">
+          <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+            {["name", "email", "subject"].map((f) => (
+              <motion.div key={f} whileFocusWithin={{ scale: 1.02 }}>
                 <label
-                  htmlFor={field}
-                  className="block text-xs md:text-sm font-bold uppercase mb-1 tracking-wide text-black"
+                  htmlFor={f}
+                  className="block text-xs font-semibold uppercase mb-1 tracking-wider text-indigo-900"
                 >
-                  {field === "name"
-                    ? "Full Name"
-                    : field === "email"
-                    ? "Email Address"
-                    : "Subject"}
+                  {f === "name" ? "Full Name" : f === "email" ? "Email Address" : "Subject"}
                 </label>
                 <input
-                  type={field === "email" ? "email" : "text"}
-                  id={field}
-                  name={field}
-                  required={field !== "subject"}
-                  value={formData[field]}
+                  type={f === "email" ? "email" : "text"}
+                  id={f}
+                  name={f}
+                  required={f !== "subject"}
+                  value={formData[f]}
                   onChange={handleChange}
                   placeholder={
-                    field === "name"
+                    f === "name"
                       ? "Your full name"
-                      : field === "email"
+                      : f === "email"
                       ? "you@example.com"
                       : "Subject (optional)"
                   }
-                  className="w-full border-b-2 border-black bg-transparent px-2 py-1 text-base md:text-lg font-mono placeholder-black focus:outline-none focus:border-black focus:ring-0 transition"
+                  className="w-full border-b-2 border-indigo-600 bg-transparent px-2 py-1 text-base placeholder-indigo-400 focus:outline-none focus:border-indigo-800 transition"
                 />
               </motion.div>
             ))}
 
-            <motion.div whileFocusWithin={{ scale: 1.02 }} className="relative">
+            <motion.div whileFocusWithin={{ scale: 1.02 }}>
               <label
                 htmlFor="message"
-                className="block text-xs md:text-sm font-bold uppercase mb-1 tracking-wide text-black"
+                className="block text-xs font-semibold uppercase mb-1 tracking-wider text-indigo-900"
               >
                 Message
               </label>
@@ -136,8 +124,8 @@ export default function ContactPage() {
                 required
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Write your message here..."
-                className="w-full border-b-2 border-black bg-transparent px-2 py-1 text-base md:text-lg font-mono placeholder-black focus:outline-none focus:border-black focus:ring-0 resize-none transition"
+                placeholder="Write your message here…"
+                className="w-full border-b-2 border-indigo-600 bg-transparent px-2 py-1 text-base placeholder-indigo-400 focus:outline-none focus:border-indigo-800 resize-none transition"
               ></textarea>
             </motion.div>
 
@@ -145,12 +133,12 @@ export default function ContactPage() {
               type="submit"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-10 py-3 border-2 border-black rounded-full uppercase tracking-widest font-extrabold text-black hover:bg-black hover:text-white transition text-sm md:text-base"
+              className="inline-block px-10 py-3 rounded-full border-2 border-indigo-800 text-indigo-800 font-extrabold uppercase tracking-wider hover:bg-indigo-800 hover:text-white transition"
             >
               Send
             </motion.button>
           </form>
-        </motion.div>
+        </motion.section>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ function Landing() {
       <NewlyListedProperties/>
       <FeatureSection/>
       <HowItWorksPage/>
-      <TestimonialSection/>
+      {/* <TestimonialSection/> */}
       <CallToAction/>
       <FAQSection/>
       <Footer/>

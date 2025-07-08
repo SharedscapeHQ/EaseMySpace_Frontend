@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function AboutUsHero() {
   return (
-    <section className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-indigo-50 flex items-center justify-center px-6 md:px-16">
+    <section className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-indigo-50 flex items-center justify-center px-6 -mt-10 md:mt-0 md:px-16">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
