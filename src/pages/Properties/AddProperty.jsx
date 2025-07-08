@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaHome,
   FaInfoCircle,
@@ -8,7 +8,7 @@ import {
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/24/solid";
 import { Listbox, Transition } from "@headlessui/react";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 import { addProperty } from "../../API/propertiesApi";
 import { loginUser } from "../../API/authAPI";
@@ -28,7 +28,6 @@ const AddProperty = () => {
     video_base64: [],
   });
 
-  const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
 
@@ -40,6 +39,7 @@ const AddProperty = () => {
       reader.onerror = () => reject();
     });
 
+  /* fetch current user once */
   useEffect(() => {
     (async () => {
       try {
@@ -49,7 +49,7 @@ const AddProperty = () => {
           title: `${user.firstName} ${user.lastName}`,
         }));
       } catch {
-        setError("Failed to load user info");
+        toast.error("Failed to load user info");
       } finally {
         setLoadingUser(false);
       }
@@ -125,6 +125,7 @@ const AddProperty = () => {
 
   return (
     <div className="pt-4 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center px-4">
+      <Toaster position="top-right" />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -140,13 +141,29 @@ const AddProperty = () => {
           <Input readOnly value={formData.title} name="title" disabled />
 
           <Label>Rent (₹/month) *</Label>
-          <Input type="number" name="price" placeholder="12000" value={formData.price} onChange={handleChange} />
+          <Input
+            type="number"
+            name="price"
+            placeholder="12000"
+            value={formData.price}
+            onChange={handleChange}
+          />
 
           <Label>Location *</Label>
-          <Input name="location" placeholder="Andheri West, Mumbai" value={formData.location} onChange={handleChange} />
+          <Input
+            name="location"
+            placeholder="Andheri West, Mumbai"
+            value={formData.location}
+            onChange={handleChange}
+          />
 
           <Label>Flat Status *</Label>
-          <Input name="flat_status" placeholder="Available / Booked" value={formData.flat_status} onChange={handleChange} />
+          <Input
+            name="flat_status"
+            placeholder="Available / Booked"
+            value={formData.flat_status}
+            onChange={handleChange}
+          />
 
           <Label>Gender *</Label>
           <div className="flex gap-6 mb-6">
@@ -255,7 +272,11 @@ const AddProperty = () => {
               <motion.span
                 initial={{ rotate: 0 }}
                 animate={{ rotate: 360 }}
-                transition={{ ease: "linear", duration: 1, repeat: Infinity }}
+                transition={{
+                  ease: "linear",
+                  duration: 1,
+                  repeat: Infinity,
+                }}
               >
                 <FaUpload />
               </motion.span>
@@ -277,7 +298,10 @@ const AddProperty = () => {
             "Upload bright, well‑lit photos",
             "A short video tour really helps!",
           ].map((tip) => (
-            <p key={tip} className="mb-3 leading-relaxed before:content-['•'] before:mr-2">
+            <p
+              key={tip}
+              className="mb-3 leading-relaxed before:content-['•'] before:mr-2"
+            >
               {tip}
             </p>
           ))}
@@ -295,14 +319,19 @@ const Label = ({ children }) => (
 const Input = (props) => (
   <input
     {...props}
-    className={`w-full px-4 py-3 border rounded-lg mb-6 ${props.className || ""}`}
+    className={`w-full px-4 py-3 border rounded-lg mb-6 ${
+      props.className || ""
+    }`}
   />
 );
 
 const FancySelect = ({ label, name, value, onChange, options }) => (
   <div className="mb-6">
     {label && <Label>{label}</Label>}
-    <Listbox value={value} onChange={(val) => onChange({ target: { name, value: val } })}>
+    <Listbox
+      value={value}
+      onChange={(val) => onChange({ target: { name, value: val } })}
+    >
       {({ open }) => (
         <>
           <div className="relative">
@@ -331,13 +360,19 @@ const FancySelect = ({ label, name, value, onChange, options }) => (
                     value={opt.value}
                     className={({ active }) =>
                       `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
-                        active ? "bg-indigo-100 text-indigo-900" : "text-gray-900"
+                        active
+                          ? "bg-indigo-100 text-indigo-900"
+                          : "text-gray-900"
                       }`
                     }
                   >
                     {({ selected }) => (
                       <>
-                        <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
+                        <span
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
+                        >
                           {opt.label}
                         </span>
                         {selected && (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ProtectedRoute({ allowedRoles = [], children }) {
   const [isAuthorized, setIsAuthorized] = useState(null); // null = loading
@@ -16,13 +17,13 @@ export default function ProtectedRoute({ allowedRoles = [], children }) {
         });
 
         if (!allowedRoles.includes(data.role)) {
-          alert("Access denied: You are not authorized to view this page.");
+          toast.error("Access denied: You are not authorized to view this page.");
           navigate("/", { replace: true });
         } else if (isMounted) {
           setIsAuthorized(true);
         }
       } catch (err) {
-        alert("Please log in first.");
+        toast.error("Please log in first.");
         navigate("/login", { replace: true });
       }
     };
@@ -36,11 +37,19 @@ export default function ProtectedRoute({ allowedRoles = [], children }) {
 
   if (isAuthorized === null) {
     return (
-      <div className="pt-20 text-center text-indigo-600 font-semibold">
-        Verifying access...
-      </div>
+      <>
+        <Toaster position="top-right" />
+        <div className="pt-20 text-center text-indigo-600 font-semibold">
+          Verifying access...
+        </div>
+      </>
     );
   }
 
-  return children;
+  return (
+    <>
+      <Toaster position="top-right" />
+      {children}
+    </>
+  );
 }
