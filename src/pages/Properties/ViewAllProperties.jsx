@@ -208,7 +208,7 @@ export default function ViewAllProperties() {
   function SidebarContent() {
     return (
       <>
-        <Input label="Location" name="location" />
+        <Input label="Location" name="location" placeholder="e.g Andheri,Mumbai" />
         <Select
           label="Flat Status"
           name="flatStatus"
@@ -354,6 +354,7 @@ const PropertyCard = ({ p }) => {
         <img
           src={p.cover}
           alt={p.title}
+          loading="lazy"
           className="w-full h-48 sm:h-64 object-cover rounded-lg"
         />
       ) : (
@@ -369,6 +370,7 @@ const PropertyCard = ({ p }) => {
             <img
               src={t}
               alt=""
+              loading="lazy"
               className="h-full w-full object-cover rounded-lg"
             />
             {idx === thumbs.length - 1 && extra > 0 && (
