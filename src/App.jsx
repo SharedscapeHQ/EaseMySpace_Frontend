@@ -1,4 +1,12 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import React from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -17,106 +25,81 @@ import CancellationRefundPolicy from "./components/FooterSectionComp/Cancellatio
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import useLenis from "./hooks/useLenis";
-import { Toaster } from "react-hot-toast";
 
-
+/* ───────────────────────── Layout – shared UI & global effects ───────────── */
 function Layout({ children }) {
-  useLenis(); 
   const location = useLocation();
-  // Hide Navbar on login and register pages
   const hideNavbar = ["/login", "/register"].includes(location.pathname);
+
+  React.useEffect(() => {
+    const imgs = document.querySelectorAll("img:not([loading])");
+    imgs.forEach((img) => img.setAttribute("loading", "lazy"));
+  }, [location.pathname]);
 
   return (
     <>
       {!hideNavbar && <Navbar />}
-      <main className={!hideNavbar ? "pt-20" : ""}>{children}</main>
+      <main className={hideNavbar ? "" : "pt-20"}>{children}</main>
     </>
   );
 }
 
-function App() {
+/* ──────────────────────────────────────────────────────────────── */
+export default function App() {
   return (
     <BrowserRouter>
       <Layout>
-          <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+        <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+
         <Routes>
-          {/* Public Routes */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Landing />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cancellation-refund" element={<CancellationRefundPolicy />} />
           <Route path="/terms-conditions" element={<TermsAndConditions />} />
           <Route path="/privacy-policy" element={<PolicyPrivacy />} />
+          <Route path="/view-properties" element={<ViewAllProperties />} />
+          <Route path="/properties/:id" element={<PropertyDetail />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={"user"}>
-                <UserDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/view-properties"
-            element={<ViewAllProperties />}
-          />
-          <Route
-       path="/properties/:id"
-         element={<PropertyDetail />}
-          />
-          <Route
-            path="/add-properties"
-            element={
-              <ProtectedRoute allowedRoles={["user", "admin", "owner"]}>
-                <AddProperty />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/dashboard" element={
+            <ProtectedRoute allowedRoles={"user"}>
+              <UserDashboard />
+            </ProtectedRoute>
+          }/>
 
-          {/* Admin-only routes */}
-          <Route
-            path="/admin-dashboard"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/property/:id"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPropertyDetails />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/add-properties" element={
+            <ProtectedRoute allowedRoles={["user", "admin", "owner"]}>
+              <AddProperty />
+            </ProtectedRoute>
+          }/>
 
-          {/* Owner-only routes */}
-<Route
-  path="/owner-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["owner"]}>
-      <OwnerDashboard />
-    </ProtectedRoute>
-  }
-/>
+          <Route path="/admin-dashboard" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }/>
 
-          {/* Fallback for unknown routes */}
-          <Route
-            path="*"
-            element={
-              <div className="p-10 text-center text-red-600 font-bold">
-                404 - Page Not Found
-              </div>
-            }
-          />
+          <Route path="/admin/property/:id" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminPropertyDetails />
+            </ProtectedRoute>
+          }/>
+
+          <Route path="/owner-dashboard" element={
+            <ProtectedRoute allowedRoles={["owner"]}>
+              <OwnerDashboard />
+            </ProtectedRoute>
+          }/>
+
+          <Route path="*" element={
+            <div className="p-10 text-center text-red-600 font-bold">
+              404 – Page Not Found
+            </div>
+          }/>
         </Routes>
       </Layout>
     </BrowserRouter>
   );
 }
-
-export default App;
