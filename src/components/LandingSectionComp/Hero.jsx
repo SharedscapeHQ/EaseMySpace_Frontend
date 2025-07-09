@@ -61,11 +61,11 @@ export default function Hero() {
     const qs = new URLSearchParams();
     if (formData.search) qs.append("location", formData.search);
 
-    const gFinal = formData.gender        || g2;
-    const tFinal = formData.property_type || pType;
+    const gFinal = formData.gender || g2;
+const tFinal = formData.property_type || pType;
 
-    if (gFinal) qs.append("gender", gFinal);
-    if (tFinal) qs.append("type",   tFinal);
+if (gFinal) qs.append("gender", gFinal);
+if (tFinal) qs.append("looking_for", tFinal);
 
     navigate(`/view-properties?${qs.toString()}`);
   };

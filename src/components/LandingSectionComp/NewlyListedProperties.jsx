@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { newlyListedProperties } from "../../API/propertiesApi";
 
-/* ---------- helpers ---------- */
 const parseImages = (raw) => {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw;
@@ -72,6 +71,7 @@ export default function NewlyListedProperties() {
           >
             {p.cover ? (
               <img
+                loading="lazy"
                 src={p.cover}
                 alt={p.title}
                 className="h-48 w-full object-cover rounded-t-lg"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const faqs = [
   {
-    question: "Is listing a property on EaseMSpace free?",
+    question: "Is listing a property on EaseMySpace free?",
     answer: "Yes! Listing your property is completely free with no hidden charges.",
   },
   {
