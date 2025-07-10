@@ -14,14 +14,16 @@
     "@heroicons/react": "^2.2.0",
     "@studio-freight/lenis": "^1.0.42",
     "axios": "^1.10.0",
-    "framer-motion": "^12.23.0",
+    "framer-motion": "^12.23.1",
     "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.3",
-    "styled-components": "^6.1.19"
+    "recharts": "^3.1.0",
+    "styled-components": "^6.1.19",
+    "use-debounce": "^10.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

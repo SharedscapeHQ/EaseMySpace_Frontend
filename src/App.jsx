@@ -26,6 +26,17 @@ import TermsAndConditions from "./components/FooterSectionComp/TermsAndCondition
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import useLenis from "./hooks/useLenis";
 
+/* ───────────── ScrollToTop – jump instantly to top on route change ───────────── */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 /* ───────────────────────── Layout – shared UI & global effects ───────────── */
 function Layout({ children }) {
   const location = useLocation();
@@ -48,6 +59,7 @@ function Layout({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Layout>
         <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
 

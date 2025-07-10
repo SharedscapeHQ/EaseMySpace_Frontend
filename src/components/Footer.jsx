@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaFacebookF,
   FaYoutube,
@@ -25,58 +26,53 @@ export default function Footer() {
   return (
     <footer className="relative border-t text-zinc-800 pb-6 px-6 md:px-16 overflow-hidden">
       <div className="relative z-10 max-w-7xl py-10 mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-
-        {/* Brand */}
-        <div className="flex items-center justify-center">
-          <img src={brandImg} alt="EaseMySpace" className="bg-white rounded-xl" />
+        <div className="flex flex-col text-center items-center justify-center">
+          <img src={brandImg} alt="EaseMySpace" />
+          <p>EaseMySpace simplifies urban living by connecting people with flatmates and rental spaces in metro cities. Hassle-free & seamless.</p>
         </div>
 
-        {/* Quick Links: Center Heading + Two Columns */}
         <div className="col-span-2 flex flex-col items-center">
           <h2 className="text-lg font-semibold mb-4">Quick Links</h2>
-          <div className="grid grid-cols-2 gap-10">
-            {/* Left 4 links */}
+          <div className="grid grid-cols-2 gap-5">
             <ul className="space-y-3 text-sm font-medium">
               {[
-                { label: "Home", href: "/", icon: FaHome },
-                { label: "About Us", href: "/about", icon: FaInfoCircle },
-                { label: "Listings", href: "/view-properties", icon: FaThList },
-                { label: "Contact", href: "/contact", icon: FaPhone },
-              ].map(({ label, href, icon: Icon }) => (
-                <li key={href}>
-                  <a
-                    href={href}
+                { label: "Home", to: "/", icon: FaHome },
+                { label: "About Us", to: "/about", icon: FaInfoCircle },
+                { label: "Listings", to: "/view-properties", icon: FaThList },
+                { label: "Contact", to: "/contact", icon: FaPhone },
+              ].map(({ label, to, icon: Icon }) => (
+                <li key={to}>
+                  <Link
+                    to={to}
                     className="flex items-center gap-2 group hover:text-blue-500 transition transform hover:scale-105"
                   >
                     <Icon className="text-indigo-400 w-4 h-4" />
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
 
-            {/* Right 3 links */}
             <ul className="space-y-3 text-sm font-medium">
               {[
-                { label: "Cancellation & Refund", href: "/cancellation-refund", icon: FaUndoAlt },
-                { label: "Terms & Conditions", href: "/terms-conditions", icon: FaFileContract },
-                { label: "Privacy Policy", href: "/privacy-policy", icon: FaUserShield },
-              ].map(({ label, href, icon: Icon }) => (
-                <li key={href}>
-                  <a
-                    href={href}
+                { label: "Cancellation & Refund", to: "/cancellation-refund", icon: FaUndoAlt },
+                { label: "Terms & Conditions", to: "/terms-conditions", icon: FaFileContract },
+                { label: "Privacy Policy", to: "/privacy-policy", icon: FaUserShield },
+              ].map(({ label, to, icon: Icon }) => (
+                <li key={to}>
+                  <Link
+                    to={to}
                     className="flex items-center gap-2 group hover:text-blue-500 transition transform hover:scale-105"
                   >
                     <Icon className="text-indigo-400 w-4 h-4" />
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        {/* Socials + Contact */}
         <div className="flex flex-col items-center justify-center gap-6">
           <div className="flex items-center gap-4">
             {icons.map(({ Icon, color, url }, idx) => (
@@ -86,14 +82,13 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ clipPath: "url(#squircleClip)" }}
-                className={`w-14 h-14 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center shadow-lg cursor-pointer border transform transition duration-300 ease-out hover:scale-110 hover:-translate-y-2 hover:shadow-2xl`}
+                className={`w-10 h-10 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center shadow-lg cursor-pointer border transform transition duration-300 ease-out hover:scale-110 hover:-translate-y-2 hover:shadow-2xl`}
               >
-                <Icon className="text-white text-2xl" />
+                <Icon className="text-white text-xl" />
               </a>
             ))}
           </div>
 
-          {/* Contact Info */}
           <ul className="text-center text-zinc-800 text-sm space-y-3 mt-2">
             <li className="flex gap-2 justify-center items-center">
               <span className="inline-block w-2 h-2 mt-1 bg-green-400 rounded-full animate-pulse" />
@@ -111,7 +106,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Footer Bottom */}
       <div className="mt-12 border-t border-white/20 pt-4 text-center text-sm text-zinc-800">
         © {new Date().getFullYear()} EaseMySpace.in — All rights reserved.
       </div>

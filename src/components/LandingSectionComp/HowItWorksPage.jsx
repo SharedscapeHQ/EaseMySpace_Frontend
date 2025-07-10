@@ -24,7 +24,7 @@ const steps = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
+    <div className=" bg-blue-50 relative overflow-hidden">
       {/* Abstract Background Shapes */}
       <svg
         className="absolute top-0 left-0 w-96 h-96 -translate-x-1/2 -translate-y-1/2 opacity-20"

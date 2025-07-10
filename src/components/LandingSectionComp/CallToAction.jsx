@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function CallToAction() {
   return (
-    <section className="relative md:py-24 py-10 px-6 bg-gradient-to-br from-blue-500 to-indigo-600 text-white overflow-hidden rounded-3xl shadow-2xl mt-20 mx-4 md:mx-12 lg:mx-auto max-w-7xl">
+    <section className="relative md:py-24 py-10 px-6 bg-gradient-to-br from-blue-500 to-indigo-600 text-white overflow-hidden rounded-3xl shadow-2xl mt-4 mx-4 md:mx-12 lg:mx-auto max-w-7xl">
       {/* Decorative Background Shapes */}
       <div className="absolute -top-16 -left-16 w-72 h-72 bg-blue-400 rounded-full opacity-20 blur-2xl animate-pulse" />
       <div className="absolute -bottom-16 -right-16 w-72 h-72 bg-purple-500 rounded-full opacity-20 blur-2xl animate-pulse" />

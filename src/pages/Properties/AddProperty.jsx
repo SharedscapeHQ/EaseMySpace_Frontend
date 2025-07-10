@@ -1,63 +1,39 @@
-import React, { useState, useEffect } from "react";
-import {
-  FaHome,
-  FaInfoCircle,
-  FaCheckCircle,
-  FaUpload,
-} from "react-icons/fa";
-import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/24/solid";
-import { Listbox, Transition } from "@headlessui/react";
+import React, { useState } from "react";
+import { FaHome, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
-
 import { addProperty } from "../../API/propertiesApi";
-import { loginUser } from "../../API/authAPI";
 
 const AddProperty = () => {
   const [formData, setFormData] = useState({
     title: "",
     price: "",
+    deposit: "",
     location: "",
-    flat_status: "",
     gender: "",
     looking_for: "",
-    bhk: "",
+    bhk_type: "",
     occupancy: "",
     distance_from_station: "",
+    bathrooms: "", // ✅ updated
+    owner_phone: "",
+    description: "",
     image_base64: [],
     video_base64: [],
   });
 
   const [uploading, setUploading] = useState(false);
-  const [loadingUser, setLoadingUser] = useState(true);
+
+  const handleChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject();
+      reader.onerror = reject;
     });
-
-  /* fetch current user once */
-  useEffect(() => {
-    (async () => {
-      try {
-        const user = await loginUser();
-        setFormData((p) => ({
-          ...p,
-          title: `${user.firstName} ${user.lastName}`,
-        }));
-      } catch {
-        toast.error("Failed to load user info");
-      } finally {
-        setLoadingUser(false);
-      }
-    })();
-  }, []);
-
-  const handleChange = (e) =>
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleFileChange = async (e, type) => {
     const files = Array.from(e.target.files);
@@ -69,328 +45,202 @@ const AddProperty = () => {
           return data;
         })
       );
-      setFormData((p) => ({
-        ...p,
-        [`${type}_base64`]: [...p[`${type}_base64`], ...base64s],
+      setFormData((prev) => ({
+        ...prev,
+        [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
       }));
     } catch {
-      toast.error(`Failed to read ${type} files`);
+      toast.error(`Failed to process ${type} file(s)`);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !formData.title ||
-      !formData.price ||
-      !formData.location ||
-      !formData.flat_status ||
-      !formData.gender ||
-      formData.image_base64.length === 0
-    ) {
-      toast.error("Fill all required fields & upload at least one image");
+    const requiredFields = [
+      "title",
+      "price",
+      "deposit",
+      "location",
+      "gender",
+      "owner_phone",
+    ];
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        toast.error(`Please fill ${field.replace("_", " ")}`);
+        return;
+      }
+    }
+    if (!formData.image_base64.length) {
+      toast.error("Please upload at least one image");
       return;
     }
 
     setUploading(true);
     try {
       await addProperty(formData);
-      toast.success("Property submitted!");
-      setFormData((p) => ({
-        ...p,
+      toast.success("Property Added Successfully!");
+      setFormData({
+        title: "",
         price: "",
+        deposit: "",
         location: "",
-        flat_status: "",
         gender: "",
         looking_for: "",
-        bhk: "",
+        bhk_type: "",
         occupancy: "",
         distance_from_station: "",
+        bathrooms: "", // ✅ reset
+        owner_phone: "",
+        description: "",
         image_base64: [],
         video_base64: [],
-      }));
+      });
     } catch {
-      toast.error("Upload failed – please try again");
+      toast.error("Failed to upload");
     } finally {
       setUploading(false);
     }
   };
 
-  if (loadingUser)
-    return (
-      <div className="pt-20 flex justify-center items-center min-h-screen">
-        Loading user…
-      </div>
-    );
+  const renderSelect = (name, label, options, required = false) => (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <label className="font-semibold block mb-1">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      <motion.select
+        whileFocus={{ scale: 1.01 }}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        required={required}
+        className="w-full px-4 py-3 border rounded-lg mb-4"
+      >
+        <option value="">Select</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </motion.select>
+    </motion.div>
+  );
 
   return (
-    <div className="pt-4 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 min-h-screen flex justify-center px-4">
-      <Toaster position="top-right" />
-      <motion.div
+    <div className="min-h-screen bg-indigo-50 p-4 md:p-10">
+      <Toaster />
+      <motion.form
+        onSubmit={handleSubmit}
+        className="max-w-3xl mx-auto bg-white shadow-2xl rounded-3xl p-8 space-y-6"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="max-w-6xl w-full flex flex-col lg:flex-row gap-10 bg-white rounded-3xl shadow-2xl p-10"
+        transition={{ duration: 0.6 }}
       >
-        <form onSubmit={handleSubmit} className="flex-1">
-          <h2 className="flex items-center text-3xl font-extrabold mb-8 text-indigo-700">
-            <FaHome className="mr-3 text-indigo-500" /> Add New Property
-          </h2>
+        <h1 className="text-3xl font-bold text-indigo-700 flex items-center gap-3">
+          <FaHome /> Add Property Details
+        </h1>
 
-          <Label>Title (User) *</Label>
-          <Input readOnly value={formData.title} name="title" disabled />
-
-          <Label>Rent (₹/month) *</Label>
-          <Input
-            type="number"
-            name="price"
-            placeholder="12000"
-            value={formData.price}
-            onChange={handleChange}
-          />
-
-          <Label>Location *</Label>
-          <Input
-            name="location"
-            placeholder="Andheri West, Mumbai"
-            value={formData.location}
-            onChange={handleChange}
-          />
-
-          <Label>Flat Status *</Label>
-          <Input
-            name="flat_status"
-            placeholder="Available / Booked"
-            value={formData.flat_status}
-            onChange={handleChange}
-          />
-
-          <Label>Gender *</Label>
-          <div className="flex gap-6 mb-6">
-            {["male", "female", "unisex"].map((g) => (
-              <label key={g} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="gender"
-                  value={g}
-                  checked={formData.gender === g}
-                  onChange={handleChange}
-                  className="accent-indigo-600"
-                />
-                <span className="capitalize">{g}</span>
-              </label>
-            ))}
+        {/* Text Inputs */}
+        {[
+          ["title", "Your Name", true],
+          ["location", "Location", true],
+          ["price", "Rent (₹)", true],
+          ["deposit", "Security Deposit (₹)", true],
+          ["owner_phone", "Owner Phone Number", true],
+          ["distance_from_station", "Distance from Station", false],
+          ["bathrooms", "Number of Bathrooms", false], // ✅ updated
+        ].map(([key, label, required]) => (
+          <div key={key}>
+            <label className="font-semibold block mb-1">
+              {label} {required && <span className="text-red-500">*</span>}
+            </label>
+            <input
+              name={key}
+              value={formData[key]}
+              onChange={handleChange}
+              type={["price", "deposit", "bathrooms"].includes(key) ? "number" : "text"}
+              placeholder={label}
+              required={required}
+              className="w-full px-4 py-3 border rounded-lg mb-4"
+            />
           </div>
+        ))}
 
-          <FancySelect
-            label="Looking For"
-            name="looking_for"
-            value={formData.looking_for}
+        {/* Dropdowns */}
+        {renderSelect("gender", "Gender Preference", ["male", "female", "others"], true)}
+        {renderSelect("bhk_type", "BHK Type", [
+          "1 BHK",
+          "1.5 BHK",
+          "2 BHK",
+          "2.5 BHK",
+          "3 BHK",
+          "4 BHK",
+        ])}
+        {renderSelect("occupancy", "Occupancy", ["single", "double", "triple"])}
+        {renderSelect("looking_for", "Looking For", ["flatmate", "vacant"])}
+
+        {/* Description */}
+        <div>
+          <label className="font-semibold block mb-1">Short Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
             onChange={handleChange}
-            options={[
-              { value: "", label: "Select" },
-              { value: "flatmate", label: "Flat-mate" },
-              { value: "vacant", label: "Vacant Flat" },
-            ]}
+            placeholder="Write something about the property..."
+            className="w-full px-4 py-3 border rounded-lg mb-4"
+            rows="4"
           />
+        </div>
 
-          <FancySelect
-            label="BHK"
-            name="bhk"
-            value={formData.bhk}
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Select" },
-              { value: "1", label: "1 BHK" },
-              { value: "1.5", label: "1.5 BHK" },
-              { value: "2", label: "2 BHK" },
-              { value: "2.5", label: "2.5 BHK" },
-              { value: "3", label: "3 BHK" },
-              { value: "4", label: "4 BHK" },
-            ]}
-          />
-
-          <FancySelect
-            label="Occupancy"
-            name="occupancy"
-            value={formData.occupancy}
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Select" },
-              { value: "single", label: "Single (1 person)" },
-              { value: "double", label: "Double (2 people)" },
-              { value: "triple", label: "Triple (3 people)" },
-            ]}
-          />
-
-          <Label>Distance from Station</Label>
-          <Input
-            name="distance_from_station"
-            placeholder="e.g. 500 meters"
-            value={formData.distance_from_station}
-            onChange={handleChange}
-          />
-
-          <Label>Upload Images *</Label>
+        {/* Image Upload */}
+        <div>
+          <label className="block font-semibold mb-1">Upload Image *</label>
           <input
             type="file"
-            accept="image/*"
             multiple
+            accept="image/*"
             onChange={(e) => handleFileChange(e, "image")}
-            className="block mb-2 mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
-            required
+            className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
           />
           {formData.image_base64.length > 0 && (
-            <p className="mb-6 text-green-600 flex items-center gap-2">
+            <p className="text-green-600 flex items-center mt-1 gap-2">
               <FaCheckCircle /> {formData.image_base64.length} image(s) selected
             </p>
           )}
+        </div>
 
-          <Label>Upload Videos</Label>
+        {/* Video Upload */}
+        <div>
+          <label className="block font-semibold mb-1">Upload Video</label>
           <input
             type="file"
-            accept="video/*"
             multiple
+            accept="video/*"
             onChange={(e) => handleFileChange(e, "video")}
-            className="block mb-8 mt-1 text-sm file:bg-indigo-50 file:text-indigo-700 file:rounded file:px-4 file:py-2 file:border-0 hover:file:bg-indigo-100"
+            className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
           />
           {formData.video_base64.length > 0 && (
-            <p className="mb-8 -mt-6 text-green-600 flex items-center gap-2">
+            <p className="text-green-600 flex items-center mt-1 gap-2">
               <FaCheckCircle /> {formData.video_base64.length} video(s) selected
             </p>
           )}
+        </div>
 
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            type="submit"
-            disabled={uploading}
-            className={`w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-4 rounded-lg transition ${
-              uploading ? "opacity-60 cursor-not-allowed" : "hover:bg-indigo-700"
-            }`}
-          >
-            {uploading && (
-              <motion.span
-                initial={{ rotate: 0 }}
-                animate={{ rotate: 360 }}
-                transition={{
-                  ease: "linear",
-                  duration: 1,
-                  repeat: Infinity,
-                }}
-              >
-                <FaUpload />
-              </motion.span>
-            )}
-            {uploading ? "Uploading…" : "Submit Property"}
-          </motion.button>
-        </form>
-
-        <aside className="hidden lg:flex flex-col bg-indigo-50 rounded-3xl p-8 max-w-xs text-indigo-900 shadow-lg">
-          <div className="flex items-center mb-6">
-            <FaInfoCircle className="text-indigo-600 mr-3 text-3xl" />
-            <h3 className="text-xl font-bold">Need tips?</h3>
-          </div>
-          {[
-            "Use a catchy, descriptive title",
-            "Set a competitive rent",
-            "Pin‑point the exact location",
-            "Clarify current flat status",
-            "Upload bright, well‑lit photos",
-            "A short video tour really helps!",
-          ].map((tip) => (
-            <p
-              key={tip}
-              className="mb-3 leading-relaxed before:content-['•'] before:mr-2"
-            >
-              {tip}
-            </p>
-          ))}
-        </aside>
-      </motion.div>
+        {/* Submit */}
+        <motion.button
+          type="submit"
+          disabled={uploading}
+          whileTap={{ scale: 0.97 }}
+          className={`w-full py-3 font-semibold rounded-xl transition duration-300 ${
+            uploading
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+        >
+          {uploading ? "Uploading..." : "Submit Property"}
+        </motion.button>
+      </motion.form>
     </div>
   );
 };
-
-/* ────── Reusable UI ────── */
-const Label = ({ children }) => (
-  <label className="font-semibold block mb-2">{children}</label>
-);
-
-const Input = (props) => (
-  <input
-    {...props}
-    className={`w-full px-4 py-3 border rounded-lg mb-6 ${
-      props.className || ""
-    }`}
-  />
-);
-
-const FancySelect = ({ label, name, value, onChange, options }) => (
-  <div className="mb-6">
-    {label && <Label>{label}</Label>}
-    <Listbox
-      value={value}
-      onChange={(val) => onChange({ target: { name, value: val } })}
-    >
-      {({ open }) => (
-        <>
-          <div className="relative">
-            <Listbox.Button className="w-full cursor-pointer rounded-lg bg-white py-3 pl-4 pr-10 text-left border shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <span className="block truncate">
-                {options.find((o) => o.value === value)?.label || "Select"}
-              </span>
-              <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
-              </span>
-            </Listbox.Button>
-            <Transition
-              as="div"
-              show={open}
-              enter="transition ease-out duration-100"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                {options.map((opt) => (
-                  <Listbox.Option
-                    key={opt.value}
-                    value={opt.value}
-                    className={({ active }) =>
-                      `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
-                        active
-                          ? "bg-indigo-100 text-indigo-900"
-                          : "text-gray-900"
-                      }`
-                    }
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
-                          {opt.label}
-                        </span>
-                        {selected && (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
-                            <CheckIcon className="h-5 w-5" />
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </Transition>
-          </div>
-        </>
-      )}
-    </Listbox>
-  </div>
-);
 
 export default AddProperty;
