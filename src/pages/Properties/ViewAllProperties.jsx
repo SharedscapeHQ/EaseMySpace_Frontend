@@ -184,29 +184,32 @@ export default function ViewAllProperties() {
               className="fixed inset-0 bg-black z-40"
               onClick={() => setShowFilters(false)}
             />
-            <motion.div
-              initial={{ y: "-100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-100%" }}
-              transition={{ type: "spring", stiffness: 260, damping: 32 }}
-              className="fixed top-0 left-1/2 -translate-x-1/2 max-w-sm w-11/12 bg-white z-50 p-6 pt-10 shadow-xl rounded-b-3xl border border-gray-100 text-sm"
-            >
-              <SidebarContent
-                filters={filters}
-                handleFilterChange={handleFilterChange}
-                sort={sort}
-                setSort={setSort}
-              />
-              <button
-                onClick={() => {
-                  applyNow();
-                  setShowFilters(false);
-                }}
-                className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow"
-              >
-                Apply Filters
-              </button>
-            </motion.div>
+<motion.div
+  initial={{ opacity: 0, scale: 0.8 }}
+  animate={{ opacity: 1, scale: 1 }}
+  exit={{ opacity: 0, scale: 0.8 }}
+  transition={{ type: "spring", stiffness: 260, damping: 25 }}
+  className="fixed inset-0 z-50 flex items-center justify-center p-4"
+>
+  <div className="max-h-[90vh] w-full max-w-sm bg-white p-6 pt-8 rounded-3xl shadow-2xl border border-gray-100 overflow-y-auto text-sm">
+    <SidebarContent
+      filters={filters}
+      handleFilterChange={handleFilterChange}
+      sort={sort}
+      setSort={setSort}
+    />
+    <button
+      onClick={() => {
+        applyNow();
+        setShowFilters(false);
+      }}
+      className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow"
+    >
+      Apply Filters
+    </button>
+  </div>
+</motion.div>
+
           </>
         )}
       </AnimatePresence>

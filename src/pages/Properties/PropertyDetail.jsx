@@ -2,11 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { getPropertyById } from '../../API/propertiesApi';
 import {
-  FaWifi,
-  FaBed,
-  FaShower,
-  FaTv,
-  FaHome,
   FaChevronLeft,
   FaChevronRight,
   FaTimes,
@@ -87,7 +82,6 @@ function PropertyDetail() {
 
   return (
     <>
-      {/* Lightbox */}
       {lightboxIdx !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
@@ -145,12 +139,13 @@ function PropertyDetail() {
         </div>
       )}
 
-      <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4">
+      <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4 sm:px-6 md:px-8">
         <div className="flex flex-col bg-white p-5 rounded-2xl gap-4 max-w-6xl mx-auto">
-          {/* Title */}
-          <div className="text-xl font-semibold text-gray-800">{generateTitle(property.title)}</div>
+          <div className="text-xl font-semibold text-gray-800">
+            {generateTitle(property.title)}
+          </div>
 
-          <div className="flex flex-col lg:flex-row justify-center items-start gap-5">
+          <div className="flex flex-col lg:flex-row justify-center items-start gap-5 w-full">
             {/* Main Image */}
             <div
               className="w-full lg:w-[32rem] h-80 sm:h-[26rem] rounded-2xl overflow-hidden cursor-pointer"
@@ -206,15 +201,18 @@ function PropertyDetail() {
               </div>
             </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col justify-between gap-5 h-full min-h-[24rem]">
-              {/* Contact Card */}
-              <div className="w-[24rem] h-[15rem] bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
+            {/* Contact & Location */}
+            <div className="flex flex-col justify-between gap-5 w-full lg:w-[24rem]">
+              <div className="w-full h-auto bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-2">Owner's Contact</h2>
+                  <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                    Owner's Contact
+                  </h2>
                   <div className="text-gray-700 text-base">
                     {hasPaid ? (
-                      <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
+                      <span className="font-medium">
+                        📞 {property.owner_phone || 'Unavailable'}
+                      </span>
                     ) : (
                       <span className="font-medium">📞 +91xxxxxxx</span>
                     )}
@@ -225,7 +223,7 @@ function PropertyDetail() {
                   <p className="text-xl font-bold text-indigo-700">₹1299</p>
                 </div>
                 <button
-                  className={`mt-4 w-full py-2 font-semibold rounded-xl transition-all ${
+                  className={`mt-4 w-1/2 py-2 font-semibold rounded-xl transition-all ${
                     hasPaid
                       ? 'bg-green-600 text-white cursor-default'
                       : 'bg-indigo-600 hover:bg-indigo-700 text-white'
@@ -240,8 +238,7 @@ function PropertyDetail() {
                 </button>
               </div>
 
-              {/* Location Card */}
-              <div className="w-96 flex-grow flex flex-col justify-end">
+              <div className="w-full">
                 <div className="w-full bg-white border border-gray-300 rounded-2xl flex items-center justify-between p-4 shadow-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-md bg-gray-100 flex items-center justify-center">
@@ -252,10 +249,9 @@ function PropertyDetail() {
                         In {property.location || 'Unknown Location'}
                       </span>
                       <span className="text-sm text-gray-700">
-                        <span className="text-green-500 font-medium  ">
+                        <span className="text-green-500 font-medium">
                           {property.distance_from_station || 'N/A'}
-                        </span>{' '}
-                       
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -274,7 +270,9 @@ function PropertyDetail() {
 
           {/* Description */}
           <div>
-            <h2 className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
+            <h2 className="text-xl font-bold text-indigo-700 mb-3">
+              Property Description
+            </h2>
             <p className="text-gray-700 leading-relaxed">
               {property.description || 'No description available.'}
             </p>
@@ -282,15 +280,6 @@ function PropertyDetail() {
         </div>
       </main>
     </>
-  );
-}
-
-function Amenity({ icon, label }) {
-  return (
-    <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl shadow-sm text-gray-700">
-      <span className="text-indigo-600 text-lg">{icon}</span>
-      <span className="font-medium text-sm">{label}</span>
-    </div>
   );
 }
 
