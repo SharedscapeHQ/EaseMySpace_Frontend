@@ -272,32 +272,27 @@ function PropertyDetail() {
           className={`flex items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] ${
             isAvailable
               ? 'bg-green-50 border border-green-200'
-              : 'bg-red-50 border border-red-100 opacity-70'
+              : 'bg-gray-100 border border-gray-200'
           }`}
         >
           <div
             className={`text-2xl transition-colors duration-300 ${
-              isAvailable
-                ? 'text-green-600 animate-pulse'
-                : 'text-red-400'
+              isAvailable ? 'text-green-600 animate-pulse' : 'text-gray-400'
             }`}
           >
             {amenityIcons[amenity] || '🔲'}
           </div>
           <span
-            className={`transition-colors duration-300 ${
-              isAvailable
-                ? 'text-gray-900 font-semibold'
-                : 'text-red-500 italic font-medium'
-            } capitalize`}
+            className={`transition-colors duration-300 text-gray-800 font-normal capitalize`}
           >
-            {isAvailable ? amenity : `${amenity} (Unavailable)`}
+            {amenity}
           </span>
         </div>
       );
     })}
   </div>
 </div>
+
 
         </div>
       </main>

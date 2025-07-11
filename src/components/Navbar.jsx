@@ -1,25 +1,10 @@
-//------------------------------------------------------------
-// Navbar.jsx – right‑drawer + animated hamburger ↔ X icon
-//------------------------------------------------------------
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaUserCircle } from "react-icons/fa";
 import brandLogo from "/navbar-assets/brand-logo.png";
 
-/**
- * When you log in / log out in the *same* tab, the browser’s native
- * `storage` event will NOT fire for that tab.  To keep Navbar in sync,
- * dispatch a custom “auth-change” event *immediately after* you update
- * localStorage in your auth logic:
- *
- *   localStorage.setItem("user", JSON.stringify(user));
- *   window.dispatchEvent(new Event("auth-change"));
- *
- *   localStorage.removeItem("user");
- *   window.dispatchEvent(new Event("auth-change"));
- */
 export default function Navbar() {
-  /* ───────── auth sync ───────── */
   const [user, setUser] = useState(() => {
     const cache = localStorage.getItem("user");
     return cache ? JSON.parse(cache) : null;
@@ -31,9 +16,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // Fires when another tab changes localStorage
     window.addEventListener("storage", syncUser);
-    // Fires when *this* tab dispatches the custom event
     window.addEventListener("auth-change", syncUser);
     return () => {
       window.removeEventListener("storage", syncUser);
@@ -41,8 +24,8 @@ export default function Navbar() {
     };
   }, [syncUser]);
 
-  /* ───────── state ───────── */
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const dashRoute = () => {
     if (!user) return "/login";
@@ -56,7 +39,6 @@ export default function Navbar() {
     }
   };
 
-  /* ───────── motion variants ───────── */
   const drawerV = {
     hidden: { x: "100%" },
     visible: {
@@ -66,12 +48,9 @@ export default function Navbar() {
     exit: { x: "100%", transition: { duration: 0.28 } },
   };
 
-  /* ───────── JSX ───────── */
   return (
     <header>
-      {/* Top bar */}
       <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 lg:pl-16 bg-white/40 backdrop-blur-md shadow-sm z-50">
-        {/* Brand */}
         <Link to="/" aria-label="Homepage" className="flex items-center">
           <img
             src={brandLogo}
@@ -80,32 +59,87 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* CTAs */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3 sm:gap-5 relative">
           <Link
             to="/add-properties"
             className="px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-base bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg font-semibold shadow transition"
           >
-            Add&nbsp;Property
+            Add&nbsp;Property <span className="text-green-500 text-sm">Free</span>
           </Link>
 
-          {user ? (
-            <Link
-              to={dashRoute()}
-              className="px-4 py-1.5 text-xs sm:px-5 sm:py-2 sm:text-base bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow transition"
+          {/* Profile Dropdown */}
+          <div
+            className="relative group"
+            onMouseEnter={() => window.innerWidth >= 640 && setProfileOpen(true)}
+            onMouseLeave={() => window.innerWidth >= 640 && setProfileOpen(false)}
+          >
+            <button
+              onClick={() => {
+                if (window.innerWidth < 640) setProfileOpen((prev) => !prev);
+              }}
+              className="flex items-center gap-1 text-zinc-700"
             >
-              Dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="px-4 py-1.5 text-xs sm:px-5 sm:py-2 sm:text-base bg-blue-400 hover:bg-blue-600 text-white rounded-lg font-semibold shadow transition"
-            >
-              Login
-            </Link>
-          )}
+              {user && (
+                <span className="hidden sm:inline text-sm font-medium">
+                  Hello, {user.firstName}
+                </span>
+              )}
+              <FaUserCircle className="text-2xl" />
+            </button>
 
-          {/* Hamburger / X */}
+            <AnimatePresence>
+              {profileOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-50 border"
+                >
+                  <div className="px-4 py-2 text-blue-600 font-semibold text-sm border-b">
+                    {user ? "My Account" : "LOGIN / REGISTER"}
+                  </div>
+                  <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 font-medium space-y-2">
+                    {user ? (
+                      <Link
+                        to={dashRoute()}
+                        onClick={() => setProfileOpen(false)}
+                        className="hover:text-blue-600"
+                      >
+                        Dashboard
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/login"
+                        onClick={() => setProfileOpen(false)}
+                        className="hover:text-blue-600"
+                      >
+                        Login
+                      </Link>
+                    )}
+                    <Link
+                      to="/view-properties"
+                      onClick={() => setProfileOpen(false)}
+                      className="hover:text-blue-600"
+                    >
+                      View Listings
+                    </Link>
+                    {user && (
+                      <Link
+                        to="/contact"
+                        onClick={() => setProfileOpen(false)}
+                        className="hover:text-blue-600"
+                      >
+                        Contact Support
+                      </Link>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Hamburger Menu */}
           <button
             aria-label="Toggle menu"
             className="w-8 h-8 sm:w-10 sm:h-10 relative text-zinc-700"
@@ -116,11 +150,9 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Drawer + overlay */}
       <AnimatePresence>
         {open && (
           <>
-            {/* overlay */}
             <motion.div
               key="overlay"
               initial={{ opacity: 0 }}
@@ -130,8 +162,6 @@ export default function Navbar() {
               className="fixed inset-0 bg-black z-40"
               onClick={() => setOpen(false)}
             />
-
-            {/* right drawer */}
             <motion.aside
               key="drawer"
               variants={drawerV}
@@ -161,25 +191,10 @@ export default function Navbar() {
           </>
         )}
       </AnimatePresence>
-
-      {/* Greeting badge */}
-      {user && (
-  <div
-    className="fixed top-[5rem] right-0 md:flex hidden items-center justify-center bg-blue-700 text-white px-5 py-2 rounded-xl shadow-lg z-40 text-sm font-semibold text-center gap-2 select-none ring-2 ring-indigo-400 animate-pulse-slow"
-    style={{ animationDuration: "3s" }}
-  >
-    <span className="text-2xl">👋</span>
-    <span>
-      Hello,&nbsp;<span className="font-bold">{user.firstName}</span>!
-    </span>
-  </div>
-)}
-
     </header>
   );
 }
 
-/* ───────── animated hamburger ↔ X ───────── */
 function Hamburger({ animatedOpen }) {
   const topV = {
     closed: { rotate: 0, translateY: 0 },
