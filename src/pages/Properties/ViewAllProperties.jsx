@@ -349,7 +349,7 @@ const PropertyCard = ({ p }) => {
         <div className="grid grid-cols-2 gap-4">
           <Feature icon="🛋️" label="Occupancy" value={p.occupancy || "-"} />
           <Feature icon="🏠" label="BHK Type" value={p.bhk_type || "-"} />
-          <Feature icon="🛁" label="Bath" value={p.attachedBath || "-"} />
+          <Feature icon="📍" label="Distance" value={p.distance_from_station || "-"} />
           <Feature icon="🔑" label="Available" value={p.flat_status || "-"} />
         </div>
       </div>

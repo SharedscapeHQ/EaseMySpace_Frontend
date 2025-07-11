@@ -15,12 +15,29 @@ const AddProperty = () => {
     bhk_type: "",
     occupancy: "",
     distance_from_station: "",
-    bathrooms: "", // ✅ updated
+    bathrooms: "",
     owner_phone: "",
     description: "",
     image_base64: [],
     video_base64: [],
+    amenities: [], // ✅ added
   });
+
+  const amenityOptions = [
+    "wifi",
+    "parking",
+    "air conditioning",
+    "refrigerator",
+    "washing machine",
+    "cctv",
+    "security",
+    "geyser",
+    "lift",
+    "power backup",
+    "furniture",
+    "tv",
+    "gas connection",
+  ];
 
   const [uploading, setUploading] = useState(false);
 
@@ -89,11 +106,12 @@ const AddProperty = () => {
         bhk_type: "",
         occupancy: "",
         distance_from_station: "",
-        bathrooms: "", // ✅ reset
+        bathrooms: "",
         owner_phone: "",
         description: "",
         image_base64: [],
         video_base64: [],
+        amenities: [], // ✅ reset
       });
     } catch {
       toast.error("Failed to upload");
@@ -147,7 +165,7 @@ const AddProperty = () => {
           ["deposit", "Security Deposit (₹)", true],
           ["owner_phone", "Owner Phone Number", true],
           ["distance_from_station", "Distance from Station", false],
-          ["bathrooms", "Number of Bathrooms", false], // ✅ updated
+          ["bathrooms", "Number of Bathrooms", false],
         ].map(([key, label, required]) => (
           <div key={key}>
             <label className="font-semibold block mb-1">
@@ -177,6 +195,32 @@ const AddProperty = () => {
         ])}
         {renderSelect("occupancy", "Occupancy", ["single", "double", "triple"])}
         {renderSelect("looking_for", "Looking For", ["flatmate", "vacant"])}
+
+        {/* Amenities Section */}
+        <div>
+          <label className="font-semibold block mb-2">Select Amenities</label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+            {amenityOptions.map((amenity) => (
+              <label key={amenity} className="flex items-center gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  value={amenity}
+                  checked={formData.amenities.includes(amenity)}
+                  onChange={(e) => {
+                    const selected = e.target.checked;
+                    setFormData((prev) => ({
+                      ...prev,
+                      amenities: selected
+                        ? [...prev.amenities, amenity]
+                        : prev.amenities.filter((a) => a !== amenity),
+                    }));
+                  }}
+                />
+                {amenity}
+              </label>
+            ))}
+          </div>
+        </div>
 
         {/* Description */}
         <div>
