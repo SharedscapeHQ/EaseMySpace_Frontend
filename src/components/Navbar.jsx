@@ -164,14 +164,17 @@ export default function Navbar() {
 
       {/* Greeting badge */}
       {user && (
-        <div
-          className="fixed top-[5rem] right-5 mr-12 bg-indigo-900 text-white px-5 py-2 rounded-xl shadow-lg z-40 text-sm font-semibold flex items-center gap-2 select-none ring-2 ring-indigo-400 animate-pulse-slow"
-          style={{ animationDuration: "3s" }}
-        >
-          <span className="text-2xl">👋</span>
-          Hello,&nbsp;<span className="font-bold">{user.firstName}</span>!
-        </div>
-      )}
+  <div
+    className="fixed top-[5rem] right-0 md:flex hidden items-center justify-center bg-blue-700 text-white px-5 py-2 rounded-xl shadow-lg z-40 text-sm font-semibold text-center gap-2 select-none ring-2 ring-indigo-400 animate-pulse-slow"
+    style={{ animationDuration: "3s" }}
+  >
+    <span className="text-2xl">👋</span>
+    <span>
+      Hello,&nbsp;<span className="font-bold">{user.firstName}</span>!
+    </span>
+  </div>
+)}
+
     </header>
   );
 }

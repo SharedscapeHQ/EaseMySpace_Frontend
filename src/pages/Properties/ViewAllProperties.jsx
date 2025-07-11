@@ -118,8 +118,9 @@ export default function ViewAllProperties() {
     return <div className="pt-28 text-center">No properties found.</div>;
 
   return (
-    <div className="md:pt-10 w-full pt-16 flex justify-center bg-indigo-50/30 min-h-screen">
-      <div className="w-full max-w-7xl flex">
+    <div className="w-full bg-indigo-50/30 min-h-screen pt-16 md:pt-10">
+      <div className="max-w-6xl mx-auto px-4 flex gap-2">
+        {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">
           <div className="sticky top-16 bg-white shadow-md rounded-3xl p-4 border border-gray-100 text-sm">
             <SidebarContent
@@ -137,6 +138,7 @@ export default function ViewAllProperties() {
           </div>
         </aside>
 
+        {/* Main Content */}
         <main className="flex-1 flex flex-col items-center">
           <button
             onClick={() => setShowFilters(true)}
@@ -170,6 +172,7 @@ export default function ViewAllProperties() {
         </main>
       </div>
 
+      {/* Mobile Filters */}
       <AnimatePresence>
         {showFilters && (
           <>
@@ -350,10 +353,6 @@ const PropertyCard = ({ p }) => {
     </Link>
   );
 };
-
-
-
-
 
 const Stat = ({ label, value }) => (
   <div className="py-2 border-r last:border-r-0">

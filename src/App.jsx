@@ -24,6 +24,7 @@ import UserDashboard from "./pages/User/UserDashboard";
 import CancellationRefundPolicy from "./components/FooterSectionComp/CancellationRefundPolicy";
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import useLenis from "./hooks/useLenis";
 
 /* ───────────── ScrollToTop – jump instantly to top on route change ───────────── */
@@ -60,6 +61,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+    <ScrollToTopButton/>
+
+
       <Layout>
         <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
 
