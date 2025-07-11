@@ -5,8 +5,22 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaTimes,
-  FaCheckCircle,
+  FaWifi,
+  FaParking,
+  FaSnowflake,
+  FaTv,
+  FaChair,
+  FaLock,
+  FaGasPump,
+  FaCouch,
 } from 'react-icons/fa';
+import {
+  MdOutlineSecurity,
+  MdOutlineLocalLaundryService,
+  MdOutlineElevator,
+  MdOutlinePower,
+} from 'react-icons/md';
+import { FaShower } from 'react-icons/fa';
 
 const knownAmenities = [
   'wifi',
@@ -23,6 +37,22 @@ const knownAmenities = [
   'tv',
   'gas connection',
 ];
+
+const amenityIcons = {
+  wifi: <FaWifi />,
+  parking: <FaParking />,
+  'air conditioning': <FaSnowflake />,
+  refrigerator: <FaCouch />,
+  'washing machine': <MdOutlineLocalLaundryService />,
+  cctv: <MdOutlineSecurity />,
+  security: <FaLock />,
+  geyser: <FaShower />,
+  lift: <MdOutlineElevator />,
+  'power backup': <MdOutlinePower />,
+  furniture: <FaChair />,
+  tv: <FaTv />,
+  'gas connection': <FaGasPump />,
+};
 
 function PropertyDetail() {
   const stripQuotes = (v) =>
@@ -127,6 +157,7 @@ function PropertyDetail() {
         <div className="flex flex-col bg-white p-5 rounded-2xl gap-4 max-w-6xl mx-auto">
           <div className="text-xl font-semibold text-gray-800">{generateTitle(property.title)}</div>
 
+          {/* Cover image and side images */}
           <div className="flex flex-col lg:flex-row justify-center items-start gap-5 w-full">
             <div className="w-full lg:w-[32rem] h-80 sm:h-[26rem] rounded-2xl overflow-hidden cursor-pointer" onClick={() => setLightboxIdx(0)}>
               <img src={property.cover} alt="main" className="w-full h-full object-cover" />
@@ -225,38 +256,49 @@ function PropertyDetail() {
             </div>
           </div>
 
-          {/* Amenities */}
-          <div>
-            <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {knownAmenities.map((amenity, idx) => {
-                const isAvailable =
-                  property.amenities?.some(
-                    (item) => item?.toLowerCase() === amenity.toLowerCase()
-                  );
+         
+<div>
+  <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {knownAmenities.map((amenity, idx) => {
+      const isAvailable =
+        property.amenities?.some(
+          (item) => item?.toLowerCase() === amenity.toLowerCase()
+        );
 
-                return (
-                  <div
-                    key={idx}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-xl shadow-sm ${
-                      isAvailable ? 'bg-gray-50' : 'bg-red-50'
-                    }`}
-                  >
-                    <FaCheckCircle
-                      className={`${isAvailable ? 'text-green-600' : 'text-red-400'}`}
-                    />
-                    <span
-                      className={`${
-                        isAvailable ? 'text-gray-800' : 'text-red-500 italic'
-                      } font-medium`}
-                    >
-                      {isAvailable ? amenity : `${amenity} (Unavailable)`}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+      return (
+        <div
+          key={idx}
+          className={`flex items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] ${
+            isAvailable
+              ? 'bg-green-50 border border-green-200'
+              : 'bg-red-50 border border-red-100 opacity-70'
+          }`}
+        >
+          <div
+            className={`text-2xl transition-colors duration-300 ${
+              isAvailable
+                ? 'text-green-600 animate-pulse'
+                : 'text-red-400'
+            }`}
+          >
+            {amenityIcons[amenity] || '🔲'}
           </div>
+          <span
+            className={`transition-colors duration-300 ${
+              isAvailable
+                ? 'text-gray-900 font-semibold'
+                : 'text-red-500 italic font-medium'
+            } capitalize`}
+          >
+            {isAvailable ? amenity : `${amenity} (Unavailable)`}
+          </span>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
         </div>
       </main>
     </>
