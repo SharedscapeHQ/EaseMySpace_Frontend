@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation  } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
@@ -10,6 +10,10 @@ import {
 } from "../API/authAPI";
 
 function Login() {
+
+  const location = useLocation();
+const redirectPath = new URLSearchParams(location.search).get("redirect") || "/";
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +41,7 @@ function Login() {
       const { user, message } = res.data ?? res;
       localStorage.setItem("user", JSON.stringify(user));
       toast.success(message || "Login successful", { id });
-      navigate("/");
+      navigate(redirectPath);
     } catch (err) {
       toast.error(err?.response?.data?.message || "Email or password is incorrect", { id });
     }

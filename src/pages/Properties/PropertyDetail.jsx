@@ -56,6 +56,63 @@ const amenityIcons = {
 };
 
 function PropertyDetail() {
+
+
+  const loadScript = (src) =>
+  new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+
+  const loadRazorpay = async (amount, onSuccessCallback) => {
+  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  if (!res) {
+    alert("Razorpay SDK failed to load. Are you online?");
+    return;
+  }
+
+  // 🧠 Make backend API call to get orderId
+  const orderRes = await axios.post("https://api.easemyspace.in/api/payment/create-order", {
+    amount,
+  });
+
+  const { orderId, currency } = orderRes.data;
+
+  const options = {
+    key: "rzp_live_5kR19yQxcQHzsv", 
+    amount: amount * 100, 
+    currency,
+    name: "EasyMySpace",
+    description: "Unlock Owner Contact",
+    order_id: orderId,
+    handler: function (response) {
+      
+      onSuccessCallback(); 
+    },
+    prefill: {
+      name: "Test User",
+      email: "test@example.com",
+      contact: "9999999999",
+    },
+    theme: {
+      color: "#6366F1",
+    },
+  };
+
+  const rzp = new window.Razorpay(options);
+  rzp.open();
+};
+
+
+
+
+
+
+
+
   const stripQuotes = (v) =>
     v == null ? '' : String(v).replace(/^"+|"+$/g, '').trim();
 
@@ -322,10 +379,18 @@ const handleVerifyOtp = async () => {
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}
                   disabled={hasPaid}
-                  onClick={() => {
-                    alert('Redirecting to payment gateway – ₹1299');
-                    setHasPaid(true);
-                  }}
+                 onClick={() => {
+  if (!isLoggedIn) {
+    alert("Please login to proceed.");
+    window.location.href = `/login?redirect=/properties/${id}`;
+    return;
+  }
+
+  loadRazorpay(1299, () => {
+    setHasPaid(true);
+    alert("Payment successful! Contact unlocked.");
+  });
+}}
                 >
                   {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299 & Unlock'}
                 </button>
