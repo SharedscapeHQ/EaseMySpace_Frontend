@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
 import { getPropertyById } from '../../API/propertiesApi';
 import {
@@ -90,6 +91,38 @@ function PropertyDetail() {
   const [lightboxIdx, setLightboxIdx] = useState(null);
   const [hasPaid, setHasPaid] = useState(false);
 
+
+
+  // otp state management
+
+  const [resending, setResending] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  const cache = localStorage.getItem("user");
+  return !!cache;
+});
+
+const [showFullDesc, setShowFullDesc] = useState(false);
+const [showOtpPopup, setShowOtpPopup] = useState(false);
+const [userMobile, setUserMobile] = useState('');
+const [userOtp, setUserOtp] = useState('');
+const [otpSent, setOtpSent] = useState(false);
+
+
+useEffect(() => {
+  const syncLogin = () => {
+    const cache = localStorage.getItem("user");
+    setIsLoggedIn(!!cache);
+  };
+
+  window.addEventListener("storage", syncLogin);
+  window.addEventListener("auth-change", syncLogin); 
+  return () => {
+    window.removeEventListener("storage", syncLogin);
+    window.removeEventListener("auth-change", syncLogin);
+  };
+}, []);
+
+
   useEffect(() => {
     if (!property) {
       getPropertyById(id)
@@ -124,8 +157,91 @@ function PropertyDetail() {
     return `${possessive} listed home`;
   };
 
+
+useEffect(() => {
+  if (otpSent) {
+    const timeout = setTimeout(() => {
+      const input = document.getElementById("otpInput");
+      input?.focus();
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }
+}, [otpSent]);
+
+
+ const handleSendOtp = async () => {
+  console.log("handleSendOtp triggered"); // ✅ Initial trigger log
+
+  if (userMobile.length === 10) {
+    try {
+      setResending(true);
+      console.log("Sending OTP to:", userMobile); // ✅ Log number being sent
+
+      const res = await axios.post("https://api.easemyspace.in/api/leads/send-otp", {
+        phone: userMobile,
+      });
+
+      console.log("Send OTP API Response:", res.data); // ✅ Full response log
+
+      if (res.data.message === 'otp_sent') {
+  setOtpSent(true);
+  console.log("OTP sent successfully");
+  alert("OTP sent successfully!");
+} else {
+  alert(res.data.message || "Failed to send OTP.");
+}
+    } catch (err) {
+      console.error("Error in handleSendOtp:", err); // ✅ Error log
+      alert("Error sending OTP. Please try again.");
+    } finally {
+      setResending(false);
+    }
+  } else {
+    console.warn("Invalid mobile number entered:", userMobile); // ✅ Invalid input log
+    alert("Enter valid 10-digit mobile number");
+  }
+};
+
+
+
+const handleVerifyOtp = async () => {
+  console.log("handleVerifyOtp triggered");
+  const formattedPhone = userMobile.startsWith("+91") ? userMobile : `+91${userMobile}`;
+  console.log("Verifying OTP:", userOtp, "for mobile:", formattedPhone);
+
+  try {
+    const res = await axios.post("https://api.easemyspace.in/api/leads/verify-otp", {
+      phone: formattedPhone,
+      code: userOtp,
+    });
+
+    console.log("Verify OTP API Response:", res.data);
+
+    if (res.data.verified === true) {
+      console.log("OTP verified successfully");
+      setShowFullDesc(true);
+      setShowOtpPopup(false);
+      alert("OTP verified successfully!");
+    } else {
+      alert(res.data.message || "Invalid OTP.");
+    }
+  } catch (err) {
+    console.error("Error verifying OTP:", err);
+    alert("Error verifying OTP.");
+  }
+};
+
+
+
   if (loading || !property)
     return <p className="text-center mt-20 text-indigo-600">Loading...</p>;
+
+  
+
+
+
+
 
   return (
     <>
@@ -244,7 +360,85 @@ function PropertyDetail() {
           {/* Description */}
           <div>
             <h2 className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
-            <p className="text-gray-700 leading-relaxed">{property.description || 'No description available.'}</p>
+            {showFullDesc || isLoggedIn ? (
+  <p className="text-gray-700 leading-relaxed whitespace-pre-line">{property.description}</p>
+) : (
+  <div>
+    <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+      {property.description?.slice(0, 180)}...
+    </p>
+    <button
+      className="mt-2 text-blue-600 hover:underline text-sm font-medium"
+      onClick={() => setShowOtpPopup(true)}
+    >
+      Read More
+    </button>
+  </div>
+)}
+
+{showOtpPopup && (
+  <div
+    key={otpSent ? 'otp-mode' : 'mobile-mode'}  
+    className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
+  >
+    <div className="bg-white rounded-xl p-6 w-80 shadow-lg relative">
+      <button
+        onClick={() => setShowOtpPopup(false)}
+        className="absolute top-2 right-3 text-gray-500 text-xl"
+      >
+        ×
+      </button>
+      <h3 className="text-lg font-semibold text-gray-800 mb-3">Verify to Read More</h3>
+
+      <input
+        type="text"
+        placeholder="Enter your mobile number"
+        maxLength={10}
+        className="w-full mb-2 px-3 py-2 border border-gray-300 rounded"
+        value={userMobile}
+        onChange={(e) => setUserMobile(e.target.value)}
+      />
+
+      {otpSent && (
+        <>
+          <input
+            id="otpInput"
+            type="text"
+            placeholder="Enter OTP"
+            className="w-full mb-2 px-3 py-2 border border-gray-300 rounded"
+            value={userOtp}
+            onChange={(e) => setUserOtp(e.target.value)}
+          />
+          <button
+            onClick={handleSendOtp}
+            className="text-indigo-600 text-sm mb-2 hover:underline disabled:text-gray-400"
+            disabled={resending}
+          >
+            Resend OTP
+          </button>
+        </>
+      )}
+
+      {!otpSent ? (
+        <button
+          onClick={handleSendOtp}
+          className="w-full bg-indigo-600 text-white py-2 rounded mt-2 font-medium"
+        >
+          Send OTP
+        </button>
+      ) : (
+        <button
+          onClick={handleVerifyOtp}
+          className="w-full bg-green-600 text-white py-2 rounded mt-2 font-medium"
+        >
+          Verify OTP
+        </button>
+      )}
+    </div>
+  </div>
+)}
+
+
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               <InfoItem label="Rent" value={`₹${property.price || 'N/A'}`} />
