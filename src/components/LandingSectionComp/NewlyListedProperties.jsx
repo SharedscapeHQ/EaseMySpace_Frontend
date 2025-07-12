@@ -14,9 +14,6 @@ const parseImages = (raw) => {
   return [];
 };
 
-const pickCover = (arr = []) =>
-  arr.find((u) => /\.(jpe?g|png|webp)$/i.test(u)) || null;
-
 export default function NewlyListedProperties() {
   const [newlyListed, setNewlyListed] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +32,7 @@ export default function NewlyListedProperties() {
           })
           .map((p) => {
             const images = parseImages(p.image);
-            return { ...p, images, cover: pickCover(images) };
+            return { ...p, images };
           });
         setNewlyListed(filtered);
       } catch (err) {
@@ -69,16 +66,31 @@ export default function NewlyListedProperties() {
             key={p.id}
             className="bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col cursor-pointer"
           >
-            {p.cover ? (
-              <img
-                loading="lazy"
-                src={p.cover}
-                alt={p.title}
-                className="h-48 w-full object-cover rounded-t-lg"
-              />
+            {p.images && p.images.length > 0 ? (
+              <div className="h-48 w-full rounded-t-lg overflow-hidden">
+                {p.images.map((url, idx) => {
+                  const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+                  const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+                  return isImage ? (
+                    <img
+                      key={idx}
+                      src={url}
+                      alt={`Image ${idx + 1}`}
+                      className="h-48 w-full object-cover"
+                    />
+                  ) : isVideo ? (
+                    <video
+                      key={idx}
+                      src={url}
+                      controls
+                      className="h-48 w-full object-cover"
+                    />
+                  ) : null;
+                })}
+              </div>
             ) : (
               <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-lg">
-                No Image
+                No Media
               </div>
             )}
 

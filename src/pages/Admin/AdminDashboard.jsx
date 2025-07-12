@@ -111,6 +111,7 @@ export default function AdminDashboard() {
       await logoutUser();
     } catch {}
     localStorage.removeItem("user");
+    window.dispatchEvent(new Event("auth-change"));
     navigate("/");
   };
 
