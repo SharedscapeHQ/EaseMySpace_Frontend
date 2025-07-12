@@ -152,6 +152,8 @@ function PropertyDetail() {
 
   // otp state management
 
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+
   const [resending, setResending] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
   const cache = localStorage.getItem("user");
@@ -277,8 +279,11 @@ const handleVerifyOtp = async () => {
 
     if (res.data.verified === true) {
       console.log("OTP verified successfully");
-      setShowFullDesc(true);
-      setShowOtpPopup(false);
+
+      setIsOtpVerified(true);          // ✅ Mark as verified
+      setShowOtpPopup(false);          // Hide popup
+      setShowFullDesc(true);           // Show description
+
       alert("OTP verified successfully!");
     } else {
       alert(res.data.message || "Invalid OTP.");
@@ -288,6 +293,7 @@ const handleVerifyOtp = async () => {
     alert("Error verifying OTP.");
   }
 };
+
 
 
 
@@ -379,17 +385,15 @@ const handleVerifyOtp = async () => {
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}
                   disabled={hasPaid}
-                 onClick={() => {
-  if (!isLoggedIn) {
-    alert("Please login to proceed.");
-    window.location.href = `/login?redirect=/properties/${id}`;
-    return;
+                onClick={() => {
+  if (isOtpVerified) {
+    loadRazorpay(1299, () => {
+      setHasPaid(true);
+      alert("Payment successful! Contact unlocked.");
+    });
+  } else {
+    setShowOtpPopup(true);
   }
-
-  loadRazorpay(1299, () => {
-    setHasPaid(true);
-    alert("Payment successful! Contact unlocked.");
-  });
 }}
                 >
                   {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299 & Unlock'}
