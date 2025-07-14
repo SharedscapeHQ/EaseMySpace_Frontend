@@ -157,7 +157,7 @@ export default function ViewAllProperties() {
     </div>
 </section>
 
-     <div className="sticky top-20 z-30 mb-5 shadow-sm  border bg-white/40 backdrop-blur-md border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto">
+     <div className="sticky top-20 z-30 mb-5 shadow-sm  border bg-white/40 backdrop-blur-md border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
   <div className="flex items-center  gap-2 min-w-max">
     {/* Mobile Filter Icon Button */}
     <button
