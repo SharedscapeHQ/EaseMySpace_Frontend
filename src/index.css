@@ -36,6 +36,15 @@
     border-radius: 100px;
 }
 
+.scrollbar-hide {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* Internet Explorer 10+ */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+
 /* In your global CSS file (e.g., index.css) or Tailwind configuration file */
 
 /* Scrollable Container */
