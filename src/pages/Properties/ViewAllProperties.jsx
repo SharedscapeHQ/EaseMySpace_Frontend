@@ -52,6 +52,9 @@ export default function ViewAllProperties() {
   const { search } = useLocation();
   const qs = new URLSearchParams(search);
 
+  const [showSortMenu, setShowSortMenu] = useState(false);
+
+
   const [properties, setProperties] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -139,69 +142,88 @@ export default function ViewAllProperties() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center">
-          <button
-            onClick={() => setShowFilters(true)}
-            className="md:hidden mb-6 inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow text-sm"
-          >
-            <span className="text-xl">🧰</span> Filters
-          </button>
+       <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center w-full md:overflow-visible overflow-x-hidden">
+         
 
-          <div className="sticky top-20 rounded-2xl z-30 bg-white shadow-sm border-y border-gray-200 px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-  <div className="text-sm font-medium text-gray-700">
-    Total <span className="text-blue-500">{filtered.length}</span>  Listings
-  </div>
+        <section className="w-full  max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 px-2 md:px-8">
+  <h1 className="text-3xl sm:text-4xl font-semibold text-gray-900">
+    {headingText}
+  </h1>
+  <p className="text-gray-600 text-sm">
+    Find your perfect space among verified properties
+  </p>
+  <div className="inline md:hidden text-sm font-medium text-gray-700 flex-shrink-0">Total
+      <span className="text-blue-500">  {filtered.length}</span> Listings
+    </div>
+</section>
 
-  <div className="flex items-center gap-4 flex-wrap">
+     <div className="sticky top-20 z-30 mb-5 shadow-sm  border bg-white/40 backdrop-blur-md border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto">
+  <div className="flex items-center  gap-2 min-w-max">
+    {/* Mobile Filter Icon Button */}
+    <button
+      onClick={() => setShowFilters(true)}
+      className="md:hidden text-xl px-2 py-1 rounded-full text-gray-600 hover:bg-gray-100 flex-shrink-0"
+      title="Filters"
+    >
+      ⋮
+    </button>
+
+    {/* Property Count — inline on desktop */}
+    <div className="hidden md:block text-sm font-medium text-gray-700 flex-shrink-0">Total
+      <span className="text-blue-500">  {filtered.length}</span> Listings
+    </div>
+
+    {/* Search Input */}
     <input
-  type="text"
-  name="location"
-  value={filters.location}
-  onChange={(e) => {
-    handleFilterChange(e);
-    setFiltered(applyFiltersSort(properties, {
-      ...filters,
-      location: e.target.value
-    }, sort));
-  }}
-  placeholder="Search by location"
-  className="px-3 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-/>
+      type="text"
+      name="location"
+      value={filters.location}
+      onChange={(e) => {
+        handleFilterChange(e);
+        setFiltered(
+          applyFiltersSort(
+            properties,
+            { ...filters, location: e.target.value },
+            sort
+          )
+        );
+      }}
+      placeholder="Search by location"
+      className="px-2 py-1.5 md:w-[40%] md:mx-3 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 flex-shrink-0"
+    />
 
-    <div className="flex items-center gap-2">
+  
+    <div className="flex gap-2 md:pl-0 pl-8">
       <button
         onClick={() => setSort("price_desc")}
-        className={`text-sm px-3 py-1.5 rounded-lg border ${
+        className={`text-sm px-3 py-1.5 rounded-lg border whitespace-nowrap  ${
           sort === "price_desc"
             ? "bg-indigo-100 text-indigo-700 border-indigo-200"
             : "text-gray-600 border-gray-200 hover:bg-gray-100"
         }`}
       >
-        Rent (High → Low)
+        <span className="hidden md:inline">Rent</span> (High → Low)
       </button>
       <button
         onClick={() => setSort("price_asc")}
-        className={`text-sm px-3 py-1.5 rounded-lg border ${
+        className={`text-sm px-3 py-1.5 rounded-lg border whitespace-nowrap ${
           sort === "price_asc"
             ? "bg-indigo-100 text-indigo-700 border-indigo-200"
             : "text-gray-600 border-gray-200 hover:bg-gray-100"
         }`}
       >
-        Rent (Low → High)
+       <span className="hidden md:inline">Rent</span>  (Low → High)
       </button>
     </div>
   </div>
 </div>
 
 
-          <section className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-semibold text-gray-900">
-              {headingText}
-            </h1>
-            <p className="text-gray-600 max-w-xl mx-auto text-sm">
-              Find your perfect space among verified properties
-            </p>
-          </section>
+
+
+
+
+        
 
           <section className="w-full max-w-4xl">
   {loading ? (

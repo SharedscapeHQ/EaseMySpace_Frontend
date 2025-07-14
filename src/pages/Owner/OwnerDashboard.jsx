@@ -619,6 +619,125 @@ const [loadingLeads, setLoadingLeads] = useState(true);
          </section>
        )}
        
+
+        {editingProperty && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4">
+    <div className="bg-white p-6 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <h3 className="text-xl font-bold mb-4">Edit Property</h3>
+
+      {[
+        ["title", "Title"],
+        ["location", "Location"],
+        ["price", "Price"],
+        ["deposit", "Deposit"],
+        ["flat_status", "Flat Status"],
+        ["status", "Status", "select", ["pending", "approved", "rejected"]],
+        ["bhk_type", "BHK Type"],
+        ["bhk", "BHK"],
+        ["bathrooms", "Bathrooms"],
+        ["floor_number", "Floor Number"],
+        ["total_floors", "Total Floors"],
+        ["property_size", "Property Size"],
+        ["property_type", "Property Type"],
+        ["furnishing", "Furnishing"],
+        ["parking", "Parking"],
+        ["facing", "Facing"],
+        ["balcony", "Balcony"],
+        ["age_of_property", "Age of Property"],
+        ["owner_code", "Owner Code"],
+        ["looking_for", "Looking For"],
+        ["occupancy", "Occupancy"],
+        ["distance_from_station", "Distance from Station"],
+        ["gender", "Gender"],
+        ["owner_phone", "Owner Phone"],
+        ["amenities", "Amenities (comma-separated)"],
+        ["description", "Description", "textarea"]
+      ].map(([field, label, type = "text", options = []]) => (
+        <div key={field} className="mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {label}
+          </label>
+          {type === "select" ? (
+            <select
+              name={field}
+              value={editForm[field] || ""}
+              onChange={handleEditChange}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Select</option>
+              {options.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          ) : type === "textarea" ? (
+            <textarea
+              name={field}
+              value={editForm[field] || ""}
+              onChange={handleEditChange}
+              className="w-full border px-3 py-2 rounded"
+              rows={3}
+            />
+          ) : (
+            <input
+              type={type}
+              name={field}
+              value={editForm[field] || ""}
+              onChange={handleEditChange}
+              className="w-full border px-3 py-2 rounded"
+            />
+          )}
+        </div>
+      ))}
+
+      <div className="flex items-center gap-2 mb-3">
+        <input
+          type="checkbox"
+          name="is_newly_listed"
+          checked={!!editForm.is_newly_listed}
+          onChange={(e) =>
+            setEditForm((prev) => ({
+              ...prev,
+              is_newly_listed: e.target.checked,
+            }))
+          }
+        />
+        <label className="text-sm">Mark as Newly Listed</label>
+      </div>
+
+      {editForm.is_newly_listed && (
+        <div className="mb-3">
+          <label className="block text-sm font-medium mb-1">
+            Newly Listed Position
+          </label>
+          <input
+            type="number"
+            name="newly_listed_position"
+            value={editForm.newly_listed_position || ""}
+            onChange={handleEditChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+      )}
+
+      <div className="flex justify-end gap-3 mt-4">
+        <button
+          onClick={() => setEditingProperty(null)}
+          className="bg-gray-300 px-4 py-2 rounded"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleEditSubmit}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       </main>
     </div>
   );
