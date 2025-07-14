@@ -26,7 +26,7 @@ function ScrollToTopButton() {
         style={{
           position: "fixed",
           bottom: "20px",
-          right: "20px",
+          right: "60px",
           width: "50px",
           height: "50px",
           backgroundColor: "#007bff", // blue

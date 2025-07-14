@@ -10,6 +10,11 @@ const adminAxios = axios.create({
 export const getAllUsers = () => {
   return adminAxios.get("/users");
 };
+export const getAllLeads = () => {
+  return axios.get("https://api.easemyspace.in/api/leads/All", {
+    withCredentials: true, 
+  });
+};
 
 // 🔹 GET all properties (admin-only)
 export const getAllProperties = () => {

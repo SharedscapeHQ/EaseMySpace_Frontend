@@ -44,8 +44,29 @@ export default function NewlyListedProperties() {
     fetchNewlyListed();
   }, []);
 
-  if (loading)
-    return <p className="text-indigo-600">Loading newly listed properties…</p>;
+  if (loading) {
+  return (
+    <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto">
+      <h2 className="text-3xl font-bold text-indigo-800 mb-6">
+        Newly Listed Properties
+      </h2>
+      <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="bg-white rounded-lg shadow-md p-4 animate-pulse flex flex-col"
+          >
+            <div className="h-48 bg-gray-200 rounded-lg mb-4" />
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+            <div className="h-3 bg-gray-200 rounded w-1/2 mb-2" />
+            <div className="h-5 bg-gray-300 rounded w-1/3 mt-auto" />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 
   if (newlyListed.length === 0)
     return <p className="text-gray-500">No newly listed properties found.</p>;

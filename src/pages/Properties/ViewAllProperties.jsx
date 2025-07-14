@@ -139,13 +139,60 @@ export default function ViewAllProperties() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col items-center">
+        <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center">
           <button
             onClick={() => setShowFilters(true)}
             className="md:hidden mb-6 inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow text-sm"
           >
-            <span className="text-xl">🧰</span> Filters & Sort
+            <span className="text-xl">🧰</span> Filters
           </button>
+
+          <div className="sticky top-20 rounded-2xl z-30 bg-white shadow-sm border-y border-gray-200 px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+  <div className="text-sm font-medium text-gray-700">
+    Total <span className="text-blue-500">{filtered.length}</span>  Listings
+  </div>
+
+  <div className="flex items-center gap-4 flex-wrap">
+    <input
+  type="text"
+  name="location"
+  value={filters.location}
+  onChange={(e) => {
+    handleFilterChange(e);
+    setFiltered(applyFiltersSort(properties, {
+      ...filters,
+      location: e.target.value
+    }, sort));
+  }}
+  placeholder="Search by location"
+  className="px-3 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+/>
+
+    <div className="flex items-center gap-2">
+      <button
+        onClick={() => setSort("price_desc")}
+        className={`text-sm px-3 py-1.5 rounded-lg border ${
+          sort === "price_desc"
+            ? "bg-indigo-100 text-indigo-700 border-indigo-200"
+            : "text-gray-600 border-gray-200 hover:bg-gray-100"
+        }`}
+      >
+        Rent (High → Low)
+      </button>
+      <button
+        onClick={() => setSort("price_asc")}
+        className={`text-sm px-3 py-1.5 rounded-lg border ${
+          sort === "price_asc"
+            ? "bg-indigo-100 text-indigo-700 border-indigo-200"
+            : "text-gray-600 border-gray-200 hover:bg-gray-100"
+        }`}
+      >
+        Rent (Low → High)
+      </button>
+    </div>
+  </div>
+</div>
+
 
           <section className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-semibold text-gray-900">
@@ -157,18 +204,40 @@ export default function ViewAllProperties() {
           </section>
 
           <section className="w-full max-w-4xl">
-            {filtered.length === 0 ? (
-              <p className="text-center text-gray-500 text-lg mt-20">
-                No properties match your filters.
-              </p>
-            ) : (
-              <div className="space-y-8">
-                {filtered.map((p) => (
-                  <PropertyCard key={p.id} p={p} />
-                ))}
-              </div>
-            )}
-          </section>
+  {loading ? (
+    <div className="space-y-6">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="animate-pulse bg-white rounded-xl shadow border border-gray-200 p-4 flex flex-col md:flex-row gap-4"
+        >
+          <div className="w-full md:w-64 h-48 bg-gray-200 rounded-lg" />
+          <div className="flex-1 space-y-3">
+            <div className="h-5 bg-gray-200 rounded w-3/4" />
+            <div className="h-3 bg-gray-200 rounded w-1/2" />
+            <div className="h-3 bg-gray-200 rounded w-1/3" />
+            <div className="h-4 bg-gray-200 rounded w-full" />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="h-16 bg-gray-100 rounded-lg" />
+              <div className="h-16 bg-gray-100 rounded-lg" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : filtered.length === 0 ? (
+    <p className="text-center text-gray-500 text-lg mt-20">
+      No properties match your filters.
+    </p>
+  ) : (
+    <div className="space-y-8">
+      {filtered.map((p) => (
+        <PropertyCard key={p.id} p={p} />
+      ))}
+    </div>
+  )}
+</section>
+
         </main>
       </div>
 
@@ -225,18 +294,18 @@ const SidebarContent = React.memo(function SidebarContent({
 }) {
   return (
     <div className="space-y-5 text-sm">
-      <Input label="Location" name="location" placeholder="e.g. Andheri" filters={filters} handleChange={handleFilterChange} />
+      {/* <Input label="Location" name="location" placeholder="e.g. Andheri" filters={filters} handleChange={handleFilterChange} /> */}
       <Select label="Gender" name="gender" opts={[["", "Any"], ["male", "Male"], ["female", "Female"], ["unisex", "Unisex"]]} filters={filters} handleChange={handleFilterChange} />
       <Select label="Occupancy" name="occupancy" opts={[["", "Any"], ["single", "Single"], ["double", "Double"], ["triple", "Triple"]]} filters={filters} handleChange={handleFilterChange} />
       <Select label="BHK" name="bhk" opts={[["", "Any"], ["1", "1 BHK"], ["1.5", "1.5 BHK"], ["2", "2 BHK"], ["2.5", "2.5 BHK"], ["3", "3 BHK"], ["4", "4 BHK+"]]} filters={filters} handleChange={handleFilterChange} />
       <div>
-        <label className="block mb-2 font-semibold text-gray-700">Price Range (₹)</label>
+        <label className="block mb-2 font-semibold text-gray-700">Budget Range (₹)</label>
         <div className="flex gap-2">
           <Input name="minPrice" type="number" placeholder="Min" filters={filters} handleChange={handleFilterChange} />
           <Input name="maxPrice" type="number" placeholder="Max" filters={filters} handleChange={handleFilterChange} />
         </div>
       </div>
-      <Select label="Sort by" name="sortControl" value={sort} onChange={(e) => setSort(e.target.value)} opts={[["newest", "Newest"], ["price_asc", "Price Low → High"], ["price_desc", "Price High → Low"]]} />
+      {/* <Select label="Sort by" name="sortControl" value={sort} onChange={(e) => setSort(e.target.value)} opts={[["newest", "Newest"], ["price_asc", "Price Low → High"], ["price_desc", "Price High → Low"]]} /> */}
     </div>
   );
 });
@@ -320,7 +389,7 @@ const PropertyCard = ({ p }) => {
               {p.title || "Untitled Property"}{" "}
               <span className="text-indigo-600">{p.project}</span>
             </h2>
-            <p className="text-sm text-gray-500 truncate">• {p.location}</p>
+            <p className="text-sm text-gray-500 truncate ">📍 {p.location}</p>
           </div>
           <Link
             to={`/properties/${p.id}`}

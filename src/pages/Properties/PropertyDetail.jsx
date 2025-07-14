@@ -67,7 +67,7 @@ function PropertyDetail() {
     document.body.appendChild(script);
   });
 
-  const loadRazorpay = async (amount, onSuccessCallback) => {
+  const loadRazorpay = async (amount,userMobile, onSuccessCallback) => {
   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
   if (!res) {
     alert("Razorpay SDK failed to load. Are you online?");
@@ -95,7 +95,7 @@ function PropertyDetail() {
     prefill: {
       name: "Test User",
       email: "test@example.com",
-      contact: "9999999999",
+      contact: userMobile.startsWith('+91') ? userMobile : `+91${userMobile}`, 
     },
     theme: {
       color: "#6366F1",
@@ -152,7 +152,10 @@ function PropertyDetail() {
 
   // otp state management
 
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(() => {
+  return localStorage.getItem("otp_verified") === "true";
+});
+
 
   const [resending, setResending] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -160,7 +163,10 @@ function PropertyDetail() {
   return !!cache;
 });
 
-const [showFullDesc, setShowFullDesc] = useState(false);
+const [showFullDesc, setShowFullDesc] = useState(() => {
+  return localStorage.getItem("otp_verified") === "true";
+});
+
 const [showOtpPopup, setShowOtpPopup] = useState(false);
 const [userMobile, setUserMobile] = useState('');
 const [userOtp, setUserOtp] = useState('');
@@ -230,34 +236,28 @@ useEffect(() => {
 
 
  const handleSendOtp = async () => {
-  console.log("handleSendOtp triggered"); // ✅ Initial trigger log
 
   if (userMobile.length === 10) {
     try {
       setResending(true);
-      console.log("Sending OTP to:", userMobile); // ✅ Log number being sent
 
       const res = await axios.post("https://api.easemyspace.in/api/leads/send-otp", {
         phone: userMobile,
       });
 
-      console.log("Send OTP API Response:", res.data); // ✅ Full response log
 
       if (res.data.message === 'otp_sent') {
   setOtpSent(true);
-  console.log("OTP sent successfully");
   alert("OTP sent successfully!");
 } else {
   alert(res.data.message || "Failed to send OTP.");
 }
     } catch (err) {
-      console.error("Error in handleSendOtp:", err); // ✅ Error log
       alert("Error sending OTP. Please try again.");
     } finally {
       setResending(false);
     }
   } else {
-    console.warn("Invalid mobile number entered:", userMobile); // ✅ Invalid input log
     alert("Enter valid 10-digit mobile number");
   }
 };
@@ -265,9 +265,7 @@ useEffect(() => {
 
 
 const handleVerifyOtp = async () => {
-  console.log("handleVerifyOtp triggered");
   const formattedPhone = userMobile.startsWith("+91") ? userMobile : `+91${userMobile}`;
-  console.log("Verifying OTP:", userOtp, "for mobile:", formattedPhone);
 
   try {
     const res = await axios.post("https://api.easemyspace.in/api/leads/verify-otp", {
@@ -275,21 +273,18 @@ const handleVerifyOtp = async () => {
       code: userOtp,
     });
 
-    console.log("Verify OTP API Response:", res.data);
 
     if (res.data.verified === true) {
-      console.log("OTP verified successfully");
-
-      setIsOtpVerified(true);          // ✅ Mark as verified
-      setShowOtpPopup(false);          // Hide popup
-      setShowFullDesc(true);           // Show description
+      setIsOtpVerified(true);  
+      localStorage.setItem("otp_verified", "true");        
+      setShowOtpPopup(false);          
+      setShowFullDesc(true);           
 
       alert("OTP verified successfully!");
     } else {
       alert(res.data.message || "Invalid OTP.");
     }
   } catch (err) {
-    console.error("Error verifying OTP:", err);
     alert("Error verifying OTP.");
   }
 };
@@ -380,14 +375,14 @@ const handleVerifyOtp = async () => {
                   <p className="text-xl font-bold text-indigo-700">₹1299</p>
                 </div>
                 <button
-                  className={`mt-4 w-1/2 py-2 font-semibold rounded-xl transition-all ${hasPaid
+                  className={`mt-4 w-1/2 py-2 px-2 text-sm font-semibold rounded-xl transition-all ${hasPaid
                     ? 'bg-green-600 text-white cursor-default'
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}
                   disabled={hasPaid}
                 onClick={() => {
   if (isOtpVerified) {
-    loadRazorpay(1299, () => {
+    loadRazorpay(1299, userMobile, () => {
       setHasPaid(true);
       alert("Payment successful! Contact unlocked.");
     });
@@ -401,7 +396,7 @@ const handleVerifyOtp = async () => {
               </div>
 
               <div className="w-full">
-                <div className="w-full bg-white border border-gray-300 rounded-2xl flex items-center justify-between p-4 shadow-sm">
+                <div className="w-full bg-zinc-100 border border-gray-300 rounded-2xl flex items-center justify-between p-4 shadow-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-md bg-gray-100 flex items-center justify-center">
                       <span className="text-blue-600 text-xl">📍</span>

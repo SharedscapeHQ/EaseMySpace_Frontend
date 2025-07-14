@@ -28,12 +28,13 @@ const UserDashboard = () => {
 
   const handleLogout = async () => {
   try {
-    await logoutUser(); // Optional backend logout
+    await logoutUser(); 
   } catch (err) {
     console.error("Logout failed:", err);
   } finally {
-    const savedUser = localStorage.getItem("user"); // get current user before removing
+    const savedUser = localStorage.getItem("user"); 
     localStorage.removeItem("user");
+    localStorage.removeItem("otp_verified");
 
     // Force storage event manually for same-tab update
     window.dispatchEvent(new StorageEvent("storage", {
@@ -42,11 +43,9 @@ const UserDashboard = () => {
       newValue: null,
     }));
 
-    navigate("/"); // or navigate("/login")
+    navigate("/"); 
   }
 };
-
-
 
   return (
     <div className="flex min-h-screen bg-gray-100 font-sans">

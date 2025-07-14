@@ -80,7 +80,7 @@ export default function Navbar() {
               className="flex items-center gap-1 text-zinc-700"
             >
               {user && (
-                <span className="hidden sm:inline text-sm font-medium">
+                <span className="hidden sm:inline capitalize text-sm font-medium">
                   Hello, {user.firstName}
                 </span>
               )}

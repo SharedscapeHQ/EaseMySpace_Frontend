@@ -3,6 +3,7 @@ import TeamCard from "./TeamCard";
 import RakeshImg from "/TeamImg/Rakesh.jpeg"
 import YogitaImg from "/TeamImg/Yogita.jpeg"
 import TaniyaImg from "/TeamImg/Taniya.jpeg"
+import ArvindImg from "/TeamImg/Arvind.jpg"
 
 const teamMembers = [
   {
@@ -31,7 +32,7 @@ const teamMembers = [
     name: "Arvind Vishwakarma",
     role: "UI/UX & Full Stack Developer",
     description:"A skilled full stack developer and UI/UX designer, managing all technical aspects to create seamless and engaging user experiences at EaseMySpace.",
-    imageSrc: "https://your-image-source.com/isha.jpg", 
+    imageSrc: ArvindImg, 
     linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?"
   },
 ];

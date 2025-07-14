@@ -72,7 +72,7 @@ export default function TeamCard({ name, role, description, imageSrc, linkedin }
         {/* Back Side */}
         <div className="absolute w-full h-full bg-gradient-to-br from-[#111214] to-[#1F2125] text-zinc-300 border border-blue-500/30 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center text-sm leading-relaxed text-center rotate-y-180 backface-hidden">
           <div className="mb-3">
-            <h4 className="text-white font-semibold text-lg">About {name}</h4>
+            <h4 className="text-white font-semibold text-lg">About <span className="text-blue-500">{name}</span></h4>
           </div>
 
           <p className="whitespace-pre-line">{description}</p>

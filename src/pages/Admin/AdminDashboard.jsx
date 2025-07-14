@@ -1,7 +1,9 @@
+// Ensure `markNewlyListed` accepts (id, isNewlyListed: boolean, position: number | null)
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  getAllUsers,
+  getAllLeads,
   getAllProperties,
   deleteProperty,
   approveProperty,
@@ -17,33 +19,36 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
+  const [leads, setLeads] = useState([]);
   const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingProps, setLoadingProps] = useState(true);
-  const [activeTab, setActiveTab] = useState("users");
+  const [activeTab, setActiveTab] = useState("Leads");
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
     title: "",
     location: "",
     price: "",
     status: "pending",
+    is_newly_listed: false,
+    newly_listed_position: "",
   });
 
   useEffect(() => {
     (async () => {
       try {
-        setLoadingUsers(true);
-        const { data } = await getAllUsers();
-        setUsers(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Error fetching users", err);
+        setLoadingLeads(true);
+        const { data } = await getAllLeads();
+        setLeads(Array.isArray(data) ? data : []);
+      } catch {
+        toast.error("Error loading leads");
       } finally {
-        setLoadingUsers(false);
+        setLoadingLeads(false);
       }
     })();
   }, []);
@@ -57,8 +62,8 @@ export default function AdminDashboard() {
       setLoadingProps(true);
       const { data } = await getAllProperties();
       setProperties(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error fetching properties", err);
+    } catch {
+      toast.error("Error loading properties");
     } finally {
       setLoadingProps(false);
     }
@@ -66,124 +71,138 @@ export default function AdminDashboard() {
 
   const handleApprove = async (id) => {
     await approveProperty(id);
+    toast.success("Property approved");
     fetchProperties();
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this property?")) {
       await deleteProperty(id);
+      toast.success("Property deleted");
       fetchProperties();
     }
   };
 
   const openEditModal = (property) => {
-    setEditingProperty(property);
-    setEditForm({
-      title: property.title || "",
-      location: property.location || "",
-      price: property.price || "",
-      status: property.status || "pending",
-    });
-  };
+  setEditingProperty(property);
+  setEditForm({
+    ...property,
+    amenities: Array.isArray(property.amenities)
+      ? property.amenities.join(", ")
+      : property.amenities || "",
+    is_newly_listed: property.is_newly_listed || false,
+    newly_listed_position: property.newly_listed_position || "",
+  });
+};
 
   const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setEditForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  const handleEditSubmit = async () => {
-    try {
-      await editProperty(editingProperty.id, {
-        ...editForm,
-        id: editingProperty.id,
-      });
-      alert("Property updated");
-      setEditingProperty(null);
-      await fetchProperties();
-    } catch (err) {
-      console.error("Error updating property", err.response?.data || err);
-      alert("Error updating property");
-    }
-  };
+ const handleEditSubmit = async () => {
+  try {
+    // Prepare update data
+    const updateData = {
+      ...editForm,
+      amenities: editForm.amenities
+        ? editForm.amenities.split(",").map((a) => a.trim())
+        : [],
+      newly_listed_position: editForm.is_newly_listed
+        ? Number(editForm.newly_listed_position)
+        : null,
+    };
+
+    await editProperty(editingProperty.id, updateData);
+    toast.success("Property updated");
+    setEditingProperty(null);
+    fetchProperties();
+  } catch (err) {
+    toast.error("Update failed");
+    console.error("Edit submit error:", err);
+  }
+};
 
   const handleLogout = async () => {
     try {
       await logoutUser();
     } catch {}
-    localStorage.removeItem("user");
+    localStorage.clear();
     window.dispatchEvent(new Event("auth-change"));
     navigate("/");
   };
 
-  const filteredProperties = Array.isArray(properties)
-    ? statusFilter === "all"
+  const filteredProperties =
+    statusFilter === "all"
       ? properties
-      : properties.filter((p) => p.status?.toLowerCase() === statusFilter)
-    : [];
+      : properties.filter((p) => p.status?.toLowerCase() === statusFilter);
 
   const approved = properties.filter((p) => p.status === "approved");
-  const pending = properties.filter((p) => p.status === "pending");
-  const rejected = properties.filter((p) => p.status === "rejected");
+  const newlyListed = approved.filter((p) => p.is_newly_listed);
 
   const pieData = [
     { name: "Approved", value: approved.length, color: "#16a34a" },
-    { name: "Pending", value: pending.length, color: "#facc15" },
-    { name: "Rejected", value: rejected.length, color: "#dc2626" },
+    { name: "Pending", value: properties.filter((p) => p.status === "pending").length, color: "#facc15" },
+    { name: "Rejected", value: properties.filter((p) => p.status === "rejected").length, color: "#dc2626" },
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row">
-      <aside className="w-full lg:w-64 bg-white shadow-lg p-6 border-r">
-        <h2 className="text-xl font-bold text-indigo-700 mb-4">Admin Panel</h2>
-        <nav className="flex flex-col gap-3">
-          {["users", "properties", "newly_listed"].map((tab) => (
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <Toaster />
+      <aside className="w-full lg:w-64 bg-white shadow-md p-6 border-r">
+        <h2 className="text-xl font-bold text-indigo-700 mb-6">Admin Panel</h2>
+        <nav className="space-y-2">
+          {["Leads", "Properties", "Newly_listed"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`text-left px-4 py-2 rounded ${
+              className={`block w-full text-left px-4 py-2 rounded transition ${
                 activeTab === tab
                   ? "bg-indigo-100 text-indigo-700"
-                  : "hover:bg-gray-100"
+                  : "hover:bg-gray-100 text-gray-700"
               }`}
             >
-              {tab.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+              {tab.replace("_", " ")}
             </button>
           ))}
         </nav>
         <button
           onClick={handleLogout}
-          className="mt-10 px-4 py-2 text-red-600 hover:bg-red-100 rounded"
+          className="mt-10 w-full text-red-600 hover:bg-red-100 px-4 py-2 rounded"
         >
           Logout
         </button>
       </aside>
 
-      <main className="flex-1 p-6">
-        <h1 className="text-3xl font-bold text-indigo-800 mb-6">Admin Dashboard</h1>
+      <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+        <h1 className="text-2xl font-bold text-indigo-800 mb-6">Admin Dashboard</h1>
 
-        {activeTab === "users" && (
+        {activeTab === "Leads" && (
           <section>
-            <h2 className="text-2xl font-semibold mb-4">Users</h2>
-            {loadingUsers ? (
-              <p>Loading...</p>
+            <h2 className="text-xl font-semibold mb-4">Leads</h2>
+            {loadingLeads ? (
+              <p>Loading leads...</p>
             ) : (
-              <div className="overflow-auto bg-white rounded shadow p-4">
-                <table className="w-full text-sm">
-                  <thead className="bg-indigo-50">
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm bg-white rounded shadow">
+                  <thead className="bg-indigo-100">
                     <tr>
-                      <th className="p-2 text-left">Name</th>
-                      <th className="p-2 text-left">Email</th>
                       <th className="p-2 text-left">Phone</th>
-                      <th className="p-2 text-left">Role</th>
+                      <th className="p-2 text-left">Source</th>
+                      <th className="p-2 text-left">First Seen</th>
+                      <th className="p-2 text-left">Last Verified</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((user) => (
-                      <tr key={user.id} className="border-b hover:bg-gray-50">
-                        <td className="p-2">{user.name}</td>
-                        <td className="p-2">{user.email}</td>
-                        <td className="p-2">{user.phone || "-"}</td>
-                        <td className="p-2 capitalize">{user.role}</td>
+                    {leads.map((lead) => (
+                      <tr key={lead.id} className="border-b hover:bg-gray-50">
+                        <td className="p-2">{lead.phone}</td>
+                        <td className="p-2">{lead.source || "-"}</td>
+                        <td className="p-2">{lead.first_seen ? new Date(lead.first_seen).toLocaleString() : "-"}</td>
+                        <td className="p-2">{lead.last_verified_at ? new Date(lead.last_verified_at).toLocaleString() : "-"}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -193,10 +212,10 @@ export default function AdminDashboard() {
           </section>
         )}
 
-        {activeTab === "properties" && (
+        {activeTab === "Properties" && (
           <section>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">Properties</h2>
+              <h2 className="text-xl font-semibold">Properties</h2>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
@@ -230,32 +249,40 @@ export default function AdminDashboard() {
               </PieChart>
             </ResponsiveContainer>
 
-            <div className="grid md:grid-cols-2 gap-6 mt-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
               {filteredProperties.map((property) => (
-                <div key={property.id} className="bg-white p-4 rounded shadow">
+                <div key={property.id} className="bg-white rounded shadow overflow-hidden">
                   <img
                     src={Array.isArray(property.image) ? property.image[0] : property.image}
                     alt={property.title}
-                    className="w-full h-48 object-cover rounded"
+                    className="w-full h-48 object-cover"
                   />
-                  <h3 className="text-lg font-bold text-indigo-700 mt-2">{property.title}</h3>
-                  <p className="text-gray-600">{property.location}</p>
-                  <p className="text-indigo-900 font-bold">₹{property.price}</p>
-                  <p className="text-sm text-gray-500">Owner Code: {property.owner_code || "N/A"}</p>
-                  <p className="text-sm text-gray-500">Name: {property.name || "N/A"}</p>
-                  <p className="text-sm text-gray-500">Phone: {property.phone || "N/A"}</p>
-                  <div className="mt-3 flex gap-2">
-                    {property.status === "pending" && (
-                      <button onClick={() => handleApprove(property.id)} className="bg-green-600 text-white px-3 py-1 rounded">
-                        Approve
+                  <div className="p-4 space-y-1">
+                    <h3 className="text-lg font-bold text-indigo-700">{property.title}</h3>
+                    <p className="text-gray-600">{property.location}</p>
+                    <p className="text-indigo-900 font-semibold">₹{property.price}</p>
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      {property.status === "pending" && (
+                        <button
+                          onClick={() => handleApprove(property.id)}
+                          className="bg-green-600 text-white px-3 py-1 rounded"
+                        >
+                          Approve
+                        </button>
+                      )}
+                      <button
+                        onClick={() => openEditModal(property)}
+                        className="bg-blue-600 text-white px-3 py-1 rounded"
+                      >
+                        Edit
                       </button>
-                    )}
-                    <button onClick={() => openEditModal(property)} className="bg-blue-600 text-white px-3 py-1 rounded">
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(property.id)} className="bg-red-600 text-white px-3 py-1 rounded">
-                      Delete
-                    </button>
+                      <button
+                        onClick={() => handleDelete(property.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -263,10 +290,10 @@ export default function AdminDashboard() {
           </section>
         )}
 
-        {activeTab === "newly_listed" && (
+        {activeTab === "Newly_listed" && (
           <section>
-            <h2 className="text-2xl font-semibold mb-4">Newly Listed</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+            <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {approved.map((property) => (
                 <div key={property.id} className="bg-white p-4 rounded shadow">
                   <img
@@ -277,67 +304,154 @@ export default function AdminDashboard() {
                   <h3 className="text-lg font-semibold text-indigo-700 mt-2">{property.title}</h3>
                   <p className="text-gray-600">{property.location}</p>
                   <p className="text-indigo-900 font-bold">₹{property.price}</p>
-                  <button
-                    onClick={() => markNewlyListed(property.id, true, 1).then(fetchProperties)}
-                    className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
-                  >
-                    Mark as Newly Listed
-                  </button>
+                  {property.is_newly_listed ? (
+                    <>
+                      <p className="text-sm text-green-600 mt-2">Listed Position: {property.newly_listed_position || "-"}</p>
+                      <button
+                        onClick={() =>
+                          markNewlyListed(property.id, false, null).then(fetchProperties)
+                        }
+                        className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                      >
+                        Remove from Newly Listed
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        markNewlyListed(property.id, true, 1).then(fetchProperties)
+                      }
+                      className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+                    >
+                      Mark as Newly Listed
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        {editingProperty && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg w-full max-w-md space-y-4">
-              <h3 className="text-xl font-bold">Edit Property</h3>
-              <input
-                type="text"
-                name="title"
-                value={editForm.title}
-                onChange={handleEditChange}
-                placeholder="Title"
-                className="w-full border px-3 py-2 rounded"
-              />
-              <input
-                type="text"
-                name="location"
-                value={editForm.location}
-                onChange={handleEditChange}
-                placeholder="Location"
-                className="w-full border px-3 py-2 rounded"
-              />
-              <input
-                type="number"
-                name="price"
-                value={editForm.price}
-                onChange={handleEditChange}
-                placeholder="Price"
-                className="w-full border px-3 py-2 rounded"
-              />
-              <select
-                name="status"
-                value={editForm.status}
-                onChange={handleEditChange}
-                className="w-full border px-3 py-2 rounded"
-              >
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-              </select>
-              <div className="flex justify-end gap-3 pt-4">
-                <button onClick={() => setEditingProperty(null)} className="px-4 py-2 bg-gray-300 rounded">
-                  Cancel
-                </button>
-                <button onClick={handleEditSubmit} className="px-4 py-2 bg-blue-600 text-white rounded">
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+       {editingProperty && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4">
+    <div className="bg-white p-6 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <h3 className="text-xl font-bold mb-4">Edit Property</h3>
+
+      {[
+        ["title", "Title"],
+        ["location", "Location"],
+        ["price", "Price"],
+        ["deposit", "Deposit"],
+        ["flat_status", "Flat Status"],
+        ["status", "Status", "select", ["pending", "approved", "rejected"]],
+        ["bhk_type", "BHK Type"],
+        ["bhk", "BHK"],
+        ["bathrooms", "Bathrooms"],
+        ["floor_number", "Floor Number"],
+        ["total_floors", "Total Floors"],
+        ["property_size", "Property Size"],
+        ["property_type", "Property Type"],
+        ["furnishing", "Furnishing"],
+        ["parking", "Parking"],
+        ["facing", "Facing"],
+        ["balcony", "Balcony"],
+        ["age_of_property", "Age of Property"],
+        ["owner_code", "Owner Code"],
+        ["looking_for", "Looking For"],
+        ["occupancy", "Occupancy"],
+        ["distance_from_station", "Distance from Station"],
+        ["gender", "Gender"],
+        ["owner_phone", "Owner Phone"],
+        ["amenities", "Amenities (comma-separated)"],
+        ["description", "Description", "textarea"]
+      ].map(([field, label, type = "text", options = []]) => (
+        <div key={field} className="mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {label}
+          </label>
+          {type === "select" ? (
+            <select
+              name={field}
+              value={editForm[field] || ""}
+              onChange={handleEditChange}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Select</option>
+              {options.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          ) : type === "textarea" ? (
+            <textarea
+              name={field}
+              value={editForm[field] || ""}
+              onChange={handleEditChange}
+              className="w-full border px-3 py-2 rounded"
+              rows={3}
+            />
+          ) : (
+            <input
+              type={type}
+              name={field}
+              value={editForm[field] || ""}
+              onChange={handleEditChange}
+              className="w-full border px-3 py-2 rounded"
+            />
+          )}
+        </div>
+      ))}
+
+      <div className="flex items-center gap-2 mb-3">
+        <input
+          type="checkbox"
+          name="is_newly_listed"
+          checked={!!editForm.is_newly_listed}
+          onChange={(e) =>
+            setEditForm((prev) => ({
+              ...prev,
+              is_newly_listed: e.target.checked,
+            }))
+          }
+        />
+        <label className="text-sm">Mark as Newly Listed</label>
+      </div>
+
+      {editForm.is_newly_listed && (
+        <div className="mb-3">
+          <label className="block text-sm font-medium mb-1">
+            Newly Listed Position
+          </label>
+          <input
+            type="number"
+            name="newly_listed_position"
+            value={editForm.newly_listed_position || ""}
+            onChange={handleEditChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+      )}
+
+      <div className="flex justify-end gap-3 mt-4">
+        <button
+          onClick={() => setEditingProperty(null)}
+          className="bg-gray-300 px-4 py-2 rounded"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleEditSubmit}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
       </main>
     </div>
   );

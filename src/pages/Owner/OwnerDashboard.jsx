@@ -7,6 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   getAllProperties,
+  getAllLeads,
   deleteProperty,
   approveProperty,
   editProperty,
@@ -15,13 +16,17 @@ import {
 import { logoutUser } from "../../API/authAPI";
 
 export default function OwnerDashboard() {
-  const [activeTab, setActiveTab] = useState("users");
+  const [activeTab, setActiveTab] = useState("Users");
 
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
 const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [loadingProps, setLoadingProps] = useState(true);
+
+  const [leads, setLeads] = useState([]);
+const [loadingLeads, setLoadingLeads] = useState(true);
+
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -37,10 +42,23 @@ const [properties, setProperties] = useState([]);
 
   const navigate = useNavigate();
 
+  const fetchLeads = async () => {
+  setLoadingLeads(true);
+  try {
+    const { data } = await getAllLeads();
+    setLeads(data);
+  } catch (err) {
+    console.error("Error fetching leads", err);
+  } finally {
+    setLoadingLeads(false);
+  }
+};
+
   useEffect(() => {
-    if (activeTab === "users") fetchUsers();
-    if (["properties", "newlyListed"].includes(activeTab)) fetchProperties();
-  }, [activeTab]);
+  if (activeTab === "Users") fetchUsers();
+  if (["Properties", "NewlyListed"].includes(activeTab)) fetchProperties();
+  if (activeTab === "Leads") fetchLeads();
+}, [activeTab]);
 
   // Fetch Users
   const fetchUsers = async () => {
@@ -170,6 +188,7 @@ const [properties, setProperties] = useState([]);
       } finally {
         const savedUser = localStorage.getItem("user");
         localStorage.removeItem("user");
+        localStorage.removeItem("otp_verified");
   
         // Dispatch manual storage event for same-tab updates
         window.dispatchEvent(
@@ -197,17 +216,30 @@ const [properties, setProperties] = useState([]);
           </div>
           <nav className="p-4">
             <button
-              onClick={() => setActiveTab("users")}
+              onClick={() => setActiveTab("Users")}
               className={`w-full text-left px-4 py-2 rounded mb-2 font-medium ${
-                activeTab === "users"
+                activeTab === "Users"
                   ? "bg-indigo-100 text-indigo-700"
                   : "text-gray-700 hover:bg-gray-100"
               }`}
             >
               👤 Users
             </button>
+
+<button
+  onClick={() => setActiveTab("Leads")}
+  className={`w-full text-left px-4 py-2 rounded mb-2 font-medium ${
+    activeTab === "leads"
+      ? "bg-indigo-100 text-indigo-700"
+      : "text-gray-700 hover:bg-gray-100"
+  }`}
+>
+  📋 Leads
+</button>
+
+
             <button
-            onClick={() => setActiveTab("properties")}
+            onClick={() => setActiveTab("Properties")}
             className={`w-full text-left px-4 py-3 rounded font-semibold transition-colors ${
               activeTab === "properties"
                 ? "bg-indigo-100 text-indigo-700 shadow"
@@ -217,7 +249,7 @@ const [properties, setProperties] = useState([]);
             🏠 Properties
           </button>
           <button
-            onClick={() => setActiveTab("newly_listed")}
+            onClick={() => setActiveTab("Newly_listed")}
             className={`w-full text-left px-4 py-3 rounded font-semibold transition-colors ${
               activeTab === "newly_listed"
                 ? "bg-indigo-100 text-indigo-700 shadow"
@@ -251,7 +283,7 @@ const [properties, setProperties] = useState([]);
         </header>
 
         {/* USERS TAB */}
-        {activeTab === "users" && (
+        {activeTab === "Users" && (
           <section className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-3xl font-semibold text-indigo-700 mb-6">Users</h2>
             {loadingUsers ? (
@@ -330,8 +362,51 @@ const [properties, setProperties] = useState([]);
           </section>
         )}
 
+        {/* Leads Tab */}
+
+ {activeTab === "Leads" && (
+  <section>
+    <h2 className="text-2xl font-semibold mb-4">Leads</h2>
+    {loadingLeads ? (
+      <p>Loading leads...</p>
+    ) : (
+      <div className="overflow-auto bg-white rounded shadow p-4">
+        <table className="w-full text-sm">
+          <thead className="bg-indigo-50">
+            <tr>
+              <th className="p-2 text-left">Phone</th>
+              <th className="p-2 text-left">Source</th>
+              <th className="p-2 text-left">First Seen</th>
+              <th className="p-2 text-left">Last Verified</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leads.map((lead) => (
+              <tr key={lead.id} className="border-b hover:bg-gray-50">
+                <td className="p-2">{lead.phone}</td>
+                <td className="p-2">{lead.source || "-"}</td>
+                <td className="p-2">
+                  {lead.first_seen
+                    ? new Date(lead.first_seen).toLocaleString()
+                    : "-"}
+                </td>
+                <td className="p-2">
+                  {lead.last_verified_at
+                    ? new Date(lead.last_verified_at).toLocaleString()
+                    : "-"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+)}
+
+
         {/* Properties Tab */}
-        {activeTab === "properties" && (
+        {activeTab === "Properties" && (
           <section>
             <div className="flex flex-col md:flex-row md:justify-between mb-6 gap-4">
               <h2 className="text-2xl font-semibold text-indigo-700">
@@ -502,7 +577,7 @@ const [properties, setProperties] = useState([]);
       
 
         {/* Newly Listed Tab */}
-              {activeTab === "newly_listed" && (
+              {activeTab === "Newly_listed" && (
          <section>
            <h2 className="text-2xl font-semibold text-indigo-700 mb-6">
              Newly Listed Properties
