@@ -93,14 +93,14 @@ export default function NewlyListedProperties() {
     Newly Listed Properties
   </h2>
 
-  <div className="relative">
+  <div className="relative  ">
     {/* Left Cloudy Edge */}
-    <div className="absolute top-0 left-0 bottom-0 w-16 z-10 pointer-events-none">
+    <div className="absolute md:block hidden  top-0 left-0 bottom-0 w-16 z-10 pointer-events-none">
       <div className="w-full h-full bg-gradient-to-r from-white via-white/90 to-transparent blur-xl" />
     </div>
 
     {/* Right Cloudy Edge */}
-    <div className="absolute top-0 right-0 bottom-0 w-16 z-10 pointer-events-none">
+    <div className="absolute md:block hidden top-0 right-0 bottom-0 w-16 z-10 pointer-events-none">
       <div className="w-full h-full bg-gradient-to-l from-white via-white/90 to-transparent blur-xl" />
     </div>
 
