@@ -49,7 +49,7 @@ export default function Hero() {
 
   /* animated badges */
   const [shuffled,setShuffled]=useState(badges);
-  useEffect(()=>{ const t=setInterval(()=>setShuffled(shuffle(badges)),3000); return ()=>clearInterval(t) },[]);
+  // useEffect(()=>{ const t=setInterval(()=>setShuffled(shuffle(badges)),3000); return ()=>clearInterval(t) },[]);
 
   const navigate = useNavigate();
 

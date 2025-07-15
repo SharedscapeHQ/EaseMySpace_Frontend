@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { IoSearchOutline } from "react-icons/io5";
+
 import axios from "axios";
 
 const parseImages = (raw) =>
@@ -125,7 +127,7 @@ export default function ViewAllProperties() {
       <div className="max-w-6xl mx-auto px-4 flex gap-2">
         {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">
-          <div className="sticky top-16 bg-white shadow-md rounded-3xl p-4 border border-gray-100 text-sm">
+          <div className="sticky top-16 md:top-24 bg-white shadow-md rounded-3xl p-4 border border-gray-100 text-sm">
             <SidebarContent
               filters={filters}
               handleFilterChange={handleFilterChange}
@@ -142,7 +144,8 @@ export default function ViewAllProperties() {
         </aside>
 
         {/* Main Content */}
-       <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center w-full md:overflow-visible overflow-x-hidden">
+       <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center w-full overflow-visible">
+
          
 
         <section className="w-full  max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 px-2 md:px-8">
@@ -157,7 +160,8 @@ export default function ViewAllProperties() {
     </div>
 </section>
 
-     <div className="sticky top-20 z-30 mb-5 shadow-sm  border bg-white/40 backdrop-blur-md border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
+     <div className="sticky top-20 mb-4 z-40 md:shadow-sm shadow-none md:border md:bg-white bg-zinc-50 md:border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
+
   <div className="flex items-center  gap-2 min-w-max">
     {/* Mobile Filter Icon Button */}
     <button
@@ -172,28 +176,39 @@ export default function ViewAllProperties() {
     <div className="hidden md:block text-sm font-medium text-gray-700 flex-shrink-0">Total
       <span className="text-blue-500">  {filtered.length}</span> Listings
     </div>
+    
 
     {/* Search Input */}
-    <input
-      type="text"
-      name="location"
-      value={filters.location}
-      onChange={(e) => {
-        handleFilterChange(e);
-        setFiltered(
-          applyFiltersSort(
-            properties,
-            { ...filters, location: e.target.value },
-            sort
-          )
-        );
-      }}
-      placeholder="Search by location"
-      className="px-2 py-1.5 md:w-[40%] md:mx-3 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 flex-shrink-0"
-    />
+   <div className="relative md:w-[40%] w-full md:mx-3">
+  {/* React Icon */}
+  <IoSearchOutline
+    className=" absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
+    size={18}
+  />
+
+  {/* Input */}
+  <input
+    type="text"
+    name="location"
+    value={filters.location}
+    onChange={(e) => {
+      handleFilterChange(e);
+      setFiltered(
+        applyFiltersSort(
+          properties,
+          { ...filters, location: e.target.value },
+          sort
+        )
+      );
+    }}
+    placeholder="Search by location"
+    className="w-full pl-8 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+  />
+</div>
+
 
   
-    <div className="flex gap-2 md:pl-0 pl-8">
+    <div className="flex gap-2 md:pl-0 pl-1">
       <button
         onClick={() => setSort("price_desc")}
         className={`text-sm px-3 py-1.5 rounded-lg border whitespace-nowrap  ${
@@ -282,13 +297,24 @@ export default function ViewAllProperties() {
   transition={{ type: "spring", stiffness: 260, damping: 25 }}
   className="fixed inset-0 z-50 flex items-center justify-center p-4"
 >
-  <div className="max-h-[90vh] w-full max-w-sm bg-white p-6 pt-8 rounded-3xl shadow-2xl border border-gray-100 overflow-y-auto text-sm">
+  <div className="relative max-h-[90vh] w-full max-w-sm bg-white p-6 pt-8 rounded-3xl shadow-2xl border border-gray-100 overflow-y-auto text-sm">
+
+    {/* Close Button */}
+    <button
+      onClick={() => setShowFilters(false)}
+      className="absolute top-3 right-5 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+      title="Close"
+    >
+      &times;
+    </button>
+
     <SidebarContent
       filters={filters}
       handleFilterChange={handleFilterChange}
       sort={sort}
       setSort={setSort}
     />
+
     <button
       onClick={() => {
         applyNow();
@@ -300,6 +326,7 @@ export default function ViewAllProperties() {
     </button>
   </div>
 </motion.div>
+
 
           </>
         )}

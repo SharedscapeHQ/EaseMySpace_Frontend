@@ -61,7 +61,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <ScrollToTopButton />
+      {/* <ScrollToTopButton /> */}
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
 
       <Routes>

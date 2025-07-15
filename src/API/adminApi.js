@@ -3,7 +3,10 @@ import axios from "axios";
 // Axios instance for admin-related API requests
 const adminAxios = axios.create({
   baseURL: "https://api.easemyspace.in/api/admin",
-  withCredentials: true, // Send cookies automatically
+  withCredentials: true, 
+  headers: {
+    "Content-Type": "application/json", 
+  },
 });
 
 // 🔹 GET all users (admin-only)
@@ -48,9 +51,9 @@ export const deleteProperty = (id) => {
   });
 };
 
-export const markNewlyListed = async (id, isNew, position = null) => {
-  return adminAxios.patch(`/properties/${id}/newly-listed`, {
-    is_newly_listed: isNew,
-    newly_listed_position: isNew ? position : null,
+export const markNewlyListed = async (id, isNewlyListed, position) => {
+  return await adminAxios.patch(`/properties/${id}/newly-listed`, {
+    is_newly_listed: isNewlyListed,
+    newly_listed_position: position !== null ? Number(position) : null,
   });
 };

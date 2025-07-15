@@ -19,7 +19,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -105,7 +105,6 @@ export default function AdminDashboard() {
 
  const handleEditSubmit = async () => {
   try {
-    // Prepare update data
     const updateData = {
       ...editForm,
       amenities: editForm.amenities
@@ -116,6 +115,23 @@ export default function AdminDashboard() {
         : null,
     };
 
+    // ✅ Conflict Check if `is_newly_listed` is true
+    if (editForm.is_newly_listed && updateData.newly_listed_position !== null) {
+      const conflict = properties.find(
+        (p) =>
+          p.is_newly_listed &&
+          Number(p.newly_listed_position) === Number(updateData.newly_listed_position) &&
+          p.id !== editingProperty.id
+      );
+
+      if (conflict) {
+        const confirmReplace = window.confirm(
+          `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Do you want to replace it?`
+        );
+        if (!confirmReplace) return;
+      }
+    }
+
     await editProperty(editingProperty.id, updateData);
     toast.success("Property updated");
     setEditingProperty(null);
@@ -125,6 +141,7 @@ export default function AdminDashboard() {
     console.error("Edit submit error:", err);
   }
 };
+
 
   const handleLogout = async () => {
     try {
@@ -151,7 +168,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Toaster />
       <aside className="w-full lg:w-64 bg-white shadow-md p-6 border-r">
         <h2 className="text-xl font-bold text-indigo-700 mb-6">Admin Panel</h2>
         <nav className="space-y-2">
@@ -294,40 +310,70 @@ export default function AdminDashboard() {
           <section>
             <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {approved.map((property) => (
-                <div key={property.id} className="bg-white p-4 rounded shadow">
-                  <img
-                    src={Array.isArray(property.image) ? property.image[0] : property.image}
-                    alt={property.title}
-                    className="w-full h-48 object-cover rounded"
-                  />
-                  <h3 className="text-lg font-semibold text-indigo-700 mt-2">{property.title}</h3>
-                  <p className="text-gray-600">{property.location}</p>
-                  <p className="text-indigo-900 font-bold">₹{property.price}</p>
-                  {property.is_newly_listed ? (
-                    <>
-                      <p className="text-sm text-green-600 mt-2">Listed Position: {property.newly_listed_position || "-"}</p>
-                      <button
-                        onClick={() =>
-                          markNewlyListed(property.id, false, null).then(fetchProperties)
-                        }
-                        className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-                      >
-                        Remove from Newly Listed
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() =>
-                        markNewlyListed(property.id, true, 1).then(fetchProperties)
-                      }
-                      className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
-                    >
-                      Mark as Newly Listed
-                    </button>
-                  )}
-                </div>
-              ))}
+            {approved.map((property) => (
+  <div key={property.id} className="bg-white p-4 rounded shadow">
+    <img
+      src={
+        Array.isArray(property.image)
+          ? property.image[0]
+          : property.image
+      }
+      alt={property.title}
+      className="w-full h-48 object-cover rounded"
+    />
+    <h3 className="text-lg font-semibold text-indigo-700 mt-2">
+      {property.title}
+    </h3>
+    <p className="text-gray-600">{property.location}</p>
+    <p className="text-indigo-900 font-bold">₹{property.price}</p>
+
+    {property.is_newly_listed ? (
+      <>
+        <p className="text-sm text-green-600 mt-2">
+          Listed Position: {property.newly_listed_position ?? "-"}
+        </p>
+        <button
+          onClick={() =>
+            markNewlyListed(property.id, false, null).then(() =>
+              fetchProperties()
+            )
+          }
+          className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+        >
+          Remove from Newly Listed
+        </button>
+      </>
+    ) : (
+     <button
+  onClick={async () => {
+    const input = prompt("Enter position number to mark as newly listed:");
+    const position = parseInt(input);
+if (isNaN(position)) {
+  return alert("Invalid number");
+}
+
+    if (!Number.isInteger(position) || position <= 0) {
+      return alert("Please enter a valid positive whole number");
+    }
+
+    try {
+      await markNewlyListed(property.id, true, position);
+      toast.success("Marked as newly listed");
+      fetchProperties();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to mark");
+    }
+  }}
+  className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+>
+  Mark as Newly Listed
+</button>
+
+    )}
+  </div>
+))}
+
             </div>
           </section>
         )}

@@ -50,7 +50,7 @@ export default function Navbar() {
 
   return (
     <header>
-      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 lg:pl-16 bg-white/40 backdrop-blur-md shadow-sm z-50">
+      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 lg:pl-16 bg-white shadow-sm z-50">
         <Link to="/" aria-label="Homepage" className="flex items-center">
           <img
             src={brandLogo}
