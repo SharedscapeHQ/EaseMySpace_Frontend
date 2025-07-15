@@ -149,9 +149,10 @@ export default function ViewAllProperties() {
   <p className="text-gray-600 text-sm">
     Find your perfect space among verified properties
   </p>
-  <div className="inline md:hidden text-sm font-medium text-gray-700 flex-shrink-0">Total
+  <div className="inline md:hidden text-sm font-medium">All Listings</div>
+  {/* <div className="inline md:hidden text-sm font-medium text-gray-700 flex-shrink-0">Total
       <span className="text-blue-500">  {filtered.length}</span> Listings
-    </div>
+    </div> */}
 </section>
 
      <div className="sticky top-20 mb-4 z-40 md:shadow-sm shadow-none md:border md:bg-white bg-zinc-50 md:border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
@@ -167,9 +168,10 @@ export default function ViewAllProperties() {
     </button>
 
     {/* Property Count — inline on desktop */}
-    <div className="hidden md:block text-sm font-medium text-gray-700 flex-shrink-0">Total
+    <div className="hidden md:inline text-sm font-medium">All Listings</div>
+    {/* <div className="hidden md:block text-sm font-medium text-gray-700 flex-shrink-0">Total
       <span className="text-blue-500">  {filtered.length}</span> Listings
-    </div>
+    </div> */}
     
 
     {/* Search Input */}

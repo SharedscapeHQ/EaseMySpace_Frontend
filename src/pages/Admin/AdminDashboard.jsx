@@ -88,8 +88,8 @@ export default function AdminDashboard() {
   setEditForm({
     ...property,
     amenities: Array.isArray(property.amenities)
-      ? property.amenities.join(", ")
-      : property.amenities || "",
+      ? property.amenities
+      : (property.amenities || "").split(",").map((a) => a.trim()),
     is_newly_listed: property.is_newly_listed || false,
     newly_listed_position: property.newly_listed_position || "",
   });
@@ -107,15 +107,19 @@ export default function AdminDashboard() {
   try {
     const updateData = {
       ...editForm,
-      amenities: editForm.amenities
-        ? editForm.amenities.split(",").map((a) => a.trim())
-        : [],
+
+      // ✅ Normalize amenities: ensure it's always an array
+      amenities: Array.isArray(editForm.amenities)
+        ? editForm.amenities
+        : (editForm.amenities || "").split(",").map((a) => a.trim()),
+
+      // ✅ Handle position only if newly listed
       newly_listed_position: editForm.is_newly_listed
         ? Number(editForm.newly_listed_position)
         : null,
     };
 
-    // ✅ Conflict Check if `is_newly_listed` is true
+    // ✅ Conflict Check for newly listed position
     if (editForm.is_newly_listed && updateData.newly_listed_position !== null) {
       const conflict = properties.find(
         (p) =>
@@ -132,15 +136,18 @@ export default function AdminDashboard() {
       }
     }
 
+    // ✅ API call to update property
     await editProperty(editingProperty.id, updateData);
-    toast.success("Property updated");
+
+    toast.success("Property updated successfully");
     setEditingProperty(null);
     fetchProperties();
   } catch (err) {
-    toast.error("Update failed");
     console.error("Edit submit error:", err);
+    toast.error("Failed to update property");
   }
 };
+
 
 
   const handleLogout = async () => {
@@ -391,7 +398,6 @@ if (isNaN(position)) {
         ["flat_status", "Flat Status"],
         ["status", "Status", "select", ["pending", "approved", "rejected"]],
         ["bhk_type", "BHK Type", "select", ["1 BHK", "1.5 BHK", "2 BHK", "2.5 BHK", "3 BHK", "4 BHK"]],
-        ["bhk", "BHK"],
         ["bathrooms", "Bathrooms"],
         ["floor_number", "Floor Number"],
         ["total_floors", "Total Floors"],
