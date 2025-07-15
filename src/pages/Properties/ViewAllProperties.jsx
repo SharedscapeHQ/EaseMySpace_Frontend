@@ -115,13 +115,7 @@ export default function ViewAllProperties() {
     return "Explore Our Listings";
   }, [filtered]);
 
-  if (loading)
-    return <div className="pt-28 text-center text-sky-600">Loading properties…</div>;
-  if (error)
-    return <div className="pt-28 text-center text-red-600">{error}</div>;
-  if (!properties.length)
-    return <div className="pt-28 text-center">No properties found.</div>;
-
+  
   return (
     <div className="w-full bg-indigo-50/30 min-h-screen pt-16 md:pt-10">
       <div className="max-w-6xl mx-auto px-4 flex gap-2">
@@ -240,23 +234,43 @@ export default function ViewAllProperties() {
 
         
 
-          <section className="w-full max-w-4xl">
+         <section className="w-full max-w-4xl">
   {loading ? (
     <div className="space-y-6">
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="animate-pulse bg-white rounded-xl shadow border border-gray-200 p-4 flex flex-col md:flex-row gap-4"
+          className="animate-pulse bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-col md:flex-row gap-4 max-w-3xl mx-auto"
         >
-          <div className="w-full md:w-64 h-48 bg-gray-200 rounded-lg" />
-          <div className="flex-1 space-y-3">
-            <div className="h-5 bg-gray-200 rounded w-3/4" />
-            <div className="h-3 bg-gray-200 rounded w-1/2" />
-            <div className="h-3 bg-gray-200 rounded w-1/3" />
-            <div className="h-4 bg-gray-200 rounded w-full" />
-            <div className="grid grid-cols-2 gap-3">
-              <div className="h-16 bg-gray-100 rounded-lg" />
-              <div className="h-16 bg-gray-100 rounded-lg" />
+          {/* Left: Image area */}
+          <div className="w-full md:w-64 flex-shrink-0">
+            <div className="w-full h-48 bg-gray-200 rounded-lg" />
+            <div className="flex gap-2 mt-2">
+              {[...Array(3)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-20 w-1/3 bg-gray-100 rounded-lg"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Textual content */}
+          <div className="flex-1 space-y-4 mt-4 md:mt-0">
+            <div className="h-5 bg-gray-300 rounded w-3/4" />
+            <div className="h-4 bg-gray-200 rounded w-1/2" />
+            <div className="flex gap-2">
+              <div className="h-6 bg-gray-200 rounded-full w-24" />
+              <div className="h-6 bg-gray-200 rounded-full w-24" />
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="h-8 bg-gray-100 rounded" />
+              <div className="h-8 bg-gray-100 rounded" />
+              <div className="h-8 bg-gray-100 rounded" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-16 bg-gray-100 rounded" />
+              <div className="h-16 bg-gray-100 rounded" />
             </div>
           </div>
         </div>
@@ -274,6 +288,7 @@ export default function ViewAllProperties() {
     </div>
   )}
 </section>
+
 
         </main>
       </div>
