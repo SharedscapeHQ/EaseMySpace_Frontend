@@ -398,10 +398,9 @@ const handleVerifyOtp = async () => {
 >
   What's included?
 </button></span></p>
-                  <p className="text-xl font-bold text-indigo-700">₹1299</p>
                 </div>
                 <button
-                  className={`mt-4 w-1/2 py-2 px-2 text-sm font-semibold rounded-xl whitespace-nowrap transition-all ${hasPaid
+                  className={`mt-4 w-1/2 py-3 px-2 text-md font-semibold rounded-xl whitespace-nowrap transition-all ${hasPaid
                     ? 'bg-green-600 text-white cursor-default'
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}
@@ -419,7 +418,7 @@ const handleVerifyOtp = async () => {
 }
 }}
                 >
-                  {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299 & 🔓'}
+                  {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299'}
                 </button>
               </div>
 
