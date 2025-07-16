@@ -53,10 +53,12 @@ export default function Navbar() {
       <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 lg:pl-16 bg-white shadow-sm z-50">
         <Link to="/" aria-label="Homepage" className="flex items-center">
           <img
-            src={brandLogo}
-            alt="brand logo"
-            className="w-32 sm:w-36 md:w-52 lg:h-24 mt-4"
-          />
+  src={brandLogo}
+  alt="brand logo"
+  loading="eager" 
+  fetchPriority="high" 
+  className={`w-32 sm:w-36 md:w-52 lg:h-24 mt-4 transition-opacity duration-500 `}
+/>
         </Link>
 
         <div className="flex items-center gap-3 sm:gap-5 relative">
