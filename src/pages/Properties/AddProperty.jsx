@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaHome, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { addProperty } from "../../API/propertiesApi";
 
 const AddProperty = () => {
@@ -145,7 +145,6 @@ const AddProperty = () => {
 
   return (
     <div className="min-h-screen bg-indigo-50 p-4 md:p-10">
-      <Toaster />
       <motion.form
         onSubmit={handleSubmit}
         className="max-w-3xl mx-auto bg-white shadow-2xl rounded-3xl p-8 space-y-6"
