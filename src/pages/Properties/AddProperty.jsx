@@ -219,6 +219,39 @@ const AddProperty = () => {
                 {amenity}
               </label>
             ))}
+           {/* Custom Amenities Input */}
+<div className="mt-2">
+  <label className="text-sm font-medium text-gray-700 mb-1 block">
+    Other Amenities
+  </label>
+  <input
+    type="text"
+    placeholder="e.g. gym, garden, intercom"
+    onBlur={(e) => {
+      const input = e.target.value.trim();
+      if (input) {
+        const newAmenities = input
+          .split(",")
+          .map((a) => a.trim().toLowerCase())
+          .filter((a) => a && !formData.amenities.includes(a));
+
+        if (newAmenities.length) {
+          setFormData((prev) => ({
+            ...prev,
+            amenities: [...prev.amenities, ...newAmenities],
+          }));
+        }
+
+        e.target.value = "";
+      }
+    }}
+    className="w-full px-3 py-2 border rounded-md text-sm"
+  />
+  <p className="text-xs text-gray-400 mt-1">
+    Separate with commas (e.g. intercom, gym)
+  </p>
+</div>
+
           </div>
         </div>
 
