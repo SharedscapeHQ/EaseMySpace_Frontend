@@ -13,7 +13,7 @@ export default function EditModal({
   const handleFileChange = async (e, type) => {
     const files = Array.from(e.target.files);
     const base64Files = await Promise.all(
-      files.map(file => {
+      files.map(file => { 
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onloadend = () => resolve(reader.result);

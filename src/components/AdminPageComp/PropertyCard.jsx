@@ -9,7 +9,14 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
         className="w-full h-48 object-cover"
       />
       <div className="p-4 space-y-1">
-        <h3 className="text-lg font-bold text-indigo-700">{property.title}</h3>
+        <div className="flex items-center justify-between gap-2">
+  <h3 className="text-lg font-bold text-indigo-700">{property.title}</h3>
+  {property.verified && (
+    <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
+      Verified
+    </span>
+  )}
+</div>
         <p className="text-gray-600">{property.location}</p>
         <p className="text-indigo-900 font-semibold">₹{property.price}</p>
 
