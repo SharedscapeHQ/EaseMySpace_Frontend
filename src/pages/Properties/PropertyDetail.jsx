@@ -170,6 +170,8 @@ const [showFullDesc, setShowFullDesc] = useState(() => {
   return localStorage.getItem("otp_verified") === "true";
 });
 
+const [otpPopupPurpose, setOtpPopupPurpose] = useState('Read More');
+
 const [showOtpPopup, setShowOtpPopup] = useState(false);
 const [userMobile, setUserMobile] = useState('');
 const [userOtp, setUserOtp] = useState('');
@@ -330,17 +332,20 @@ const handleVerifyOtp = async () => {
         </div>
       )}
 
-      {showPlanPopup && (
+    {showPlanPopup && (
   <PopupModal
     onClose={() => setShowPlanPopup(false)}
     hasPaid={hasPaid}
+    isLoggedIn={isLoggedIn}           
     isOtpVerified={isOtpVerified}
     userMobile={userMobile}
     loadRazorpay={loadRazorpay}
     setHasPaid={setHasPaid}
     setShowOtpPopup={setShowOtpPopup}
+    setOtpPopupPurpose={setOtpPopupPurpose}
   />
 )}
+
 
 
       <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4 sm:px-6 md:px-8">
@@ -396,23 +401,25 @@ const handleVerifyOtp = async () => {
                   <p className="text-xl font-bold text-indigo-700">₹1299</p>
                 </div>
                 <button
-                  className={`mt-4 w-1/2 py-2 px-2 text-sm font-semibold rounded-xl transition-all ${hasPaid
+                  className={`mt-4 w-1/2 py-2 px-2 text-sm font-semibold rounded-xl whitespace-nowrap transition-all ${hasPaid
                     ? 'bg-green-600 text-white cursor-default'
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}
                   disabled={hasPaid}
                 onClick={() => {
-  if (isOtpVerified) {
-    loadRazorpay(1299, userMobile, () => {
-      setHasPaid(true);
-      alert("Payment successful! Contact unlocked.");
-    });
-  } else {
-    setShowOtpPopup(true);
-  }
+  if (isLoggedIn || isOtpVerified) {
+  const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
+  loadRazorpay(1299, mobileToUse, () => {
+    setHasPaid(true);
+    alert("Payment successful! Contact unlocked.");
+  });
+} else {
+  setOtpPopupPurpose('Continue Payment');
+  setShowOtpPopup(true);
+}
 }}
                 >
-                  {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299 & Unlock'}
+                  {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299 & 🔓'}
                 </button>
               </div>
 
@@ -453,11 +460,14 @@ const handleVerifyOtp = async () => {
       {property.description?.slice(0, 180)}...
     </p>
     <button
-      className="mt-2 text-blue-600 hover:underline text-sm font-medium"
-      onClick={() => setShowOtpPopup(true)}
-    >
-      Read More
-    </button>
+  className="mt-2 text-blue-600 hover:underline text-sm font-medium"
+  onClick={() => {
+    setOtpPopupPurpose('Read More');
+    setShowOtpPopup(true);
+  }}
+>
+  Read More
+</button>
   </div>
 )}
 
@@ -473,7 +483,7 @@ const handleVerifyOtp = async () => {
       >
         ×
       </button>
-      <h3 className="text-lg font-semibold text-gray-800 mb-3">Verify to Read More</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-3">Verify to {otpPopupPurpose}</h3>
 
       <input
         type="text"
@@ -594,11 +604,13 @@ function InfoItem({ label, value }) {
 function PopupModal({
   onClose,
   hasPaid,
+  isLoggedIn,              
   isOtpVerified,
   userMobile,
   loadRazorpay,
   setHasPaid,
   setShowOtpPopup,
+  setOtpPopupPurpose
 }) {
 
   return (
@@ -630,14 +642,16 @@ function PopupModal({
                     }`}
                   disabled={hasPaid}
                 onClick={() => {
-  if (isOtpVerified) {
-    loadRazorpay(1299, userMobile, () => {
-      setHasPaid(true);
-      alert("Payment successful! Contact unlocked.");
-    });
-  } else {
-    setShowOtpPopup(true);
-  }
+  if (isLoggedIn || isOtpVerified) {
+  const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
+  loadRazorpay(1299, mobileToUse, () => {
+    setHasPaid(true);
+    alert("Payment successful! Contact unlocked.");
+  });
+} else {
+  setOtpPopupPurpose('Continue Payment');
+  setShowOtpPopup(true);
+}
 }}
                 >
                   {hasPaid ? 'Owner Details Unlocked' : 'Get Started ₹1299'}</button>
