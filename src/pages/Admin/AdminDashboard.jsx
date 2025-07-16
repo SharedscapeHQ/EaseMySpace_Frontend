@@ -119,7 +119,7 @@ export default function AdminDashboard() {
 
   const handleEditSubmit = async () => {
     try {
-     const updateData = {
+    const updateData = {
   ...editForm,
   deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
   price: editForm.price === "" ? null : Number(editForm.price),
@@ -129,6 +129,10 @@ export default function AdminDashboard() {
   amenities: Array.isArray(editForm.amenities)
     ? editForm.amenities
     : (editForm.amenities || "").split(",").map((a) => a.trim()),
+  remove_image_urls: editForm.remove_image_urls || [],
+  remove_video_urls: editForm.remove_video_urls || [],
+  image_base64: editForm.image_base64 || [],
+  video_base64: editForm.video_base64 || [],
 };
 
 

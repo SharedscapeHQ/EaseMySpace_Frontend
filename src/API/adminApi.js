@@ -35,13 +35,17 @@ export const approveProperty = (id) => {
 };
 
 // Edit property with full URL and cookies
-export const editProperty = (id, formData) => {
-  return axios.put(`https://api.easemyspace.in/api/properties/edit-property/${id}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    withCredentials: true, // cookies sent automatically
-  });
+export const editProperty = (id, data) => {
+  return axios.put(
+    `https://api.easemyspace.in/api/properties/edit-property/${id}`,
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    }
+  );
 };
 
 // Delete property with full URL and cookies
