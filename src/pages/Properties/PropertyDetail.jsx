@@ -350,7 +350,18 @@ const handleVerifyOtp = async () => {
 
       <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4 sm:px-6 md:px-8">
         <div className="flex flex-col bg-white p-5 rounded-2xl gap-4 max-w-6xl mx-auto">
-          <div className="text-xl font-semibold text-gray-800">{generateTitle(property.title)}</div>
+          <div className="flex items-center gap-2 flex-wrap">
+  <div className="text-xl font-semibold text-gray-800">
+    {generateTitle(property.title)}
+  </div>
+
+  {property.verified && (
+    <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
+      Verified
+    </span>
+  )}
+</div>
+
 
           {/* Cover image and side images */}
           <div className="flex flex-col lg:flex-row justify-center items-start gap-5 w-full">
@@ -548,6 +559,7 @@ const handleVerifyOtp = async () => {
 <div>
   <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {/* Known Amenities */}
     {knownAmenities.map((amenity, idx) => {
       const isAvailable =
         property.amenities?.some(
@@ -556,7 +568,7 @@ const handleVerifyOtp = async () => {
 
       return (
         <div
-          key={idx}
+          key={`known-${idx}`}
           className={`flex items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] ${
             isAvailable
               ? 'bg-green-50 border border-green-200'
@@ -570,16 +582,36 @@ const handleVerifyOtp = async () => {
           >
             {amenityIcons[amenity] || '🔲'}
           </div>
-          <span
-            className={`transition-colors duration-300 text-gray-800 font-normal capitalize`}
-          >
+          <span className="transition-colors duration-300 text-gray-800 font-normal capitalize">
             {amenity}
           </span>
         </div>
       );
     })}
+
+    {/* Extra (Unknown) Amenities */}
+    {(property.amenities || [])
+      .filter(
+        (item) =>
+          item &&
+          !knownAmenities.includes(item.toLowerCase())
+      )
+      .map((extra, idx) => (
+        <div
+          key={`extra-${idx}`}
+          className="flex items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] bg-blue-50 border border-blue-200"
+        >
+          <div className="text-2xl text-green-600">
+  <span className="inline-block">🧩</span>
+</div>
+          <span className="text-gray-800 font-normal capitalize">
+            {extra}
+          </span>
+        </div>
+      ))}
   </div>
 </div>
+
 
 
         </div>

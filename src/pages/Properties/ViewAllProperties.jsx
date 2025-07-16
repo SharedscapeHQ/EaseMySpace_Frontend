@@ -453,9 +453,14 @@ const PropertyCard = ({ p }) => {
       <div className="flex flex-col justify-start flex-1 gap-3">
         <div className="flex items-start justify-between flex-wrap gap-y-1">
           <div>
-            <h2 className="text-lg font-semibold text-gray-800 leading-snug">
+            <h2 className="text-lg flex items-center gap-1 font-semibold text-gray-800 leading-snug">
               {p.title || "Untitled Property"}{" "}
               <span className="text-indigo-600">{p.project}</span>
+             {p.verified && (
+  <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
+    Verified
+  </span>
+)}
             </h2>
             <p className="text-sm text-gray-500 truncate ">📍 {p.location}</p>
           </div>

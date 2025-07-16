@@ -115,6 +115,27 @@ export default function EditModal({
                 {amenity}
               </label>
             ))}
+            <input
+  type="text"
+  placeholder="Add amenities (comma separated)"
+  className="w-full border px-3 py-2 rounded text-sm mt-2"
+  onBlur={(e) => {
+    const custom = e.target.value
+      .split(",")
+      .map((a) => a.trim())
+      .filter(Boolean);
+    if (custom.length) {
+      setEditForm((prev) => ({
+        ...prev,
+        amenities: Array.from(
+          new Set([...(Array.isArray(prev.amenities) ? prev.amenities : []), ...custom])
+        ),
+      }));
+      e.target.value = "";
+    }
+  }}
+/>
+
           </div>
         </div>
 
@@ -145,6 +166,58 @@ export default function EditModal({
           />
           <label className="text-sm">Mark as Newly Listed</label>
         </div>
+
+        <div className="flex items-center gap-2 mb-3">
+  <input
+  type="checkbox"
+  name="verified"
+  checked={!!editForm.verified}
+  onChange={(e) =>
+    setEditForm((prev) => ({
+      ...prev,
+      verified: e.target.checked,
+    }))
+  }
+/>
+  <label className="text-sm font-medium">
+  {editForm.verified ? (
+    <span className="text-green-700">Verified (click to unverify)</span>
+  ) : (
+    <span className="text-gray-700">Mark as Verified</span>
+  )}
+</label>
+
+</div>
+<div className="mb-3">
+  <label className="block text-sm font-medium mb-1">Upload New Images</label>
+  <input
+    type="file"
+    multiple
+    accept="image/*"
+    onChange={(e) =>
+      setEditForm((prev) => ({
+        ...prev,
+        image_base64: Array.from(e.target.files),
+      }))
+    }
+  />
+</div>
+<div className="mb-3">
+  <label className="block text-sm font-medium mb-1">Upload New Videos</label>
+  <input
+    type="file"
+    multiple
+    accept="video/*"
+    onChange={(e) =>
+      setEditForm((prev) => ({
+        ...prev,
+        video_base64: Array.from(e.target.files),
+      }))
+    }
+  />
+</div>
+
+
 
         {editForm.is_newly_listed && (
           <div className="mb-3">

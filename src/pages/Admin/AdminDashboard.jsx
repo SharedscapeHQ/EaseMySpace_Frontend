@@ -73,6 +73,8 @@ export default function AdminDashboard() {
       setLoadingProps(true);
       const { data } = await getAllProperties();
       setProperties(Array.isArray(data) ? data : []);
+    //  console.log("Verified value:", data.map(p => p.verified));
+
     } catch {
       toast.error("Error loading properties");
     } finally {
@@ -102,6 +104,7 @@ export default function AdminDashboard() {
         ? property.amenities
         : (property.amenities || "").split(",").map((a) => a.trim()),
       is_newly_listed: property.is_newly_listed || false,
+      verified: property.verified === true || property.verified === "true",
       newly_listed_position: property.newly_listed_position || "",
     });
   };
@@ -116,15 +119,18 @@ export default function AdminDashboard() {
 
   const handleEditSubmit = async () => {
     try {
-      const updateData = {
-        ...editForm,
-        amenities: Array.isArray(editForm.amenities)
-          ? editForm.amenities
-          : (editForm.amenities || "").split(",").map((a) => a.trim()),
-        newly_listed_position: editForm.is_newly_listed
-          ? Number(editForm.newly_listed_position)
-          : null,
-      };
+     const updateData = {
+  ...editForm,
+  deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
+  price: editForm.price === "" ? null : Number(editForm.price),
+  newly_listed_position: editForm.is_newly_listed
+    ? Number(editForm.newly_listed_position)
+    : null,
+  amenities: Array.isArray(editForm.amenities)
+    ? editForm.amenities
+    : (editForm.amenities || "").split(",").map((a) => a.trim()),
+};
+
 
       if (
         editForm.is_newly_listed &&
