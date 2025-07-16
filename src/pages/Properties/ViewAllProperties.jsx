@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearchOutline } from "react-icons/io5";
+import { FaSlidersH } from "react-icons/fa"; 
 
 import axios from "axios";
 
@@ -164,7 +165,7 @@ export default function ViewAllProperties() {
       className="md:hidden text-xl px-2 py-1 rounded-full text-gray-600 hover:bg-gray-100 flex-shrink-0"
       title="Filters"
     >
-      ⋮
+      <FaSlidersH />
     </button>
 
     {/* Property Count — inline on desktop */}

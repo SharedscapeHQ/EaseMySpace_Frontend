@@ -148,6 +148,9 @@ function PropertyDetail() {
   const [lightboxIdx, setLightboxIdx] = useState(null);
   const [hasPaid, setHasPaid] = useState(false);
 
+  const [showPlanPopup, setShowPlanPopup] = useState(false);
+
+
 
 
   // otp state management
@@ -327,6 +330,19 @@ const handleVerifyOtp = async () => {
         </div>
       )}
 
+      {showPlanPopup && (
+  <PopupModal
+    onClose={() => setShowPlanPopup(false)}
+    hasPaid={hasPaid}
+    isOtpVerified={isOtpVerified}
+    userMobile={userMobile}
+    loadRazorpay={loadRazorpay}
+    setHasPaid={setHasPaid}
+    setShowOtpPopup={setShowOtpPopup}
+  />
+)}
+
+
       <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4 sm:px-6 md:px-8">
         <div className="flex flex-col bg-white p-5 rounded-2xl gap-4 max-w-6xl mx-auto">
           <div className="text-xl font-semibold text-gray-800">{generateTitle(property.title)}</div>
@@ -371,7 +387,12 @@ const handleVerifyOtp = async () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-sm mb-1">One-time Service Fee</p>
+                  <p className="text-gray-500 text-sm mb-1">One-time Service Fee <span className='text-zinc'><button
+  onClick={() => setShowPlanPopup(true)}
+  className="text-sm text-blue-600 underline mt-2"
+>
+  What's included?
+</button></span></p>
                   <p className="text-xl font-bold text-indigo-700">₹1299</p>
                 </div>
                 <button
@@ -563,6 +584,65 @@ function InfoItem({ label, value }) {
     <div className="bg-gray-50 px-4 py-3 rounded-xl shadow-sm">
       <p className="text-gray-500 text-sm">{label}</p>
       <p className="text-gray-800 font-medium">{value}</p>
+    </div>
+  );
+
+
+  
+  
+}
+function PopupModal({
+  onClose,
+  hasPaid,
+  isOtpVerified,
+  userMobile,
+  loadRazorpay,
+  setHasPaid,
+  setShowOtpPopup,
+}) {
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="bg-white rounded-xl max-w-2xl w-full p-6 relative overflow-y-auto max-h-[90vh] shadow-xl">
+        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-500 font-bold">×</button>
+        <h2 className="text-2xl font-bold text-center text-indigo-700 mb-2">What’s Included in <span className="text-black"> ₹1299</span></h2>
+        <p className="text-center text-gray-600 mb-4">Unlock everything you need to find your perfect flatmate — with one simple fee.</p>
+
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-sm">
+          {[
+            "✅ Contact Access - View up to 5 listings/month for 1 month",
+            "✅ No Recurring Fees - One-time payment only",
+            "✅ Priority Support - Fast help when needed",
+            "✅ Verified Listings - Spam-free & safe",
+            "✅ Smart Matching - Match your lifestyle",
+            "✅ Help in finding - Curated profile suggestions",
+            "✅ Fast, Easy and Time Saving - Find matches in a week"
+          ].map((point, i) => (
+            <li key={i} className="bg-gray-50 p-3 rounded-md border border-gray-200">{point}</li>
+          ))}
+        </ul>
+
+       
+        <div className="mt-4 flex justify-center">
+          <button  className={`mt-4 w-[30%] py-4 px-2 text-sm font-semibold rounded-xl transition-all ${hasPaid
+                    ? 'bg-green-600 text-white cursor-default'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                    }`}
+                  disabled={hasPaid}
+                onClick={() => {
+  if (isOtpVerified) {
+    loadRazorpay(1299, userMobile, () => {
+      setHasPaid(true);
+      alert("Payment successful! Contact unlocked.");
+    });
+  } else {
+    setShowOtpPopup(true);
+  }
+}}
+                >
+                  {hasPaid ? 'Owner Details Unlocked' : 'Get Started ₹1299'}</button>
+        </div>
+      </div>
     </div>
   );
 }
