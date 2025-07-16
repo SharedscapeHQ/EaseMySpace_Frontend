@@ -33,13 +33,14 @@ const applyFiltersSort = (list, f, sort) => {
   if (f.occupancy)
     l = l.filter((p) => p.occupancy?.toLowerCase() === f.occupancy);
   if (f.bhk) {
-    const want = parseFloat(f.bhk);
-    l = l.filter((p) => {
-      const val = bhkNumber(p.bhk);
-      if (val === null) return false;
-      return f.bhk === "4" ? val >= 4 : val === want;
-    });
-  }
+  const want = parseFloat(f.bhk);
+  l = l.filter((p) => {
+    const val = bhkNumber(p.bhk_type); // use correct field
+    if (val === null) return false;
+    return want === 4 ? val >= 4 : Math.abs(val - want) < 0.01;
+  });
+}
+
   if (f.looking_for) l = l.filter((p) => p.looking_for === f.looking_for);
   const min = parseInt(f.minPrice, 10);
   const max = parseInt(f.maxPrice, 10);
