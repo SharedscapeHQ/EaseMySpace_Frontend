@@ -152,9 +152,16 @@ export default function NewlyListedProperties() {
           )}
 
           <div className="p-4 flex flex-col">
-            <h3 className="font-semibold text-lg text-indigo-800 truncate mb-1">
-              {p.title}
-            </h3>
+            <div className="flex items-center gap-2 mb-1">
+  <h3 className="font-semibold text-lg text-indigo-800 truncate">
+    {p.title}
+  </h3>
+  {p.verified && (
+    <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap">
+      Verified
+    </span>
+  )}
+</div>
             <p className="text-gray-600 text-sm mb-1">{p.location}</p>
             <p className="text-indigo-600 font-bold mt-auto">
               ₹ {Number(p.price).toLocaleString()}

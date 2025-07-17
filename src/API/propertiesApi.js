@@ -37,3 +37,11 @@ export const sendLeadOtp = (phone, propertyId) =>
 
 export const verifyLeadOtp = (phone, code) =>
   api.post("/leads/verify-otp", { phone, code });
+
+// ✅ NEW: Increment property view count
+export const incrementPropertyView = id =>
+  api.post(`/properties/view/${id}`);
+
+// ✅ NEW: Get visit count of a property
+export const getPropertyVisitCount = id =>
+  api.get(`/properties/${id}/visits`);

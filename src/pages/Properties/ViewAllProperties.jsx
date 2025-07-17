@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaSlidersH } from "react-icons/fa"; 
 
+import { incrementPropertyView } from "../../API/propertiesApi.js";
+
 import axios from "axios";
 
 const parseImages = (raw) =>
@@ -410,6 +412,13 @@ const PropertyCard = ({ p }) => {
     <Link
       to={`/properties/${p.id}`}
       state={{ property: p }}
+      onClick={() => {
+  const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+  if (!visited.includes(p.id)) {
+    incrementPropertyView(p.id);
+    sessionStorage.setItem("viewedProps", JSON.stringify([...visited, p.id]));
+  }
+}}
       className="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-300 w-full max-w-3xl mx-auto flex flex-col md:flex-row p-4 gap-4"
     >
       <div className="w-full md:w-64 flex-shrink-0">
@@ -467,6 +476,13 @@ const PropertyCard = ({ p }) => {
           <Link
             to={`/properties/${p.id}`}
             state={{ property: p }}
+            onClick={() => {
+  const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+  if (!visited.includes(p.id)) {
+    incrementPropertyView(p.id);
+    sessionStorage.setItem("viewedProps", JSON.stringify([...visited, p.id]));
+  }
+}}
             className="text-indigo-600 text-sm font-medium border border-indigo-600 px-4 py-1.5 rounded-full hover:bg-indigo-50 transition whitespace-nowrap"
           >
             View Details

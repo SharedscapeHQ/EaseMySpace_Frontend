@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
-import { getPropertyById } from '../../API/propertiesApi';
+import { getPropertyById , getPropertyVisitCount } from '../../API/propertiesApi';
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -143,10 +143,18 @@ function PropertyDetail() {
   const location = useLocation();
   const init = location.state?.property ? enrich(location.state.property) : null;
 
+  const [visitCount, setVisitCount] = useState(null);
+
   const [property, setProperty] = useState(init);
   const [loading, setLoading] = useState(!init);
   const [lightboxIdx, setLightboxIdx] = useState(null);
-  const [hasPaid, setHasPaid] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(() => {
+  const cache = localStorage.getItem("user");
+  return cache ? JSON.parse(cache) : null;
+});
+
+const isPrivilegedUser = loggedInUser?.role === 'admin' || loggedInUser?.role === 'owner';
+const [hasPaid, setHasPaid] = useState(isPrivilegedUser);
 
   const [showPlanPopup, setShowPlanPopup] = useState(false);
 
@@ -201,6 +209,19 @@ useEffect(() => {
     }
   }, [id, property]);
 
+  useEffect(() => {
+  if (id) {
+    getPropertyVisitCount(id)
+      .then((res) => {
+        setVisitCount(res?.data?.visitCount || 0);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch visit count", err);
+        setVisitCount(0);
+      });
+  }
+}, [id]);
+
   const stepLightbox = useCallback(
     (dir) => {
       if (!property) return;
@@ -238,6 +259,8 @@ useEffect(() => {
     return () => clearTimeout(timeout);
   }
 }, [otpSent]);
+
+
 
 
  const handleSendOtp = async () => {
@@ -359,8 +382,14 @@ const handleVerifyOtp = async () => {
     <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
       Verified
     </span>
+    
   )}
+{visitCount > 0 && (
+    <span className="text-gray-500 text-sm">👀 {visitCount} Visits</span>
+  )}
+  
 </div>
+
 
 
           {/* Cover image and side images */}
@@ -429,7 +458,7 @@ const handleVerifyOtp = async () => {
 }
 }}
                 >
-                  {hasPaid ? 'Owner Details Unlocked' : 'Pay ₹1299'}
+                  {hasPaid ? 'Contact Unlocked' : 'Pay ₹1299'}
                 </button>
               </div>
 

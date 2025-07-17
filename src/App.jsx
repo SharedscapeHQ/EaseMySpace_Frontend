@@ -26,6 +26,7 @@ import TermsAndConditions from "./components/FooterSectionComp/TermsAndCondition
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import NotFound from "./pages/NotFound";
+import TidioWidget from "./components/TidioWidget";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -63,6 +64,7 @@ export default function App() {
       <ScrollToTop />
       {/* <ScrollToTopButton /> */}
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      {/* <TidioWidget/> */}
 
       <Routes>
         {/* Routes with Layout (Navbar, padding, etc.) */}

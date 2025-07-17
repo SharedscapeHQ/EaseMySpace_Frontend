@@ -7,6 +7,7 @@ import {
   approveProperty,
   editProperty,
   markNewlyListed,
+  fetchPendingQueries,
 } from "../../API/adminApi";
 import { logoutUser } from "../../API/authAPI";
 import { toast } from "react-hot-toast";
@@ -18,6 +19,7 @@ import PropertyCard from "../../components/AdminPageComp/PropertyCard";
 import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
+import PendingQueries from "../../components/AdminPageComp/PendingQueries"
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -30,6 +32,9 @@ export default function AdminDashboard() {
 
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingProps, setLoadingProps] = useState(true);
+
+  const [pendingQueries, setPendingQueries] = useState([]);
+const [loadingQueries, setLoadingQueries] = useState(true);
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -67,6 +72,21 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchProperties();
   }, []);
+
+  // Load raised queries 
+  useEffect(() => {
+  (async () => {
+    try {
+      setLoadingQueries(true);
+      const { data } = await fetchPendingQueries(); // create this API
+      setPendingQueries(Array.isArray(data) ? data : []);
+    } catch (err) {
+      toast.error("Error loading edit queries");
+    } finally {
+      setLoadingQueries(false);
+    }
+  })();
+}, []);
 
   const fetchProperties = async () => {
     try {
@@ -205,9 +225,11 @@ export default function AdminDashboard() {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar
+      role="Admin"
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
+        pendingCount={pendingQueries.length}
       />
 
       <main
@@ -266,18 +288,45 @@ className="flex-1 bg-gray-50 lg:ml-64"
             <section>
               <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {approved.map((property) => (
-                  <NewlyListedCard
-                    key={property.id}
-                    property={property}
-                    markNewlyListed={markNewlyListed}
-                    fetchProperties={fetchProperties}
-                  />
-                ))}
+               {approved
+  .slice() // to avoid mutating original array
+  .sort((a, b) => {
+    const aListed = a.is_newly_listed;
+    const bListed = b.is_newly_listed;
+
+    if (aListed && bListed) {
+      return (a.newly_listed_position || 9999) - (b.newly_listed_position || 9999);
+    }
+
+    if (aListed) return -1; // listed first
+    if (bListed) return 1;
+
+    return 0; // keep others as-is
+  })
+  .map((property) => (
+    <NewlyListedCard
+      key={property.id}
+      property={property}
+      markNewlyListed={markNewlyListed}
+      fetchProperties={fetchProperties}
+    />
+))}
+
               </div>
             </section>
           )}
 
+          {/* pending queries  */}
+          {activeTab === "PendingQueries" && (
+  <section>
+    <h2 className="text-xl font-semibold mb-4">Pending Edit Queries</h2>
+    {loadingQueries ? (
+      <p>Loading queries...</p>
+    ) : (
+      <PendingQueries queries={pendingQueries} />
+    )}
+  </section>
+)}
           <EditModal
             editForm={editForm}
             setEditForm={setEditForm}

@@ -99,7 +99,10 @@ export default function EditModal({
                 name={field}
                 value={editForm[field] || ""}
                 onChange={handleEditChange}
-                className="w-full border px-3 py-2 rounded"
+                disabled={field === "owner_code"}
+                className={`w-full border px-3 py-2 rounded ${
+    field === "owner_code" ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""
+  }`}
               />
             )}
           </div>
@@ -225,7 +228,7 @@ export default function EditModal({
         {/* Video Preview */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Current Video</label>
-          {editForm.video ? (
+          {typeof editForm.video === "string" && editForm.video.length > 0 ? (
             <div className="relative w-full max-w-xs border rounded overflow-hidden">
               <video src={editForm.video} controls className="w-full h-32 object-cover" />
               <button

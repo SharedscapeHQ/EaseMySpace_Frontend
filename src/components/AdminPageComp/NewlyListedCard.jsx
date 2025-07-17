@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import {
+  FiCheckCircle,
+  FiXCircle,
+  FiEdit3,
+  FiChevronDown,
+  FiChevronUp,
+} from "react-icons/fi";
 
-export default function NewlyListedCard({ property, markNewlyListed, fetchProperties }) {
+export default function NewlyListedCard({
+  property,
+  markNewlyListed,
+  fetchProperties,
+}) {
+  const [showInput, setShowInput] = useState(false);
+  const [position, setPosition] = useState("");
+
   const handleRemove = async () => {
     try {
       await markNewlyListed(property.id, false, null);
@@ -13,17 +27,16 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
   };
 
   const handleMark = async () => {
-    const input = prompt("Enter position number to mark as newly listed:");
-    const position = parseInt(input);
-
-    if (isNaN(position)) return alert("Invalid number");
-    if (!Number.isInteger(position) || position <= 0)
-      return alert("Please enter a valid positive whole number");
+    if (!position || isNaN(position) || Number(position) <= 0) {
+      return toast.error("Please enter a valid positive number");
+    }
 
     try {
-      await markNewlyListed(property.id, true, position);
+      await markNewlyListed(property.id, true, Number(position));
       toast.success("Marked as newly listed");
       fetchProperties();
+      setShowInput(false);
+      setPosition("");
     } catch (err) {
       toast.error("Failed to mark");
       console.error(err);
@@ -31,36 +44,96 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
   };
 
   return (
-    <div className="bg-white p-4 rounded shadow">
-      <img
-        src={Array.isArray(property.image) ? property.image[0] : property.image}
-        alt={property.title}
-        className="w-full h-48 object-cover rounded"
-      />
-      <h3 className="text-lg font-semibold text-indigo-700 mt-2">{property.title}</h3>
-      <p className="text-gray-600">{property.location}</p>
-      <p className="text-indigo-900 font-bold">₹{property.price}</p>
+    <div className="bg-white rounded-xl border hover:shadow-lg transition duration-300 overflow-hidden group relative">
+      {/* Media */}
+      <div className="relative">
+        <img
+          src={
+            Array.isArray(property.image)
+              ? property.image[0]
+              : property.image
+          }
+          alt={property.title}
+          className="w-full h-48 object-cover"
+        />
+        {property.is_newly_listed && (
+          <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+            <FiCheckCircle className="text-sm" />
+            Listed
+          </span>
+        )}
+      </div>
 
-      {property.is_newly_listed ? (
-        <>
-          <p className="text-sm text-green-600 mt-2">
-            Listed Position: {property.newly_listed_position ?? "-"}
-          </p>
-          <button
-            onClick={handleRemove}
-            className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-          >
-            Remove from Newly Listed
-          </button>
-        </>
-      ) : (
-        <button
-          onClick={handleMark}
-          className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
-        >
-          Mark as Newly Listed
-        </button>
-      )}
+      {/* Content */}
+      <div className="p-4 space-y-2">
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-bold text-indigo-800 truncate">
+            {property.title}
+          </h3>
+          {property.verified && (
+            <span className="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">
+              Verified
+            </span>
+          )}
+        </div>
+
+        <p className="text-gray-600 text-sm">{property.location}</p>
+        <p className="text-indigo-700 font-bold text-base">
+          ₹ {Number(property.price).toLocaleString()}
+        </p>
+
+        {property.is_newly_listed ? (
+          <>
+            <div className="text-sm text-green-700 mt-2 flex items-center gap-2">
+              Position:{" "}
+              <span className="bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded">
+                {property.newly_listed_position ?? "-"}
+              </span>
+            </div>
+            <button
+              onClick={handleRemove}
+              className="w-full mt-3 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
+            >
+              <FiXCircle /> Remove from Newly Listed
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => setShowInput(!showInput)}
+              className="w-full mt-3 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition"
+            >
+              <FiEdit3 />
+              {showInput ? "Cancel" : "Mark as Newly Listed"}
+              {showInput ? <FiChevronUp /> : <FiChevronDown />}
+            </button>
+
+            {/* Smooth Expand Input */}
+            <div
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                showInput ? "max-h-20 opacity-100 mt-3" : "max-h-0 opacity-0"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min="1"
+                  value={position}
+                  onChange={(e) => setPosition(e.target.value)}
+                  placeholder="Enter position"
+                  className="border w-full border-gray-300 rounded px-3 py-1 "
+                />
+                <button
+                  onClick={handleMark}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded transition"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

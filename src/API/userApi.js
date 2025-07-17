@@ -15,4 +15,14 @@ export const getUserProperties = async () => {
   return res.data;
 };
 
+// ✅ API to submit a query for a property
+export const submitQuery = async (propertyId, message) => {
+  const res = await axiosInstance.post("/edit-query", {
+    property_id: propertyId,
+    message,
+  });
+  return res.data;
+};
+
+
 export default axiosInstance;

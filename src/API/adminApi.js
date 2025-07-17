@@ -61,3 +61,7 @@ export const markNewlyListed = async (id, isNewlyListed, position) => {
     newly_listed_position: position !== null ? Number(position) : null,
   });
 };
+
+export const fetchPendingQueries = () => {
+  return adminAxios.get("/edit-queries");
+};

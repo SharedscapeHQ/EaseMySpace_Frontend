@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProperties } from "../../API/userApi";
+import { getUserProperties, submitQuery } from "../../API/userApi";
 import { logoutUser } from "../../API/authAPI";
+import Sidebar from "../../components/UserPageComp/Sidebar";
+import PropertyCard from "../../components/UserPageComp/PropertyCard";
+import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
+import ViewPropertyModal from "../../components/UserPageComp/ViewPropertyModal"; 
 
 const UserDashboard = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProperty, setSelectedProperty] = useState(null); // for RaiseQueryModal
+  const [viewProperty, setViewProperty] = useState(null); // for ViewPropertyModal
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -27,77 +33,79 @@ const UserDashboard = () => {
   };
 
   const handleLogout = async () => {
-  try {
-    await logoutUser(); 
-  } catch (err) {
-    console.error("Logout failed:", err);
-  } finally {
-    const savedUser = localStorage.getItem("user"); 
-    localStorage.removeItem("user");
-    localStorage.removeItem("otp_verified");
+    try {
+      await logoutUser();
+    } finally {
+      const savedUser = localStorage.getItem("user");
+      localStorage.removeItem("user");
+      localStorage.removeItem("otp_verified");
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "user",
+          oldValue: savedUser,
+          newValue: null,
+        })
+      );
+      navigate("/");
+    }
+  };
 
-    // Force storage event manually for same-tab update
-    window.dispatchEvent(new StorageEvent("storage", {
-      key: "user",
-      oldValue: savedUser,
-      newValue: null,
-    }));
-
-    navigate("/"); 
-  }
-};
+  const handleQuerySubmit = async (propertyId, message) => {
+    try {
+      await submitQuery(propertyId, message);
+      alert("Query submitted successfully!");
+      setSelectedProperty(null); // close modal after success
+    } catch (err) {
+      console.error(err);
+      alert("Failed to submit query.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100 font-sans">
-      {/* Sidebar */}
-      <aside className="w-60 bg-gray-800 text-white p-6 flex flex-col">
-        <h2 className="text-2xl font-bold mb-8">Dashboard</h2>
-        <nav className="flex flex-col gap-4">
-          <button className="text-left px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">Your Properties</button>
-          <button className="text-left px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">Add New Property</button>
-          <button className="text-left px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">Settings</button>
-          <button
-            onClick={handleLogout}
-            className="text-left px-4 py-2 rounded bg-red-600 hover:bg-red-500 mt-6 transition font-medium"
-          >
-            Logout
-          </button>
-        </nav>
-      </aside>
+      <Sidebar onLogout={handleLogout} />
 
-      {/* Main Content */}
       <main className="flex-1 p-10">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-8">Your Listed Properties</h2>
+        <h2 className="text-3xl font-semibold text-gray-800 mb-8">
+          Your Listed Properties
+        </h2>
 
         {loading ? (
           <p>Loading your properties...</p>
         ) : error ? (
           <p className="text-red-500">{error}</p>
         ) : properties.length === 0 ? (
-          <div className="text-center mt-20 text-gray-600">
-            <p>You haven't added any properties yet.</p>
-          </div>
+          <p className="text-center mt-20 text-gray-600">
+            You haven't added any properties yet.
+          </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((p) => (
-              <div key={p.id} className="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
-                <img
-                  src={p.image || "https://via.placeholder.com/300x160?text=No+Image"}
-                  alt={p.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-gray-800">{p.title}</h3>
-                  <p className="mt-2 text-gray-600 text-sm">
-                    <strong>Price:</strong> ${p.price}<br />
-                    <strong>Location:</strong> {p.location}<br />
-                    <strong>Status:</strong> {p.flat_status}
-                  </p>
-                </div>
-              </div>
+            {properties.map((property) => (
+              <PropertyCard
+                key={property.id}
+                property={property}
+                onRaiseQuery={() => setSelectedProperty(property)}
+                onViewDetails={() => setViewProperty(property)} // 👈 pass view handler
+              />
             ))}
           </div>
         )}
+
+        {/* View-only modal */}
+        {viewProperty && (
+          <ViewPropertyModal
+            property={viewProperty}
+            onClose={() => setViewProperty(null)}
+          />
+        )}
+
+        {/* Raise Query modal */}
+        <RaiseQueryModal
+          isOpen={!!selectedProperty}
+          onClose={() => setSelectedProperty(null)}
+          property={selectedProperty}
+          onSubmit={handleQuerySubmit}
+        />
       </main>
     </div>
   );
