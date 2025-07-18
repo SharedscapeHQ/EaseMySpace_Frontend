@@ -21,3 +21,7 @@ export const deleteUserById = (userId) => {
 export const getAllUsers = () => {
   return axios.get("https://api.easemyspace.in/api/admin/users", config);
 };
+
+export const getDeletedProperties = () => {
+  return axios.get(`${BASE_URL}/properties/deleted`, config);
+};

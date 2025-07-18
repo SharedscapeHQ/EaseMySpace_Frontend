@@ -13,6 +13,7 @@ import {
   getAllUsers,
   updateUserRole,
   deleteUserById,
+  getDeletedProperties,
 } from "../../API/ownerApi";
 import { logoutUser } from "../../API/authAPI";
 import { toast } from "react-hot-toast";
@@ -24,6 +25,7 @@ import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
+import DeletedPropertyCard from "../../components/OwnerPageComp/DeletedProperties";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -41,6 +43,9 @@ export default function OwnerDashboard() {
 
   const [pendingQueries, setPendingQueries] = useState([]);
   const [loadingQueries, setLoadingQueries] = useState(true);
+
+  const [deletedProperties, setDeletedProperties] = useState([]);
+const [loadingDeletedProps, setLoadingDeletedProps] = useState(false);
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -93,6 +98,23 @@ export default function OwnerDashboard() {
       }
     })();
   }, []);
+
+  const fetchDeletedProperties = async () => {
+  try {
+    setLoadingDeletedProps(true);
+    const { data } = await getDeletedProperties();
+    setDeletedProperties(Array.isArray(data) ? data : []);
+  } catch {
+    toast.error("Error loading deleted properties");
+  } finally {
+    setLoadingDeletedProps(false);
+  }
+};
+useEffect(() => {
+  if (activeTab === "DeletedProperties") {
+    fetchDeletedProperties();
+  }
+}, [activeTab]);
   useEffect(() => {
       if (mainRef.current) {
         mainRef.current.scrollTo({ top: 0 });
@@ -395,6 +417,22 @@ export default function OwnerDashboard() {
               {loadingQueries ? <p>Loading queries...</p> : <PendingQueries queries={pendingQueries} />}
             </section>
           )}
+
+          {activeTab === "DeletedProperties" && (
+  <section>
+    <h2 className="text-xl font-semibold mb-4">Deleted Properties</h2>
+    {loadingDeletedProps ? (
+      <p>Loading deleted properties...</p>
+    ) : (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {deletedProperties.map((property) => (
+          <DeletedPropertyCard key={property.id} property={property} />
+        ))}
+      </div>
+    )}
+  </section>
+)}
+
 
           <EditModal
             editForm={editForm}

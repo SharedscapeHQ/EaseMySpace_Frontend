@@ -6,7 +6,7 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
-  FiAlertCircle, FiMessageSquare, FiMail
+  FiTrash2, FiMessageSquare, FiMail
 } from "react-icons/fi";
 
 
@@ -18,8 +18,9 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Newly Listed", value: "NewlyListed", icon: <FiStar /> },
     { label: "Pending Queries", value: "PendingQueries", icon: <FiMessageSquare />, badge: pendingCount },
-    // ...(role === "Owner" ? [{ label: "Deletion Requests", value: "DeletionRequests", icon: <FiAlertCircle /> }] : []),
-  
+    ...(role === "Owner"
+      ? [{ label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> }]
+      : []),
   ];
   const [isOpen, setIsOpen] = useState(false);
 
