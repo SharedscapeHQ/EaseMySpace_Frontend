@@ -18,6 +18,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Newly Listed", value: "NewlyListed", icon: <FiStar /> },
     { label: "Pending Queries", value: "PendingQueries", icon: <FiMessageSquare />, badge: pendingCount },
+    // ...(role === "Owner" ? [{ label: "Deletion Requests", value: "DeletionRequests", icon: <FiAlertCircle /> }] : []),
   
   ];
   const [isOpen, setIsOpen] = useState(false);

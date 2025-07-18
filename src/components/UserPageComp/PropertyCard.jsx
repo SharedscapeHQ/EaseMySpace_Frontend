@@ -29,7 +29,7 @@ const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
 
           <div className="text-sm text-gray-600 space-y-0.5">
             <p>
-              <strong>Price:</strong> ₹{Number(property.price).toLocaleString()}
+              <strong>Rent:</strong> ₹{Number(property.price).toLocaleString()}
             </p>
             <p>
               <strong>Location:</strong> {property.location}
@@ -61,7 +61,7 @@ const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
           </button>
 
           <a
-            href="tel:+910000000000"
+            href="tel:+919004463371"
             onClick={(e) => e.stopPropagation()}
             className="text-sm px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
           >
