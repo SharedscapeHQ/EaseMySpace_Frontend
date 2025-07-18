@@ -13,6 +13,7 @@ import {
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout, pendingCount , role }) {
   const tabs = [
+    ...(role === "Owner" ? [{ label: "Users", value: "Users", icon: <FiUsers /> }] : []),
     { label: "Leads", value: "Leads", icon: <FiUsers /> },
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Newly Listed", value: "NewlyListed", icon: <FiStar /> },

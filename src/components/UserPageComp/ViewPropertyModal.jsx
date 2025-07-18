@@ -10,17 +10,17 @@ const ViewPropertyModal = ({ property, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-3xl rounded-xl shadow-lg relative overflow-hidden max-h-[90vh] flex flex-col">
+      <div className="bg-white w-full max-w-2xl rounded-xl shadow-lg relative overflow-hidden max-h-[90vh] flex flex-col">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-red-600 text-2xl z-10"
+          className="absolute top-4 right-4 text-gray-100 hover:text-red-600 text-2xl z-10"
         >
           <IoClose />
         </button>
 
-        {/* Images */}
-        <div className="w-full aspect-w-16 aspect-h-9 overflow-hidden rounded-t-xl bg-gray-100">
+        {/* Image Section */}
+      <div className="w-full h-[300px] overflow-hidden bg-gray-100 rounded-t-xl flex items-center justify-center">
   {images && images.length > 0 && images[0] ? (
     <img
       src={images[0]}
@@ -34,8 +34,7 @@ const ViewPropertyModal = ({ property, onClose }) => {
   )}
 </div>
 
-
-        {/* Content */}
+        {/* Property Details */}
         <div className="p-6 overflow-y-auto">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-2xl font-bold text-indigo-700">
@@ -56,7 +55,9 @@ const ViewPropertyModal = ({ property, onClose }) => {
             <p><strong>Size:</strong> {property.size || "N/A"}</p>
             <p>
               <strong>Listed At:</strong>{" "}
-              {property.created_at ? new Date(property.created_at).toLocaleString() : "N/A"}
+              {property.created_at
+                ? new Date(property.created_at).toLocaleString()
+                : "N/A"}
             </p>
             <p className="md:col-span-2">
               <strong>Description:</strong> {property.description || "N/A"}

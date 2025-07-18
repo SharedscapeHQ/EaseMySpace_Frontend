@@ -12,6 +12,7 @@ export default function NewlyListedCard({
   property,
   markNewlyListed,
   fetchProperties,
+  allProperties, // ✅ new prop to get the full list
 }) {
   const [showInput, setShowInput] = useState(false);
   const [position, setPosition] = useState("");
@@ -27,12 +28,26 @@ export default function NewlyListedCard({
   };
 
   const handleMark = async () => {
-    if (!position || isNaN(position) || Number(position) <= 0) {
+    const enteredPosition = Number(position);
+
+    if (!enteredPosition || isNaN(enteredPosition) || enteredPosition <= 0) {
       return toast.error("Please enter a valid positive number");
     }
 
+    // ✅ Check for conflicts with same position
+    const usedPositions = allProperties
+      .filter((p) => p.is_newly_listed && p.id !== property.id)
+      .map((p) => Number(p.newly_listed_position));
+
+    if (usedPositions.includes(enteredPosition)) {
+      const proceed = window.confirm(
+        `Position ${enteredPosition} is already assigned to another property.\nDo you still want to proceed?`
+      );
+      if (!proceed) return;
+    }
+
     try {
-      await markNewlyListed(property.id, true, Number(position));
+      await markNewlyListed(property.id, true, enteredPosition);
       toast.success("Marked as newly listed");
       fetchProperties();
       setShowInput(false);
@@ -49,9 +64,7 @@ export default function NewlyListedCard({
       <div className="relative">
         <img
           src={
-            Array.isArray(property.image)
-              ? property.image[0]
-              : property.image
+            Array.isArray(property.image) ? property.image[0] : property.image
           }
           alt={property.title}
           className="w-full h-48 object-cover"
@@ -59,7 +72,7 @@ export default function NewlyListedCard({
         {property.is_newly_listed && (
           <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
             <FiCheckCircle className="text-sm" />
-            Listed
+            Newly Listed
           </span>
         )}
       </div>
@@ -71,9 +84,10 @@ export default function NewlyListedCard({
             {property.title}
           </h3>
           {property.verified && (
-            <span className="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">
-              Verified
-            </span>
+            <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+  <FiCheckCircle className="text-sm" />
+  Verified
+</span>
           )}
         </div>
 
@@ -96,6 +110,12 @@ export default function NewlyListedCard({
             >
               <FiXCircle /> Remove from Newly Listed
             </button>
+            <button
+  onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+  className="w-full mt-2 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
+>
+  View Details
+</button>
           </>
         ) : (
           <>
@@ -107,6 +127,12 @@ export default function NewlyListedCard({
               {showInput ? "Cancel" : "Mark as Newly Listed"}
               {showInput ? <FiChevronUp /> : <FiChevronDown />}
             </button>
+            <button
+  onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+  className="w-full mt-2 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
+>
+  View Details
+</button>
 
             {/* Smooth Expand Input */}
             <div

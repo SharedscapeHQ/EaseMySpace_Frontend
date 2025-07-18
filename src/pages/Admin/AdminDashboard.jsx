@@ -11,6 +11,7 @@ import {
 } from "../../API/adminApi";
 import { logoutUser } from "../../API/authAPI";
 import { toast } from "react-hot-toast";
+import { FiSearch } from "react-icons/fi";
 
 // Components
 import Sidebar from "../../components/AdminPageComp/Sidebar";
@@ -35,6 +36,8 @@ export default function AdminDashboard() {
 
   const [pendingQueries, setPendingQueries] = useState([]);
 const [loadingQueries, setLoadingQueries] = useState(true);
+
+const [searchQuery, setSearchQuery] = useState("");
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -202,6 +205,12 @@ const [loadingQueries, setLoadingQueries] = useState(true);
           (p) => p.status?.toLowerCase() === statusFilter.toLowerCase()
         );
 
+const searchedProperties = filteredProperties.filter((p) =>
+  `${p.title} ${p.location} ${p.description || ""}`
+    .toLowerCase()
+    .includes(searchQuery.toLowerCase())
+);
+
   const approved = properties.filter((p) => p.status === "approved");
 
   const pieData = [
@@ -222,6 +231,8 @@ const [loadingQueries, setLoadingQueries] = useState(true);
     },
   ];
 
+  
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar
@@ -229,7 +240,7 @@ const [loadingQueries, setLoadingQueries] = useState(true);
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
-        pendingCount={pendingQueries.length}
+        pendingCount={pendingQueries.filter(q => q.resolved === false || q.resolved === "false").length}
       />
 
       <main
@@ -254,32 +265,48 @@ className="flex-1 bg-gray-50 lg:ml-64"
 
           {activeTab === "Properties" && (
             <section>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold">Properties</h2>
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="border rounded px-3 py-1"
-                >
-                  <option value="all">All</option>
-                  <option value="pending">Pending</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                </select>
-              </div>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <h2 className="text-xl font-semibold">Properties</h2>
+
+  <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+    <div className="relative w-full sm:w-64">
+  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+    <FiSearch />
+  </span>
+  <input
+    type="text"
+    placeholder="Search by title, location..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
+  />
+</div>
+    <select
+      value={statusFilter}
+      onChange={(e) => setStatusFilter(e.target.value)}
+      className="border rounded px-3 py-1"
+    >
+      <option value="all">All</option>
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+  </div>
+</div>
+
 
               <PropertyPieChart data={pieData} />
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {filteredProperties.map((property) => (
-                  <PropertyCard
-                    key={property.id}
-                    property={property}
-                    onApprove={handleApprove}
-                    onEdit={openEditModal}
-                    onDelete={handleDelete}
-                  />
-                ))}
+                {searchedProperties.map((property) => (
+  <PropertyCard
+    key={property.id}
+    property={property}
+    onApprove={handleApprove}
+    onEdit={openEditModal}
+    onDelete={handleDelete}
+  />
+))}
               </div>
             </section>
           )}
@@ -309,6 +336,7 @@ className="flex-1 bg-gray-50 lg:ml-64"
       property={property}
       markNewlyListed={markNewlyListed}
       fetchProperties={fetchProperties}
+      allProperties={properties}
     />
 ))}
 

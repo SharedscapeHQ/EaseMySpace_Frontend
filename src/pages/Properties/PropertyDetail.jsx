@@ -13,8 +13,10 @@ import {
   FaChair,
   FaLock,
   FaGasPump,
-  FaCouch,
-} from 'react-icons/fa';
+  } from 'react-icons/fa';
+import { GiIceCube } from "react-icons/gi";
+import { FiEye, FiCheckCircle  } from "react-icons/fi";
+
 import {
   MdOutlineSecurity,
   MdOutlineLocalLaundryService,
@@ -43,7 +45,7 @@ const amenityIcons = {
   wifi: <FaWifi />,
   parking: <FaParking />,
   'air conditioning': <FaSnowflake />,
-  refrigerator: <FaCouch />,
+  refrigerator: <GiIceCube />,
   'washing machine': <MdOutlineLocalLaundryService />,
   cctv: <MdOutlineSecurity />,
   security: <FaLock />,
@@ -379,13 +381,18 @@ const handleVerifyOtp = async () => {
   </div>
 
   {property.verified && (
-    <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
-      Verified
-    </span>
+    <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+  <FiCheckCircle className="text-sm" />
+  Verified
+</span>
+
     
   )}
 {visitCount > 0 && (
-    <span className="text-gray-500 text-sm">👀 {visitCount} Visits</span>
+    <span className="inline-flex items-center gap-1 text-sm text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
+  <FiEye className="text-gray-500" />
+  {visitCount} Visits
+</span>
   )}
   
 </div>

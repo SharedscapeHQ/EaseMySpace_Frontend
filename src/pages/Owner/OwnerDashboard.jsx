@@ -257,7 +257,7 @@ export default function OwnerDashboard() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
-        pendingCount={pendingQueries.length}
+        pendingCount={pendingQueries.filter(q => q.resolved === false || q.resolved === "false").length}
       />
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">

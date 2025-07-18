@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { newlyListedProperties } from "../../API/propertiesApi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {  FiCheckCircle  } from "react-icons/fi";
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -157,9 +158,10 @@ export default function NewlyListedProperties() {
     {p.title}
   </h3>
   {p.verified && (
-    <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap">
-      Verified
-    </span>
+    <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+  <FiCheckCircle className="text-sm" />
+  Verified
+</span>
   )}
 </div>
             <p className="text-gray-600 text-sm mb-1">{p.location}</p>

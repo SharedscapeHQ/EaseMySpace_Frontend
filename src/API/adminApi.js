@@ -62,6 +62,14 @@ export const markNewlyListed = async (id, isNewlyListed, position) => {
   });
 };
 
+export const fetchAllEditQueries = () => {
+  return adminAxios.get("/queries/all");
+};
+
 export const fetchPendingQueries = () => {
   return adminAxios.get("/edit-queries");
+};
+
+export const resolveEditQuery = (id) => {
+  return adminAxios.patch(`/edit-queries/${id}/resolve`);
 };

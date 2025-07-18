@@ -24,5 +24,10 @@ export const submitQuery = async (propertyId, message) => {
   return res.data;
 };
 
+export const fetchMyQueries = async () => {
+  const res = await axiosInstance.get("/my-queries");
+  return res.data;
+};
+
 
 export default axiosInstance;
