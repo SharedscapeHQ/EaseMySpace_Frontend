@@ -1,7 +1,7 @@
 import React from "react";
 import { FiCheckCircle } from "react-icons/fi";
 
-export default function DeletedPropertyCard({ property }) {
+export default function DeletedPropertyCard({ property, onRestore }) {
   return (
     <div className="bg-white rounded shadow overflow-hidden">
       <img
@@ -19,18 +19,33 @@ export default function DeletedPropertyCard({ property }) {
             </span>
           )}
         </div>
+
         <p className="text-gray-600">{property.location}</p>
-        <span className="bg-yellow-400 text-zinc-900 font-semibold px-3 py-0.5 text-sm rounded-md">
-          {property.owner_code}
-        </span>
+
+        <div className="flex flex-wrap gap-2">
+          <span className="bg-yellow-400 text-zinc-900 font-semibold px-3 py-0.5 text-sm rounded-md">
+            Owner: {property.owner_code}
+          </span>
+          <span className="bg-red-100 text-red-600 font-semibold px-3 py-0.5 text-sm rounded-md">
+            Deleted by: {property.deleted_by_owner_code || "N/A"}
+          </span>
+        </div>
+
         <p className="text-indigo-900 font-semibold">₹{property.price}</p>
 
-        <div className="mt-2">
+        <div className="mt-2 flex gap-2">
           <button
             onClick={() => window.open(`/properties/${property.id}`, "_blank")}
             className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded transition"
           >
             View Details
+          </button>
+
+          <button
+            onClick={() => onRestore(property.id)}
+            className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition"
+          >
+            Restore
           </button>
         </div>
       </div>

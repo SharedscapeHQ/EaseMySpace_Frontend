@@ -25,3 +25,7 @@ export const getAllUsers = () => {
 export const getDeletedProperties = () => {
   return axios.get(`${BASE_URL}/properties/deleted`, config);
 };
+
+export const restorePropertyById = (id) => {
+  return axios.post(`${BASE_URL}/properties/restore/${id}`, config);
+};
