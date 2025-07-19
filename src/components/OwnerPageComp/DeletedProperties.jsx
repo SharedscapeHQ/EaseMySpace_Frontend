@@ -35,7 +35,7 @@ export default function DeletedPropertyCard({ property, onRestore }) {
 
         <div className="mt-2 flex gap-2">
           <button
-            onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+            onClick={() => window.open(`/owner-dashboard/deleted-property-details/${property.id}`, "_blank")}
             className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded transition"
           >
             View Details

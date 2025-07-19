@@ -29,3 +29,10 @@ export const getDeletedProperties = () => {
 export const restorePropertyById = (id) => {
   return axios.post(`${BASE_URL}/properties/restore/${id}`, config);
 };
+
+export const getAllDeletedPropertiesById = (id) => {
+  return axios.get(`${BASE_URL}/properties/deleted/${id}`, config);
+};
+
+
+

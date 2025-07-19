@@ -27,6 +27,7 @@ import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import NotFound from "./pages/NotFound";
 import TidioWidget from "./components/TidioWidget";
+import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -194,6 +195,16 @@ export default function App() {
             <Layout>
               <ProtectedRoute allowedRoles={["owner"]}>
                 <OwnerDashboard />
+              </ProtectedRoute>
+            </Layout>
+          }
+        />
+        <Route
+          path="/owner-dashboard/deleted-property-details/:id"
+          element={
+            <Layout>
+              <ProtectedRoute allowedRoles={["owner"]}>
+                <DeletedPropertyDetails />
               </ProtectedRoute>
             </Layout>
           }
