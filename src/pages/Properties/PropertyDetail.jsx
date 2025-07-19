@@ -455,7 +455,7 @@ const handleVerifyOtp = async () => {
                 onClick={() => {
   if (isLoggedIn || isOtpVerified) {
   const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
-  loadRazorpay(1299, mobileToUse, () => {
+  loadRazorpay(1499, mobileToUse, () => {
     setHasPaid(true);
     alert("Payment successful! Contact unlocked.");
   });
@@ -465,7 +465,7 @@ const handleVerifyOtp = async () => {
 }
 }}
                 >
-                  {hasPaid ? 'Contact Unlocked' : 'Pay ₹1299'}
+                  {hasPaid ? 'Contact Unlocked' : 'Pay ₹1499'}
                 </button>
               </div>
 
@@ -681,50 +681,91 @@ function PopupModal({
 }) {
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-white rounded-xl max-w-2xl w-full p-6 relative overflow-y-auto max-h-[90vh] shadow-xl">
-        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-500 font-bold">×</button>
-        <h2 className="text-2xl font-bold text-center text-indigo-700 mb-2">What’s Included in <span className="text-black"> ₹1299</span></h2>
-        <p className="text-center text-gray-600 mb-4">Unlock everything you need to find your perfect flatmate — with one simple fee.</p>
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+  <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-8 relative overflow-y-auto max-h-[90vh] animate-fadeIn">
+    {/* Close Button */}
+    <button
+      onClick={onClose}
+      className="absolute top-4 right-5 text-3xl text-gray-400 hover:text-red-500 transition"
+    >
+      ×
+    </button>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-sm">
-          {[
-            "✅ Contact Access - View up to 5 listings/month for 1 month",
-            "✅ No Recurring Fees - One-time payment only",
-            "✅ Priority Support - Fast help when needed",
-            "✅ Verified Listings - Spam-free & safe",
-            "✅ Smart Matching - Match your lifestyle",
-            "✅ Help in finding - Curated profile suggestions",
-            "✅ Fast, Easy and Time Saving - Find matches in a week"
-          ].map((point, i) => (
-            <li key={i} className="bg-gray-50 p-3 rounded-md border border-gray-200">{point}</li>
-          ))}
-        </ul>
+    {/* Plan Badge */}
+    <div className="text-sm font-semibold uppercase text-white bg-gradient-to-r from-emerald-500 to-emerald-600 w-fit px-4 py-1 rounded-full mb-6 shadow">
+      EMS Starter Plan
+    </div>
 
-       
-        <div className="mt-4 flex justify-center">
-          <button  className={`mt-4 w-[30%] py-4 px-2 text-sm font-semibold rounded-xl transition-all ${hasPaid
-                    ? 'bg-green-600 text-white cursor-default'
-                    : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                    }`}
-                  disabled={hasPaid}
-                onClick={() => {
-  if (isLoggedIn || isOtpVerified) {
-  const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
-  loadRazorpay(1299, mobileToUse, () => {
-    setHasPaid(true);
-    alert("Payment successful! Contact unlocked.");
-  });
-} else {
-  setOtpPopupPurpose('Continue Payment');
-  setShowOtpPopup(true);
-}
-}}
-                >
-                  {hasPaid ? 'Owner Details Unlocked' : 'Get Started ₹1299'}</button>
+    {/* Pricing Section */}
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Freedom to Find Your Perfect Match
+        </h2>
+        <p className="text-base text-gray-600">
+          Full access to verified owners & properties for 1 month.
+        </p>
+      </div>
+      <div className="text-right mt-4 sm:mt-0">
+        <div className="text-xl text-gray-400 line-through">₹1699</div>
+        <div className="text-3xl font-bold text-indigo-700">
+          ₹1499 <span className="text-lg font-medium text-gray-500">+ GST</span>
         </div>
+        <div className="text-sm text-green-600 font-semibold">Save ₹200!</div>
       </div>
     </div>
+
+    {/* Features */}
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base text-gray-800 mb-8">
+      {[
+        "✅ Unlimited Contact Access for 1 Month",
+        "✅ One-Time Payment, No Recurring Charges",
+        "✅ Priority WhatsApp & Call Support",
+        "✅ 100% Verified Owner Listings",
+        "✅ Smart Match Recommendations",
+        "✅ Curated Property Suggestions",
+        "✅ Save Hours - Match Within Days",
+      ].map((feature, idx) => (
+        <li
+          key={idx}
+          className="bg-gray-50 border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition"
+        >
+          {feature}
+        </li>
+      ))}
+    </ul>
+
+    {/* Call to Action */}
+    <div className="text-center">
+      <button
+        className={`w-1/3 py-3 text-xl font-semibold rounded-xl transition-all ${
+          hasPaid
+            ? "bg-green-600 text-white cursor-default"
+            : "bg-indigo-600 hover:bg-indigo-700 text-white"
+        }`}
+        disabled={hasPaid}
+        onClick={() => {
+          if (isLoggedIn || isOtpVerified) {
+            const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
+            loadRazorpay(1499, mobileToUse, () => {
+              setHasPaid(true);
+              alert("Payment successful! Contact unlocked.");
+            });
+          } else {
+            setOtpPopupPurpose("Continue Payment");
+            setShowOtpPopup(true);
+          }
+        }}
+      >
+        {hasPaid ? "Owner Details Unlocked" : "Subscribe"}
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
   );
 }
 
