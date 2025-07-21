@@ -24,6 +24,7 @@ import {
   MdOutlinePower,
 } from 'react-icons/md';
 import { FaShower } from 'react-icons/fa';
+import PaymentButton from './PaymentButton';
 
 const knownAmenities = [
   'wifi',
@@ -58,62 +59,6 @@ const amenityIcons = {
 };
 
 function PropertyDetail() {
-
-
-  const loadScript = (src) =>
-  new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = src;
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-
-  const loadRazorpay = async (amount,userMobile, onSuccessCallback) => {
-  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-  if (!res) {
-    alert("Razorpay SDK failed to load. Are you online?");
-    return;
-  }
-
-  // 🧠 Make backend API call to get orderId
-  const orderRes = await axios.post("https://api.easemyspace.in/api/payment/create-order", {
-    amount,
-  });
-
-  const { orderId, currency } = orderRes.data;
-
-  const options = {
-    key: "rzp_live_5kR19yQxcQHzsv", 
-    amount: amount * 100, 
-    currency,
-    name: "EasyMySpace",
-    description: "Unlock Owner Contact",
-    order_id: orderId,
-    handler: function (response) {
-      
-      onSuccessCallback(); 
-    },
-    prefill: {
-      name: "Test User",
-      email: "test@example.com",
-      contact: userMobile.startsWith('+91') ? userMobile : `+91${userMobile}`, 
-    },
-    theme: {
-      color: "#6366F1",
-    },
-  };
-
-  const rzp = new window.Razorpay(options);
-  rzp.open();
-};
-
-
-
-
-
-
-
 
   const stripQuotes = (v) =>
     v == null ? '' : String(v).replace(/^"+|"+$/g, '').trim();
@@ -364,7 +309,6 @@ const handleVerifyOtp = async () => {
     isLoggedIn={isLoggedIn}           
     isOtpVerified={isOtpVerified}
     userMobile={userMobile}
-    loadRazorpay={loadRazorpay}
     setHasPaid={setHasPaid}
     setShowOtpPopup={setShowOtpPopup}
     setOtpPopupPurpose={setOtpPopupPurpose}
@@ -446,27 +390,16 @@ const handleVerifyOtp = async () => {
   What's included?
 </button></span></p>
                 </div>
-                <button
-                  className={`mt-4 w-1/2 py-3 px-2 text-md font-semibold rounded-xl whitespace-nowrap transition-all ${hasPaid
-                    ? 'bg-green-600 text-white cursor-default'
-                    : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                    }`}
-                  disabled={hasPaid}
-                onClick={() => {
-  if (isLoggedIn || isOtpVerified) {
-  const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
-  loadRazorpay(1499, mobileToUse, () => {
-    setHasPaid(true);
-    alert("Payment successful! Contact unlocked.");
-  });
-} else {
-  setOtpPopupPurpose('Continue Payment');
-  setShowOtpPopup(true);
-}
-}}
-                >
-                  {hasPaid ? 'Contact Unlocked' : 'Pay ₹1499'}
-                </button>
+               <PaymentButton
+  hasPaid={hasPaid}
+  isLoggedIn={isLoggedIn}
+  isOtpVerified={isOtpVerified}
+  userMobile={userMobile}
+  setHasPaid={setHasPaid}
+  setShowOtpPopup={setShowOtpPopup}
+  setOtpPopupPurpose={setOtpPopupPurpose}
+/>
+
               </div>
 
               <div className="w-full">
@@ -744,18 +677,19 @@ function PopupModal({
             : "bg-indigo-600 hover:bg-indigo-700 text-white"
         }`}
         disabled={hasPaid}
-        onClick={() => {
-          if (isLoggedIn || isOtpVerified) {
-            const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
-            loadRazorpay(1499, mobileToUse, () => {
-              setHasPaid(true);
-              alert("Payment successful! Contact unlocked.");
-            });
-          } else {
-            setOtpPopupPurpose("Continue Payment");
-            setShowOtpPopup(true);
-          }
-        }}
+       onClick={() => {
+  if (isLoggedIn || isOtpVerified) {
+    const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
+    // Dispatch event with data
+    const event = new CustomEvent("initiate-payment", {
+      detail: { amount: 1499, mobile: mobileToUse },
+    });
+    document.dispatchEvent(event);
+  } else {
+    setOtpPopupPurpose("Continue Payment");
+    setShowOtpPopup(true);
+  }
+}}
       >
         {hasPaid ? "Owner Details Unlocked" : "Subscribe"}
       </button>

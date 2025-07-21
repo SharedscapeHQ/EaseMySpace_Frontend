@@ -1,0 +1,42 @@
+.loader-container {
+  font-family: 'Poppins', sans-serif;
+}
+
+.house-svg {
+  width: 200px;
+  height: 200px;
+  stroke: #3b82f6; /* Tailwind blue-500 */
+  fill: none;
+}
+
+.house-part {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: draw 1s ease forwards;
+}
+
+.house-part:nth-child(2) {
+  animation-delay: 0.5s;
+}
+.house-part:nth-child(3) {
+  animation-delay: 1s;
+}
+.house-text {
+  fill: #3b82f6;
+  opacity: 0;
+  animation: fadeInText 2s ease 1.5s forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInText {
+  to {
+    opacity: 1;
+  }
+}

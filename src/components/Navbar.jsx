@@ -164,32 +164,66 @@ export default function Navbar() {
               className="fixed inset-0 bg-black z-40"
               onClick={() => setOpen(false)}
             />
-            <motion.aside
-              key="drawer"
-              variants={drawerV}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="fixed top-[5rem] right-0 h-[calc(100vh-5rem)] 
-                         w-[80vw] sm:w-[65vw] md:w-80 
-                         bg-white/95 backdrop-blur-lg shadow-xl z-50 
-                         rounded-l-2xl px-6 py-8 flex flex-col"
-            >
-              <ul className="flex flex-col gap-6 font-semibold text-zinc-800 text-lg">
-                {[
-                  ["Home", "/"],
-                  ["About", "/about"],
-                  ["Listing", "/view-properties"],
-                  ["Contact", "/contact"],
-                ].map(([label, href]) => (
-                  <li key={href}>
-                    <Link to={href} onClick={() => setOpen(false)}>
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.aside>
+           <motion.aside
+  key="drawer"
+  variants={drawerV}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
+  className="fixed top-[5rem] right-0 h-[calc(100vh-5rem)] 
+             w-[80vw] sm:w-[65vw] md:w-80 
+             bg-white/90 backdrop-blur-md shadow-2xl z-50 
+             rounded-l-2xl px-6 py-8 flex flex-col justify-between"
+>
+  <div className="space-y-10">
+    <div className="border-b pb-2 flex items-center justify-between">
+
+    <h2 className="text-2xl font-bold text-indigo-600 tracking-wide ">
+      Explore
+    </h2>
+    {/* <button
+    onClick={() => setOpen(false)}
+    className=" text-sm text-zinc-500 hover:text-red-500 transition"
+  >
+    ✖ Close Menu
+  </button> */}
+    </div>
+
+   <ul className="flex flex-col gap-6 font-medium text-zinc-800 text-lg">
+  {[
+    ["Home", "🏠", "/", "Home"],
+    ["About", "ℹ️", "/about", "About"],
+    ["Listing", "📋", "/view-properties", "Listing"],
+    ["Contact", "📞", "/contact", "Contact"],
+    ["EMS Subscription Plans", "💼", "/subscription", "EMS Subscription Plans"],
+  ].map(([label, icon, href, text]) => (
+    <li key={href}>
+      <Link
+        to={href}
+        onClick={() => setOpen(false)}
+        className="group relative inline-block h-6 overflow-hidden"
+      >
+        <span className="block transition-transform duration-300 ease-in-out group-hover:-translate-y-1/2">
+          <span className="block flex items-center gap-2">
+            <span>{icon}</span>
+            <span>{label}</span>
+          </span>
+          <span className="block flex items-center gap-2">
+            <span>{icon}</span>
+            <span>{text}</span>
+          </span>
+        </span>
+      </Link>
+    </li>
+  ))}
+</ul>
+
+  </div>
+
+  
+</motion.aside>
+
+
           </>
         )}
       </AnimatePresence>

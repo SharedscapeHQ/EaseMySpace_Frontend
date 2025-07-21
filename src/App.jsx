@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -28,10 +28,14 @@ import ScrollToTopButton from "./components/ScrollToTopButton";
 import NotFound from "./pages/NotFound";
 import TidioWidget from "./components/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
+import Loader from "./components/Loader/Loader";
+import SubscriptionPlans from "./components/Subscription";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
   const { pathname } = useLocation();
+
+
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -49,6 +53,15 @@ function Layout({ children }) {
     const imgs = document.querySelectorAll("img:not([loading])");
     imgs.forEach((img) => img.setAttribute("loading", "lazy"));
   }, [location.pathname]);
+
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 4000); // 4 seconds
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // if (loading) return <Loader />;
 
   return (
     <>
@@ -106,6 +119,14 @@ export default function App() {
           element={
             <Layout>
               <ContactPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/subscription"
+          element={
+            <Layout>
+              <SubscriptionPlans />
             </Layout>
           }
         />
