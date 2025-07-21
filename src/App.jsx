@@ -28,7 +28,7 @@ import ScrollToTopButton from "./components/ScrollToTopButton";
 import NotFound from "./pages/NotFound";
 import TidioWidget from "./components/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
-import Loader from "./components/Loader/Loader";
+// import Loader from "./components/Loader/Loader";
 import SubscriptionPlans from "./components/Subscription";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
