@@ -177,10 +177,13 @@ export default function Navbar() {
 >
   <div className="space-y-10">
     <div className="border-b pb-2 flex items-center justify-between">
+<div className="flex text-blue-500 font-semibold">
 
-    <h2 className="text-2xl font-bold text-indigo-600 tracking-wide ">
-      Explore
-    </h2>
+    <Link to="/login" className="hover:underline">Login</Link>
+    <p className="mx-5"> |
+    </p>
+    <Link to="/register" className="hover:underline">Register</Link>
+</div>
     {/* <button
     onClick={() => setOpen(false)}
     className=" text-sm text-zinc-500 hover:text-red-500 transition"
