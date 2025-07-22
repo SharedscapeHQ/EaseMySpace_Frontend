@@ -19,7 +19,12 @@ const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
               {property.title}
-            </h3>
+            </h3> <button
+  onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+  className="  flex items-center text-white px-3 py-1 rounded justify-center gap-2 bg-indigo-600 hover:bg-indigo-700  transition"
+>
+  View Details
+</button>
             {property.verified && (
               <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
                 ✅ Verified

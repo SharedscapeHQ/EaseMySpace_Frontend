@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createOrder, verifyPayment } from "../../API/PaymentApi";
+import { getCurrentUser } from "../../API/authAPI";
 
 export default function PaymentButton({
   hasPaid,
@@ -10,6 +11,20 @@ export default function PaymentButton({
   setShowOtpPopup,
   setOtpPopupPurpose,
 }) {
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getCurrentUser();
+        setUserData(data);
+        console.log("✅ userData:", data);
+      } catch (err) {
+        console.error("Failed to fetch user", err);
+      }
+    })();
+  }, []);
+
   const loadScript = (src) =>
     new Promise((resolve) => {
       const script = document.createElement("script");
@@ -20,17 +35,17 @@ export default function PaymentButton({
     });
 
   const loadRazorpay = async () => {
-    const amount = 1499; // INR
-    const user_id = 1;   // Replace with real user ID
+    const amount = 1499;
 
     try {
-      const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
       if (!res) {
         alert("Razorpay SDK failed to load. Are you online?");
         return;
       }
 
-      // 1. Create order from backend
       const { orderId, currency } = await createOrder(amount);
 
       const options = {
@@ -42,30 +57,40 @@ export default function PaymentButton({
         order_id: orderId,
         handler: async function (response) {
           try {
+            const phoneNumber =
+              userData.phone || userMobile || prompt("Enter your phone number");
+
             const paymentDetails = {
               razorpay_order_id: response.razorpay_order_id,
-      razorpay_payment_id: response.razorpay_payment_id,
-      razorpay_signature: response.razorpay_signature,
-      amount,
-      user_id: userData.id || 1,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              amount,
+              user_id: userData.id || 1,
+              phone: phoneNumber,
+              status: "paid",
             };
+
+            console.log("📦 Verifying payment:", paymentDetails);
 
             const result = await verifyPayment(paymentDetails);
 
             if (result.success) {
               setHasPaid(true);
-              alert("Payment successful! Contact unlocked.");
+              alert("✅ Payment successful! Contact unlocked.");
             } else {
-              alert("Payment verification failed!");
+              alert("⚠️ Payment verification failed!");
             }
           } catch (err) {
-            alert("Something went wrong during verification.");
+            console.error("❌ Verification error:", err);
+            alert("Something went wrong during payment verification.");
           }
         },
         prefill: {
-          name: "Test User",
-          email: "test@example.com",
-          contact: userMobile.startsWith("+91") ? userMobile : `+91${userMobile}`,
+          name: userData.firstName || "Guest",
+          email: userData.email || "guest@example.com",
+          contact: userData.phone?.startsWith("+91")
+            ? userData.phone
+            : `+91${userData.phone || userMobile || ""}`,
         },
         theme: {
           color: "#6366F1",
@@ -80,13 +105,13 @@ export default function PaymentButton({
       const rzp = new window.Razorpay(options);
 
       rzp.on("payment.failed", function () {
-        alert("Payment failed. Please try again.");
+        alert("❌ Payment failed. Please try again.");
       });
 
       rzp.open();
     } catch (err) {
+      console.error("❌ Error during Razorpay setup:", err);
       alert("Something went wrong during payment setup.");
-      console.error(err);
     }
   };
 
@@ -101,14 +126,14 @@ export default function PaymentButton({
   };
 
   useEffect(() => {
-  const handler = (e) => {
-    const { amount, mobile } = e.detail;
-    handlePayment(amount, mobile); // triggers Razorpay payment
-  };
+    const handler = (e) => {
+      const { amount, mobile } = e.detail;
+      handlePayment(amount, mobile);
+    };
 
-  document.addEventListener("initiate-payment", handler);
-  return () => document.removeEventListener("initiate-payment", handler);
-}, []);
+    document.addEventListener("initiate-payment", handler);
+    return () => document.removeEventListener("initiate-payment", handler);
+  }, []);
 
   return (
     <button
