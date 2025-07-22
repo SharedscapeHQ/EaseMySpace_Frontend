@@ -100,7 +100,7 @@ export default function Footer() {
             </li>
             <li className="flex gap-2 justify-center items-center">
               <span className="text-lg">🌐</span>
-              <span>WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400025</span>
+              <span>WeWork, 1st Floor, 264-265, Dr Annie Besant Rd, Worli, Mumbai 400025</span>
             </li>
           </ul>
         </div>
