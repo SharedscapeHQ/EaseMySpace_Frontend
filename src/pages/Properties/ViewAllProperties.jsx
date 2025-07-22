@@ -50,7 +50,7 @@ const applyFiltersSort = (list, f, sort) => {
   if (!isNaN(max)) l = l.filter((p) => p.price <= max);
   if (sort === "price_asc") l.sort((a, b) => a.price - b.price);
   else if (sort === "price_desc") l.sort((a, b) => b.price - a.price);
-  else l.reverse();
+  // else l.reverse();
   return l;
 };
 
@@ -89,7 +89,7 @@ export default function ViewAllProperties() {
           return { ...p, images: imgs, cover: pickCover(imgs) };
         });
         setProperties(ready);
-        setFiltered(applyFiltersSort(ready, filters, sort));
+        setFiltered(ready);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch properties");
       } finally {

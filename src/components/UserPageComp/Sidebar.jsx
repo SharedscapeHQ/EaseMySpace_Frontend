@@ -17,14 +17,14 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
 
   const handleTabClick = (value) => {
     setActiveTab(value);
-    setIsOpen(false); // close sidebar on mobile
+    setIsOpen(false); // Close sidebar on mobile
   };
 
   return (
     <>
-      {/* Mobile Header */}
-      <div className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-50">
-        <h2 className="text-xl font-bold text-indigo-700">User Panel</h2>
+      {/* Mobile Header (Below Navbar) */}
+      <div className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-16 z-40">
+        <h2 className="text-xl font-bold text-indigo-700">Dashboard</h2>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="text-2xl text-gray-700"
@@ -37,14 +37,12 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
       <aside
         className={`${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } fixed top-0 left-0 z-40 w-64 bg-white shadow-md border-r min-h-screen transform transition-transform duration-300 ease-in-out
-        lg:fixed lg:top-20 lg:h-[calc(100vh-6rem)]`}
+        } fixed top-0 lg:top-20 left-0 z-50 w-64 bg-white shadow-md border-r h-full transform transition-transform duration-300 ease-in-out
+        lg:h-[calc(100vh-5rem)]`}
       >
-        {/* Sidebar Header */}
-        <div className="p-6 border-b lg:border-none">
-          <h2 className="text-xl font-bold text-indigo-700 hidden lg:block">
-            User Panel
-          </h2>
+        {/* Sidebar Header - always visible inside sidebar */}
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-indigo-700">User Panel</h2>
         </div>
 
         {/* Navigation Tabs */}
@@ -66,7 +64,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
         </nav>
 
         {/* Logout */}
-        <div className="px-6 py-4 border-t lg:border-none mb-24">
+        <div className="px-6 py-4 border-t border-gray-200 mb-24">
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 w-full text-red-600 hover:bg-red-100 px-4 py-2 rounded transition"
@@ -77,7 +75,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
         </div>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}

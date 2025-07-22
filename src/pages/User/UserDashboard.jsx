@@ -8,13 +8,8 @@ import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
 import MyQueries from "../../components/UserPageComp/MyQueries";
 import { logoutUser } from "../../API/authAPI";
 
-
-
-
-
-
 export default function UserDashboard() {
-const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("MyProperties");
   const [properties, setProperties] = useState([]);
@@ -27,6 +22,7 @@ const navigate = useNavigate();
     if (activeTab === "MyProperties") {
       fetchProperties();
     }
+    window.scrollTo(0, 0);
   }, [activeTab]);
 
   const fetchProperties = async () => {
@@ -54,34 +50,25 @@ const navigate = useNavigate();
   };
 
   const handleLogout = async () => {
-      try {
-        await logoutUser();
-      } catch {}
-      localStorage.clear();
-      window.dispatchEvent(new Event("auth-change"));
-      navigate("/");
-    };
-
-  useEffect(() => {
-  if (activeTab === "MyProperties") {
-    fetchProperties();
-  }
-  window.scrollTo(0, 0); 
-}, [activeTab]);
+    try {
+      await logoutUser();
+    } catch {}
+    localStorage.clear();
+    window.dispatchEvent(new Event("auth-change"));
+    navigate("/");
+  };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex flex-col lg:flex-row">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-md z-10 fixed h-full">
-        <Sidebar
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          handleLogout={handleLogout}
-        />
-      </div>
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        handleLogout={handleLogout}
+      />
 
-      {/* Main content */}
-      <main className="ml-64 flex-1 p-6 lg:p-10 overflow-y-auto">
+      {/* Main Content */}
+      <main className="flex-1 p-4 sm:p-6 lg:p-10  lg:ml-64">
         <h2 className="text-3xl font-semibold text-gray-800 mb-8">
           {activeTab === "MyProperties"
             ? "Your Listed Properties"
