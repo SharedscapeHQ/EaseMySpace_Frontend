@@ -636,7 +636,7 @@ function PopupModal({
           Freedom to Find Your Perfect Match
         </h2>
         <p className="text-base text-gray-600">
-          Full access to verified owners & properties for 1 month.
+          Full access to verified owners & properties for 30 days.
         </p>
       </div>
       <div className="text-right mt-4 sm:mt-0">

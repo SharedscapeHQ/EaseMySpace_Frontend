@@ -37,6 +37,9 @@ const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
             <p>
               <strong>Status:</strong> {property.flat_status}
             </p>
+            <p>
+              <strong>Listing Status:</strong> {property.status}
+            </p>
           </div>
 
           {property.views && (
