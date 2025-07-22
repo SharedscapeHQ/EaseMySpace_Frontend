@@ -651,8 +651,8 @@ function PopupModal({
     {/* Features */}
     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base text-gray-800 mb-8">
       {[
-        "✅ Unlimited Contact Access for 1 Month",
-        "✅ One-Time Payment, No Recurring Charges",
+        "✅ Unlimited Contact Access for 30 days",
+        "✅ Help in scheduling visit at convenient time",
         "✅ Priority WhatsApp & Call Support",
         "✅ 100% Verified Owner Listings",
         "✅ Smart Match Recommendations",
