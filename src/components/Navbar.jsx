@@ -176,21 +176,18 @@ export default function Navbar() {
              rounded-l-2xl px-6 py-8 flex flex-col justify-between"
 >
   <div className="space-y-10">
-    <div className="border-b pb-2 flex items-center justify-between">
-<div className="flex text-blue-500 font-semibold">
-
-    <Link to="/login" className="hover:underline">Login</Link>
-    <p className="mx-5"> |
-    </p>
-    <Link to="/register" className="hover:underline">Register</Link>
-</div>
-    {/* <button
-    onClick={() => setOpen(false)}
-    className=" text-sm text-zinc-500 hover:text-red-500 transition"
-  >
-    ✖ Close Menu
-  </button> */}
+    <div className="border-b pb-2">
+  {user ? (
+    <div className="text-blue-600 text-xl font-semibold">Explore</div>
+  ) : (
+    <div className="flex text-blue-500 font-semibold">
+      <Link to="/login" className="hover:underline">Login</Link>
+      <p className="mx-5">|</p>
+      <Link to="/register" className="hover:underline">Register</Link>
     </div>
+  )}
+</div>
+
 
    <ul className="flex flex-col gap-6 font-medium text-zinc-800 text-lg">
   {[

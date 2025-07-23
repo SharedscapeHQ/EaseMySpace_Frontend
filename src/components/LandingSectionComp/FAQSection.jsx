@@ -14,9 +14,9 @@ const faqs = [
     answer: "After submission, our team reviews and verifies the listing within 24–48 hours.",
   },
   {
-    question: "Is there any commission or service fee?",
-    answer: "We don’t charge commissions. Your deals are your own.",
-  },
+  question: "Is there any commission or service fee?",
+  answer: "We don’t charge commissions. We simply charge a platform and convenience fee of ₹1499, which includes a pack of many services.",
+},
 ];
 
 export default function FAQSection() {

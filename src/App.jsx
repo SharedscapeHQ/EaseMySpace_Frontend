@@ -30,6 +30,7 @@ import TidioWidget from "./components/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 // import Loader from "./components/Loader/Loader";
 import SubscriptionPlans from "./components/Subscription";
+import UserPropertyDetails from "./components/UserPageComp/UserPropertyDetails";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -176,6 +177,16 @@ export default function App() {
             <Layout>
               <ProtectedRoute allowedRoles={"user"}>
                 <UserDashboard />
+              </ProtectedRoute>
+            </Layout>
+          }
+        />
+        <Route
+          path="/dashboard/my-properties/:id"
+          element={
+            <Layout>
+              <ProtectedRoute allowedRoles={"user"}>
+                <UserPropertyDetails />
               </ProtectedRoute>
             </Layout>
           }

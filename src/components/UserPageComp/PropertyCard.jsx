@@ -1,10 +1,10 @@
 import React from "react";
 
-const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
+const PropertyCard = ({ property, onRaiseQuery }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition overflow-hidden border border-gray-100">
       {/* Clickable section */}
-      <div onClick={onViewDetails} className="cursor-pointer">
+      <div>
         <img
           src={
             Array.isArray(property.image)
@@ -20,7 +20,7 @@ const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
             <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
               {property.title}
             </h3> <button
-  onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+  onClick={() => window.open(`/dashboard/my-properties/${property.id}`, "_blank")}
   className="  flex items-center text-white px-3 py-1 rounded justify-center gap-2 bg-indigo-600 hover:bg-indigo-700  transition"
 >
   View Details
@@ -40,7 +40,7 @@ const PropertyCard = ({ property, onRaiseQuery, onViewDetails }) => {
               <strong>Location:</strong> {property.location}
             </p>
             <p>
-              <strong>Status:</strong> {property.flat_status}
+              <strong>Type:</strong> {property.flat_status}
             </p>
             <p>
               <strong>Listing Status:</strong> {property.status}

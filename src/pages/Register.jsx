@@ -69,6 +69,9 @@ function Register() {
       transition={{ duration: 0.4 }}
       className="w-full min-h-screen bg-blue-100 flex items-center justify-center p-4"
     >
+      <a href="/" className="absolute top-5 left-5 text-blue-700 hover:underline">
+        Back to home page
+      </a>
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-lg bg-white rounded-xl shadow-xl p-10 flex flex-col gap-6

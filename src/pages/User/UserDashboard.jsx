@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { getUserProperties, submitQuery } from "../../API/userApi";
 import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
-import ViewPropertyModal from "../../components/UserPageComp/ViewPropertyModal";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
 import MyQueries from "../../components/UserPageComp/MyQueries";
 import { logoutUser } from "../../API/authAPI";
@@ -91,7 +90,6 @@ export default function UserDashboard() {
                   key={property._id}
                   property={property}
                   onRaiseQuery={() => setSelectedProperty(property)}
-                  onViewDetails={() => setViewProperty(property)}
                 />
               ))}
             </div>

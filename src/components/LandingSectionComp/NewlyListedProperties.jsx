@@ -62,7 +62,7 @@ export default function NewlyListedProperties() {
     return (
       <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-indigo-800 mb-6">
-          Newly Listed Properties
+          Exclusive Featured Properties
         </h2>
         <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -91,7 +91,7 @@ export default function NewlyListedProperties() {
   return (
   <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto relative">
   <h2 className="text-3xl font-bold text-blue-600 mb-6">
-    Newly Listed Properties
+    Exclusive Featured Properties
   </h2>
 
   <div className="relative  ">

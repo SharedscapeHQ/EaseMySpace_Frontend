@@ -6,6 +6,7 @@ import HeroSection from '../components/LandingSectionComp/Hero'
 import HowItWorksPage from '../components/LandingSectionComp/HowItWorksPage'
 import TestimonialSection from '../components/LandingSectionComp/TestimonialSection'
 import NewlyListedProperties from '../components/LandingSectionComp/NewlyListedProperties'
+import RecentAddedProperties from '../components/LandingSectionComp/RecentAddedProperties'
 
 
 function Landing() {
@@ -14,6 +15,7 @@ function Landing() {
     <div className='w-full h-screen'>
       <HeroSection/>
       <NewlyListedProperties/>
+      <RecentAddedProperties/>
       <FeatureSection/>
       <HowItWorksPage/>
       {/* <TestimonialSection/> */}
