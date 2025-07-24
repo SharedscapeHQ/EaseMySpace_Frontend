@@ -1,4 +1,3 @@
-// Same imports except removed unused icons/components
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
@@ -12,6 +11,7 @@ import {
   MdOutlineElevator, MdOutlinePower,
 } from 'react-icons/md';
 import { FiEye, FiCheckCircle } from 'react-icons/fi';
+import { FaPuzzlePiece } from 'react-icons/fa';
 
 const knownAmenities = [
   'wifi', 'parking', 'air conditioning', 'refrigerator', 'washing machine',
