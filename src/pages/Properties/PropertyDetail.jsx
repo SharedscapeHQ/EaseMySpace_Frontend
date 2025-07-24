@@ -10,6 +10,8 @@ import { FiEye, FiCheckCircle } from "react-icons/fi";
 import PropertyAmenities from "./PropertyAmenities";
 import PropertyHeaderSection from "./PropertyDetailsHero";
 
+import { getCurrentUser } from "../../API/authAPI";
+
 function PropertyDetail() {
   const stripQuotes = (v) =>
     v == null
@@ -48,14 +50,31 @@ function PropertyDetail() {
   const [property, setProperty] = useState(init);
   const [loading, setLoading] = useState(!init);
   const [lightboxIdx, setLightboxIdx] = useState(null);
-  const [loggedInUser, setLoggedInUser] = useState(() => {
-    const cache = localStorage.getItem("user");
-    return cache ? JSON.parse(cache) : null;
-  });
+  const [loggedInUser, setLoggedInUser] = useState(null);
 
-  const isPrivilegedUser =
-    loggedInUser?.role === "admin" || loggedInUser?.role === "owner";
-  const [hasPaid, setHasPaid] = useState(isPrivilegedUser);
+useEffect(() => {
+  async function fetchUser() {
+    try {
+      const user = await getCurrentUser();
+      console.log("Fetched user:", user);
+      setLoggedInUser(user); // ✅ updates state
+      localStorage.setItem("user", JSON.stringify(user)); // ✅ updates cache
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  fetchUser();
+}, []);
+
+
+const [hasPaid, setHasPaid] = useState(false);
+
+useEffect(() => {
+  const isPrivileged = loggedInUser?.role === "admin" || loggedInUser?.role === "owner";
+  const isSubscribed = loggedInUser?.subscription_status === "paid";
+  setHasPaid(isPrivileged || isSubscribed);
+}, [loggedInUser]);
 
   const [showPlanPopup, setShowPlanPopup] = useState(false);
 

@@ -26,7 +26,6 @@ export default function PaymentButton({
         setHasPaid(true);
       }
 
-      console.log("✅ userData:", data);
     } catch (err) {
       console.error("Failed to fetch user", err);
     }

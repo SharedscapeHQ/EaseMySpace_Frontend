@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
+import PaymentButton from "../pages/Properties/PaymentButton";
 
 const plan = {
   name: "EMS Starter Plan",
@@ -21,7 +22,20 @@ const plan = {
   ],
 };
 
+
+
+
+
 export default function SubscriptionPlans() {
+
+const [hasPaid, setHasPaid] = useState(false);
+const [isLoggedIn, setIsLoggedIn] = useState(true); // or fetch actual login state
+const [isOtpVerified, setIsOtpVerified] = useState(true); // or based on your logic
+const [userMobile, setUserMobile] = useState(""); // or fetch from user data
+const [showOtpPopup, setShowOtpPopup] = useState(false);
+const [otpPopupPurpose, setOtpPopupPurpose] = useState("");
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white text-zinc-800">
       {/* Hero */}
@@ -47,6 +61,7 @@ export default function SubscriptionPlans() {
           transition={{ duration: 0.5 }}
           className="relative rounded-2xl p-8 border-2 shadow-xl bg-white border-teal-500 transition hover:shadow-2xl"
         >
+        
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal-500 text-white px-4 py-1 text-sm rounded-full shadow">
             Best Value
           </div>
@@ -68,12 +83,17 @@ export default function SubscriptionPlans() {
             ))}
           </ul>
 
-          <Link
-            to="/contact"
-            className="block text-center font-medium text-white bg-teal-500 hover:bg-teal-600 transition px-6 py-3 rounded-full"
-          >
-           Contact Sales
-          </Link>
+          <div className="flex justify-center">
+  <PaymentButton
+    hasPaid={hasPaid}
+    isLoggedIn={isLoggedIn}
+    isOtpVerified={isOtpVerified}
+    userMobile={userMobile}
+    setHasPaid={setHasPaid}
+    setShowOtpPopup={setShowOtpPopup}
+    setOtpPopupPurpose={setOtpPopupPurpose}
+  />
+</div>
         </motion.div>
       </section>
 
