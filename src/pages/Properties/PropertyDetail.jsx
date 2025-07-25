@@ -487,6 +487,7 @@ useEffect(() => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               <InfoItem label="Rent" value={`₹${property.price || "N/A"}`} />
+              <InfoItem label="Deposit" value={`₹${property.deposit || "N/A"}`} />
               <InfoItem
                 label="Flat Status"
                 value={property.flat_status || "N/A"}

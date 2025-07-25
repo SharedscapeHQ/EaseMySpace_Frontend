@@ -109,15 +109,22 @@ export default function ViewAllProperties() {
   useEffect(() => {
     setFiltered(applyFiltersSort(properties, filters, sort));
   }, [sort, properties]);
-
   const headingText = useMemo(() => {
-    if (filtered.length === 0) return "Explore Our Listings";
-    if (filtered.every((p) => p.looking_for === "flatmate"))
-      return "Matching Listings";
-    if (filtered.every((p) => p.looking_for === "vacant"))
-      return "Browse Direct Owner's Listings (No Broker)";
+  if (filtered.length === 0) {
+    if (filters.looking_for === "pg") return "Browse Verified PG Listings (No Broker)";
+    if (filters.looking_for === "vacant") return "Browse Direct Owner's Listings (No Broker)";
+    if (filters.looking_for === "flatmate") return "Matching Listings";
     return "Explore Our Listings";
-  }, [filtered]);
+  }
+
+  if (filtered.every((p) => p.looking_for === "flatmate"))
+    return "Matching Listings";
+  if (filtered.every((p) => p.looking_for === "vacant"))
+    return "Browse Direct Owner's Listings (No Broker)";
+  if (filtered.every((p) => p.looking_for === "pg"))
+    return "Browse Verified PG Listings (No Broker)";
+  return "Explore Our Listings";
+}, [filtered, filters.looking_for]);
 
   
   return (

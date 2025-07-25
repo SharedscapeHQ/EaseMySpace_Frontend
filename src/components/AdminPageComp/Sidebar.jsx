@@ -16,7 +16,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     ...(role === "Owner" ? [{ label: "Users", value: "Users", icon: <FiUsers /> }] : []),
     { label: "Leads", value: "Leads", icon: <FiUsers /> },
     { label: "Properties", value: "Properties", icon: <FiHome /> },
-    { label: "Newly Listed", value: "NewlyListed", icon: <FiStar /> },
+    { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
     { label: "Pending Queries", value: "PendingQueries", icon: <FiMessageSquare />, badge: pendingCount },
     ...(role === "Owner"
       ? [{ label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> }]

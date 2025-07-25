@@ -26,6 +26,7 @@ const propertyOptions = [
   { value: "",         label: "Looking For"       },
   { value: "flatmate", label: "🏠 Shared Flat"     },
   { value: "vacant",   label: "🏢 Fully‑vacant"    },
+  { value: "pg", label: "🛏️ Paying Guest (PG)" },
 ];
 
 /* detect keywords in free‑text */
@@ -39,6 +40,7 @@ function detectFromFreeText(str) {
   let pType = "";
   if (/(flatmate|shared|roommate)/.test(txt)) pType = "flatmate";
   if (/(vacant|empty|whole)/.test(txt))       pType = "vacant";
+  if (/(pg|paying guest)/.test(txt)) pType = "pg"; 
   return { gender, pType };
 }
 

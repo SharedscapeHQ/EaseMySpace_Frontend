@@ -10,6 +10,9 @@ export default function EditModal({
 }) {
   if (!editingProperty) return null;
 
+
+  const [draggedIndex, setDraggedIndex] = React.useState(null);
+
   const handleFileChange = async (e, type) => {
     const files = Array.from(e.target.files);
     const base64Files = await Promise.all(
@@ -73,7 +76,7 @@ export default function EditModal({
           ["balcony", "Balcony"],
           ["age_of_property", "Age of Property"],
           ["owner_code", "Owner Code"],
-          ["looking_for", "Looking For", "select", ["flatmate", "vacant"]],
+          ["looking_for", "Looking For", "select", ["flatmate", "vacant", "pg"]],
           ["occupancy", "Occupancy", "select", ["single", "double", "triple"]],
           ["distance_from_station", "Distance from Station"],
           ["gender", "Gender", "select", ["male", "female", "others"]],
@@ -159,7 +162,7 @@ export default function EditModal({
                       ])
                     )
                   }));
-                  e.target.value = "";
+                
                 }
               }}
             />
@@ -186,7 +189,7 @@ export default function EditModal({
             checked={!!editForm.is_newly_listed}
             onChange={(e) => setEditForm(prev => ({ ...prev, is_newly_listed: e.target.checked }))}
           />
-          <label className="text-sm">Mark as Newly Listed</label>
+          <label className="text-sm">Mark as Featured property</label>
         </div>
 
         <div className="flex items-center gap-2 mb-3">
@@ -211,16 +214,31 @@ export default function EditModal({
             <label className="block text-sm font-medium mb-1">Current Images</label>
             <div className="flex flex-wrap gap-3">
               {editForm.image.map((img, idx) => (
-                <div key={idx} className="relative w-24 h-24 border rounded overflow-hidden">
-                  <img src={img} alt={`img-${idx}`} className="w-full h-full object-cover" />
-                  <button
-                    onClick={() => handleRemoveImage(img, idx)}
-                    className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
+  <div
+    key={idx}
+    className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
+    draggable
+    onDragStart={() => setDraggedIndex(idx)}
+    onDragOver={(e) => e.preventDefault()}
+    onDrop={() => {
+      if (draggedIndex === null || draggedIndex === idx) return;
+      const updated = [...editForm.image];
+      const [moved] = updated.splice(draggedIndex, 1);
+      updated.splice(idx, 0, moved);
+      setEditForm((prev) => ({ ...prev, image: updated }));
+      setDraggedIndex(null);
+    }}
+  >
+    <img src={img} alt={`img-${idx}`} className="w-full h-full object-cover" />
+    <button
+      onClick={() => handleRemoveImage(img, idx)}
+      className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+    >
+      ✕
+    </button>
+  </div>
+))}
+
             </div>
           </div>
         )}
