@@ -110,21 +110,28 @@ export default function ViewAllProperties() {
     setFiltered(applyFiltersSort(properties, filters, sort));
   }, [sort, properties]);
   const headingText = useMemo(() => {
+  const renderWithOwnerSubtext = (mainText) => (
+    <>
+      {mainText}
+      <br />
+      <span className="text-sm text-gray-800 lg:text-2xl">Owner's Property</span>
+    </>
+  );
+
   if (filtered.length === 0) {
-    if (filters.looking_for === "pg") return "Browse Verified PG Listings (No Broker)";
-    if (filters.looking_for === "vacant") return "Browse Direct Owner's Listings (No Broker)";
+    if (filters.looking_for === "pg") return renderWithOwnerSubtext("Browse Verified PG Listings");
+    if (filters.looking_for === "vacant") return renderWithOwnerSubtext("Browse Direct Owner's Listings");
     if (filters.looking_for === "flatmate") return "Matching Listings";
     return "Explore Our Listings";
   }
 
-  if (filtered.every((p) => p.looking_for === "flatmate"))
-    return "Matching Listings";
-  if (filtered.every((p) => p.looking_for === "vacant"))
-    return "Browse Direct Owner's Listings (No Broker)";
-  if (filtered.every((p) => p.looking_for === "pg"))
-    return "Browse Verified PG Listings (No Broker)";
+  if (filtered.every((p) => p.looking_for === "flatmate")) return "Matching Listings";
+  if (filtered.every((p) => p.looking_for === "vacant")) return renderWithOwnerSubtext("Browse Direct Owner's Listings");
+  if (filtered.every((p) => p.looking_for === "pg")) return renderWithOwnerSubtext("Browse Verified PG Listings");
+
   return "Explore Our Listings";
 }, [filtered, filters.looking_for]);
+
 
   
   return (
