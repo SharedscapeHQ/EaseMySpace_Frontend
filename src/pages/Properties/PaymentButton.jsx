@@ -59,7 +59,7 @@ useEffect(() => {
 
   // Handle Razorpay flow
   const loadRazorpay = async () => {
-    const amount = 1499;
+    const amount = 99;
 
     try {
       const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
