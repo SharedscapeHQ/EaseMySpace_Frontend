@@ -73,7 +73,9 @@ const [hasPaid, setHasPaid] = useState(false);
 useEffect(() => {
   const isPrivileged = loggedInUser?.role === "admin" || loggedInUser?.role === "owner";
   const isSubscribed = loggedInUser?.subscription_status === "paid";
-  setHasPaid(isPrivileged || isSubscribed);
+  const leadPaid = localStorage.getItem("has_paid_lead") === "true";
+
+  setHasPaid(isPrivileged || isSubscribed || leadPaid);
 }, [loggedInUser]);
 
   const [showPlanPopup, setShowPlanPopup] = useState(false);
@@ -204,33 +206,44 @@ useEffect(() => {
   };
 
   const handleVerifyOtp = async () => {
-    const formattedPhone = userMobile.startsWith("+91")
-      ? userMobile
-      : `+91${userMobile}`;
+  const formattedPhone = userMobile.startsWith("+91")
+    ? userMobile
+    : `+91${userMobile}`;
 
-    try {
-      const res = await axios.post(
-        "https://api.easemyspace.in/api/leads/verify-otp",
-        {
-          phone: formattedPhone,
-          code: userOtp,
-        }
-      );
-
-      if (res.data.verified === true) {
-        setIsOtpVerified(true);
-        localStorage.setItem("otp_verified", "true");
-        setShowOtpPopup(false);
-        setShowFullDesc(true);
-
-        alert("OTP verified successfully!");
-      } else {
-        alert(res.data.message || "Invalid OTP.");
+  try {
+    const res = await axios.post(
+      "https://api.easemyspace.in/api/leads/verify-otp",
+      {
+        phone: formattedPhone,
+        code: userOtp,
       }
-    } catch (err) {
-      alert("Error verifying OTP.");
+    );
+
+    if (res.data.verified === true) {
+      console.log("📦 Verified Lead Data:", res.data.lead);
+      setIsOtpVerified(true);
+      localStorage.setItem("otp_verified", "true");
+      setShowOtpPopup(false);
+      setShowFullDesc(true);
+      alert("OTP verified successfully!");
+
+      // 👇 Check lead subscription status here
+      const lead = res.data.lead;
+      if (lead.subscription_status === "paid") {
+        setHasPaid(true);
+        localStorage.setItem("has_paid_lead", "true");
+      } else {
+        localStorage.setItem("has_paid_lead", "false");
+      }
+
+    } else {
+      alert(res.data.message || "Invalid OTP.");
     }
-  };
+  } catch (err) {
+    alert("Error verifying OTP.");
+  }
+};
+
 
   if (loading || !property)
     return (

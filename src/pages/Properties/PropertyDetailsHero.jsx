@@ -10,7 +10,8 @@ function PropertyHeaderSection({
   setHasPaid,
   setShowOtpPopup,
   setOtpPopupPurpose,
-  setShowPlanPopup
+  setShowPlanPopup,
+  
 }) {
   if (!property) return null;
 
@@ -64,10 +65,14 @@ function PropertyHeaderSection({
             <h2 className="text-lg font-semibold text-gray-800 mb-2">Owner's Contact</h2>
             <div className="text-gray-700 text-base">
               {hasPaid ? (
-                <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
-              ) : (
-                <span className="font-medium">📞 +91xxxxxxx</span>
-              )}
+  property.phone_visible ? (
+    <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
+  ) : (
+    <span className="font-medium text-red-500">📞 Hidden by owner</span>
+  )
+) : (
+  <span className="font-medium">📞 +91xxxxxxx</span>
+)}
             </div>
           </div>
 

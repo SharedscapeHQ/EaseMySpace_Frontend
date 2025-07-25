@@ -208,6 +208,25 @@ export default function EditModal({
           </label>
         </div>
 
+        <div className="flex items-center gap-2 mb-3">
+  <input
+    type="checkbox"
+    name="phone_visible"
+    checked={!!editForm.phone_visible}
+    onChange={(e) =>
+      setEditForm((prev) => ({ ...prev, phone_visible: e.target.checked }))
+    }
+  />
+  <label className="text-sm font-medium">
+    {editForm.phone_visible ? (
+      <span className="text-green-700">Phone Visible</span>
+    ) : (
+      <span className="text-gray-700">Hide Owner Phone</span>
+    )}
+  </label>
+</div>
+
+
         {/* Image Preview + Removal */}
         {(editForm.image || []).length > 0 && (
           <div className="mb-4">

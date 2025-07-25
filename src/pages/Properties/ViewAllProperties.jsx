@@ -505,7 +505,12 @@ const PropertyCard = ({ p }) => {
 
         {p.looking_for && (
           <span className="inline-block bg-indigo-50 text-indigo-600 text-xs font-medium px-2 py-[2px] rounded-full w-max">
-            {p.looking_for === "flatmate" ? "Flat‑mate" : "Vacant Flat"}
+            {p.looking_for === "flatmate"
+  ? "Flatmate"
+  : p.looking_for === "pg"
+  ? "Paying Guest"
+  : "Vacant Flat"}
+
           </span>
         )}
 
