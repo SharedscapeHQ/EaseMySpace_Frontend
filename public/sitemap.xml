@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.easemyspace.in/</loc></url>
-  <url><loc>https://www.easemyspace.in/login</loc></url>
-  <url><loc>https://www.easemyspace.in/register</loc></url>
-  <url><loc>https://www.easemyspace.in/about</loc></url>
-  <url><loc>https://www.easemyspace.in/contact</loc></url>
-  <url><loc>https://www.easemyspace.in/subscription</loc></url>
-  <url><loc>https://www.easemyspace.in/cancellation-refund</loc></url>
-  <url><loc>https://www.easemyspace.in/terms-conditions</loc></url>
-  <url><loc>https://www.easemyspace.in/privacy-policy</loc></url>
-  <url><loc>https://www.easemyspace.in/view-properties</loc></url>
-  <url><loc>https://www.easemyspace.in/dashboard</loc></url>
-  <url><loc>https://www.easemyspace.in/add-properties</loc></url>
-  <url><loc>https://www.easemyspace.in/admin-dashboard</loc></url>
-  <url><loc>https://www.easemyspace.in/owner-dashboard</loc></url>
+  <url><loc>https://easemyspace.in/</loc></url>
+  <url><loc>https://easemyspace.in/login</loc></url>
+  <url><loc>https://easemyspace.in/register</loc></url>
+  <url><loc>https://easemyspace.in/about</loc></url>
+  <url><loc>https://easemyspace.in/contact</loc></url>
+  <url><loc>https://easemyspace.in/subscription</loc></url>
+  <url><loc>https://easemyspace.in/cancellation-refund</loc></url>
+  <url><loc>https://easemyspace.in/terms-conditions</loc></url>
+  <url><loc>https://easemyspace.in/privacy-policy</loc></url>
+  <url><loc>https://easemyspace.in/view-properties</loc></url>
+  <url><loc>https://easemyspace.in/dashboard</loc></url>
+  <url><loc>https://easemyspace.in/add-properties</loc></url>
+  <url><loc>https://easemyspace.in/admin-dashboard</loc></url>
+  <url><loc>https://.easemyspace.in/owner-dashboard</loc></url>
 </urlset>

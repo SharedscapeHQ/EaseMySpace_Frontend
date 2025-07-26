@@ -85,7 +85,7 @@ export default function RecentAddedProperties() {
     );
 
   return (
-  <div className="bg-zinc-200 py-10">
+  <div className="bg-zinc-100 pb-20 ">
   <section className="md:px-10 px-6 bg-white rounded-2xl p-5 max-w-7xl mx-auto relative">
     {/* Heading + Arrows */}
     <div className="flex justify-between items-center mb-6">
@@ -119,7 +119,7 @@ export default function RecentAddedProperties() {
           <Link
             to={`/properties/${p.id}`}
             key={p.id}
-            className="min-w-[260px] max-w-[260px] bg-zinc-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+            className="min-w-[260px] max-w-[260px] bg-zinc-100 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
           >
             {p.images && p.images.length > 0 ? (
               <div className="h-48 w-full rounded-t-2xl overflow-hidden">

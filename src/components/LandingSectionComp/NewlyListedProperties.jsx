@@ -89,7 +89,7 @@ export default function NewlyListedProperties() {
     );
 
   return (
- <div className="bg-zinc-200 py-10">
+ <div className="bg-zinc-100 py-10">
   <section className="my-16 rounded-2xl bg-white p-5 max-w-7xl mx-auto relative">
     {/* Heading + Arrows */}
     <div className="flex justify-between items-center mb-6">
@@ -123,7 +123,7 @@ export default function NewlyListedProperties() {
           <Link
             to={`/properties/${p.id}`}
             key={p.id}
-            className="min-w-[260px] max-w-[260px] bg-zinc-200 rounded-2xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+            className="min-w-[260px] max-w-[260px] bg-100 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
           >
             {p.images && p.images.length > 0 ? (
               <div className="h-48 w-full rounded-t-2xl overflow-hidden">
