@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../API/PaymentApi";
 import { getCurrentUser } from "../../API/authAPI";
 
@@ -13,41 +14,40 @@ export default function PaymentButton({
   setOtpPopupPurpose,
 }) {
   const [userData, setUserData] = useState({});
+  const [isPaying, setIsPaying] = useState(false);
 
-  // Fetch current user if logged in
   useEffect(() => {
-  (async () => {
-    try {
-      const data = await getCurrentUser();
-      setUserData(data);
+    (async () => {
+      try {
+        const data = await getCurrentUser();
+        setUserData(data);
 
-      // Check subscription_status from user data
-      if (data?.subscription_status === 'paid') {
-        setHasPaid(true);
-      }
-
-    } catch (err) {
-      console.error("Failed to fetch user", err);
-    }
-  })();
-}, []);
-
-useEffect(() => {
-  if (userMobile) {
-    axios
-      .get(`https://api.easemyspace.in/api/payment/check-subscription?phone=${userMobile}`)
-      .then((res) => {
-        if (res.data.paid) {
+        if (data?.subscription_status === "paid") {
           setHasPaid(true);
         }
-      })
-      .catch((err) => {
-        console.error("Subscription check failed:", err);
-      });
-  }
-}, [userMobile]);
+      } catch (err) {
+        console.error("Failed to fetch user", err);
+      }
+    })();
+  }, []);
 
-  // Load Razorpay SDK
+  useEffect(() => {
+    if (userMobile) {
+      axios
+        .get(
+          `https://api.easemyspace.in/api/payment/check-subscription?phone=${userMobile}`
+        )
+        .then((res) => {
+          if (res.data.paid) {
+            setHasPaid(true);
+          }
+        })
+        .catch((err) => {
+          console.error("Subscription check failed:", err);
+        });
+    }
+  }, [userMobile]);
+
   const loadScript = (src) =>
     new Promise((resolve) => {
       const script = document.createElement("script");
@@ -57,21 +57,20 @@ useEffect(() => {
       document.body.appendChild(script);
     });
 
-  // Handle Razorpay flow
   const loadRazorpay = async () => {
     const amount = 1499;
-
+    setIsPaying(true);
     try {
-      const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
       if (!res) {
-        alert("❌ Razorpay SDK failed to load. Check your connection.");
+        toast.error("❌ Razorpay SDK failed to load. Check your connection.");
         return;
       }
 
-      // Create order
       const { orderId, currency } = await createOrder(amount);
 
-      // Payment options
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
         amount: amount * 100,
@@ -82,7 +81,9 @@ useEffect(() => {
         handler: async function (response) {
           try {
             const phoneNumber =
-              userData.phone || userMobile || prompt("📱 Enter your phone number to proceed:");
+              userData.phone ||
+              userMobile ||
+              prompt("📱 Enter your phone number to proceed:");
 
             const paymentDetails = {
               razorpay_order_id: response.razorpay_order_id,
@@ -94,19 +95,19 @@ useEffect(() => {
               status: "paid",
             };
 
-            console.log("📦 Verifying payment:", paymentDetails);
-
             const result = await verifyPayment(paymentDetails);
 
             if (result.success) {
               setHasPaid(true);
-              alert("✅ Payment successful! Contact unlocked.");
+              toast.success("✅ Payment successful! Contact unlocked.");
             } else {
-              alert("⚠️ Payment verification failed!");
+              toast.error("⚠️ Payment verification failed!");
             }
           } catch (err) {
             console.error("❌ Verification error:", err);
-            alert("Something went wrong during payment verification.");
+            toast.error("Something went wrong during payment verification.");
+          } finally {
+            setIsPaying(false);
           }
         },
         prefill: {
@@ -122,6 +123,7 @@ useEffect(() => {
         },
         modal: {
           ondismiss: function () {
+            setIsPaying(false);
             console.warn("⚠️ Razorpay modal dismissed.");
           },
         },
@@ -130,19 +132,20 @@ useEffect(() => {
       const rzp = new window.Razorpay(options);
 
       rzp.on("payment.failed", function () {
-        alert("❌ Payment failed. Please try again.");
+        setIsPaying(false);
+        toast.error("❌ Payment failed. Please try again.");
       });
 
       rzp.open();
     } catch (err) {
       console.error("❌ Error during Razorpay setup:", err);
-      alert("Something went wrong during payment setup.");
+      toast.error("Something went wrong during payment setup.");
+      setIsPaying(false);
     }
   };
 
-  // When button is clicked
   const handlePayment = () => {
-    if (hasPaid) return;
+    if (hasPaid || isPaying) return;
     if (isLoggedIn || isOtpVerified) {
       loadRazorpay();
     } else {
@@ -151,7 +154,6 @@ useEffect(() => {
     }
   };
 
-  // Listen for external "initiate-payment" events
   useEffect(() => {
     const handler = (e) => {
       const { amount, mobile } = e.detail;
@@ -168,11 +170,11 @@ useEffect(() => {
         hasPaid
           ? "bg-green-600 text-white cursor-default"
           : "bg-indigo-600 hover:bg-indigo-700 text-white"
-      }`}
-      disabled={hasPaid}
+      } ${isPaying && "opacity-60 cursor-not-allowed"}`}
+      disabled={hasPaid || isPaying}
       onClick={handlePayment}
     >
-      {hasPaid ? "Contact Unlocked" : "Pay ₹1499"}
+      {hasPaid ? "Contact Unlocked" : isPaying ? "Processing..." : "Pay ₹1499"}
     </button>
   );
 }
