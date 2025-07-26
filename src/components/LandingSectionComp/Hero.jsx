@@ -82,7 +82,7 @@ if (tFinal) qs.append("looking_for", tFinal);
               Find Your Perfect Flatmate, Flats or PG in Mumbai
             </h1>
             <p className="text-lg text-white/90 mb-10">
-              Verified Listings. Zero Brokerage. Smarter Urban Living Starts Here.
+              Smart Matches, Verified Rooms. Your Urban Flatmate Search Starts Here.
             </p>
 
             {/* search form */}
