@@ -89,34 +89,34 @@ export default function NewlyListedProperties() {
     );
 
   return (
-  <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto relative">
-  <h2 className="text-3xl font-bold text-blue-600 mb-6">
-    Exclusive Featured Properties
-  </h2>
+  <section className="my-16 md:px-10 px-6 bg-zinc-200 rounded-lg p-5 max-w-7xl mx-auto relative">
+  {/* Heading + Arrows */}
+  <div className="flex justify-between items-center mb-6">
+    <h2 className="text-3xl font-bold text-blue-600">
+      Exclusive Featured Properties
+    </h2>
 
-  <div className="relative  ">
-    {/* Left Cloudy Edge */}
-    <div className="absolute md:block hidden  top-0 left-0 bottom-0 w-16 z-10 pointer-events-none">
-      <div className="w-full h-full bg-gradient-to-r from-white via-white/90 to-transparent blur-xl" />
+    <div className="flex gap-2">
+      <button
+        onClick={() => scroll("left")}
+        className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
+      >
+        <FaChevronLeft className="text-xl text-blue-600" />
+      </button>
+      <button
+        onClick={() => scroll("right")}
+        className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
+      >
+        <FaChevronRight className="text-xl text-blue-600" />
+      </button>
     </div>
+  </div>
 
-    {/* Right Cloudy Edge */}
-    <div className="absolute md:block hidden top-0 right-0 bottom-0 w-16 z-10 pointer-events-none">
-      <div className="w-full h-full bg-gradient-to-l from-white via-white/90 to-transparent blur-xl" />
-    </div>
-
-    {/* Left Arrow */}
-    <button
-      onClick={() => scroll("left")}
-      className="absolute z-20 -left-5 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
-    >
-      <FaChevronLeft className="text-xl text-blue-600" />
-    </button>
-
-    {/* Scrollable Cards */}
+  {/* Scrollable Cards */}
+  <div className="relative">
     <div
       ref={scrollRef}
-      className="flex gap-6 overflow-x-auto scroll-smooth pb-4 px-10 scrollbar-hide"
+      className="flex gap-10 overflow-x-auto scroll-smooth pb-4 px-10 scrollbar-hide"
     >
       {newlyListed.map((p) => (
         <Link
@@ -154,16 +154,16 @@ export default function NewlyListedProperties() {
 
           <div className="p-4 flex flex-col">
             <div className="flex items-center gap-2 mb-1">
-  <h3 className="font-semibold text-lg text-indigo-800 truncate">
-    {p.title}
-  </h3>
-  {p.verified && (
-    <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
-  <FiCheckCircle className="text-sm" />
-  Verified
-</span>
-  )}
-</div>
+              <h3 className="font-semibold text-lg text-indigo-800 truncate">
+                {p.title}
+              </h3>
+              {p.verified && (
+                <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                  <FiCheckCircle className="text-sm" />
+                  Verified
+                </span>
+              )}
+            </div>
             <p className="text-gray-600 text-sm mb-1">{p.location}</p>
             <p className="text-indigo-600 font-bold mt-auto">
               ₹ {Number(p.price).toLocaleString()}
@@ -172,16 +172,10 @@ export default function NewlyListedProperties() {
         </Link>
       ))}
     </div>
-
-    {/* Right Arrow */}
-    <button
-      onClick={() => scroll("right")}
-      className="absolute z-20 -right-5 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
-    >
-      <FaChevronRight className="text-xl text-blue-600" />
-    </button>
   </div>
 </section>
+
+
 
 
 );
