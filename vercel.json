@@ -1,15 +1,5 @@
 {
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "easemyspace.in"
-        }
-      ],
-      "destination": "https://www.easemyspace.in/$1",
-      "permanent": true
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
