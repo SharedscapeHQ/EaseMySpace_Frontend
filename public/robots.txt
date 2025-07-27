@@ -1,4 +1,6 @@
 User-agent: *
-Allow: /
+Disallow: /create_profile.php
+Disallow: /pricing.php
+Disallow: /vacant_listings
 
-Sitemap: https://www.easemyspace.in/sitemap.xml
+Sitemap: https://easemyspace.in/sitemap.xml
