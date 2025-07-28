@@ -142,19 +142,20 @@ if (tFinal) qs.append("looking_for", tFinal);
       </div>
 
       {/* badges */}
-      <div className="flex flex-wrap justify-center gap-4 my-8 px-4">
+     <div className="flex flex-col items-center space-y-4 my-8 px-4 sm:flex-wrap sm:flex-row sm:justify-center sm:space-y-0 sm:gap-4">
   {shuffled.map((b) => (
     <div
       key={b.text}
       className="bg-zinc-50 text-gray-700 font-semibold shadow-md px-5 py-3 
                  rounded-full flex items-center gap-2 text-sm sm:text-base 
-                 hover:scale-105 transition"
+                 hover:scale-105 transition w-full sm:w-auto justify-center"
     >
       <span className="text-xl">{b.icon}</span>
       {b.text}
     </div>
   ))}
 </div>
+
 
     </section>
   );

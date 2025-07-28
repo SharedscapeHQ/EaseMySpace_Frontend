@@ -62,7 +62,7 @@ export default function HowItWorksPage() {
   >
     <h1
       id="how-easemyspace-works"
-      className="md:text-5xl text-3xl font-extrabold text-zinc-900 mb-20 text-center max-w-3xl mx-auto leading-tight"
+      className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-900 mb-20 text-center max-w-3xl mx-auto leading-tight"
     >
       How <span className="text-blue-600">EaseMySpace</span> Works
     </h1>

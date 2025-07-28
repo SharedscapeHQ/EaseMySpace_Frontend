@@ -30,7 +30,7 @@ export default function FAQSection() {
       <div className="absolute w-[400px] h-[400px] bg-purple-100 rounded-full blur-[120px] opacity-30 -bottom-32 -right-32"></div>
 
       <div className="relative z-10 max-w-5xl mx-auto">
-        <h2 className="md:text-5xl text-3xl font-extrabold text-center text-zinc-800 mb-16 leading-tight">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-center text-zinc-800 mb-16 leading-tight">
           Got <span className="text-blue-500">Questions</span>? We’ve Got Answers.
         </h2>
 

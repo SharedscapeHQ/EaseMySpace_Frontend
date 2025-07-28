@@ -37,11 +37,11 @@ const FeatureSection = () => {
   <div className="container mx-auto px-6 max-w-7xl text-center relative z-10">
     <h2
       id="why-easemyspace-heading"
-      className="text-4xl lg:text-5xl font-bold mb-6"
+      className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-6"
     >
       Why Choose EaseMy<span className="text-blue-500">Space</span><span>.in</span><span className="lg:text-7xl">?</span>
     </h2>
-    <p className="text-zinc-600 max-w-2xl mx-auto mb-14 text-lg">
+    <p className="text-zinc-600 max-w-2xl mx-auto mb-14 text-sm lg:text-lg">
       Not just listings. A smarter, safer, and faster way to rent and list trusted spaces across India.
     </p>
 

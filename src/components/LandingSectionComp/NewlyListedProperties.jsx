@@ -60,7 +60,7 @@ export default function NewlyListedProperties() {
 
   if (loading) {
     return (
-      <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto bg-zinc-100">
+      <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-indigo-800 mb-6">
           Exclusive Featured Properties
         </h2>
@@ -98,29 +98,30 @@ export default function NewlyListedProperties() {
     <div className="flex justify-between items-center mb-6">
       <h2
         id="exclusive-properties-heading"
-        className="text-3xl font-bold text-blue-600"
+        className=" text-md lg:text-3xl font-bold text-blue-600"
       >
         Exclusive Featured Properties
       </h2>
 
       <nav aria-label="Scroll featured properties">
-        <div className="flex gap-2">
-          <button
-            onClick={() => scroll("left")}
-            aria-label="Scroll Left"
-            className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
-          >
-            <FaChevronLeft className="text-xl text-blue-600" />
-          </button>
-          <button
-            onClick={() => scroll("right")}
-            aria-label="Scroll Right"
-            className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
-          >
-            <FaChevronRight className="text-xl text-blue-600" />
-          </button>
-        </div>
-      </nav>
+  <div className="flex gap-2">
+    <button
+      onClick={() => scroll("left")}
+      aria-label="Scroll Left"
+      className="bg-white/80 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
+    >
+      <FaChevronLeft className="text-base md:text-xl text-blue-600" />
+    </button>
+    <button
+      onClick={() => scroll("right")}
+      aria-label="Scroll Right"
+      className="bg-white/80 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
+    >
+      <FaChevronRight className="text-base md:text-xl text-blue-600" />
+    </button>
+  </div>
+</nav>
+
     </div>
 
     {/* Scrollable Cards */}
@@ -135,7 +136,7 @@ export default function NewlyListedProperties() {
           <Link
             to={`/properties/${p.id}`}
             key={p.id}
-            className="min-w-[260px] max-w-[260px] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+            className="min-w-[270px] max-w-[270px] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
             role="listitem"
           >
             {p.images && p.images.length > 0 ? (
