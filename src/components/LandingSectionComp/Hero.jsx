@@ -121,7 +121,7 @@ if (tFinal) qs.append("looking_for", tFinal);
       whileHover={{ scale: 1.08, rotate: 0.2 }}
       whileTap={{ scale: 0.96 }}
       transition={{ type: "spring", stiffness: 600, damping: 18 }}
-      className="relative overflow-hidden bg-teal-500 text-white font-semibold 
+      className="relative overflow-hidden bg-blue-500 text-white font-semibold 
                  px-6 py-3 rounded-full w-full sm:w-[140px] shadow-md group"
     >
       <span className="relative z-10">Search</span>
