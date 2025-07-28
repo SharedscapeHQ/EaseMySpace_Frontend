@@ -60,7 +60,7 @@ export default function NewlyListedProperties() {
 
   if (loading) {
     return (
-      <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto">
+      <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto bg-zinc-100">
         <h2 className="text-3xl font-bold text-indigo-800 mb-6">
           Exclusive Featured Properties
         </h2>

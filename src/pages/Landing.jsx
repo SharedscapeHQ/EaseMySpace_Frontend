@@ -12,7 +12,7 @@ import RecentAddedProperties from '../components/LandingSectionComp/RecentAddedP
 function Landing() {
   return (
     <>
-    <div className='w-full h-screen bg-zinc-100'>
+    <div className='w-full h-screen'>
       <HeroSection/>
       <NewlyListedProperties/>
       <RecentAddedProperties/>
