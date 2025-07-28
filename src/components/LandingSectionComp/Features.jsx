@@ -30,46 +30,53 @@ const features = [
 
 const FeatureSection = () => {
   return (
-    <section className="w-full overflow-hidden relative py-10">
-      <div className="container mx-auto px-6 max-w-7xl text-center relative z-10">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-          Why Choose EaseMy<span className="text-blue-500">Space</span><span>.in</span><span className="lg:text-7xl">?</span>
-        </h2>
-        <p className="text-zinc-600 max-w-2xl mx-auto mb-14 text-lg">
-          Not just listings. A smarter, safer, and faster way to rent and list spaces you trust.
-        </p>
-
-       <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-4 lg:px-0">
-  {features.map((feature, i) => (
-    <div
-      key={i}
-      className="group relative p-[1px] rounded-2xl bg-gradient-to-br from-blue-100/50 via-blue-200/50 to-purple-100/50 shadow-xl transition-all duration-100 hover:scale-[1.03] hover:shadow-2xl"
+   <section
+  className="w-full overflow-hidden relative py-10"
+  aria-labelledby="why-easemyspace-heading"
+>
+  <div className="container mx-auto px-6 max-w-7xl text-center relative z-10">
+    <h2
+      id="why-easemyspace-heading"
+      className="text-4xl lg:text-5xl font-bold mb-6"
     >
-      <div className="flex flex-col h-full bg-white/70 backdrop-blur-md rounded-2xl p-6">
-        {/* Gradient icon bubble */}
-        <div
-          className={`w-14 h-14 mb-6 rounded-xl flex items-center justify-center bg-gradient-to-br ${feature.gradient} text-white shadow-md transform transition-all duration-300 group-hover:rotate-3 group-hover:scale-105`}
+      Why Choose EaseMy<span className="text-blue-500">Space</span><span>.in</span><span className="lg:text-7xl">?</span>
+    </h2>
+    <p className="text-zinc-600 max-w-2xl mx-auto mb-14 text-lg">
+      Not just listings. A smarter, safer, and faster way to rent and list trusted spaces across India.
+    </p>
+
+    <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-4 lg:px-0">
+      {features.map((feature, i) => (
+        <article
+          key={i}
+          className="group relative p-[1px] rounded-2xl bg-gradient-to-br from-blue-100/50 via-blue-200/50 to-purple-100/50 shadow-xl transition-all duration-100 hover:scale-[1.03] hover:shadow-2xl"
         >
-          {feature.icon}
-        </div>
+          <div className="flex flex-col h-full bg-white/70 backdrop-blur-md rounded-2xl p-6">
+            {/* Gradient icon bubble */}
+            <div
+              className={`w-14 h-14 mb-6 rounded-xl flex items-center justify-center bg-gradient-to-br ${feature.gradient} text-white shadow-md transform transition-all duration-300 group-hover:rotate-3 group-hover:scale-105`}
+              aria-hidden="true"
+            >
+              {feature.icon}
+            </div>
 
-        <h3 className="text-lg font-bold text-zinc-800 mb-2 tracking-tight">
-          {feature.title}
-        </h3>
+            <h3 className="text-lg font-bold text-zinc-800 mb-2 tracking-tight">
+              {feature.title}
+            </h3>
 
-        <p className="text-sm text-zinc-600 leading-relaxed mb-auto">
-          {feature.description}
-        </p>
+            <p className="text-sm text-zinc-600 leading-relaxed mb-auto">
+              {feature.description}
+            </p>
 
-        {/* Micro-detail bottom glow bar */}
-        <div className="mt-6 h-[3px] w-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </div>
+            {/* Micro-detail bottom glow bar */}
+            <div className="mt-6 h-[3px] w-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
+        </article>
+      ))}
     </div>
-  ))}
-</div>
+  </div>
+</section>
 
-      </div>
-    </section>
   );
 };
 

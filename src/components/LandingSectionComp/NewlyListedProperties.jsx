@@ -90,27 +90,37 @@ export default function NewlyListedProperties() {
 
   return (
  <div className="bg-zinc-100 py-10">
-  <section className="my-16 rounded-2xl bg-white p-5 max-w-7xl mx-auto relative">
+  <section
+    className="my-16 rounded-2xl bg-white p-5 max-w-7xl mx-auto relative"
+    aria-labelledby="exclusive-properties-heading"
+  >
     {/* Heading + Arrows */}
     <div className="flex justify-between items-center mb-6">
-      <h2 className="text-3xl font-bold text-blue-600">
+      <h2
+        id="exclusive-properties-heading"
+        className="text-3xl font-bold text-blue-600"
+      >
         Exclusive Featured Properties
       </h2>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => scroll("left")}
-          className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
-        >
-          <FaChevronLeft className="text-xl text-blue-600" />
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
-        >
-          <FaChevronRight className="text-xl text-blue-600" />
-        </button>
-      </div>
+      <nav aria-label="Scroll featured properties">
+        <div className="flex gap-2">
+          <button
+            onClick={() => scroll("left")}
+            aria-label="Scroll Left"
+            className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
+          >
+            <FaChevronLeft className="text-xl text-blue-600" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            aria-label="Scroll Right"
+            className="bg-white/80 backdrop-blur-md shadow-lg p-3 rounded-full hover:bg-gray-100 border"
+          >
+            <FaChevronRight className="text-xl text-blue-600" />
+          </button>
+        </div>
+      </nav>
     </div>
 
     {/* Scrollable Cards */}
@@ -118,12 +128,15 @@ export default function NewlyListedProperties() {
       <div
         ref={scrollRef}
         className="flex gap-10 overflow-x-auto scroll-smooth pb-4 px-10 scrollbar-hide"
+        role="list"
+        aria-label="List of featured properties"
       >
         {newlyListed.map((p) => (
           <Link
             to={`/properties/${p.id}`}
             key={p.id}
-            className="min-w-[260px] max-w-[260px]  rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+            className="min-w-[260px] max-w-[260px] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+            role="listitem"
           >
             {p.images && p.images.length > 0 ? (
               <div className="h-48 w-full rounded-t-2xl overflow-hidden">
@@ -134,8 +147,9 @@ export default function NewlyListedProperties() {
                     <img
                       key={idx}
                       src={url}
-                      alt={`Image ${idx + 1}`}
+                      alt={p.title || `Property image ${idx + 1}`}
                       className="h-48 w-full object-cover"
+                      loading="lazy"
                     />
                   ) : isVideo ? (
                     <video
@@ -143,7 +157,9 @@ export default function NewlyListedProperties() {
                       src={url}
                       controls
                       className="h-48 w-full object-cover"
-                    />
+                    >
+                      Your browser does not support the video tag.
+                    </video>
                   ) : null;
                 })}
               </div>
@@ -153,13 +169,16 @@ export default function NewlyListedProperties() {
               </div>
             )}
 
-            <div className="p-4 flex flex-col ">
+            <div className="p-4 flex flex-col">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="font-semibold text-lg text-indigo-800 truncate">
                   {p.title}
                 </h3>
                 {p.verified && (
-                  <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                  <span
+                    className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1"
+                    aria-label="Verified property"
+                  >
                     <FiCheckCircle className="text-sm" />
                     Verified
                   </span>
@@ -176,6 +195,7 @@ export default function NewlyListedProperties() {
     </div>
   </section>
 </div>
+
 
 
 

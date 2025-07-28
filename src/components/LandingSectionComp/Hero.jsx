@@ -75,13 +75,13 @@ if (tFinal) qs.append("looking_for", tFinal);
   /* ─────────── JSX ─────────── */
   return (
     <section className="w-full">
-      <main className="bg-gradient-to-r from-indigo-600 to-teal-500 text-white py-12 px-6 rounded-b-[80px] flex items-center">
+      <main className=" py-12 px-6 rounded-b-[80px] flex items-center ">
         <div className="max-w-7xl mx-auto relative z-10 w-full px-4">
           <div className="text-center lg:text-left max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl text-zinc-800 font-bold mb-4">
               Find Your Perfect Flatmate, Flats or PG in Mumbai
             </h1>
-            <p className="text-lg text-white/90 mb-10">
+            <p className="text-lg text-zinc-600 mb-10">
               Smart Matches, Verified Rooms. Your Urban Flatmate Search Starts Here.
             </p>
 
@@ -91,7 +91,7 @@ if (tFinal) qs.append("looking_for", tFinal);
                 onSubmit={handleSubmit}
                 initial={{ opacity:0,y:20 }} animate={{ opacity:1,y:0 }}
                 transition={{ duration:0.6, ease:"easeOut" }}
-                className="bg-white/80 backdrop-blur-xl text-zinc-700 font-medium flex flex-col sm:flex-row flex-wrap justify-center gap-4 items-center shadow-2xl p-6 rounded-tl-[3rem] rounded-tr-md rounded-br-[3rem] rounded-bl-md w-full max-w-[900px]"
+                className="bg-white/80 backdrop-blur-xl text-zinc-700 font-medium flex flex-col sm:flex-row flex-wrap justify-center gap-4 items-center p-6 rounded-2xl w-full max-w-[900px]"
               >
                 {/* free‑text */}
                 <InputBox
@@ -140,17 +140,19 @@ if (tFinal) qs.append("looking_for", tFinal);
 
       {/* badges */}
       <div className="flex flex-wrap justify-center gap-4 mt-8 px-4">
-        <AnimatePresence>
-          {shuffled.map(b=>(
-            <motion.div
-              key={b.text} layout transition={{ duration:0.8,type:"spring" }}
-              className="bg-white text-gray-700 font-semibold shadow-md px-5 py-3 rounded-full flex items-center gap-2 text-sm sm:text-base hover:scale-105 transition"
-            >
-              <span className="text-xl">{b.icon}</span>{b.text}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+  {shuffled.map((b) => (
+    <div
+      key={b.text}
+      className="bg-white text-gray-700 font-semibold shadow-md px-5 py-3 
+                 rounded-full flex items-center gap-2 text-sm sm:text-base 
+                 hover:scale-105 transition"
+    >
+      <span className="text-xl">{b.icon}</span>
+      {b.text}
+    </div>
+  ))}
+</div>
+
     </section>
   );
 }
