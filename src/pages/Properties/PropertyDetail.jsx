@@ -47,7 +47,7 @@ function PropertyDetail() {
     return `${possessive} listed home`;
   };
 
-  const { id } = useParams();
+  const { id } = useParams(); 
   const location = useLocation();
   const init = location.state?.property ? enrich(location.state.property) : null;
 
