@@ -1,11 +1,7 @@
 export default function PopupModal({
   onClose,
   hasPaid,
-  isLoggedIn,
-  isOtpVerified,
-  userMobile,
-  setShowOtpPopup,
-  setOtpPopupPurpose,
+  setHasPaid,
 }) {
   const PLAN_FEATURES = [
     "✅ Unlimited Contact Access for 30 days",
@@ -18,16 +14,10 @@ export default function PopupModal({
   ];
 
   const handleSubscribeClick = () => {
-    if (isLoggedIn || isOtpVerified) {
-      const mobileToUse = isLoggedIn ? "9999999999" : userMobile;
-      const event = new CustomEvent("initiate-payment", {
-        detail: { amount: 1499, mobile: mobileToUse },
-      });
-      document.dispatchEvent(event);
-    } else {
-      setOtpPopupPurpose("Continue Payment");
-      setShowOtpPopup(true);
-    }
+    const event = new CustomEvent("initiate-payment", {
+      detail: { amount: 1499 },
+    });
+    document.dispatchEvent(event);
   };
 
   return (
@@ -56,8 +46,7 @@ export default function PopupModal({
           <div className="text-right mt-4 sm:mt-0">
             <div className="text-xl text-gray-400 line-through">₹1699</div>
             <div className="text-3xl font-bold text-indigo-700">
-              ₹1499{" "}
-              <span className="text-lg font-medium text-gray-500">+ GST</span>
+              ₹1499 <span className="text-lg font-medium text-gray-500">+ GST</span>
             </div>
             <div className="text-sm text-green-600 font-semibold">
               Save ₹200!

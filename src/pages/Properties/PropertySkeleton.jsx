@@ -1,5 +1,4 @@
-// src/components/Property/PropertySkeleton.jsx
-import React from "react";
+
 
 function PropertySkeleton() {
   return (

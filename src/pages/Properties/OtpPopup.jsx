@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-function OtpPopup({ otpPopupPurpose, onVerified, onClose }) {
+function OtpPopup({ onVerified, onClose }) {
   const [userMobile, setUserMobile] = useState("");
   const [userOtp, setUserOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -92,7 +92,7 @@ function OtpPopup({ otpPopupPurpose, onVerified, onClose }) {
           ×
         </button>
         <h3 className="text-lg font-semibold text-gray-800 mb-3">
-          Verify to {otpPopupPurpose}
+          Verify to view property
         </h3>
 
         <input
@@ -129,7 +129,7 @@ function OtpPopup({ otpPopupPurpose, onVerified, onClose }) {
         {!otpSent ? (
           <button
             onClick={handleSendOtp}
-            className="w-full bg-indigo-600 text-white py-2 rounded mt-2 font-medium disabled:opacity-60"
+            className="w-full bg-blue-500 text-white py-2 rounded mt-2 font-medium disabled:opacity-60"
             disabled={isSending}
           >
             {isSending ? "Sending..." : "Send OTP"}

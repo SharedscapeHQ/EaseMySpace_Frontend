@@ -4,14 +4,10 @@ function PropertyHeaderSection({
   property,
   setLightboxIdx,
   hasPaid,
-  isLoggedIn,
-  isOtpVerified,
-  userMobile,
+  userMobile, // Keep this for PaymentButton to prefill/verify
   setHasPaid,
-  setShowOtpPopup,
-  setOtpPopupPurpose,
-  setShowPlanPopup,
-  
+  setShowPlanPopup, // Keep this as it's unrelated to OTP/Login and controls the plan popup
+  // Removed props: isLoggedIn, isOtpVerified, setShowOtpPopup, setOtpPopupPurpose
 }) {
   if (!property) return null;
 
@@ -65,14 +61,14 @@ function PropertyHeaderSection({
             <h2 className="text-lg font-semibold text-gray-800 mb-2">Owner's Contact</h2>
             <div className="text-gray-700 text-base">
               {hasPaid ? (
-  property.phone_visible ? (
-    <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
-  ) : (
-    <span className="font-medium text-red-500">📞 Hidden by owner</span>
-  )
-) : (
-  <span className="font-medium">📞 +91xxxxxxx</span>
-)}
+                property.phone_visible ? (
+                  <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
+                ) : (
+                  <span className="font-medium text-red-500">📞 Hidden by owner</span>
+                )
+              ) : (
+                <span className="font-medium">📞 +91xxxxxxx</span>
+              )}
             </div>
           </div>
 
@@ -103,14 +99,12 @@ function PropertyHeaderSection({
             </p>
           </div>
 
+          {/* PaymentButton - now simplified */}
           <PaymentButton
             hasPaid={hasPaid}
-            isLoggedIn={isLoggedIn}
-            isOtpVerified={isOtpVerified}
             userMobile={userMobile}
             setHasPaid={setHasPaid}
-            setShowOtpPopup={setShowOtpPopup}
-            setOtpPopupPurpose={setOtpPopupPurpose}
+            // Removed props: isLoggedIn, isOtpVerified, setShowOtpPopup, setOtpPopupPurpose
           />
         </div>
 
@@ -132,8 +126,9 @@ function PropertyHeaderSection({
                 </span>
               </div>
             </div>
+            {/* Corrected Google Maps link */}
             <a
-              href={`https://www.google.com/maps?q=${encodeURIComponent(property.location)}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.location)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 text-sm font-medium hover:underline"
