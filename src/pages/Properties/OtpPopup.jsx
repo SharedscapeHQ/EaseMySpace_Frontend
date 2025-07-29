@@ -10,6 +10,14 @@ function OtpPopup({ onVerified, onClose }) {
   const [isSending, setIsSending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
+  // Load userMobile from localStorage if available on initial render
+  useEffect(() => {
+    const storedMobile = localStorage.getItem("user_verified_mobile");
+    if (storedMobile) {
+      setUserMobile(storedMobile);
+    }
+  }, []);
+
   const handleSendOtp = async () => {
     if (userMobile.length === 10) {
       try {
@@ -26,6 +34,7 @@ function OtpPopup({ onVerified, onClose }) {
           toast.error(res.data.message || "Failed to send OTP.");
         }
       } catch (err) {
+        console.error("Error sending OTP:", err); // Log the actual error for debugging
         toast.error("Error sending OTP. Please try again.");
       } finally {
         setIsSending(false);
@@ -37,6 +46,7 @@ function OtpPopup({ onVerified, onClose }) {
   };
 
   const handleVerifyOtp = async () => {
+    // Ensure the phone number is formatted correctly for the API if necessary
     const formattedPhone = userMobile.startsWith("+91") ? userMobile : `+91${userMobile}`;
 
     try {
@@ -48,6 +58,9 @@ function OtpPopup({ onVerified, onClose }) {
 
       if (res.data.verified === true) {
         localStorage.setItem("otp_verified", "true");
+        // --- NEW: Save the verified mobile number to localStorage ---
+        localStorage.setItem("user_verified_mobile", userMobile);
+        // --- END NEW ---
         toast.success("OTP verified successfully!");
 
         const lead = res.data.lead;
@@ -64,6 +77,7 @@ function OtpPopup({ onVerified, onClose }) {
         toast.error(res.data.message || "Invalid OTP.");
       }
     } catch (err) {
+      console.error("Error verifying OTP:", err); // Log the actual error for debugging
       toast.error("Error verifying OTP.");
     } finally {
       setIsVerifying(false);

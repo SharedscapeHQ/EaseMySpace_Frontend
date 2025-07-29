@@ -6,53 +6,69 @@ import { getCurrentUser } from "../../API/authAPI";
 
 export default function PaymentButton({
   hasPaid,
-  userMobile, // Still useful for payment prefill/verification
+  userMobile, // This prop might be passed from PropertyDetails if it's the result of a fresh OTP verification
   setHasPaid,
-  // isLoggedIn prop is no longer directly used for payment flow decisions here
-  // setShowOtpPopup, // No longer needed
-  // setOtpPopupPurpose, // No longer needed
 }) {
   const [userData, setUserData] = useState({});
   const [isPaying, setIsPaying] = useState(false);
+  const [activeUserPhone, setActiveUserPhone] = useState(""); // State to hold the most relevant phone number
 
-  // Fetch logged-in user data on component mount
-  // This is still useful for prefilling Razorpay details if the user IS logged in.
+  // Fetch logged-in user data and set initial phone number
   useEffect(() => {
     (async () => {
       try {
         const data = await getCurrentUser();
         setUserData(data);
 
-        // If user is logged in and has a paid subscription, set hasPaid to true
-        if (data?.subscription_status === "paid") {
-          setHasPaid(true);
+        let determinedPhone = "";
+        if (data?.phone) {
+          // Priority 1: Logged-in user's phone
+          determinedPhone = data.phone;
+          if (data.subscription_status === "paid") {
+            setHasPaid(true);
+          }
+        } else {
+          // Priority 2: OTP verified lead's phone from localStorage
+          const storedMobile = localStorage.getItem("user_verified_mobile");
+          if (storedMobile) {
+            determinedPhone = storedMobile;
+          }
         }
+        setActiveUserPhone(determinedPhone);
       } catch (err) {
         console.error("Failed to fetch current user:", err);
-        // Handle cases where user is not logged in or session expired
+        // If an error occurs (e.g., not logged in), still try to get from localStorage
+        const storedMobile = localStorage.getItem("user_verified_mobile");
+        if (storedMobile) {
+          setActiveUserPhone(storedMobile);
+        }
       }
     })();
   }, [setHasPaid]);
 
-  // Check subscription status based on userMobile (for non-logged-in leads)
-  // This helps identify if a non-logged-in user has already paid via OTP verification.
+  // Check subscription status based on activeUserPhone (for both logged-in and lead users)
   useEffect(() => {
-    if (userMobile) {
+    // Only proceed if activeUserPhone is available and hasPaid is not already true
+    if (activeUserPhone && !hasPaid) {
       axios
         .get(
-          `https://api.easemyspace.in/api/payment/check-subscription?phone=${userMobile}`
+          `https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`
         )
         .then((res) => {
           if (res.data.paid) {
             setHasPaid(true);
-            localStorage.setItem("has_paid_lead", "true"); // Persist for leads
+            // This is crucial: if a lead pays, mark them as paid in local storage
+            if (!userData.id) { // Only set this if it's genuinely a lead (not a logged-in user)
+                localStorage.setItem("has_paid_lead", "true");
+            }
           }
         })
         .catch((err) => {
           console.error("Subscription check failed for lead:", err);
         });
     }
-  }, [userMobile, setHasPaid]);
+  }, [activeUserPhone, hasPaid, setHasPaid, userData.id]);
+
 
   // Helper function to load Razorpay script dynamically
   const loadScript = (src) =>
@@ -81,6 +97,21 @@ export default function PaymentButton({
 
       const { orderId, currency } = await createOrder(amount); // Create an order on your backend
 
+      // Determine the phone number to use for Razorpay prefill and backend verification
+      // This logic will prioritize: userData.phone -> userMobile prop -> activeUserPhone (from localStorage) -> prompt
+      let finalPhoneNumber = userData.phone || userMobile || activeUserPhone;
+
+      // If still no phone, prompt the user as a last resort (should be rare with OTP flow)
+      if (!finalPhoneNumber) {
+          finalPhoneNumber = prompt("📱 Please enter your phone number for payment records:");
+      }
+
+      if (!finalPhoneNumber) {
+        toast.error("Phone number is required for payment.");
+        setIsPaying(false);
+        return;
+      }
+
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv", // Your Razorpay Live Key
         amount: amount * 100, // Amount in paise
@@ -91,25 +122,13 @@ export default function PaymentButton({
         handler: async function (response) {
           // This function is called on successful payment
           try {
-            // Prefer logged-in user's phone, then the userMobile prop (from OTP verification), else prompt
-            const phoneNumber =
-              userData.phone ||
-              userMobile ||
-              prompt("📱 Please enter your phone number for payment records:");
-
-            if (!phoneNumber) {
-              toast.error("Phone number is required for payment verification.");
-              setIsPaying(false);
-              return;
-            }
-
             const paymentDetails = {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount,
               user_id: userData.id || null, // Pass user ID if logged in
-              phone: phoneNumber,
+              phone: finalPhoneNumber, // <--- Use the determined finalPhoneNumber here
               status: "paid",
             };
 
@@ -117,10 +136,10 @@ export default function PaymentButton({
 
             if (result.success) {
               setHasPaid(true);
-              // If the user was a lead (not logged in) and paid, persist this
-              // We're inferring `isLoggedIn` here based on `userData.id` presence
-              if (!userData.id) {
+              // If the user was a lead (not logged in) and paid, persist this for future visits
+              if (!userData.id) { // Only set this if it's genuinely a lead (not a logged-in user)
                 localStorage.setItem("has_paid_lead", "true");
+                localStorage.setItem("user_verified_mobile", finalPhoneNumber); // Ensure the paid number is stored
               }
               toast.success("✅ Payment successful! Contact unlocked.");
             } else {
@@ -136,10 +155,7 @@ export default function PaymentButton({
         prefill: {
           name: userData.firstName || "Guest User",
           email: userData.email || "guest@easemyspace.com", // Provide a default if no email
-          contact:
-            userData.phone?.toString().startsWith("+91")
-              ? userData.phone
-              : `+91${userData.phone || userMobile || ""}`, // Ensure +91 prefix for Razorpay
+          contact: finalPhoneNumber.startsWith("+91") ? finalPhoneNumber : `+91${finalPhoneNumber}`, // Ensure +91 prefix for Razorpay
         },
         theme: {
           color: "#6366F1", // Indigo-600 color

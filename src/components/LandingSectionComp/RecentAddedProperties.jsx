@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
-import axios from "axios";
+import axios from "axios"; // Assuming axios is your API client
+import { getCurrentUser } from "../../API/authAPI"; // Import getCurrentUser (assuming this path)
+import { incrementPropertyView } from "../../API/propertiesApi"; // Import incrementPropertyView (assuming this path)
+import OtpPopup from "../../pages/Properties/OtpPopup"; // Import the OtpPopup component (assuming this path)
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -20,6 +23,55 @@ export default function RecentAddedProperties() {
   const [recentProperties, setRecentProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // OTP and Login state
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+  const otpVerified = localStorage.getItem("otp_verified") === "true";
+  const [isOtpVerified, setIsOtpVerified] = useState(otpVerified);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const cache = localStorage.getItem("user");
+    return !!cache; // True if 'user' item exists, false otherwise
+  });
+
+  // Fetch user login status on mount
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          localStorage.setItem("user", JSON.stringify(user));
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+          localStorage.removeItem("user");
+        }
+      } catch (err) {
+        console.error("Failed to fetch current user:", err);
+        setIsLoggedIn(false);
+        localStorage.removeItem("user");
+      }
+    }
+    fetchUser();
+  }, []);
+
+  // Sync login status across tabs/windows
+  useEffect(() => {
+    const syncLogin = () => {
+      const cache = localStorage.getItem("user");
+      setIsLoggedIn(!!cache);
+      // Also sync OTP verification status
+      setIsOtpVerified(localStorage.getItem("otp_verified") === "true");
+    };
+
+    window.addEventListener("storage", syncLogin);
+    window.addEventListener("auth-change", syncLogin); // Assuming you might dispatch a custom event on auth change
+    return () => {
+      window.removeEventListener("storage", syncLogin);
+      window.removeEventListener("auth-change", syncLogin);
+    };
+  }, []);
 
   useEffect(() => {
     async function fetchRecent() {
@@ -54,6 +106,24 @@ export default function RecentAddedProperties() {
     }
   };
 
+  // Function to handle click on property card
+  const handlePropertyCardClick = (event, property) => {
+    if (!isLoggedIn && !isOtpVerified) {
+      event.preventDefault(); // Prevent the default Link navigation
+      setSelectedPropertyId(property.id); // Store ID for navigation after OTP
+      setShowOtpPopup(true); // Show OTP popup
+    } else {
+      // If already logged in or OTP verified, proceed with view increment
+      const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+      if (!visited.includes(property.id)) {
+        incrementPropertyView(property.id);
+        sessionStorage.setItem("viewedProps", JSON.stringify([...visited, property.id]));
+      }
+      // The <Link> component will handle the navigation to `/properties/${p.id}` naturally
+      // No explicit navigate() call needed here, as the Link's default behavior is desired.
+    }
+  };
+
   if (loading) {
     return (
       <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto">
@@ -85,106 +155,123 @@ export default function RecentAddedProperties() {
     );
 
   return (
-  <div className="bg-zinc-100 pb-20">
-  <section
-    className="md:px-10 px-6 bg-white rounded-2xl p-5 max-w-7xl mx-auto relative"
-    aria-labelledby="new-properties-heading"
-  >
-    {/* Heading + Arrows */}
-    <div className="flex justify-between items-center mb-6">
-      <h2 id="new-properties-heading" className="text-md lg:text-3xl font-bold text-blue-600">
-        New Arrivals: Discover the Latest Properties
-      </h2>
-      <nav aria-label="Scroll featured properties">
-        <div className="flex gap-2">
-          <button
-            onClick={() => scroll("left")}
-            aria-label="Scroll Left"
-            className="bg-white/80 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
-          >
-            <FaChevronLeft className="text-base md:text-xl text-blue-600" />
-          </button>
-          <button
-            onClick={() => scroll("right")}
-            aria-label="Scroll Right"
-            className="bg-white/80 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
-          >
-            <FaChevronRight className="text-base md:text-xl text-blue-600" />
-          </button>
-        </div>
-      </nav>
-    </div>
-
-    {/* Scrollable Cards */}
-    <div className="relative">
-      <div
-        ref={scrollRef}
-        className="flex gap-10 overflow-x-auto scroll-smooth pb-4 px-10 scrollbar-hide"
+    <div className="bg-zinc-100 pb-20">
+      <section
+        className="md:px-10 px-6 bg-white rounded-2xl p-5 max-w-7xl mx-auto relative"
+        aria-labelledby="new-properties-heading"
       >
-        {recentProperties.map((p) => (
-          <Link
-            to={`/properties/${p.id}`}
-            key={p.id}
-            className="min-w-[270px] max-w-[270px] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
-            aria-label={`View details of ${p.title}`}
+        {/* Heading + Arrows */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 id="new-properties-heading" className="text-md lg:text-3xl font-bold text-blue-600">
+            New Arrivals: Discover the Latest Properties
+          </h2>
+          <nav aria-label="Scroll featured properties">
+            <div className="flex gap-2">
+              <button
+                onClick={() => scroll("left")}
+                aria-label="Scroll Left"
+                className="bg-white/80 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
+              >
+                <FaChevronLeft className="text-base md:text-xl text-blue-600" />
+              </button>
+              <button
+                onClick={() => scroll("right")}
+                aria-label="Scroll Right"
+                className="bg-white/80 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
+              >
+                <FaChevronRight className="text-base md:text-xl text-blue-600" />
+              </button>
+            </div>
+          </nav>
+        </div>
+
+        {/* Scrollable Cards */}
+        <div className="relative">
+          <div
+            ref={scrollRef}
+            className="flex gap-10 overflow-x-auto scroll-smooth pb-4 px-10 scrollbar-hide"
           >
-            <article className="bg-white rounded-2xl h-full flex flex-col">
-              {p.images && p.images.length > 0 ? (
-                <figure className="h-48 w-full rounded-t-2xl overflow-hidden">
-                  {p.images.map((url, idx) => {
-                    const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-                    const isVideo = /\.(mp4|mov|webm)$/i.test(url);
-                    return isImage ? (
-                      <img
-                        key={idx}
-                        src={url}
-                        alt={`Property: ${p.title} - Image ${idx + 1}`}
-                        loading="lazy"
-                        className="h-48 w-full object-cover"
-                      />
-                    ) : isVideo ? (
-                      <video
-                        key={idx}
-                        src={url}
-                        controls
-                        loading="lazy"
-                        className="h-48 w-full object-cover"
-                      />
-                    ) : null;
-                  })}
-                </figure>
-              ) : (
-                <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
-                  No Media
-                </div>
-              )}
-
-              <div className="p-4 flex flex-col">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-lg text-indigo-800 truncate">
-                    {p.title}
-                  </h3>
-                  {p.verified && (
-                    <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
-                      <FiCheckCircle className="text-sm" />
-                      Verified
-                    </span>
+            {recentProperties.map((p) => (
+              <Link
+                to={`/properties/${p.id}`} // Always point to the specific property URL
+                key={p.id}
+                onClick={(e) => handlePropertyCardClick(e, p)} // Attach the handler
+                className="min-w-[270px] max-w-[270px] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+                aria-label={`View details of ${p.title}`}
+              >
+                <article className="bg-white rounded-2xl h-full flex flex-col">
+                  {p.images && p.images.length > 0 ? (
+                    <figure className="h-48 w-full rounded-t-2xl overflow-hidden">
+                      {p.images.map((url, idx) => {
+                        const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+                        const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+                        return isImage ? (
+                          <img
+                            key={idx}
+                            src={url}
+                            alt={`Property: ${p.title} - Image ${idx + 1}`}
+                            loading="lazy"
+                            className="h-48 w-full object-cover"
+                          />
+                        ) : isVideo ? (
+                          <video
+                            key={idx}
+                            src={url}
+                            controls
+                            loading="lazy"
+                            className="h-48 w-full object-cover"
+                          />
+                        ) : null;
+                      })}
+                    </figure>
+                  ) : (
+                    <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
+                      No Media
+                    </div>
                   )}
-                </div>
-                <p className="text-gray-600 text-sm mb-1">{p.location}</p>
-                <p className="text-indigo-600 font-bold mt-auto">
-                  ₹ {Number(p.price).toLocaleString()}
-                </p>
-              </div>
-            </article>
-          </Link>
-        ))}
-      </div>
+
+                  <div className="p-4 flex flex-col">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-lg text-indigo-800 truncate">
+                        {p.title}
+                      </h3>
+                      {p.verified && (
+                        <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                          <FiCheckCircle className="text-sm" />
+                          Verified
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-gray-600 text-sm mb-1">{p.location}</p>
+                    <p className="text-indigo-600 font-bold mt-auto">
+                      ₹ {Number(p.price).toLocaleString()}
+                    </p>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* OTP Popup Modal */}
+      {showOtpPopup && (
+        <OtpPopup
+          onVerified={() => {
+            setIsOtpVerified(true);
+            setShowOtpPopup(false);
+            if (selectedPropertyId) {
+              // After successful OTP, directly navigate to the property page.
+              // The property detail page is expected to fetch its own data.
+              navigate(`/properties/${selectedPropertyId}`);
+            }
+          }}
+          onClose={() => {
+            setShowOtpPopup(false);
+            setSelectedPropertyId(null); // Clear selected property ID
+          }}
+        />
+      )}
     </div>
-  </section>
-</div>
-
-
-
   );
 }
