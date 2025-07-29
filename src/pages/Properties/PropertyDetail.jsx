@@ -177,13 +177,13 @@ function PropertyDetail() {
   <h2 className="text-xl font-bold text-indigo-700 mb-3">
     Property Description
   </h2>
-  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+  <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line">
     {property.description}
   </p>
 </div>
 
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-2 text-center sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             <InfoItem label="Rent" value={`₹${property.price || "N/A"}`} />
             <InfoItem label="Deposit" value={`₹${property.deposit || "N/A"}`} />
             <InfoItem label="Flat Status" value={property.flat_status || "N/A"} />

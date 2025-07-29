@@ -14,7 +14,7 @@ function LightboxViewer({ property, lightboxIdx, setLightboxIdx, stepLightbox })
           e.stopPropagation();
           stepLightbox(-1);
         }}
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl"
+        className="absolute z-50 left-4 top-1/2 -translate-y-1/2 text-white text-4xl"
       >
         <FaChevronLeft />
       </button>
@@ -44,7 +44,7 @@ function LightboxViewer({ property, lightboxIdx, setLightboxIdx, stepLightbox })
           e.stopPropagation();
           stepLightbox(1);
         }}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl"
+        className="absolute z-50 right-4 top-1/2 -translate-y-1/2 text-white text-4xl"
       >
         <FaChevronRight />
       </button>

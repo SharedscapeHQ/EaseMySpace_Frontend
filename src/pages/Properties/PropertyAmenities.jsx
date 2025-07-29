@@ -56,7 +56,7 @@ function PropertyAmenities({ amenities, property }) {
   return (
     <div>
       <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {knownAmenities.map((amenity, idx) => {
           const isAvailable = availableAmenities.some(
             (item) => item?.toLowerCase() === amenity.toLowerCase()
@@ -66,10 +66,10 @@ function PropertyAmenities({ amenities, property }) {
           return (
             <div
               key={`known-${idx}`}
-              className={`flex items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] ${
+              className={`flex flex-col lg:flex-row justify-center text-center items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] ${
                 isAvailable
-                  ? 'bg-green-50 border border-green-200'
-                  : 'bg-gray-100 border border-gray-200'
+                  ? 'bg-green-50 border-2 border-green-200'
+                  : 'bg-gray-100 border-2 border-gray-200'
               }`}
             >
               <div
@@ -89,7 +89,7 @@ function PropertyAmenities({ amenities, property }) {
           .map((extra, idx) => (
             <div
               key={`extra-${idx}`}
-              className="flex items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] bg-green-50 border border-green-200"
+              className="flex items-center flex-col lg:flex-row text-center justify-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] bg-green-50 border border-green-200"
             >
               <div className="text-2xl text-green-600 animate-pulse">
                 <FaPuzzlePiece />
