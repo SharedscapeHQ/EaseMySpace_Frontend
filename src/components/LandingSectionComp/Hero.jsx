@@ -1,6 +1,6 @@
 // Hero.jsx  –  smart keyword‑aware search / query builder
 import React, { useState, useEffect, Fragment } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Listbox, Transition } from "@headlessui/react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,7 +12,6 @@ const badges = [
   { icon: "🛏️", text: "Rent from ₹5,000/mo"  },
   { icon: "🔒", text: "100% Secure Matches"   },
 ];
-const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
 
 /* dropdown data */
 const genderOptions = [
@@ -49,9 +48,8 @@ export default function Hero() {
   const [formData, setFormData] = useState({ search:"", gender:"", property_type:"" });
   const handleChange = (k,v)=> setFormData(p=>({ ...p, [k]:v }));
 
-  /* animated badges */
   const [shuffled,setShuffled]=useState(badges);
-  // useEffect(()=>{ const t=setInterval(()=>setShuffled(shuffle(badges)),3000); return ()=>clearInterval(t) },[]);
+  
 
   const navigate = useNavigate();
 
@@ -142,7 +140,7 @@ if (tFinal) qs.append("looking_for", tFinal);
       </div>
 
       {/* badges */}
-     <div className="flex flex-col items-center space-y-4 my-8 px-4 sm:flex-wrap sm:flex-row sm:justify-center sm:space-y-0 sm:gap-4">
+     <div className=" hidden lg:flex flex-col items-center space-y-4 my-8 px-4 sm:flex-wrap sm:flex-row sm:justify-center sm:space-y-0 sm:gap-4">
   {shuffled.map((b) => (
     <div
       key={b.text}
