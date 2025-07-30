@@ -126,8 +126,8 @@ export default function RecentAddedProperties() {
 
   if (loading) {
     return (
-      <section className="my-16 md:px-10 px-6 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-indigo-800 mb-6">
+      <section className="py-10 md:px-10 px-6 max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-black mb-6">
           New Arrivals: Discover the Latest Properties
         </h2>
         <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -155,15 +155,18 @@ export default function RecentAddedProperties() {
     );
 
   return (
-    <div className="bg-zinc-100 pb-20">
+    <div className="bg-zinc-50 pb-5">
       <section
-        className="md:px-10 px-6 bg-white rounded-2xl p-5 max-w-7xl mx-auto relative"
+        className="md:px-10 px-6  rounded-2xl p-5 max-w-7xl mx-auto relative"
         aria-labelledby="new-properties-heading"
       >
         {/* Heading + Arrows */}
         <div className="flex justify-between items-center mb-6">
-          <h2 id="new-properties-heading" className="text-md lg:text-3xl font-bold text-blue-600">
-            New Arrivals: Discover the Latest Properties
+          <h2
+            style={{ fontFamily: "heading_font" }}
+            className="text-lg lg:text-3xl mb-5 text-left text-black"
+          >
+            Discover the Latest Properties
           </h2>
           <nav aria-label="Scroll featured properties">
             <div className="flex gap-2">
@@ -189,41 +192,47 @@ export default function RecentAddedProperties() {
         <div className="relative">
           <div
             ref={scrollRef}
-            className="flex gap-10 overflow-x-auto scroll-smooth pb-4 px-10 scrollbar-hide"
+            className="flex gap-10 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
           >
             {recentProperties.map((p) => (
               <Link
-                to={`/properties/${p.id}`} // Always point to the specific property URL
+                to={`/properties/${p.id}`}
                 key={p.id}
-                onClick={(e) => handlePropertyCardClick(e, p)} // Attach the handler
-                className="min-w-[270px] max-w-[270px] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex-shrink-0"
+                onClick={(e) => handlePropertyCardClick(e, p)}
+                className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200  transition-all duration-300 flex-shrink-0"
                 aria-label={`View details of ${p.title}`}
               >
-                <article className="bg-white rounded-2xl h-full flex flex-col">
+                <article className="rounded-2xl h-full flex flex-col">
                   {p.images && p.images.length > 0 ? (
-                    <figure className="h-48 w-full rounded-t-2xl overflow-hidden">
-                      {p.images.map((url, idx) => {
-                        const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-                        const isVideo = /\.(mp4|mov|webm)$/i.test(url);
-                        return isImage ? (
-                          <img
-                            key={idx}
-                            src={url}
-                            alt={`Property: ${p.title} - Image ${idx + 1}`}
-                            loading="lazy"
-                            className="h-48 w-full object-cover"
-                          />
-                        ) : isVideo ? (
-                          <video
-                            key={idx}
-                            src={url}
-                            controls
-                            loading="lazy"
-                            className="h-48 w-full object-cover"
-                          />
-                        ) : null;
-                      })}
-                    </figure>
+                  <figure className="h-48 w-full p-3">
+  <div className="h-full w-full rounded-xl overflow-hidden">
+    {(() => {
+      const url = p.images?.[0];
+      if (!url) return null;
+
+      const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+      const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+
+      return isImage ? (
+        <img
+          src={url}
+          alt={`Property image`}
+          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+        />
+      ) : isVideo ? (
+        <video
+          src={url}
+          controls
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+      ) : null;
+    })()}
+  </div>
+</figure>
+
+
                   ) : (
                     <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
                       No Media
@@ -232,18 +241,16 @@ export default function RecentAddedProperties() {
 
                   <div className="p-4 flex flex-col">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-lg text-indigo-800 truncate">
-                        {p.title}
-                      </h3>
+                      <h3 className="font-semibold text-md text-blue-700 truncate">{p.title}</h3>
                       {p.verified && (
-                        <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
-                          <FiCheckCircle className="text-sm" />
+                        <span className="bg-green-500 text-white text-[8px] lg:text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                          <FiCheckCircle className="lg:text-sm text-xs" />
                           Verified
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-600 text-sm mb-1">{p.location}</p>
-                    <p className="text-indigo-600 font-bold mt-auto">
+                    <p className="text-gray-600 text-xs mb-1">{p.location}</p>
+                    <p className="text-blue-600 font-bold mt-auto lg:text-base text-xs">
                       ₹ {Number(p.price).toLocaleString()}
                     </p>
                   </div>
@@ -254,21 +261,18 @@ export default function RecentAddedProperties() {
         </div>
       </section>
 
-      {/* OTP Popup Modal */}
       {showOtpPopup && (
         <OtpPopup
           onVerified={() => {
             setIsOtpVerified(true);
             setShowOtpPopup(false);
             if (selectedPropertyId) {
-              // After successful OTP, directly navigate to the property page.
-              // The property detail page is expected to fetch its own data.
               navigate(`/properties/${selectedPropertyId}`);
             }
           }}
           onClose={() => {
             setShowOtpPopup(false);
-            setSelectedPropertyId(null); // Clear selected property ID
+            setSelectedPropertyId(null);
           }}
         />
       )}

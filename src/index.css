@@ -139,4 +139,16 @@
   animation: fade-out-up 0.3s ease-in forwards;
 }
 
+/* Fonts  */
+
+@font-face {
+  font-family: 'heading_font';
+  src: url('/fonts/heading_font.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'para_font';
+  src: url('/fonts/para_font.ttf') format('truetype');
+}
+
 

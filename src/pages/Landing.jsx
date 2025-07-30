@@ -1,9 +1,7 @@
-import CallToAction from '../components/LandingSectionComp/CallToAction'
 import FAQSection from '../components/LandingSectionComp/FAQSection'
 import FeatureSection from '../components/LandingSectionComp/Features'
 import Footer from '../components/Footer'
 import HeroSection from '../components/LandingSectionComp/Hero'
-import HowItWorksPage from '../components/LandingSectionComp/HowItWorksPage'
 // import TestimonialSection from '../components/LandingSectionComp/TestimonialSection'
 import NewlyListedProperties from '../components/LandingSectionComp/NewlyListedProperties'
 import RecentAddedProperties from '../components/LandingSectionComp/RecentAddedProperties'
@@ -16,7 +14,7 @@ function Landing() {
       <HeroSection/>
       <NewlyListedProperties/>
       <RecentAddedProperties/>
-     <div className=" flex lg:hidden flex-wrap justify-between gap-y-4 my-8 px-4">
+    <div className="lg:flex hidden flex-wrap bg-zinc-50 pb-5 justify-between gap-y-4 px-3 lg:px-20">
   {[
     { icon: "✅", text: "Verified Listings" },
     { icon: "💸", text: "Zero Brokerage" },
@@ -25,7 +23,7 @@ function Landing() {
   ].map((b) => (
     <div
       key={b.text}
-      className="w-[48%] bg-zinc-50 text-gray-700 font-semibold shadow-md px-4 py-3 
+      className="w-[48%] lg:w-auto bg-white border text-gray-700 font-semibold shadow-md px-4 py-3 
                  rounded-full flex items-center gap-2 text-sm 
                  hover:scale-105 transition justify-center"
     >
@@ -37,10 +35,8 @@ function Landing() {
 
 
 
+
       <FeatureSection/>
-      <HowItWorksPage/>
-      {/* <TestimonialSection/> */}
-      <CallToAction/>
       <FAQSection/>
       <Footer/>
     </div>

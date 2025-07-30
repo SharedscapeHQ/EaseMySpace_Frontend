@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHome, FaLock, FaRocket, FaUserCheck } from "react-icons/fa";
+import { FaHome, FaRocket, FaUserCheck, FaLock } from "react-icons/fa";
 
 const features = [
   {
@@ -23,59 +23,41 @@ const features = [
   {
     icon: <FaLock size={24} />,
     title: "Secure Platform",
-    description: "End-to-end encrypted. Your data is yours alone — always.",
+    description: "End-to-end encrypted. Your data is yours alone always.",
     gradient: "from-yellow-400 to-orange-500",
   },
 ];
 
 const FeatureSection = () => {
   return (
-   <section
-  className="w-full overflow-hidden relative py-10"
-  aria-labelledby="why-easemyspace-heading"
->
-  <div className="container mx-auto px-6 max-w-7xl text-center relative z-10">
-    <h2
-      id="why-easemyspace-heading"
-      className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-6"
-    >
-      Why Choose EaseMy<span className="text-blue-500">Space</span><span>.in</span><span className="lg:text-7xl">?</span>
+   <section className="w-full py-10 lg:px-20 px-3  bg-white">
+  <div className="max-w-7xl mx-auto">
+    <h2 className="text-2xl sm:text-3xl font-bold mb-5 text-left">
+      Why Choose EaseMySpace.in ?
     </h2>
-    <p className="text-zinc-600 max-w-2xl mx-auto mb-14 text-sm lg:text-lg">
-      Not just listings. A smarter, safer, and faster way to rent and list trusted spaces across India.
-    </p>
 
-    <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-4 lg:px-0">
-      {features.map((feature, i) => (
-        <article
-          key={i}
-          className="group relative p-[1px] rounded-2xl bg-gradient-to-br from-blue-100/50 via-blue-200/50 to-purple-100/50 shadow-xl transition-all duration-100 hover:scale-[1.03] hover:shadow-2xl"
+    <div className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-4 ">
+      {features.map((feature, index) => (
+        <div
+          key={index}
+          className={`flex items-center sm:items-center flex-row sm:flex-col text-left sm:text-center px-4 py-6
+            border-b border-gray-200 sm:border-b-0
+            sm:border-r ${index % 4 === 3 ? 'sm:border-r-0' : ''}`}
         >
-          <div className="flex flex-col h-full bg-white/70 backdrop-blur-md rounded-2xl p-6">
-            {/* Gradient icon bubble */}
-            <div
-              className={`w-14 h-14 mb-6 rounded-xl flex items-center justify-center bg-gradient-to-br ${feature.gradient} text-white shadow-md transform transition-all duration-300 group-hover:rotate-3 group-hover:scale-105`}
-              aria-hidden="true"
-            >
-              {feature.icon}
-            </div>
-
-            <h3 className="text-lg font-bold text-zinc-800 mb-2 tracking-tight">
-              {feature.title}
-            </h3>
-
-            <p className="text-sm text-zinc-600 leading-relaxed mb-auto">
-              {feature.description}
-            </p>
-
-            {/* Micro-detail bottom glow bar */}
-            <div className="mt-6 h-[3px] w-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl mr-4 sm:mr-0 sm:mb-4">
+            {feature.icon}
           </div>
-        </article>
+          <div>
+            <h3 className="font-bold text-zinc-900 text-base sm:text-lg lg:mb-1 mb-0 ">{feature.title}</h3>
+            <p className="text-xs text-zinc-800 lg:leading-relaxed leading-none">{feature.description}</p>
+          </div>
+        </div>
       ))}
     </div>
   </div>
 </section>
+
+
 
   );
 };
