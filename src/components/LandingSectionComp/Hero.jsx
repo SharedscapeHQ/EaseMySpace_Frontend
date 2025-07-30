@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { PiBedBold } from "react-icons/pi";
 import { HiOutlineUserGroup, HiOutlineHomeModern } from "react-icons/hi2";
 import Hero_vid from "/heroImg/Hero_vid.mp4";
+import PosterImg from "/heroImg/Poster.jpg";
 import "./Hero.css";
 
 export default function Hero() {
@@ -96,6 +97,7 @@ export default function Hero() {
         <div className="w-full h-64 sm:h-80 lg:h-[520px] overflow-hidden rounded-xl">
           <video
             src={Hero_vid}
+            poster={PosterImg}
             autoPlay
             muted
             loop
