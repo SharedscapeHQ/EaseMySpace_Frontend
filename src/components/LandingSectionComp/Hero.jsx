@@ -34,7 +34,7 @@ export default function Hero() {
             style={{ fontFamily: "para_font" }}
             className="text-xs lg:text-sm text-zinc-600 mb-5 lg:mb-10"
           >
-            Explore verified listings with zero brokerage. Simple, secure, and smart urban housing.
+            Explore verified listings with Simple, secure, and smart urban housing.
           </p>
 
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1">
