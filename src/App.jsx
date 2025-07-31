@@ -29,7 +29,7 @@ import NotFound from "./pages/NotFound";
 import TidioWidget from "./components/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 // import Loader from "./components/Loader/Loader";
-import SubscriptionPlans from "./components/Subscription";
+import SubscriptionPlans from "./components/Subscription/Subscription";
 import UserPropertyDetails from "./components/UserPageComp/UserPropertyDetails";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */

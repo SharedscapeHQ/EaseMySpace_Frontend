@@ -114,9 +114,14 @@ export default function NewlyListedProperties() {
   if (loading) {
     return (
       <section className="py-10 lg:px-20 px-3 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-indigo-800 mb-6">
-          Exclusive Featured Properties
-        </h2>
+        <h2
+  style={{ fontFamily: "heading_font" }}
+  className="text-lg lg:text-3xl mb-5 text-left text-black"
+>
+  Exclusive <span className="">Featured</span>
+  <span className=" block lg:hidden">Properties</span>
+  <span className=" hidden lg:inline"> Properties</span>
+</h2>
         <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="bg-white rounded-lg shadow-md p-4 animate-pulse flex flex-col">
@@ -132,11 +137,11 @@ export default function NewlyListedProperties() {
   }
 
   if (newlyListed.length === 0)
-    return <p className="text-center text-gray-500 mt-10">No newly listed properties found.</p>;
+    return <p style={{ fontFamily: "para_font" }} className="text-center text-gray-500 mt-10">No newly listed properties found.</p>;
 
   return (
     <div className="bg-zinc-50 ">
-      <section className="lg:py-10 mt-10 rounded-2xl lg:px-10 px-3 py-6 max-w-7xl mx-auto relative">
+      <section style={{ fontFamily: "para_font" }} className="lg:py-10 mt-10 rounded-2xl lg:px-10 px-3 py-6 max-w-7xl mx-auto relative">
         <div className="flex justify-between items-center mb-6">
           <h2
   style={{ fontFamily: "heading_font" }}
@@ -217,7 +222,7 @@ export default function NewlyListedProperties() {
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-md text-blue-700 truncate">{p.title}</h3>
                         {p.verified && (
-                          <span className="bg-green-500 text-white text-[8px] lg:text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                          <span className="bg-green-500 text-white text-[8px] lg:text-xs px-2 py-1 rounded-full flex items-center gap-1">
                             <FiCheckCircle className="lg:text-sm text-xs" />
                             Verified
                           </span>

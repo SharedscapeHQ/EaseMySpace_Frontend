@@ -127,9 +127,12 @@ export default function RecentAddedProperties() {
   if (loading) {
     return (
       <section className="py-10 md:px-10 px-6 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-black mb-6">
-          New Arrivals: Discover the Latest Properties
-        </h2>
+        <h2
+            style={{ fontFamily: "heading_font" }}
+            className="text-lg lg:text-3xl mb-5 text-left text-black"
+          >
+            Discover the Latest Properties
+          </h2>
         <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
@@ -157,6 +160,7 @@ export default function RecentAddedProperties() {
   return (
     <div className="bg-zinc-50 pb-5">
       <section
+      style={{ fontFamily: "para_font" }}
         className="md:px-10 px-6  rounded-2xl p-5 max-w-7xl mx-auto relative"
         aria-labelledby="new-properties-heading"
       >
@@ -243,7 +247,7 @@ export default function RecentAddedProperties() {
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-semibold text-md text-blue-700 truncate">{p.title}</h3>
                       {p.verified && (
-                        <span className="bg-green-500 text-white text-[8px] lg:text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                        <span className="bg-green-500 text-white text-[8px] lg:text-xs px-2 py-1 rounded-full flex items-center gap-1">
                           <FiCheckCircle className="lg:text-sm text-xs" />
                           Verified
                         </span>

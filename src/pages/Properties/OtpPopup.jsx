@@ -98,14 +98,14 @@ function OtpPopup({ onVerified, onClose }) {
       key={otpSent ? "otp-mode" : "mobile-mode"}
       className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
     >
-      <div className="bg-white rounded-xl p-6 w-80 shadow-lg relative">
+      <div style={{ fontFamily: "para_font" }} className="bg-white rounded-xl p-6 w-80 shadow-lg relative ">
         <button
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-500 text-xl"
         >
           ×
         </button>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">
+        <h3 className="text-lg text-gray-800 mb-3">
           Verify to view property
         </h3>
 
