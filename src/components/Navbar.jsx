@@ -57,7 +57,7 @@ export default function Navbar() {
   alt="brand logo"
   loading="eager" 
   fetchPriority="high" 
-  className={`w-32 sm:w-36 md:w-52 lg:h-24 mt-4 transition-opacity duration-500 `}
+  className={`w-24 sm:w-36 md:w-52 lg:h-24 mt-4 transition-opacity duration-500 `}
 />
         </Link>
 
@@ -65,9 +65,9 @@ export default function Navbar() {
           <Link
           style={{ fontFamily: "para_font" }}
             to="/add-properties"
-            className="px-3 py-1.5 text-[8px] sm:px-4 sm:py-2 sm:text-base bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg  shadow transition"
+            className="px-3 py-1.5 text-[9px] sm:px-4 sm:py-2 sm:text-base bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg  shadow transition"
           >
-            Add&nbsp;Property <span className="text-green-500 text-[8px]">Free</span>
+            Add&nbsp;Property <span className="text-green-500 text-[9px]">Free</span>
           </Link>
 
           {/* Profile Dropdown */}
