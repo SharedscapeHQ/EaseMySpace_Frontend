@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PiBedBold } from "react-icons/pi";
 import { HiOutlineUserGroup, HiOutlineHomeModern } from "react-icons/hi2";
@@ -42,6 +42,7 @@ export default function Hero() {
       window.removeEventListener("click", playVideo);
     };
   }, []);
+  
 
   return (
     <section className="w-full bg-white pt-5 px-6">
