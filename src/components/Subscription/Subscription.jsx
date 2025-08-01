@@ -33,12 +33,12 @@ export default function SubscriptionPlans() {
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
     style={{ fontFamily: "heading_font" }}
-    className="text-3xl lg:text-4xl  text-zinc-900"
+    className="text-2xl lg:text-4xl  text-zinc-900"
   >
     Choose Your Plan
   </motion.h1>
-  <p  className="mt-3 text-base text-zinc-700">
-    Get started with verified properties and premium support – your perfect match is one step away.
+  <p  className="mt-3 text-xs lg:text-base text-zinc-700">
+    Get started with verified properties and premium support your perfect match is one step away.
   </p>
 </section>
 
