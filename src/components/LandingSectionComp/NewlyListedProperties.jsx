@@ -113,15 +113,16 @@ export default function NewlyListedProperties() {
 
   if (loading) {
     return (
-      <section className="py-10 lg:px-20 px-3 max-w-7xl mx-auto">
-        <h2
+      <section className="py-10 mt-10  lg:px-20 px-3 max-w-7xl mx-auto">
+       <h2
   style={{ fontFamily: "heading_font" }}
-  className="text-lg lg:text-3xl mb-5 text-left text-black"
+  className="text-lg lg:text-3xl mb-0 text-black leading-tight"
 >
   Exclusive <span className="">Featured</span>
   <span className=" block lg:hidden">Properties</span>
   <span className=" hidden lg:inline"> Properties</span>
 </h2>
+
         <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="bg-white rounded-lg shadow-md p-4 animate-pulse flex flex-col">
@@ -145,37 +146,25 @@ export default function NewlyListedProperties() {
         <div className="flex justify-between items-center mb-6">
           <h2
   style={{ fontFamily: "heading_font" }}
-  className="text-lg lg:text-3xl mb-5 text-left text-black"
+  className="text-[16px] lg:text-3xl text-left text-black"
 >
-  Exclusive <span className="">Featured</span>
-  <span className=" block lg:hidden">Properties</span>
-  <span className=" hidden lg:inline"> Properties</span>
+  Exclusive Featured Properties
 </h2>
 
-          <nav aria-label="Scroll featured properties">
-            <div className="flex gap-2">
-              <button
-                onClick={() => scroll("left")}
-                aria-label="Scroll Left"
-                className="bg-zinc-50 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
-              >
-                <FaChevronLeft className="text-base md:text-xl text-blue-600" />
-              </button>
-              <button
-                onClick={() => scroll("right")}
-                aria-label="Scroll Right"
-                className="bg-zinc-50 backdrop-blur-md shadow-lg p-2 md:p-3 rounded-full hover:bg-gray-100 border"
-              >
-                <FaChevronRight className="text-base md:text-xl text-blue-600" />
-              </button>
-            </div>
-          </nav>
+          <Link
+  to="/view-properties"
+  className="text-blue-600 text-[10px] lg:text-base font-medium hover:underline"
+  style={{ fontFamily: "para_font" }}
+>
+  View All
+</Link>
+
         </div>
 
         <div className="relative">
           <div
             ref={scrollRef}
-            className="flex gap-10 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
+            className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
             role="list"
           >
             {newlyListed.map((p) => (
@@ -218,21 +207,38 @@ export default function NewlyListedProperties() {
     </div>
   )}
 
-   <div className="p-4 flex flex-col">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-md text-blue-700 truncate">{p.title}</h3>
-                        {p.verified && (
-                          <span className="bg-green-500 text-white text-[8px] lg:text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                            <FiCheckCircle className="lg:text-sm text-xs" />
-                            Verified
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-gray-600 text-xs mb-1">{p.location}</p>
-                      <p className="text-blue-600 font-bold mt-auto lg:text-base text-xs">
-                        ₹ {Number(p.price).toLocaleString()}
-                      </p>
-                    </div>
+   <div className="p-4 flex flex-col gap-1">
+  {/* Top row: Title + Verified | Price */}
+  <div className="flex justify-between items-start gap-2">
+    {/* Title + Verified */}
+    <div className="flex items-center gap-2">
+      <h3 className="font-semibold text-md text-blue-700 truncate max-w-[160px]">
+        {p.title}
+      </h3>
+      {p.verified && (
+        <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
+          <FiCheckCircle className="text-[10px]" />
+          Verified
+        </span>
+      )}
+    </div>
+
+    {/* Price */}
+    <p className="text-blue-600 font-bold text-xs lg:text-base whitespace-nowrap">
+      ₹ {Number(p.price).toLocaleString()}
+    </p>
+  </div>
+
+  {/* Location */}
+  <p className="text-gray-600 text-xs">
+  {p.location
+    ?.trim()
+    .split(/\s+/)
+    .slice(-2)
+    .join(', ')}
+</p>
+</div>
+
 </Link>
 
             ))}

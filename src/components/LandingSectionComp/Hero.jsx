@@ -45,13 +45,13 @@ export default function Hero() {
   
 
   return (
-    <section style={{ fontFamily: "para_font" }} className="w-full bg-white pt-5 px-6">
+    <section style={{ fontFamily: "para_font" }} className="w-full bg-white pt-5 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Content */}
         <div>
           <h1
             style={{ fontFamily: "heading_font" }}
-            className="text-xl sm:text-4xl lg:text-5xl text-zinc-800 mb-6 lg:mb-10 leading-tight"
+            className="text-2xl sm:text-4xl lg:text-5xl text-zinc-800 mb-6 lg:mb-10 leading-tight"
           >
             Find Your Ideal <span className="underline-animate">Flat</span>,{" "}
             <span className="underline-animate">PGs</span>, or{" "}
@@ -59,7 +59,7 @@ export default function Hero() {
           </h1>
           <p
             style={{ fontFamily: "para_font" }}
-            className="text-xs lg:text-sm text-zinc-600 mb-5 lg:mb-10"
+            className="text-xs lg:text-sm text-zinc-600 mb-6 lg:mb-10"
           >
             Explore verified listings : Simple, secure, and smart urban housing.
           </p>

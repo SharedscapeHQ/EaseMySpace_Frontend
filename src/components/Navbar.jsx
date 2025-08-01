@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaUserCircle } from "react-icons/fa";
 import brandLogo from "/navbar-assets/brand-logo.png";
+import { FaHome, FaInfoCircle, FaListUl, FaPhone, FaRegCreditCard,FaCrown  } from "react-icons/fa";
+
 
 export default function Navbar() {
   const [user, setUser] = useState(() => {
@@ -40,41 +42,54 @@ export default function Navbar() {
   };
 
   const drawerV = {
-    hidden: { x: "100%" },
-    visible: {
-      x: 0,
-      transition: { type: "spring", stiffness: 230, damping: 26 },
-    },
-    exit: { x: "100%", transition: { duration: 0.28 } },
-  };
+  hidden: { x: "-100%", opacity: 0 },
+  visible: { x: 0, opacity: 1, transition: { duration: 0.3, ease: "easeInOut" } },
+  exit: { x: "-100%", opacity: 0, transition: { duration: 0.2, ease: "easeInOut" } },
+};
 
   return (
     <header>
-      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 lg:pl-16 bg-white shadow-sm z-50">
+      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 bg-white shadow-sm z-50">
+        <div className="flex items-center justify-center gap-3 ">
+           {/* Hamburger Menu */}
+          <button
+            aria-label="Toggle menu"
+            className="w-6 h-6 sm:w-10 sm:h-10 mt-3 lg:mt-0 relative text-zinc-700"
+            onClick={() => setOpen((p) => !p)}
+          >
+            <Hamburger animatedOpen={open} />
+          </button>
+
         <Link to="/" aria-label="Homepage" className="flex items-center">
           <img
-  src={brandLogo}
-  alt="brand logo"
-  loading="eager" 
-  fetchPriority="high" 
-  className={`w-24 sm:w-36 md:w-52 lg:h-24 mt-4 transition-opacity duration-500 `}
-/>
+            src={brandLogo}
+            alt="brand logo"
+            loading="eager"
+            fetchPriority="high"
+            className={`w-24 sm:w-36 md:w-48 lg:h-24 mt-4 transition-opacity duration-500 `}
+          />
         </Link>
+        </div>
 
         <div className="flex items-center gap-3 sm:gap-5 relative">
           <Link
-          style={{ fontFamily: "para_font" }}
+            style={{ fontFamily: "para_font" }}
             to="/add-properties"
-            className="px-3 py-1.5 text-[9px] sm:px-4 sm:py-2 sm:text-base bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg  shadow transition"
+            className="px-3 py-1.5 text-[9px] sm:px-4 sm:py-2 sm:text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg  shadow transition"
           >
-            Add&nbsp;Property <span className="text-green-500 text-[9px]">Free</span>
+            Add&nbsp;Property{" "}
+            <span className="text-green-500 lg:text-xs text-[9px]">Free</span>
           </Link>
 
           {/* Profile Dropdown */}
           <div
             className="relative group"
-            onMouseEnter={() => window.innerWidth >= 640 && setProfileOpen(true)}
-            onMouseLeave={() => window.innerWidth >= 640 && setProfileOpen(false)}
+            onMouseEnter={() =>
+              window.innerWidth >= 640 && setProfileOpen(true)
+            }
+            onMouseLeave={() =>
+              window.innerWidth >= 640 && setProfileOpen(false)
+            }
           >
             <button
               onClick={() => {
@@ -142,92 +157,84 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          {/* Hamburger Menu */}
-          <button
-            aria-label="Toggle menu"
-            className="w-8 h-8 sm:w-10 sm:h-10 relative text-zinc-700"
-            onClick={() => setOpen((p) => !p)}
-          >
-            <Hamburger animatedOpen={open} />
-          </button>
+         
         </div>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              key="overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.35 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 bg-black z-40"
-              onClick={() => setOpen(false)}
-            />
-           <motion.aside
-  key="drawer"
-  variants={drawerV}
-  initial="hidden"
-  animate="visible"
-  exit="exit"
-  className="fixed top-[5rem] right-0 h-[calc(100vh-5rem)] 
-             w-[80vw] sm:w-[65vw] md:w-80 
-             bg-white/90 backdrop-blur-md shadow-2xl z-50 
-             rounded-l-2xl px-6 py-8 flex flex-col justify-between"
->
-  <div className="space-y-10">
-    <div className="border-b pb-2">
-  {user ? (
-    <div className="text-blue-600 text-xl font-semibold">Explore</div>
-  ) : (
-    <div className="flex text-blue-500 font-semibold">
-      <Link to="/login" className="hover:underline">Login</Link>
-      <p className="mx-5">|</p>
-      <Link to="/register" className="hover:underline">Register</Link>
-    </div>
-  )}
-</div>
-
-
-   <ul className="flex flex-col gap-6 font-medium text-zinc-800 text-lg">
-  {[
-    ["Home", "🏠", "/", "Home"],
-    ["About", "ℹ️", "/about", "About"],
-    ["Listing", "📋", "/view-properties", "Listing"],
-    ["Contact", "📞", "/contact", "Contact"],
-    ["EMS Subscription Plans", "💼", "/subscription", "EMS Subscription Plans"],
-  ].map(([label, icon, href, text]) => (
-    <li key={href}>
-      <Link
-        to={href}
+     <AnimatePresence>
+  {open && (
+    <>
+      <motion.div
+        key="overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.35 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="fixed inset-0 z-50 bg-black backdrop-blur-sm"
         onClick={() => setOpen(false)}
-        className="group relative inline-block h-6 overflow-hidden"
+      />
+
+      <motion.aside
+        key="drawer"
+        variants={drawerV}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="fixed top-0 left-0 h-full w-[80vw] sm:w-[65vw] md:w-80 bg-white backdrop-blur-md shadow-2xl z-50 rounded-r-2xl px-6 py-6 flex flex-col"
       >
-        <span className="block transition-transform duration-300 ease-in-out group-hover:-translate-y-1/2">
-          <span className="block flex items-center gap-2">
-            <span>{icon}</span>
-            <span>{label}</span>
-          </span>
-          <span className="block flex items-center gap-2">
-            <span>{icon}</span>
-            <span>{text}</span>
-          </span>
+        {/* Close Button */}
+        <span className="flex justify-end mb-4">
+          <button
+            onClick={() => setOpen(false)}
+            className="text-zinc-600 transform transition-transform duration-300 hover:rotate-90 text-xl font-bold"
+            aria-label="Close drawer"
+          >
+            ✕
+          </button>
         </span>
-      </Link>
-    </li>
-  ))}
-</ul>
 
-  </div>
+        {/* Header */}
+        <div className="border-b pb-3 mb-4">
+          {user ? (
+            <h2 className="text-blue-600 text-xl font-semibold">Explore</h2>
+          ) : (
+            <div className="flex items-center gap-4 text-blue-500 font-semibold">
+              <Link to="/login" className="hover:underline">Login</Link>
+              <span>|</span>
+              <Link to="/register" className="hover:underline">Register</Link>
+            </div>
+          )}
+        </div>
 
-  
-</motion.aside>
-
-
-          </>
-        )}
-      </AnimatePresence>
+        {/* Navigation List */}
+        <ul className="space-y-4 text-zinc-800 text-[16px] font-medium">
+          {[
+            ["Home", <FaHome className="text-xl" />, "/", false],
+            ["About", <FaInfoCircle className="text-xl" />, "/about", false],
+            ["Listing", <FaListUl className="text-xl" />, "/view-properties", false],
+            ["Contact", <FaPhone className="text-xl" />, "/contact", false],
+            ["EMS Subscription Plans", <FaRegCreditCard className="text-xl" />, "/subscription", true],
+          ].map(([label, icon, href, isPremium]) => (
+            <li key={href}>
+              <Link
+                to={href}
+                onClick={() => setOpen(false)}
+                className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isPremium
+                    ? "bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow-sm border border-yellow-400"
+                    : "hover:bg-blue-100"
+                }`}
+              >
+                {icon}
+                <span>{label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </motion.aside>
+    </>
+  )}
+</AnimatePresence>
     </header>
   );
 }
