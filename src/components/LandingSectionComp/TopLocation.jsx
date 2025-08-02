@@ -61,7 +61,7 @@ function TopLocation() {
     alt="Location animation"
     className="w-28 h-28 object-cover mb-2 rounded"
   />
-  <p className="text-sm text-zinc-800 font-medium min-h-[1.5rem] transition-all duration-200 group-hover:scale-125 group-hover:text-zinc-800">
+  <p className="text-sm capitalize text-zinc-800 font-medium min-h-[1.5rem] transition-all duration-200 group-hover:scale-125 group-hover:text-zinc-800">
     {loc.name}
   </p>
 </div>
