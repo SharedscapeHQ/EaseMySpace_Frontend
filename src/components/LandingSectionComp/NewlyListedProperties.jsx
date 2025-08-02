@@ -277,6 +277,7 @@ export default function NewlyListedProperties() {
 
       {showOtpPopup && (
         <OtpPopup
+        otpPurpose="view property"
           onVerified={() => {
             setIsOtpVerified(true);
             setShowOtpPopup(false);

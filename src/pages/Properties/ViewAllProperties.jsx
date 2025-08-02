@@ -412,6 +412,7 @@ export default function ViewAllProperties() {
       {/* OTP Popup Modal */}
       {showOtpPopup && (
         <OtpPopup
+        otpPurpose="view property"
           onVerified={(hasPaidStatus) => {
             setIsOtpVerified(true);
             setShowOtpPopup(false);

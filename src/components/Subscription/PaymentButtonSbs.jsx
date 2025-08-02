@@ -221,6 +221,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
 
       {showOtpPopup && (
         <OtpPopup
+        otpPurpose="Pay"
           onVerified={() => {
             setIsOtpVerified(true);
             localStorage.setItem("otp_verified", "true");

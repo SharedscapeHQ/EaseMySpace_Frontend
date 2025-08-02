@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-function OtpPopup({ onVerified, onClose }) {
+function OtpPopup({ onVerified, onClose, otpPurpose }) {
   const [userMobile, setUserMobile] = useState("");
   const [userOtp, setUserOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -106,7 +106,7 @@ function OtpPopup({ onVerified, onClose }) {
           ×
         </button>
         <h3 className="text-lg text-gray-800 mb-3">
-          Verify to view property
+          Verify to {otpPurpose}
         </h3>
 
         <input

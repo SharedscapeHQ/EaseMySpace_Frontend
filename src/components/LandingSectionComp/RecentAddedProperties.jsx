@@ -291,6 +291,7 @@ export default function RecentAddedProperties() {
 
       {showOtpPopup && (
         <OtpPopup
+        otpPurpose="view property"
           onVerified={() => {
             setIsOtpVerified(true);
             setShowOtpPopup(false);
