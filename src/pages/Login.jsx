@@ -7,7 +7,7 @@ import {
   loginUser,
   requestPasswordReset,
   verifyPasswordReset,
-} from "../api/authAPI";
+} from "../api/authApi";
 
 function Login() {
 

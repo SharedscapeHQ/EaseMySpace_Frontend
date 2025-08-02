@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
-import { getCurrentUser } from "../../api/authAPI";
+import { getCurrentUser } from "../../api/authApi";
 import { Link } from "react-router-dom";
 
 export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
@@ -47,7 +47,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   useEffect(() => {
     if (activeUserPhone && !hasPaid) {
       axios
-        .get(`https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`)
+        .get(
+          `https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`
+        )
         .then((res) => {
           if (res.data.paid) {
             setHasPaid(true);
@@ -77,7 +79,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     setIsPaying(true);
 
     try {
-      const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      const loaded = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
       if (!loaded) {
         toast.error("❌ Razorpay SDK failed to load.");
         setIsPaying(false);
@@ -183,7 +187,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     <>
       <button
         className={`mt-4 w-1/2 py-3 px-2 text-md font-semibold rounded-xl whitespace-nowrap transition-all ${
-          hasPaid ? "bg-green-600 text-white cursor-default" : "bg-indigo-600 hover:bg-indigo-700 text-white"
+          hasPaid
+            ? "bg-green-600 text-white cursor-default"
+            : "bg-indigo-600 hover:bg-indigo-700 text-white"
         } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
         disabled={hasPaid || isPaying}
         onClick={handlePayment}
@@ -208,7 +214,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               &times;
             </button>
 
-            <h2 className="text-xl font-bold mb-4 text-center">Choose Your Plan</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Choose Your Plan
+            </h2>
 
             <div className="space-y-4">
               <div
@@ -218,8 +226,12 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                 <span className="absolute top-[-10px] right-[-10px] bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
                   Standard
                 </span>
-                <h3 className="text-lg font-semibold text-indigo-600">Standard - ₹399 + GST</h3>
-                <p className="text-sm text-gray-700">{plans.standard.description}</p>
+                <h3 className="text-lg font-semibold text-indigo-600">
+                  Standard - ₹399 + GST
+                </h3>
+                <p className="text-sm text-gray-700">
+                  {plans.standard.description}
+                </p>
               </div>
 
               <div
@@ -229,11 +241,18 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                 <span className="absolute top-[-10px] right-[-10px] bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
                   Premium
                 </span>
-                <h3 className="text-lg font-semibold text-yellow-600">Premium - ₹1499 + GST</h3>
-                <p className="text-sm text-gray-700">{plans.premium.description}</p>
+                <h3 className="text-lg font-semibold text-yellow-600">
+                  Premium - ₹1499 + GST
+                </h3>
+                <p className="text-sm text-gray-700">
+                  {plans.premium.description}
+                </p>
               </div>
 
-              <Link to="/subscription" className="block text-center text-sm text-blue-600 hover:underline mt-4">
+              <Link
+                to="/subscription"
+                className="block text-center text-sm text-blue-600 hover:underline mt-4"
+              >
                 More Details
               </Link>
             </div>

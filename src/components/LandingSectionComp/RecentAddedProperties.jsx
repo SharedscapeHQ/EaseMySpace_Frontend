@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 import axios from "axios"; // Assuming axios is your API client
-import { getCurrentUser } from "../../api/authAPI"; // Import getCurrentUser (assuming this path)
+import { getCurrentUser } from "../../api/authApi"; // Import getCurrentUser (assuming this path)
 import { incrementPropertyView } from "../../api/propertiesApi"; // Import incrementPropertyView (assuming this path)
 import OtpPopup from "../../pages/Properties/OtpPopup"; // Import the OtpPopup component (assuming this path)
 
@@ -117,7 +117,10 @@ export default function RecentAddedProperties() {
       const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
       if (!visited.includes(property.id)) {
         incrementPropertyView(property.id);
-        sessionStorage.setItem("viewedProps", JSON.stringify([...visited, property.id]));
+        sessionStorage.setItem(
+          "viewedProps",
+          JSON.stringify([...visited, property.id])
+        );
       }
       // The <Link> component will handle the navigation to `/properties/${p.id}` naturally
       // No explicit navigate() call needed here, as the Link's default behavior is desired.
@@ -127,49 +130,51 @@ export default function RecentAddedProperties() {
   if (loading) {
     return (
       <section className="py-10 mt-10 lg:px-10 px-3 max-w-7xl mx-auto">
-  <h2
-    style={{ fontFamily: "heading_font" }}
-    className="text-lg lg:text-3xl mb-0 text-black leading-tight"
-  >
-    Exclusive <span className="">Featured</span>
-    <span className=" block lg:hidden">Properties</span>
-    <span className=" hidden lg:inline"> Properties</span>
-  </h2>
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+        >
+          Exclusive <span className="">Featured</span>
+          <span className=" block lg:hidden">Properties</span>
+          <span className=" hidden lg:inline"> Properties</span>
+        </h2>
 
-  <div className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide mt-10">
-    {Array.from({ length: 4 }).map((_, i) => (
-      <div
-        key={i}
-        className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden animate-pulse"
-      >
-        {/* Image Skeleton */}
-        <div className="h-48 w-full bg-gray-200 flex items-center justify-center rounded-t-2xl" />
+        <div className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide mt-10">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden animate-pulse"
+            >
+              {/* Image Skeleton */}
+              <div className="h-48 w-full bg-gray-200 flex items-center justify-center rounded-t-2xl" />
 
-        {/* Content Skeleton */}
-        <div className="p-4 flex flex-col gap-1">
-          {/* Title + Verified + Price Row */}
-          <div className="flex justify-between items-center mb-2">
-            <div className="h-4 bg-gray-200 rounded w-[60%]" />
-            <div className="h-4 bg-gray-300 rounded w-[30%]" />
-          </div>
+              {/* Content Skeleton */}
+              <div className="p-4 flex flex-col gap-1">
+                {/* Title + Verified + Price Row */}
+                <div className="flex justify-between items-center mb-2">
+                  <div className="h-4 bg-gray-200 rounded w-[60%]" />
+                  <div className="h-4 bg-gray-300 rounded w-[30%]" />
+                </div>
 
-          {/* Verified Badge */}
-          <div className="h-3 bg-gray-200 rounded w-[40%] mb-2" />
+                {/* Verified Badge */}
+                <div className="h-3 bg-gray-200 rounded w-[40%] mb-2" />
 
-          {/* Location */}
-          <div className="h-3 bg-gray-300 rounded w-[70%]" />
+                {/* Location */}
+                <div className="h-3 bg-gray-300 rounded w-[70%]" />
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-</section>
-
+      </section>
     );
   }
 
   if (recentProperties.length === 0)
     return (
-      <p style={{ fontFamily: "para_font" }} className="text-center text-gray-500 mt-10">
+      <p
+        style={{ fontFamily: "para_font" }}
+        className="text-center text-gray-500 mt-10"
+      >
         No recently added properties found.
       </p>
     );
@@ -177,7 +182,7 @@ export default function RecentAddedProperties() {
   return (
     <div className="bg-zinc-50 pb-5">
       <section
-      style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "para_font" }}
         className="md:px-10 px-3  rounded-2xl max-w-7xl mx-auto relative"
         aria-labelledby="new-properties-heading"
       >
@@ -189,13 +194,12 @@ export default function RecentAddedProperties() {
             Discover the Latest Properties
           </h2>
           <Link
-  to="/view-properties"
-  className="text-blue-600 text-[13px] lg:text-base font-medium hover:underline"
-  style={{ fontFamily: "para_font" }}
->
-  View All
-</Link>
-
+            to="/view-properties"
+            className="text-blue-600 text-[13px] lg:text-base font-medium hover:underline"
+            style={{ fontFamily: "para_font" }}
+          >
+            View All
+          </Link>
         </div>
 
         {/* Scrollable Cards */}
@@ -214,35 +218,33 @@ export default function RecentAddedProperties() {
               >
                 <article className="rounded-2xl h-full flex flex-col">
                   {p.images && p.images.length > 0 ? (
-                  <figure className="h-48 w-full p-3">
-  <div className="h-full w-full rounded-xl overflow-hidden">
-    {(() => {
-      const url = p.images?.[0];
-      if (!url) return null;
+                    <figure className="h-48 w-full p-3">
+                      <div className="h-full w-full rounded-xl overflow-hidden">
+                        {(() => {
+                          const url = p.images?.[0];
+                          if (!url) return null;
 
-      const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-      const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+                          const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+                          const isVideo = /\.(mp4|mov|webm)$/i.test(url);
 
-      return isImage ? (
-        <img
-          src={url}
-          alt={`Property image`}
-          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
-        />
-      ) : isVideo ? (
-        <video
-          src={url}
-          controls
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
-      ) : null;
-    })()}
-  </div>
-</figure>
-
-
+                          return isImage ? (
+                            <img
+                              src={url}
+                              alt={`Property image`}
+                              className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                            />
+                          ) : isVideo ? (
+                            <video
+                              src={url}
+                              controls
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          ) : null;
+                        })()}
+                      </div>
+                    </figure>
                   ) : (
                     <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
                       No Media
@@ -250,33 +252,36 @@ export default function RecentAddedProperties() {
                   )}
 
                   <div className="p-4 flex flex-col gap-1">
-  {/* Name + Verified + Price Row */}
-  <div className="flex justify-between items-start gap-2">
-    {/* Title + Verified */}
-    <div className="flex items-center gap-2">
-      <h3 className="font-semibold text-md text-blue-600 truncate max-w-[160px]">
-        {p.title}
-      </h3>
-      {p.verified && (
-        <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-          <FiCheckCircle className="text-[10px]" />
-          Verified
-        </span>
-      )}
-    </div>
+                    {/* Name + Verified + Price Row */}
+                    <div className="flex justify-between items-start gap-2">
+                      {/* Title + Verified */}
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-md text-blue-600 truncate max-w-[160px]">
+                          {p.title}
+                        </h3>
+                        {p.verified && (
+                          <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
+                            <FiCheckCircle className="text-[10px]" />
+                            Verified
+                          </span>
+                        )}
+                      </div>
 
-    {/* Price */}
-    <p className="text-blue-600 font-bold text-xs lg:text-base whitespace-nowrap">
-      ₹ {Number(p.price).toLocaleString()}
-    </p>
-  </div>
+                      {/* Price */}
+                      <p className="text-blue-600 font-bold text-xs lg:text-base whitespace-nowrap">
+                        ₹ {Number(p.price).toLocaleString()}
+                      </p>
+                    </div>
 
-  {/* Address (below row) */}
-  <p className="text-gray-600 text-xs">
-    {p.location?.split(/\s+/).slice(-2).map(w => w.replace(/[^a-zA-Z]/g, '')).join(" ")}
-  </p>
-</div>
-
+                    {/* Address (below row) */}
+                    <p className="text-gray-600 text-xs">
+                      {p.location
+                        ?.split(/\s+/)
+                        .slice(-2)
+                        .map((w) => w.replace(/[^a-zA-Z]/g, ""))
+                        .join(" ")}
+                    </p>
+                  </div>
                 </article>
               </Link>
             ))}

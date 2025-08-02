@@ -5,7 +5,7 @@ import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
 import MyQueries from "../../components/UserPageComp/MyQueries";
-import { logoutUser } from "../../api/authAPI";
+import { logoutUser } from "../../api/authApi";
 
 export default function UserDashboard() {
   const navigate = useNavigate();

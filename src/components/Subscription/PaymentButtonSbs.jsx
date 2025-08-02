@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
-import { getCurrentUser } from "../../api/authAPI";
+import { getCurrentUser } from "../../api/authApi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 
 export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
@@ -10,7 +10,9 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
   const [isPaying, setIsPaying] = useState(false);
   const [activeUserPhone, setActiveUserPhone] = useState("");
   const [showOtpPopup, setShowOtpPopup] = useState(false);
-  const [isOtpVerified, setIsOtpVerified] = useState(() => localStorage.getItem("otp_verified") === "true");
+  const [isOtpVerified, setIsOtpVerified] = useState(
+    () => localStorage.getItem("otp_verified") === "true"
+  );
 
   const plans = {
     standard: {
@@ -29,7 +31,8 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
         const data = await getCurrentUser();
         setUserData(data);
 
-        let determinedPhone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
+        let determinedPhone =
+          data?.phone || localStorage.getItem("user_verified_mobile") || "";
         if (data?.subscription_status === "paid") {
           setHasPaid(true);
         }
@@ -45,7 +48,9 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
   useEffect(() => {
     if (activeUserPhone && !hasPaid) {
       axios
-        .get(`https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`)
+        .get(
+          `https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`
+        )
         .then((res) => {
           if (res.data.paid) {
             setHasPaid(true);
@@ -74,7 +79,9 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
     setIsPaying(true);
 
     try {
-      const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
       if (!res) {
         toast.error("❌ Razorpay SDK failed to load.");
         setIsPaying(false);
@@ -83,10 +90,15 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
 
       const { orderId, currency } = await createOrder(amount);
 
-      let finalPhoneNumber = userData.phone || activeUserPhone || localStorage.getItem("user_verified_mobile");
+      let finalPhoneNumber =
+        userData.phone ||
+        activeUserPhone ||
+        localStorage.getItem("user_verified_mobile");
 
       if (!finalPhoneNumber) {
-        finalPhoneNumber = prompt("📱 Please enter your phone number for payment:");
+        finalPhoneNumber = prompt(
+          "📱 Please enter your phone number for payment:"
+        );
       }
 
       if (!finalPhoneNumber) {
@@ -137,7 +149,9 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
         prefill: {
           name: userData.firstName || "Guest User",
           email: userData.email || "guest@easemyspace.com",
-          contact: finalPhoneNumber.startsWith("+91") ? finalPhoneNumber : `+91${finalPhoneNumber}`,
+          contact: finalPhoneNumber.startsWith("+91")
+            ? finalPhoneNumber
+            : `+91${finalPhoneNumber}`,
         },
         theme: { color: "#6366F1" },
         modal: {

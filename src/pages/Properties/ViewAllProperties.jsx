@@ -5,12 +5,10 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaSlidersH } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 
-
 import { incrementPropertyView } from "../../api/propertiesApi.js";
-import OtpPopup from "./OtpPopup"; 
+import OtpPopup from "./OtpPopup";
 import axios from "axios";
-import { getCurrentUser } from "../../api/authAPI"; 
-
+import { getCurrentUser } from "../../api/authApi.js";
 
 const parseImages = (raw) =>
   !raw
@@ -18,7 +16,11 @@ const parseImages = (raw) =>
     : Array.isArray(raw)
     ? raw
     : raw.startsWith("{")
-    ? raw.slice(1, -1).split(",").map((s) => s.trim()).filter(Boolean)
+    ? raw
+        .slice(1, -1)
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
     : [];
 
 const pickCover = (arr = []) =>
@@ -41,7 +43,7 @@ const applyFiltersSort = (list, f, sort) => {
   if (f.bhk) {
     const want = parseFloat(f.bhk);
     l = l.filter((p) => {
-      const val = bhkNumber(p.bhk_type); 
+      const val = bhkNumber(p.bhk_type);
       if (val === null) return false;
       return want === 4 ? val >= 4 : Math.abs(val - want) < 0.01;
     });
@@ -60,7 +62,7 @@ const applyFiltersSort = (list, f, sort) => {
 export default function ViewAllProperties() {
   const { search } = useLocation();
   const qs = new URLSearchParams(search);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [properties, setProperties] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -79,7 +81,7 @@ export default function ViewAllProperties() {
   const [showFilters, setShowFilters] = useState(false);
 
   const [showOtpPopup, setShowOtpPopup] = useState(false);
-  const [selectedPropertyId, setSelectedPropertyId] = useState(null); 
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const otpVerified = localStorage.getItem("otp_verified") === "true";
   const [isOtpVerified, setIsOtpVerified] = useState(otpVerified);
 
@@ -115,14 +117,13 @@ export default function ViewAllProperties() {
     };
 
     window.addEventListener("storage", syncLogin);
-    window.addEventListener("auth-change", syncLogin); 
+    window.addEventListener("auth-change", syncLogin);
     return () => {
       window.removeEventListener("storage", syncLogin);
       window.removeEventListener("auth-change", syncLogin);
     };
   }, []);
 
-  
   useEffect(() => {
     (async () => {
       try {
@@ -154,33 +155,43 @@ export default function ViewAllProperties() {
 
   useEffect(() => {
     setFiltered(applyFiltersSort(properties, filters, sort));
-  }, [sort, properties, filters]); 
+  }, [sort, properties, filters]);
 
   const headingText = useMemo(() => {
     const renderWithOwnerSubtext = (mainText) => (
       <>
         {mainText}
         <br />
-        <span className="text-sm text-gray-800 lg:text-xl">Owner's Property</span>
+        <span className="text-sm text-gray-800 lg:text-xl">
+          Owner's Property
+        </span>
       </>
     );
 
     if (filtered.length === 0) {
-      if (filters.looking_for === "pg") return renderWithOwnerSubtext("Browse Verified PG Listings");
-      if (filters.looking_for === "vacant") return renderWithOwnerSubtext("Browse Direct Owner's Listings");
+      if (filters.looking_for === "pg")
+        return renderWithOwnerSubtext("Browse Verified PG Listings");
+      if (filters.looking_for === "vacant")
+        return renderWithOwnerSubtext("Browse Direct Owner's Listings");
       if (filters.looking_for === "flatmate") return "Matching Listings";
       return "Explore Our Listings";
     }
 
-    if (filtered.every((p) => p.looking_for === "flatmate")) return "Matching Listings";
-    if (filtered.every((p) => p.looking_for === "vacant")) return renderWithOwnerSubtext("Browse Direct Owner's Listings");
-    if (filtered.every((p) => p.looking_for === "pg")) return renderWithOwnerSubtext("Browse Verified PG Listings");
+    if (filtered.every((p) => p.looking_for === "flatmate"))
+      return "Matching Listings";
+    if (filtered.every((p) => p.looking_for === "vacant"))
+      return renderWithOwnerSubtext("Browse Direct Owner's Listings");
+    if (filtered.every((p) => p.looking_for === "pg"))
+      return renderWithOwnerSubtext("Browse Verified PG Listings");
 
     return "Explore Our Listings";
   }, [filtered, filters.looking_for]);
 
   return (
-    <div style={{fontFamily:"para_font"}} className="w-full bg-indigo-50/30 min-h-screen pt-16 md:pt-10">
+    <div
+      style={{ fontFamily: "para_font" }}
+      className="w-full bg-indigo-50/30 min-h-screen pt-16 md:pt-10"
+    >
       <div className="max-w-6xl mx-auto px-4 flex gap-2">
         <aside className="hidden md:block w-72 flex-shrink-0">
           <div className="sticky top-16 md:top-24 bg-white shadow-md rounded-3xl p-4 border border-gray-100 text-sm">
@@ -201,14 +212,18 @@ export default function ViewAllProperties() {
 
         <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center w-full overflow-visible">
           <section className="w-full max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 px-2 md:px-8">
-            <h1 style={{ fontFamily: "heading_font" }}
-    className="text-lg lg:text-3xl mb-0 text-black leading-tight">
+            <h1
+              style={{ fontFamily: "heading_font" }}
+              className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+            >
               {headingText}
             </h1>
             <p className="text-gray-600 text-sm">
               Find your perfect space among verified properties
             </p>
-            <div className="inline md:hidden text-sm font-medium">All Listings</div>
+            <div className="inline md:hidden text-sm font-medium">
+              All Listings
+            </div>
           </section>
 
           <div className="sticky top-20 mb-4 z-40 md:shadow-sm shadow-none md:border md:bg-white bg-zinc-50 md:border-gray-300 px-4 py-3 rounded-2xl w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
@@ -223,7 +238,9 @@ export default function ViewAllProperties() {
               </button>
 
               {/* Property Count — inline on desktop */}
-              <div className="hidden md:inline text-sm font-medium">All Listings</div>
+              <div className="hidden md:inline text-sm font-medium">
+                All Listings
+              </div>
 
               {/* Search Input */}
               <div className="relative md:w-[40%] w-full md:mx-3">
@@ -396,18 +413,20 @@ export default function ViewAllProperties() {
       {showOtpPopup && (
         <OtpPopup
           onVerified={(hasPaidStatus) => {
-        
             setIsOtpVerified(true);
-            setShowOtpPopup(false); 
+            setShowOtpPopup(false);
 
             if (selectedPropertyId) {
-              const propToNavigate = properties.find(prop => prop.id === selectedPropertyId);
+              const propToNavigate = properties.find(
+                (prop) => prop.id === selectedPropertyId
+              );
               if (propToNavigate) {
-                navigate(`/properties/${selectedPropertyId}`, { state: { property: propToNavigate } });
+                navigate(`/properties/${selectedPropertyId}`, {
+                  state: { property: propToNavigate },
+                });
               }
             }
           }}
-        
           onClose={() => {
             setShowOtpPopup(false);
             setSelectedPropertyId(null);
@@ -426,34 +445,114 @@ const SidebarContent = React.memo(function SidebarContent({
 }) {
   return (
     <div className="space-y-5 text-sm">
-      <Select label="Gender" name="gender" opts={[["", "Any"], ["male", "Male"], ["female", "Female"], ["unisex", "Unisex"]]} filters={filters} handleChange={handleFilterChange} />
-      <Select label="Occupancy" name="occupancy" opts={[["", "Any"], ["single", "Single"], ["double", "Double"], ["triple", "Triple"]]} filters={filters} handleChange={handleFilterChange} />
-      <Select label="BHK" name="bhk" opts={[["", "Any"], ["1", "1 BHK"], ["1.5", "1.5 BHK"], ["2", "2 BHK"], ["2.5", "2.5 BHK"], ["3", "3 BHK"], ["4", "4 BHK+"]]} filters={filters} handleChange={handleFilterChange} />
+      <Select
+        label="Gender"
+        name="gender"
+        opts={[
+          ["", "Any"],
+          ["male", "Male"],
+          ["female", "Female"],
+          ["unisex", "Unisex"],
+        ]}
+        filters={filters}
+        handleChange={handleFilterChange}
+      />
+      <Select
+        label="Occupancy"
+        name="occupancy"
+        opts={[
+          ["", "Any"],
+          ["single", "Single"],
+          ["double", "Double"],
+          ["triple", "Triple"],
+        ]}
+        filters={filters}
+        handleChange={handleFilterChange}
+      />
+      <Select
+        label="BHK"
+        name="bhk"
+        opts={[
+          ["", "Any"],
+          ["1", "1 BHK"],
+          ["1.5", "1.5 BHK"],
+          ["2", "2 BHK"],
+          ["2.5", "2.5 BHK"],
+          ["3", "3 BHK"],
+          ["4", "4 BHK+"],
+        ]}
+        filters={filters}
+        handleChange={handleFilterChange}
+      />
       <div>
         <label className="block mb-2  text-gray-700">Budget Range (₹)</label>
         <div className="flex gap-2">
-          <Input name="minPrice" type="number" placeholder="Min" filters={filters} handleChange={handleFilterChange} />
-          <Input name="maxPrice" type="number" placeholder="Max" filters={filters} handleChange={handleFilterChange} />
+          <Input
+            name="minPrice"
+            type="number"
+            placeholder="Min"
+            filters={filters}
+            handleChange={handleFilterChange}
+          />
+          <Input
+            name="maxPrice"
+            type="number"
+            placeholder="Max"
+            filters={filters}
+            handleChange={handleFilterChange}
+          />
         </div>
       </div>
     </div>
   );
 });
 
-function Input({ label, name, filters, handleChange, className = "", ...rest }) {
+function Input({
+  label,
+  name,
+  filters,
+  handleChange,
+  className = "",
+  ...rest
+}) {
   return (
     <div className={className}>
-      {label && <label className="block mb-2  text-gray-700 text-sm">{label}</label>}
-      <input name={name} value={filters[name]} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm" autoComplete="off" {...rest} />
+      {label && (
+        <label className="block mb-2  text-gray-700 text-sm">{label}</label>
+      )}
+      <input
+        name={name}
+        value={filters[name]}
+        onChange={handleChange}
+        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
+        autoComplete="off"
+        {...rest}
+      />
     </div>
   );
 }
 
-function Select({ label, name, opts, filters, handleChange, value, onChange, className = "", ...rest }) {
+function Select({
+  label,
+  name,
+  opts,
+  filters,
+  handleChange,
+  value,
+  onChange,
+  className = "",
+  ...rest
+}) {
   return (
     <div className={className}>
       <label className="block mb-2  text-gray-700 text-sm">{label}</label>
-      <select name={name} value={value || filters[name]} onChange={handleChange || onChange} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm" {...rest}>
+      <select
+        name={name}
+        value={value || filters[name]}
+        onChange={handleChange || onChange}
+        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
+        {...rest}
+      >
         {opts.map(([v, t]) => (
           <option key={v} value={v}>
             {t}
@@ -464,7 +563,14 @@ function Select({ label, name, opts, filters, handleChange, value, onChange, cla
   );
 }
 
-const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropertyId, isOtpVerified, isLoggedIn }) => {
+const PropertyCard = ({
+  p,
+  setShowOtpPopup,
+  setIsOtpVerified,
+  setSelectedPropertyId,
+  isOtpVerified,
+  isLoggedIn,
+}) => {
   const thumbs = p.images.filter((img) => img !== p.cover).slice(0, 3);
   const extra = p.images.length - 1 - thumbs.length;
 
@@ -474,11 +580,13 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
       setSelectedPropertyId(p.id);
       setShowOtpPopup(true);
     } else {
-     
       const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
       if (!visited.includes(p.id)) {
         incrementPropertyView(p.id);
-        sessionStorage.setItem("viewedProps", JSON.stringify([...visited, p.id]));
+        sessionStorage.setItem(
+          "viewedProps",
+          JSON.stringify([...visited, p.id])
+        );
       }
     }
   };
@@ -487,7 +595,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
     <Link
       to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
       state={isLoggedIn || isOtpVerified ? { property: p } : null}
-      onClick={handleViewDetailsClick} 
+      onClick={handleViewDetailsClick}
       className="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-300 w-full max-w-3xl mx-auto flex flex-col md:flex-row p-4 gap-4"
     >
       <div className="w-full md:w-64 flex-shrink-0">
@@ -532,23 +640,23 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
         <div className="flex items-start justify-between flex-wrap gap-y-1">
           <div>
             <h2 className="text-lg flex items-center gap-1 text-gray-800 leading-snug">
-  {p.looking_for === "pg"
-    ? `${p.title || "Untitled Property"}'s PG`
-    : p.title || "Untitled Property"}{" "}
-  {p.verified && (
-    <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-      <FiCheckCircle className="text-[10px]" />
-      Verified
-    </span>
-  )}
-</h2>
+              {p.looking_for === "pg"
+                ? `${p.title || "Untitled Property"}'s PG`
+                : p.title || "Untitled Property"}{" "}
+              {p.verified && (
+                <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
+                  <FiCheckCircle className="text-[10px]" />
+                  Verified
+                </span>
+              )}
+            </h2>
 
             <p className="text-sm text-gray-500 truncate ">📍 {p.location}</p>
           </div>
           <Link
             to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
             state={isLoggedIn || isOtpVerified ? { property: p } : null}
-            onClick={handleViewDetailsClick} 
+            onClick={handleViewDetailsClick}
             className="text-indigo-600 text-sm font-medium border border-indigo-600 px-4 py-1.5 rounded-full hover:bg-indigo-50 transition whitespace-nowrap"
           >
             View Details
@@ -566,7 +674,10 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
         )}
 
         <div className="grid grid-cols-3 text-center text-xs">
-          <Stat label="Rent" value={`₹ ${p.price?.toLocaleString() || "N/A"}`} />
+          <Stat
+            label="Rent"
+            value={`₹ ${p.price?.toLocaleString() || "N/A"}`}
+          />
           <Stat
             label="Deposit"
             value={`₹ ${p.deposit?.toLocaleString() || "-"}`}
@@ -577,7 +688,11 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
         <div className="grid grid-cols-2 gap-4">
           <Feature icon="🛋️" label="Occupancy" value={p.occupancy || "-"} />
           <Feature icon="🏠" label="BHK Type" value={p.bhk_type || "-"} />
-          <Feature icon="📍" label="Distance" value={p.distance_from_station || "-"} />
+          <Feature
+            icon="📍"
+            label="Distance"
+            value={p.distance_from_station || "-"}
+          />
           <Feature icon="🔑" label="Available" value={p.flat_status || "-"} />
         </div>
       </div>

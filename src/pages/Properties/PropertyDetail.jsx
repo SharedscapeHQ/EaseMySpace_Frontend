@@ -11,13 +11,15 @@ import LightboxViewer from "./LightboxViewer";
 import InfoItem from "./InfoItem";
 import PopupModal from "./PopupModal";
 import PropertySkeleton from "./PropertySkeleton";
-import { getCurrentUser } from "../../api/authAPI";
+import { getCurrentUser } from "../../api/authApi";
 
 function PropertyDetail() {
   const stripQuotes = (v) =>
     v == null
       ? ""
-      : String(v).replace(/^"+|"+$/g, "").trim();
+      : String(v)
+          .replace(/^"+|"+$/g, "")
+          .trim();
 
   const parseImages = (raw) => {
     if (!raw) return [];
@@ -47,9 +49,11 @@ function PropertyDetail() {
     return `${possessive} listed home`;
   };
 
-  const { id } = useParams(); 
+  const { id } = useParams();
   const location = useLocation();
-  const init = location.state?.property ? enrich(location.state.property) : null;
+  const init = location.state?.property
+    ? enrich(location.state.property)
+    : null;
 
   const [property, setProperty] = useState(init);
   const [loading, setLoading] = useState(!init);
@@ -72,7 +76,8 @@ function PropertyDetail() {
   }, []);
 
   useEffect(() => {
-    const isPrivileged = loggedInUser?.role === "admin" || loggedInUser?.role === "owner";
+    const isPrivileged =
+      loggedInUser?.role === "admin" || loggedInUser?.role === "owner";
     const isSubscribed = loggedInUser?.subscription_status === "paid";
     const leadPaid = localStorage.getItem("has_paid_lead") === "true";
 
@@ -174,21 +179,26 @@ function PropertyDetail() {
           />
 
           <div>
-  <h2 className="text-xl font-bold text-indigo-700 mb-3">
-    Property Description
-  </h2>
-  <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line">
-    {property.description}
-  </p>
-</div>
-
+            <h2 className="text-xl font-bold text-indigo-700 mb-3">
+              Property Description
+            </h2>
+            <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line">
+              {property.description}
+            </p>
+          </div>
 
           <div className="grid grid-cols-2 text-center sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             <InfoItem label="Rent" value={`₹${property.price || "N/A"}`} />
             <InfoItem label="Deposit" value={`₹${property.deposit || "N/A"}`} />
-            <InfoItem label="Flat Status" value={property.flat_status || "N/A"} />
+            <InfoItem
+              label="Flat Status"
+              value={property.flat_status || "N/A"}
+            />
             <InfoItem label="BHK Type" value={property.bhk_type || "N/A"} />
-            <InfoItem label="Looking For" value={property.looking_for || "N/A"} />
+            <InfoItem
+              label="Looking For"
+              value={property.looking_for || "N/A"}
+            />
             <InfoItem label="Occupancy" value={property.occupancy || "N/A"} />
             <InfoItem label="Gender" value={property.gender || "N/A"} />
           </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { registerUser } from "../api/authAPI";
+import { registerUser } from "../api/authApi";
 
 function Register() {
   const [form, setForm] = useState({
@@ -39,10 +39,9 @@ function Register() {
       toast.success("Registration successful", { id: toastId });
       navigate("/login");
     } catch (err) {
-      toast.error(
-        err?.response?.data?.message || "Registration failed",
-        { id: toastId }
-      );
+      toast.error(err?.response?.data?.message || "Registration failed", {
+        id: toastId,
+      });
       console.error("❌ Registration failed:", err);
     }
   };
@@ -69,7 +68,10 @@ function Register() {
       transition={{ duration: 0.4 }}
       className="w-full min-h-screen bg-blue-100 flex items-center justify-center p-4"
     >
-      <a href="/" className="absolute top-5 left-5 text-blue-700 hover:underline">
+      <a
+        href="/"
+        className="absolute top-5 left-5 text-blue-700 hover:underline"
+      >
         Back to home page
       </a>
       <form
@@ -78,7 +80,9 @@ function Register() {
           sm:p-8 sm:max-w-md
           xs:p-6 xs:max-w-full xs:mx-2"
       >
-        <h1 className="text-2xl font-bold text-center text-blue-500">Register</h1>
+        <h1 className="text-2xl font-bold text-center text-blue-500">
+          Register
+        </h1>
 
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
           <input
