@@ -177,7 +177,7 @@ export default function NewlyListedProperties() {
     <div className="bg-zinc-50 ">
       <section
         style={{ fontFamily: "para_font" }}
-        className="lg:py-10 mt-10 rounded-2xl lg:px-10 px-3 py-6 max-w-7xl mx-auto relative"
+        className="lg:py-10 mt-10 rounded-2xl lg:px-20 px-3 py-6 max-w-7xl mx-auto relative"
       >
         <div className="flex justify-between items-center mb-6">
           <h2
