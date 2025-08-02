@@ -207,7 +207,7 @@ export default function NewlyListedProperties() {
                 to={`/properties/${p.id}`}
                 key={p.id}
                 onClick={(e) => handlePropertyCardClick(e, p)}
-                className="min-w-[270px] max-w-[270px] group bg-gradient-to-r from-white to-[#e3edfc] rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden transition-all duration-300"
+                className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden transition-all duration-300"
               >
                 {p.images?.length > 0 ? (
                   <div className="h-48 w-full p-3 pt-3 pb-0">
