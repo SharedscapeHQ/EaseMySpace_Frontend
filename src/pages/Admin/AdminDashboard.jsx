@@ -9,7 +9,7 @@ import {
   markNewlyListed,
   fetchPendingQueries,
 } from "../../api/adminApi";
-import { logoutUser } from "../../api/authAPI";
+import { logoutUser } from "../../api/authApi";
 import { toast } from "react-hot-toast";
 import { FiSearch } from "react-icons/fi";
 
