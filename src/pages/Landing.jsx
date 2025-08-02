@@ -5,7 +5,7 @@ import HeroSection from '../components/LandingSectionComp/Hero'
 // import TestimonialSection from '../components/LandingSectionComp/TestimonialSection'
 import NewlyListedProperties from '../components/LandingSectionComp/NewlyListedProperties'
 import RecentAddedProperties from '../components/LandingSectionComp/RecentAddedProperties'
-// import TopLocation from '../components/LandingSectionComp/TopLocation'
+import TopLocation from '../components/LandingSectionComp/TopLocation'
 
 
 function Landing() {
@@ -15,7 +15,7 @@ function Landing() {
       <HeroSection/>
       <NewlyListedProperties/>
       <RecentAddedProperties/>
-      {/* <TopLocation/> */}
+      <TopLocation/>
     <div className="lg:flex hidden flex-wrap bg-zinc-50 pb-5 justify-between gap-y-4 px-3 lg:px-20">
   {[
     { icon: "✅", text: "Verified Listings" },
