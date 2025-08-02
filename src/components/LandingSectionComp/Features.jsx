@@ -30,8 +30,8 @@ const features = [
 
 const FeatureSection = () => {
   return (
-   <section style={{ fontFamily: "para_font" }} className="w-full py-10 lg:px-20 px-3  bg-white">
-  <div className="max-w-7xl mx-auto">
+   <section style={{ fontFamily: "para_font" }} className="w-full py-10  bg-white">
+  <div className="max-w-7xl lg:px-10 px-3 mx-auto">
     <h2 style={{ fontFamily: "heading_font" }} className="text-lg sm:text-3xl  mb-5 text-left">
       Why Choose EaseMySpace.in ?
     </h2>

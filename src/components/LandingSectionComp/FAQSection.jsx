@@ -29,8 +29,8 @@ export default function FAQSection() {
   const toggle = (index) => setOpenIndex(index === openIndex ? null : index);
 
   return (
-    <section style={{ fontFamily: "para_font" }} className="w-full px-3 lg:px-20 py-10 bg-white">
-      <div className="w-full mx-auto">
+    <section style={{ fontFamily: "para_font" }} className="w-full py-10 bg-white">
+      <div className="max-w-7xl lg:px-10 px-3 mx-auto">
         <h2 style={{ fontFamily: "heading_font" }} className="text-lg sm:text-3xl  mb-5 text-left">
           Got Questions? We’ve Got
           Answers.

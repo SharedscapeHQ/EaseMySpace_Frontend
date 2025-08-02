@@ -183,7 +183,7 @@ export default function RecentAddedProperties() {
     <div className="bg-zinc-50 pb-5">
       <section
         style={{ fontFamily: "para_font" }}
-        className="lg:px-20 px-3  rounded-2xl max-w-7xl mx-auto relative"
+        className="lg:px-10 px-3  rounded-2xl max-w-7xl mx-auto relative"
         aria-labelledby="new-properties-heading"
       >
         <div className="flex justify-between items-center mb-6">
