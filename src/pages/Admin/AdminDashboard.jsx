@@ -9,6 +9,7 @@ import {
   markNewlyListed,
   fetchPendingQueries,
 } from "../../api/adminApi";
+import { getAllUsers } from "../../api/ownerApi";
 import { logoutUser } from "../../api/authApi";
 import { toast } from "react-hot-toast";
 import { FiSearch } from "react-icons/fi";
@@ -30,13 +31,17 @@ export default function AdminDashboard() {
   const [leads, setLeads] = useState([]);
   const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [activeTab, setActiveTab] = useState("Leads");
+  const [activeTab, setActiveTab] = useState("Users");
 
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingProps, setLoadingProps] = useState(true);
 
   const [pendingQueries, setPendingQueries] = useState([]);
   const [loadingQueries, setLoadingQueries] = useState(true);
+
+  const [loadingUsers, setLoadingUsers] = useState(true);
+    const [users, setUsers] = useState([]);
+  
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -56,6 +61,12 @@ export default function AdminDashboard() {
       mainRef.current.scrollTo({ top: 0 });
     }
   }, [activeTab]);
+
+  useEffect(() => {
+  if (activeTab === "Users") {
+    fetchUsers();
+  }
+}, [activeTab]);
 
   // Load Leads
   useEffect(() => {
@@ -91,6 +102,18 @@ export default function AdminDashboard() {
       }
     })();
   }, []);
+
+  const fetchUsers = async () => {
+      try {
+        setLoadingUsers(true);
+        const { data } = await getAllUsers();
+        setUsers(data);
+      } catch (err) {
+        console.error("Error fetching users", err);
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
 
   const fetchProperties = async () => {
     try {
@@ -249,6 +272,76 @@ export default function AdminDashboard() {
           <h1 className="text-2xl font-bold text-indigo-800 mb-6">
             Admin Dashboard
           </h1>
+
+          {activeTab === "Users" && (
+  <section>
+    <h2 className="text-xl font-semibold mb-4">Users</h2>
+    {loadingUsers ? (
+      <p>Loading users...</p>
+    ) : (
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 text-center">
+          <thead className="bg-indigo-50">
+            <tr>
+              <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                Contact
+              </th>
+              <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+                Subscription
+              </th>
+             
+            </tr>
+          </thead>
+
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map((u) => {
+              const status = u.subscription_status?.trim().toLowerCase();
+              const expiry = u.subscription_expiry;
+              const formattedExpiry =
+                expiry && !isNaN(new Date(expiry))
+                  ? new Date(expiry).toLocaleDateString()
+                  : "-";
+
+              return (
+                <tr key={u.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center align-middle">
+                    {u.firstName} {u.lastName}
+                  </td>
+
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center align-middle">
+                    <div>{u.email || <span className="italic text-gray-400">N/A</span>}</div>
+                    <div className="mt-1">{u.phone || <span className="italic text-gray-400">N/A</span>}</div>
+                  </td>
+
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-center align-middle">
+                    <div>
+                      {status === "paid" ? (
+                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                          Paid
+                        </span>
+                      ) : status === "unpaid" ? (
+                        <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                          Unpaid
+                        </span>
+                      ) : (
+                        <span className="text-gray-400 italic text-sm">N/A</span>
+                      )}
+                    </div>
+                    <div className="mt-1 text-gray-500">{formattedExpiry}</div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+)}
+
 
           {activeTab === "Leads" && (
             <section>
