@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { newlyListedProperties, incrementPropertyView } from "../../API/propertiesApi";
-import { getCurrentUser } from "../../API/authAPI";
+import { newlyListedProperties, incrementPropertyView } from "../../api/propertiesApi";
+import { getCurrentUser } from "../../api/authAPI";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
@@ -113,27 +113,44 @@ export default function NewlyListedProperties() {
 
   if (loading) {
     return (
-      <section className="py-10 mt-10  lg:px-20 px-3 max-w-7xl mx-auto">
-       <h2
-  style={{ fontFamily: "heading_font" }}
-  className="text-lg lg:text-3xl mb-0 text-black leading-tight"
->
-  Exclusive <span className="">Featured</span>
-  <span className=" block lg:hidden">Properties</span>
-  <span className=" hidden lg:inline"> Properties</span>
-</h2>
+      <section className="py-10 mt-10 lg:px-10 px-3 max-w-7xl mx-auto">
+  <h2
+    style={{ fontFamily: "heading_font" }}
+    className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+  >
+    Exclusive <span className="">Featured</span>
+    <span className=" block lg:hidden">Properties</span>
+    <span className=" hidden lg:inline"> Properties</span>
+  </h2>
 
-        <div className="grid gap-12 mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-md p-4 animate-pulse flex flex-col">
-              <div className="h-48 bg-gray-200 rounded-lg mb-4" />
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-              <div className="h-3 bg-gray-200 rounded w-1/2 mb-2" />
-              <div className="h-5 bg-gray-300 rounded w-1/3 mt-auto" />
-            </div>
-          ))}
+  <div className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide mt-10">
+    {Array.from({ length: 4 }).map((_, i) => (
+      <div
+        key={i}
+        className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden animate-pulse"
+      >
+        {/* Image Skeleton */}
+        <div className="h-48 w-full bg-gray-200 flex items-center justify-center rounded-t-2xl" />
+
+        {/* Content Skeleton */}
+        <div className="p-4 flex flex-col gap-1">
+          {/* Title + Verified + Price Row */}
+          <div className="flex justify-between items-center mb-2">
+            <div className="h-4 bg-gray-200 rounded w-[60%]" />
+            <div className="h-4 bg-gray-300 rounded w-[30%]" />
+          </div>
+
+          {/* Verified Badge */}
+          <div className="h-3 bg-gray-200 rounded w-[40%] mb-2" />
+
+          {/* Location */}
+          <div className="h-3 bg-gray-300 rounded w-[70%]" />
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
+
     );
   }
 
@@ -153,7 +170,7 @@ export default function NewlyListedProperties() {
 
           <Link
   to="/view-properties"
-  className="text-blue-600 text-[10px] lg:text-base font-medium hover:underline"
+  className="text-blue-600 text-[13px] lg:text-base font-medium hover:underline"
   style={{ fontFamily: "para_font" }}
 >
   View All
@@ -212,7 +229,7 @@ export default function NewlyListedProperties() {
   <div className="flex justify-between items-start gap-2">
     {/* Title + Verified */}
     <div className="flex items-center gap-2">
-      <h3 className="font-semibold text-md text-blue-700 truncate max-w-[160px]">
+      <h3 className="font-semibold text-md text-blue-600 truncate max-w-[160px]">
         {p.title}
       </h3>
       {p.verified && (
@@ -235,7 +252,7 @@ export default function NewlyListedProperties() {
     ?.trim()
     .split(/\s+/)
     .slice(-2)
-    .join(', ')}
+    .join(' ')}
 </p>
 </div>
 
