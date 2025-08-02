@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import {
   getPropertyById,
   getPropertyVisitCount,
-} from "../../API/propertiesApi";
+} from "../../api/propertiesApi";
 import { FiEye, FiCheckCircle } from "react-icons/fi";
 import PropertyAmenities from "./PropertyAmenities";
 import PropertyHeaderSection from "./PropertyDetailsHero";
@@ -11,7 +11,7 @@ import LightboxViewer from "./LightboxViewer";
 import InfoItem from "./InfoItem";
 import PopupModal from "./PopupModal";
 import PropertySkeleton from "./PropertySkeleton";
-import { getCurrentUser } from "../../API/authAPI";
+import { getCurrentUser } from "../../api/authAPI";
 
 function PropertyDetail() {
   const stripQuotes = (v) =>

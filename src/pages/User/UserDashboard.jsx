@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProperties, submitQuery } from "../../API/userApi";
+import { getUserProperties, submitQuery } from "../../api/userApi";
 import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
 import MyQueries from "../../components/UserPageComp/MyQueries";
-import { logoutUser } from "../../API/authAPI";
+import { logoutUser } from "../../api/authAPI";
 
 export default function UserDashboard() {
   const navigate = useNavigate();

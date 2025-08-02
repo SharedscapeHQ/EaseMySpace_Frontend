@@ -8,15 +8,15 @@ import {
   editProperty,
   markNewlyListed,
   fetchPendingQueries,
-} from "../../API/adminApi";
+} from "../../api/adminApi";
 import {
   getAllUsers,
   updateUserRole,
   deleteUserById,
   getDeletedProperties,
   restorePropertyById,
-} from "../../API/ownerApi";
-import { logoutUser } from "../../API/authAPI";
+} from "../../api/ownerApi";
+import { logoutUser } from "../../api/authAPI";
 import { toast } from "react-hot-toast";
 
 import Sidebar from "../../components/AdminPageComp/Sidebar";
@@ -28,6 +28,7 @@ import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import DeletedPropertyCard from "../../components/OwnerPageComp/DeletedProperties";
 import { FiSearch } from "react-icons/fi";
+import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -50,7 +51,6 @@ export default function OwnerDashboard() {
   const [loadingDeletedProps, setLoadingDeletedProps] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
-
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -274,11 +274,11 @@ export default function OwnerDashboard() {
           (p) => p.status?.toLowerCase() === statusFilter.toLowerCase()
         );
 
-        const searchedProperties = filteredProperties.filter((p) =>
-  `${p.title} ${p.location} ${p.description || ""}`
-    .toLowerCase()
-    .includes(searchQuery.toLowerCase())
-);
+  const searchedProperties = filteredProperties.filter((p) =>
+    `${p.title} ${p.location} ${p.description || ""}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
 
   const approved = properties.filter((p) => p.status === "approved");
 
@@ -303,7 +303,11 @@ export default function OwnerDashboard() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
-        pendingCount={pendingQueries.filter(q => q.resolved === false || q.resolved === "false").length}
+        pendingCount={
+          pendingQueries.filter(
+            (q) => q.resolved === false || q.resolved === "false"
+          ).length
+        }
       />
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
@@ -311,178 +315,236 @@ export default function OwnerDashboard() {
             Owner Dashboard
           </h1>
 
-         {activeTab === "Users" && (
-  <section>
-    <h2 className="text-xl font-semibold mb-4">Users</h2>
-    {loadingUsers ? (
-      <p>Loading users...</p>
-    ) : (
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-indigo-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Role</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  {u.firstName} {u.lastName}
-                </td>
-                <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{u.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold capitalize ${
-                      u.role === "admin"
-                        ? "bg-red-100 text-red-700"
-                        : u.role === "owner"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {u.role}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap flex items-center gap-3">
-                  {u.role !== "owner" ? (
-                    <>
-                      <select
-                        value={u.role}
-                        onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                        className="border border-gray-300 rounded-md px-3 py-1 text-sm"
-                      >
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                      </select>
-                      <button
-                        onClick={() => handleDeleteUser(u.id)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md text-sm"
-                      >
-                        Delete
-                      </button>
-                    </>
-                  ) : (
-                    <span className="italic text-gray-400 text-sm">Owner (locked)</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-  </section>
-)}
+          {activeTab === "Users" && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4">Users</h2>
+              {loadingUsers ? (
+                <p>Loading users...</p>
+              ) : (
+                <div className="overflow-x-auto">
+ <table className="min-w-full divide-y divide-gray-200 text-center">
+  <thead className="bg-indigo-50">
+    <tr>
+      <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+        Name
+      </th>
+      <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+        Contact
+      </th>
+      <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+        Subscription
+      </th>
+      <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+        Role
+      </th>
+      <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+        Actions
+      </th>
+    </tr>
+  </thead>
+
+  <tbody className="bg-white divide-y divide-gray-200">
+    {users.map((u) => {
+      const status = u.subscription_status?.trim().toLowerCase();
+      const expiry = u.subscription_expiry;
+      const formattedExpiry =
+        expiry && !isNaN(new Date(expiry))
+          ? new Date(expiry).toLocaleDateString()
+          : "-";
+
+      return (
+        <tr key={u.id} className="hover:bg-gray-50">
+          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center align-middle">
+            {u.firstName} {u.lastName}
+          </td>
+
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center align-middle">
+            <div>{u.email || <span className="italic text-gray-400">N/A</span>}</div>
+            <div className="mt-1">{u.phone || <span className="italic text-gray-400">N/A</span>}</div>
+          </td>
+
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-center align-middle">
+            <div>
+              {status === "paid" ? (
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                  Paid
+                </span>
+              ) : status === "unpaid" ? (
+                <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                  Unpaid
+                </span>
+              ) : (
+                <span className="text-gray-400 italic text-sm">N/A</span>
+              )}
+            </div>
+            <div className="mt-1 text-gray-500">{formattedExpiry}</div>
+          </td>
+
+          <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
+            <span
+              className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold capitalize ${
+                u.role === "admin"
+                  ? "bg-red-100 text-red-700"
+                  : u.role === "owner"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-blue-100 text-blue-700"
+              }`}
+            >
+              {u.role}
+            </span>
+          </td>
+
+          <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
+            {u.role !== "owner" ? (
+              <div className="flex justify-center items-center gap-3">
+                <select
+                  value={u.role}
+                  onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                  className="border border-gray-300 rounded-md px-3 py-1 text-sm"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <button
+                  onClick={() => handleDeleteUser(u.id)}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md text-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            ) : (
+              <span className="italic text-gray-400 text-sm">Owner (locked)</span>
+            )}
+          </td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>
 
 
+
+</div>
+
+              )}
+            </section>
+          )}
 
           {activeTab === "Leads" && (
-                     <section>
-                       <h2 className="text-xl font-semibold mb-4">Leads</h2>
-                       {loadingLeads ? (
-                         <p>Loading leads...</p>
-                       ) : (
-                         <LeadsTable leads={leads} />
-                       )}
-                     </section>
-                   )}
-         
-                   {activeTab === "Properties" && (
-                     <section>
-                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-           <h2 className="text-xl font-semibold">Properties</h2>
-         
-           <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-             <div className="relative w-full sm:w-64">
-           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-             <FiSearch />
-           </span>
-           <input
-             type="text"
-             placeholder="Search by title, location..."
-             value={searchQuery}
-             onChange={(e) => setSearchQuery(e.target.value)}
-             className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
-           />
-         </div>
-             <select
-               value={statusFilter}
-               onChange={(e) => setStatusFilter(e.target.value)}
-               className="border rounded px-3 py-1"
-             >
-               <option value="all">All</option>
-               <option value="pending">Pending</option>
-               <option value="approved">Approved</option>
-               <option value="rejected">Rejected</option>
-             </select>
-           </div>
-         </div>
-         
-         
-                       <PropertyPieChart data={pieData} />
-         
-                       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                         {searchedProperties.map((property) => (
-           <PropertyCard
-             key={property.id}
-             property={property}
-             onApprove={handleApprove}
-             onEdit={openEditModal}
-             onDelete={handleDelete}
-           />
-         ))}
-                       </div>
-                     </section>
-                   )}
-         
-                   {activeTab === "NewlyListed" && (
-                     <section>
-                       <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
-                       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {approved
-           .slice() // to avoid mutating original array
-           .sort((a, b) => {
-             const aListed = a.is_newly_listed;
-             const bListed = b.is_newly_listed;
-         
-             if (aListed && bListed) {
-               return (a.newly_listed_position || 9999) - (b.newly_listed_position || 9999);
-             }
-         
-             if (aListed) return -1; // listed first
-             if (bListed) return 1;
-         
-             return 0; // keep others as-is
-           })
-           .map((property) => (
-             <NewlyListedCard
-               key={property.id}
-               property={property}
-               markNewlyListed={markNewlyListed}
-               fetchProperties={fetchProperties}
-               allProperties={properties}
-             />
-         ))}
-         
-                       </div>
-                     </section>
-                   )}
-         
-                   {/* pending queries  */}
-                   {activeTab === "PendingQueries" && (
-           <section>
-             <h2 className="text-xl font-semibold mb-4">Pending Edit Queries</h2>
-             {loadingQueries ? (
-               <p>Loading queries...</p>
-             ) : (
-               <PendingQueries queries={pendingQueries} />
-             )}
-           </section>
-         )}
+            <section>
+              <h2 className="text-xl font-semibold mb-4">Leads</h2>
+              {loadingLeads ? (
+                <p>Loading leads...</p>
+              ) : (
+                <LeadsTable leads={leads} />
+              )}
+            </section>
+          )}
+
+          {activeTab === "Properties" && (
+            <section>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <h2 className="text-xl font-semibold">Properties</h2>
+
+                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                  <div className="relative w-full sm:w-64">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                      <FiSearch />
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search by title, location..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
+                    />
+                  </div>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="border rounded px-3 py-1"
+                  >
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+              </div>
+
+              <PropertyPieChart data={pieData} />
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                {searchedProperties.map((property) => (
+                  <PropertyCard
+                    key={property.id}
+                    property={property}
+                    onApprove={handleApprove}
+                    onEdit={openEditModal}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {activeTab === "NewlyListed" && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {approved
+                  .slice() // to avoid mutating original array
+                  .sort((a, b) => {
+                    const aListed = a.is_newly_listed;
+                    const bListed = b.is_newly_listed;
+
+                    if (aListed && bListed) {
+                      return (
+                        (a.newly_listed_position || 9999) -
+                        (b.newly_listed_position || 9999)
+                      );
+                    }
+
+                    if (aListed) return -1; // listed first
+                    if (bListed) return 1;
+
+                    return 0; // keep others as-is
+                  })
+                  .map((property) => (
+                    <NewlyListedCard
+                      key={property.id}
+                      property={property}
+                      markNewlyListed={markNewlyListed}
+                      fetchProperties={fetchProperties}
+                      allProperties={properties}
+                    />
+                  ))}
+              </div>
+            </section>
+          )}
+
+          {activeTab === "ManageLocations" && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4">
+                Manage Top Locations
+              </h2>
+              <ManageTopLocations />
+            </section>
+          )}
+
+          {/* pending queries  */}
+          {activeTab === "PendingQueries" && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4">
+                Pending Edit Queries
+              </h2>
+              {loadingQueries ? (
+                <p>Loading queries...</p>
+              ) : (
+                <PendingQueries queries={pendingQueries} />
+              )}
+            </section>
+          )}
 
           {activeTab === "DeletedProperties" && (
             <section>

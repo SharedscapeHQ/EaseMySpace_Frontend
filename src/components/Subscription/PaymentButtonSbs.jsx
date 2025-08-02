@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { createOrder, verifyPayment } from "../../API/PaymentApi";
-import { getCurrentUser } from "../../API/authAPI";
+import { createOrder, verifyPayment } from "../../api/PaymentApi";
+import { getCurrentUser } from "../../api/authAPI";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 
 export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {

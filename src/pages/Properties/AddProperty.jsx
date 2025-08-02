@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaHome, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { addProperty } from "../../API/propertiesApi";
+import { addProperty } from "../../api/propertiesApi";
 
 const AddProperty = () => {
   const [formData, setFormData] = useState({

@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllEditQueries, resolveEditQuery } from "../../API/adminApi";
+import { fetchAllEditQueries, resolveEditQuery } from "../../api/adminApi";
 
 export default function AllQueries() {
   const [queries, setQueries] = useState([]);
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-  const fetchQueries = async () => {
-    try {
-      const res = await fetchAllEditQueries(); 
-      const fetchedQueries = res.data?.queries || [];
+    const fetchQueries = async () => {
+      try {
+        const res = await fetchAllEditQueries();
+        const fetchedQueries = res.data?.queries || [];
 
-      setQueries(fetchedQueries);
-    } catch (error) {
-      console.error("Failed to fetch edit queries", error);
-    }
-  };
-  fetchQueries();
-}, []);
-
+        setQueries(fetchedQueries);
+      } catch (error) {
+        console.error("Failed to fetch edit queries", error);
+      }
+    };
+    fetchQueries();
+  }, []);
 
   const handleResolve = async (id) => {
     try {
@@ -43,19 +42,25 @@ export default function AllQueries() {
       <div className="flex gap-4 mb-4">
         <button
           onClick={() => setFilter("all")}
-          className={`px-3 py-1 rounded ${filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded ${
+            filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200"
+          }`}
         >
           All
         </button>
         <button
           onClick={() => setFilter("pending")}
-          className={`px-3 py-1 rounded ${filter === "pending" ? "bg-yellow-500 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded ${
+            filter === "pending" ? "bg-yellow-500 text-white" : "bg-gray-200"
+          }`}
         >
           Pending
         </button>
         <button
           onClick={() => setFilter("resolved")}
-          className={`px-3 py-1 rounded ${filter === "resolved" ? "bg-green-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded ${
+            filter === "resolved" ? "bg-green-600 text-white" : "bg-gray-200"
+          }`}
         >
           Resolved
         </button>

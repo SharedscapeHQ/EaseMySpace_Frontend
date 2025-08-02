@@ -6,6 +6,7 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+  FiMapPin ,
   FiTrash2, FiMessageSquare, FiMail
 } from "react-icons/fi";
 
@@ -17,6 +18,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     { label: "Leads", value: "Leads", icon: <FiUsers /> },
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
+    { label: "Manage Top Locations", value: "ManageLocations", icon: <FiMapPin /> },
     { label: "Pending Queries", value: "PendingQueries", icon: <FiMessageSquare />, badge: pendingCount },
     ...(role === "Owner"
       ? [{ label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> }]
@@ -41,6 +43,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
 
       {/* 🟢 Sidebar: fixed on large screens, drawer on mobile */}
       <aside
+      style={{fontFamily:"para_font"}}
         className={`${
           isOpen
             ? "translate-x-0"
@@ -50,7 +53,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
       >
         {/* Sidebar Header */}
         <div className="p-6 border-b lg:border-none">
-          <h2 className="text-xl font-bold text-indigo-700 hidden lg:block">{role} Panel</h2>
+          <h2 style={{fontFamily:"heading_font"}} className="text-xl  text-indigo-700 hidden lg:block">{role} Panel</h2>
         </div>
 
         {/* Sidebar Tabs */}

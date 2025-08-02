@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
-import { getAllDeletedPropertiesById } from '../../API/ownerApi';
+import { getAllDeletedPropertiesById } from '../../api/ownerApi';
 import {
   FaChevronLeft,
   FaChevronRight,

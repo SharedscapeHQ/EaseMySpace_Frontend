@@ -8,8 +8,8 @@ import {
   editProperty,
   markNewlyListed,
   fetchPendingQueries,
-} from "../../API/adminApi";
-import { logoutUser } from "../../API/authAPI";
+} from "../../api/adminApi";
+import { logoutUser } from "../../api/authAPI";
 import { toast } from "react-hot-toast";
 import { FiSearch } from "react-icons/fi";
 
@@ -20,7 +20,8 @@ import PropertyCard from "../../components/AdminPageComp/PropertyCard";
 import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
-import PendingQueries from "../../components/AdminPageComp/PendingQueries"
+import PendingQueries from "../../components/AdminPageComp/PendingQueries";
+import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -35,9 +36,9 @@ export default function AdminDashboard() {
   const [loadingProps, setLoadingProps] = useState(true);
 
   const [pendingQueries, setPendingQueries] = useState([]);
-const [loadingQueries, setLoadingQueries] = useState(true);
+  const [loadingQueries, setLoadingQueries] = useState(true);
 
-const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -76,28 +77,27 @@ const [searchQuery, setSearchQuery] = useState("");
     fetchProperties();
   }, []);
 
-  // Load raised queries 
+  // Load raised queries
   useEffect(() => {
-  (async () => {
-    try {
-      setLoadingQueries(true);
-      const { data } = await fetchPendingQueries(); // create this API
-      setPendingQueries(Array.isArray(data) ? data : []);
-    } catch (err) {
-      toast.error("Error loading edit queries");
-    } finally {
-      setLoadingQueries(false);
-    }
-  })();
-}, []);
+    (async () => {
+      try {
+        setLoadingQueries(true);
+        const { data } = await fetchPendingQueries(); // create this API
+        setPendingQueries(Array.isArray(data) ? data : []);
+      } catch (err) {
+        toast.error("Error loading edit queries");
+      } finally {
+        setLoadingQueries(false);
+      }
+    })();
+  }, []);
 
   const fetchProperties = async () => {
     try {
       setLoadingProps(true);
       const { data } = await getAllProperties();
       setProperties(Array.isArray(data) ? data : []);
-    //  console.log("Verified value:", data.map(p => p.verified));
-
+      //  console.log("Verified value:", data.map(p => p.verified));
     } catch {
       toast.error("Error loading properties");
     } finally {
@@ -142,22 +142,21 @@ const [searchQuery, setSearchQuery] = useState("");
 
   const handleEditSubmit = async () => {
     try {
-    const updateData = {
-  ...editForm,
-  deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
-  price: editForm.price === "" ? null : Number(editForm.price),
-  newly_listed_position: editForm.is_newly_listed
-    ? Number(editForm.newly_listed_position)
-    : null,
-  amenities: Array.isArray(editForm.amenities)
-    ? editForm.amenities
-    : (editForm.amenities || "").split(",").map((a) => a.trim()),
-  remove_image_urls: editForm.remove_image_urls || [],
-  remove_video_urls: editForm.remove_video_urls || [],
-  image_base64: editForm.image_base64 || [],
-  video_base64: editForm.video_base64 || [],
-};
-
+      const updateData = {
+        ...editForm,
+        deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
+        price: editForm.price === "" ? null : Number(editForm.price),
+        newly_listed_position: editForm.is_newly_listed
+          ? Number(editForm.newly_listed_position)
+          : null,
+        amenities: Array.isArray(editForm.amenities)
+          ? editForm.amenities
+          : (editForm.amenities || "").split(",").map((a) => a.trim()),
+        remove_image_urls: editForm.remove_image_urls || [],
+        remove_video_urls: editForm.remove_video_urls || [],
+        image_base64: editForm.image_base64 || [],
+        video_base64: editForm.video_base64 || [],
+      };
 
       if (
         editForm.is_newly_listed &&
@@ -205,11 +204,11 @@ const [searchQuery, setSearchQuery] = useState("");
           (p) => p.status?.toLowerCase() === statusFilter.toLowerCase()
         );
 
-const searchedProperties = filteredProperties.filter((p) =>
-  `${p.title} ${p.location} ${p.description || ""}`
-    .toLowerCase()
-    .includes(searchQuery.toLowerCase())
-);
+  const searchedProperties = filteredProperties.filter((p) =>
+    `${p.title} ${p.location} ${p.description || ""}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
 
   const approved = properties.filter((p) => p.status === "approved");
 
@@ -231,22 +230,21 @@ const searchedProperties = filteredProperties.filter((p) =>
     },
   ];
 
-  
-
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar
-      role="Admin"
+        role="Admin"
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
-        pendingCount={pendingQueries.filter(q => q.resolved === false || q.resolved === "false").length}
+        pendingCount={
+          pendingQueries.filter(
+            (q) => q.resolved === false || q.resolved === "false"
+          ).length
+        }
       />
 
-      <main
-        ref={mainRef}
-className="flex-1 bg-gray-50 lg:ml-64"
-      >
+      <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
           <h1 className="text-2xl font-bold text-indigo-800 mb-6">
             Admin Dashboard
@@ -266,47 +264,46 @@ className="flex-1 bg-gray-50 lg:ml-64"
           {activeTab === "Properties" && (
             <section>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-  <h2 className="text-xl font-semibold">Properties</h2>
+                <h2 className="text-xl font-semibold">Properties</h2>
 
-  <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-    <div className="relative w-full sm:w-64">
-  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-    <FiSearch />
-  </span>
-  <input
-    type="text"
-    placeholder="Search by title, location..."
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-    className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
-  />
-</div>
-    <select
-      value={statusFilter}
-      onChange={(e) => setStatusFilter(e.target.value)}
-      className="border rounded px-3 py-1"
-    >
-      <option value="all">All</option>
-      <option value="pending">Pending</option>
-      <option value="approved">Approved</option>
-      <option value="rejected">Rejected</option>
-    </select>
-  </div>
-</div>
-
+                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                  <div className="relative w-full sm:w-64">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                      <FiSearch />
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search by title, location..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
+                    />
+                  </div>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="border rounded px-3 py-1"
+                  >
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+              </div>
 
               <PropertyPieChart data={pieData} />
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {searchedProperties.map((property) => (
-  <PropertyCard
-    key={property.id}
-    property={property}
-    onApprove={handleApprove}
-    onEdit={openEditModal}
-    onDelete={handleDelete}
-  />
-))}
+                  <PropertyCard
+                    key={property.id}
+                    property={property}
+                    onApprove={handleApprove}
+                    onEdit={openEditModal}
+                    onDelete={handleDelete}
+                  />
+                ))}
               </div>
             </section>
           )}
@@ -315,46 +312,60 @@ className="flex-1 bg-gray-50 lg:ml-64"
             <section>
               <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-               {approved
-  .slice() // to avoid mutating original array
-  .sort((a, b) => {
-    const aListed = a.is_newly_listed;
-    const bListed = b.is_newly_listed;
+                {approved
+                  .slice() // to avoid mutating original array
+                  .sort((a, b) => {
+                    const aListed = a.is_newly_listed;
+                    const bListed = b.is_newly_listed;
 
-    if (aListed && bListed) {
-      return (a.newly_listed_position || 9999) - (b.newly_listed_position || 9999);
-    }
+                    if (aListed && bListed) {
+                      return (
+                        (a.newly_listed_position || 9999) -
+                        (b.newly_listed_position || 9999)
+                      );
+                    }
 
-    if (aListed) return -1; // listed first
-    if (bListed) return 1;
+                    if (aListed) return -1; // listed first
+                    if (bListed) return 1;
 
-    return 0; // keep others as-is
-  })
-  .map((property) => (
-    <NewlyListedCard
-      key={property.id}
-      property={property}
-      markNewlyListed={markNewlyListed}
-      fetchProperties={fetchProperties}
-      allProperties={properties}
-    />
-))}
-
+                    return 0; // keep others as-is
+                  })
+                  .map((property) => (
+                    <NewlyListedCard
+                      key={property.id}
+                      property={property}
+                      markNewlyListed={markNewlyListed}
+                      fetchProperties={fetchProperties}
+                      allProperties={properties}
+                    />
+                  ))}
               </div>
             </section>
           )}
 
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (
-  <section>
-    <h2 className="text-xl font-semibold mb-4">Pending Edit Queries</h2>
-    {loadingQueries ? (
-      <p>Loading queries...</p>
-    ) : (
-      <PendingQueries queries={pendingQueries} />
-    )}
-  </section>
-)}
+            <section>
+              <h2 className="text-xl font-semibold mb-4">
+                Pending Edit Queries
+              </h2>
+              {loadingQueries ? (
+                <p>Loading queries...</p>
+              ) : (
+                <PendingQueries queries={pendingQueries} />
+              )}
+            </section>
+          )}
+
+          {activeTab === "ManageLocations" && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4">
+                Manage Top Locations
+              </h2>
+              <ManageTopLocations />
+            </section>
+          )}
+
           <EditModal
             editForm={editForm}
             setEditForm={setEditForm}

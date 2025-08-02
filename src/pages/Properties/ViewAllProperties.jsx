@@ -3,11 +3,13 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaSlidersH } from "react-icons/fa";
+import { FiCheckCircle } from "react-icons/fi";
 
-import { incrementPropertyView } from "../../API/propertiesApi.js";
+
+import { incrementPropertyView } from "../../api/propertiesApi.js";
 import OtpPopup from "./OtpPopup"; 
 import axios from "axios";
-import { getCurrentUser } from "../../API/authAPI"; 
+import { getCurrentUser } from "../../api/authAPI"; 
 
 
 const parseImages = (raw) =>
@@ -159,7 +161,7 @@ export default function ViewAllProperties() {
       <>
         {mainText}
         <br />
-        <span className="text-sm text-gray-800 lg:text-2xl">Owner's Property</span>
+        <span className="text-sm text-gray-800 lg:text-xl">Owner's Property</span>
       </>
     );
 
@@ -178,7 +180,7 @@ export default function ViewAllProperties() {
   }, [filtered, filters.looking_for]);
 
   return (
-    <div className="w-full bg-indigo-50/30 min-h-screen pt-16 md:pt-10">
+    <div style={{fontFamily:"para_font"}} className="w-full bg-indigo-50/30 min-h-screen pt-16 md:pt-10">
       <div className="max-w-6xl mx-auto px-4 flex gap-2">
         <aside className="hidden md:block w-72 flex-shrink-0">
           <div className="sticky top-16 md:top-24 bg-white shadow-md rounded-3xl p-4 border border-gray-100 text-sm">
@@ -190,7 +192,7 @@ export default function ViewAllProperties() {
             />
             <button
               onClick={applyNow}
-              className="w-full mt-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg shadow"
+              className="w-full mt-4 py-2 bg-blue-500 hover:bg-blue-700 text-white  rounded-lg shadow"
             >
               Apply Filters
             </button>
@@ -199,7 +201,8 @@ export default function ViewAllProperties() {
 
         <main className="flex-1 flex md:mt-0 -mt-16 flex-col items-center w-full overflow-visible">
           <section className="w-full max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 px-2 md:px-8">
-            <h1 className="text-3xl sm:text-4xl font-semibold text-gray-900">
+            <h1 style={{ fontFamily: "heading_font" }}
+    className="text-lg lg:text-3xl mb-0 text-black leading-tight">
               {headingText}
             </h1>
             <p className="text-gray-600 text-sm">
@@ -361,7 +364,7 @@ export default function ViewAllProperties() {
                 {/* Close Button */}
                 <button
                   onClick={() => setShowFilters(false)}
-                  className="absolute top-3 right-5 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                  className="absolute top-3 right-5 text-gray-500 hover:text-gray-700 text-2xl "
                   title="Close"
                 >
                   &times;
@@ -379,7 +382,7 @@ export default function ViewAllProperties() {
                     applyNow();
                     setShowFilters(false);
                   }}
-                  className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow"
+                  className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white  rounded-lg shadow"
                 >
                   Apply Filters
                 </button>
@@ -427,7 +430,7 @@ const SidebarContent = React.memo(function SidebarContent({
       <Select label="Occupancy" name="occupancy" opts={[["", "Any"], ["single", "Single"], ["double", "Double"], ["triple", "Triple"]]} filters={filters} handleChange={handleFilterChange} />
       <Select label="BHK" name="bhk" opts={[["", "Any"], ["1", "1 BHK"], ["1.5", "1.5 BHK"], ["2", "2 BHK"], ["2.5", "2.5 BHK"], ["3", "3 BHK"], ["4", "4 BHK+"]]} filters={filters} handleChange={handleFilterChange} />
       <div>
-        <label className="block mb-2 font-semibold text-gray-700">Budget Range (₹)</label>
+        <label className="block mb-2  text-gray-700">Budget Range (₹)</label>
         <div className="flex gap-2">
           <Input name="minPrice" type="number" placeholder="Min" filters={filters} handleChange={handleFilterChange} />
           <Input name="maxPrice" type="number" placeholder="Max" filters={filters} handleChange={handleFilterChange} />
@@ -440,7 +443,7 @@ const SidebarContent = React.memo(function SidebarContent({
 function Input({ label, name, filters, handleChange, className = "", ...rest }) {
   return (
     <div className={className}>
-      {label && <label className="block mb-2 font-semibold text-gray-700 text-sm">{label}</label>}
+      {label && <label className="block mb-2  text-gray-700 text-sm">{label}</label>}
       <input name={name} value={filters[name]} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm" autoComplete="off" {...rest} />
     </div>
   );
@@ -449,7 +452,7 @@ function Input({ label, name, filters, handleChange, className = "", ...rest }) 
 function Select({ label, name, opts, filters, handleChange, value, onChange, className = "", ...rest }) {
   return (
     <div className={className}>
-      <label className="block mb-2 font-semibold text-gray-700 text-sm">{label}</label>
+      <label className="block mb-2  text-gray-700 text-sm">{label}</label>
       <select name={name} value={value || filters[name]} onChange={handleChange || onChange} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm" {...rest}>
         {opts.map(([v, t]) => (
           <option key={v} value={v}>
@@ -510,7 +513,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
                 className="h-full w-full object-cover rounded-lg"
               />
               {i === thumbs.length - 1 && extra > 0 && (
-                <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-semibold rounded-lg">
+                <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs rounded-lg">
                   +{extra}
                 </span>
               )}
@@ -528,15 +531,18 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
       <div className="flex flex-col justify-start flex-1 gap-3">
         <div className="flex items-start justify-between flex-wrap gap-y-1">
           <div>
-            <h2 className="text-lg flex items-center gap-1 font-semibold text-gray-800 leading-snug">
-              {p.title || "Untitled Property"}{" "}
-              <span className="text-indigo-600">{p.project}</span>
-              {p.verified && (
-                <span className="text-green-600 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full">
-                  Verified
-                </span>
-              )}
-            </h2>
+            <h2 className="text-lg flex items-center gap-1 text-gray-800 leading-snug">
+  {p.looking_for === "pg"
+    ? `${p.title || "Untitled Property"}'s PG`
+    : p.title || "Untitled Property"}{" "}
+  {p.verified && (
+    <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
+      <FiCheckCircle className="text-[10px]" />
+      Verified
+    </span>
+  )}
+</h2>
+
             <p className="text-sm text-gray-500 truncate ">📍 {p.location}</p>
           </div>
           <Link
@@ -581,7 +587,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setIsOtpVerified, setSelectedPropert
 
 const Stat = ({ label, value }) => (
   <div className="py-2 border-r last:border-r-0">
-    <p className="font-semibold text-gray-800">{value}</p>
+    <p className=" text-gray-800">{value}</p>
     <p className="text-xs text-gray-500">{label}</p>
   </div>
 );

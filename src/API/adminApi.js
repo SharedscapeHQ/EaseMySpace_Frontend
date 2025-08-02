@@ -73,3 +73,18 @@ export const fetchPendingQueries = () => {
 export const resolveEditQuery = (id) => {
   return adminAxios.patch(`/edit-queries/${id}/resolve`);
 };
+
+// 🔹 GET all locations (admin/owner access)
+export const getAllLocations = () => {
+  return adminAxios.get("/locations/all");
+};
+
+// 🔹 POST add a new location (admin only)
+export const addLocation = (locationName) => {
+  return adminAxios.post("/locations", { name: locationName });
+};
+
+// 🔹 DELETE a location by ID (admin only)
+export const deleteLocation = (id) => {
+  return adminAxios.delete(`/locations/${id}`);
+};

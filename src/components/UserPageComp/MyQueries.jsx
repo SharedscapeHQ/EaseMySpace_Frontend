@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchMyQueries } from "../../API/userApi";
+import { fetchMyQueries } from "../../api/userApi";
 import { FaCheckCircle, FaHourglassHalf } from "react-icons/fa";
 
 export default function MyQueries() {

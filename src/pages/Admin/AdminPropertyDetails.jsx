@@ -4,7 +4,7 @@ import {
   getAllProperties,
   approveProperty,
   deleteProperty,
-} from "../../API/adminApi";
+} from "../../api/adminApi";
 
 export default function AdminPropertyDetails() {
   const [properties, setProperties] = useState([]);
