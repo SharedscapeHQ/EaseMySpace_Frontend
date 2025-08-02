@@ -47,7 +47,7 @@ export default function Hero() {
   return (
     <section
   style={{ fontFamily: "para_font" }}
-  className="w-full bg-white pt-5 px-6 overflow-hidden lg:h-[calc(100vh-5rem)] h-screen  flex items-center"
+  className="w-full bg-white pt-5 px-6 overflow-hidden min-h-[calc(100vh-5rem)] -mt-14 lg:mt-0  flex items-center"
 >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Content */}
