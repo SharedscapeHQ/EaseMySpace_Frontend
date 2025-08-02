@@ -48,7 +48,7 @@ const FeatureSection = () => {
             {feature.icon}
           </div>
           <div>
-            <h3 className="font-bold text-zinc-900 text-base sm:text-lg lg:mb-1 mb-0 ">{feature.title}</h3>
+            <h3 className="font-bold text-zinc-900 text-base sm:text-lg mb-1 ">{feature.title}</h3>
             <p className="text-xs text-zinc-800 lg:leading-relaxed leading-none">{feature.description}</p>
           </div>
         </div>
