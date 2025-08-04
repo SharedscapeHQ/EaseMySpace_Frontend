@@ -77,14 +77,14 @@ export default function Hero() {
           </p>
 
           <nav
-            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1"
+            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-x-auto sm:overflow-visible px-1"
             aria-label="Property Type Navigation"
           >
             {propertyTypes.map((item) => (
               <Link
                 key={item.value}
                 to={`/view-properties?looking_for=${item.value}`}
-                className={`group border border-zinc-200 bg-white transition-all rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center gap-3 ${item.hover}`}
+                className={`group border border-zinc-200 bg-white transition-all rounded-2xl p-3 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center gap-3 ${item.hover}`}
                 aria-label={`Browse ${item.title} listings`}
               >
                 <div className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight" style={{ fontFamily: "heading_font" }}>
