@@ -20,7 +20,7 @@ function Landing() {
     <div className=" hidden bg-zinc-50 pb-5  gap-y-4 px-3 lg:px-20">
   {[
     { icon: "✅", text: "Verified Listings" },
-    { icon: "💸", text: "Zero Brokerage" },
+    { icon: "💸", text: "Rent Smart" },
     { icon: "📍", text: "Top Mumbai Locations" },
     { icon: "🔒", text: "100% Secure Matches" },
   ].map((b) => (
