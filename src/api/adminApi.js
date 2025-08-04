@@ -94,8 +94,8 @@ export const getAllLocations = () => {
 };
 
 // 🔹 POST add a new location (admin only)
-export const addLocation = (locationName) => {
-  return adminAxios.post("/locations", { name: locationName });
+export const addLocation = (payload) => {
+  return adminAxios.post("/locations", payload);
 };
 
 // 🔹 DELETE a location by ID (admin only)

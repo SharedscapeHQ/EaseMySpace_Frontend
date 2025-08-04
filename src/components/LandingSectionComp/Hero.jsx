@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { PiBedBold } from "react-icons/pi";
-import { HiOutlineUserGroup, HiOutlineHomeModern } from "react-icons/hi2";
 import Hero_vid from "/heroImg/Hero_vid.mp4";
+import pgImg from "/landing-assets/pgImg.png";
+import sharedImg from "/landing-assets/sharedImg.png";
+import vacantImg from "/landing-assets/vacantImg.png";
 import PosterImg from "/heroImg/Poster.jpg";
 import "./Hero.css";
 
 export default function Hero() {
   const videoRef = useRef(null);
 
- useEffect(() => {
+  useEffect(() => {
     const playVideo = () => {
       const video = videoRef.current;
       if (video && video.paused) {
@@ -33,21 +34,21 @@ export default function Hero() {
     {
       title: "Paying Guest",
       value: "pg",
-      icon: <PiBedBold className="text-2xl sm:text-3xl md:text-4xl text-blue-600" />,
+      icon: <img src={pgImg} alt="Paying Guest" className="w-[60px] sm:w-10 md:w-20" />,
       bg: "bg-blue-100/50",
       hover: "hover:bg-blue-100",
     },
     {
       title: "Shared Flat",
       value: "flatmate",
-      icon: <HiOutlineUserGroup className="text-2xl sm:text-3xl md:text-4xl text-green-600" />,
+      icon: <img src={sharedImg} alt="Shared Flat" className="w-[60px] sm:w-10 md:w-20" />,
       bg: "bg-green-100/50",
       hover: "hover:bg-green-100",
     },
     {
       title: "Fully Vacant",
       value: "vacant",
-      icon: <HiOutlineHomeModern className="text-2xl sm:text-3xl md:text-4xl text-purple-600" />,
+      icon: <img src={vacantImg} alt="Fully Vacant" className="w-[60px] sm:w-10 md:w-20" />,
       bg: "bg-purple-100/50",
       hover: "hover:bg-purple-100",
     },
@@ -75,7 +76,10 @@ export default function Hero() {
             Explore verified listings — Simple, secure, and smart urban housing.
           </p>
 
-          <nav className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1" aria-label="Property Type Navigation">
+          <nav
+            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1"
+            aria-label="Property Type Navigation"
+          >
             {propertyTypes.map((item) => (
               <Link
                 key={item.value}
@@ -86,7 +90,7 @@ export default function Hero() {
                 <div className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight" style={{ fontFamily: "heading_font" }}>
                   {item.title}
                 </div>
-                <div className={`w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full ${item.bg}`}>
+                <div className={`w-16 h-10 sm:w-14 sm:h-14 md:w-24 md:h-24 flex items-center justify-center rounded-full ${item.bg}`}>
                   {item.icon}
                 </div>
               </Link>

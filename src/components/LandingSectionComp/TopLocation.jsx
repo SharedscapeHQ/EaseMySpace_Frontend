@@ -56,11 +56,20 @@ function TopLocation() {
   onClick={() => handleLocationClick(loc.name)}
   className="group w-[165px] sm:min-w-0 flex-shrink-0 bg-white-900 bg-gradient-to-r from-white to-[#cbe0fd] rounded-xl p-4 shadow-sm transition-all flex flex-col items-center text-center cursor-pointer"
 >
+  {loc.image ? (
   <img
-    src={location_vid}
-    alt="Location animation"
+    src={loc.image}
+    alt={loc.name}
     className="w-28 h-28 object-cover mb-2 rounded"
   />
+) : (
+  <img
+    src={location_vid}
+    alt="Default location"
+    className="w-28 h-28 object-cover mb-2 rounded"
+  />
+)}
+
   <p className="text-sm capitalize text-zinc-800 font-medium min-h-[1.5rem] transition-all duration-200 group-hover:scale-125 group-hover:text-zinc-800">
     {loc.name}
   </p>
