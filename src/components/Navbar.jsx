@@ -49,7 +49,7 @@ export default function Navbar() {
 
   return (
     <header>
-      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-4 md:px-8 bg-white shadow-sm z-50">
+      <nav style={{fontFamily:"para_font"}} className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50">
         <div className="flex items-center justify-center gap-3 ">
            {/* Hamburger Menu */}
           <button

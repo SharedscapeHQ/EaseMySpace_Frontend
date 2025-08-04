@@ -19,6 +19,20 @@ export const getAllLeads = () => {
   });
 };
 
+export const markFollowUp = ({ leadId, remark }) => {
+  return axios.post(
+    "https://api.easemyspace.in/api/leads/mark-followup",
+    {
+      leadId,
+      remark,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+
 // 🔹 GET all properties (admin-only)
 export const getAllProperties = () => {
   return adminAxios.get("/properties");

@@ -218,7 +218,7 @@ export default function ViewAllProperties() {
             >
               {headingText}
             </h1>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 text-xs">
               Find your perfect space among verified properties
             </p>
             <div className="inline md:hidden text-sm font-medium">
@@ -597,7 +597,7 @@ const PropertyCard = ({
       to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
       state={isLoggedIn || isOtpVerified ? { property: p } : null}
       onClick={handleViewDetailsClick}
-      className="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-300 w-full max-w-3xl mx-auto flex flex-col md:flex-row p-4 gap-4"
+      className="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-300 w-full max-w-3xl mx-auto overflow-x-hidden flex flex-col md:flex-row p-4 gap-4"
     >
       <div className="w-full md:w-64 flex-shrink-0">
         {p.cover ? (
@@ -640,7 +640,7 @@ const PropertyCard = ({
       <div className="flex flex-col justify-start flex-1 gap-3">
         <div className="flex items-start justify-between flex-wrap gap-y-1">
           <div>
-            <h2 className="text-lg flex items-center gap-1 text-gray-800 leading-snug">
+            <h2 className="text-lg flex items-center gap-1 text-gray-800 leading-snug ">
               {p.looking_for === "pg"
                 ? `${p.title || "Untitled Property"}'s PG`
                 : p.title || "Untitled Property"}{" "}
