@@ -47,6 +47,34 @@ export default function Navbar() {
   exit: { x: "-100%", opacity: 0, transition: { duration: 0.2, ease: "easeInOut" } },
 };
 
+
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (
+      profileOpen &&
+      window.innerWidth < 640 &&
+      !event.target.closest(".profile-dropdown-wrapper")
+    ) {
+      setProfileOpen(false);
+    }
+  }
+
+  function handleScroll() {
+    if (window.innerWidth < 640) {
+      setProfileOpen(false);
+    }
+  }
+
+  document.addEventListener("click", handleClickOutside);
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    document.removeEventListener("click", handleClickOutside);
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, [profileOpen]);
+
+
   return (
     <header>
       <nav style={{fontFamily:"para_font"}} className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50">
@@ -83,7 +111,7 @@ export default function Navbar() {
 
           {/* Profile Dropdown */}
           <div
-            className="relative group"
+            className="relative group profile-dropdown-wrapper"
             onMouseEnter={() =>
               window.innerWidth >= 640 && setProfileOpen(true)
             }
