@@ -29,8 +29,8 @@ function OurQuality() {
   ];
 
   return (
-    <section style={{ fontFamily: 'para_font' }} className="w-full py-12 lg:px-10 px-3 bg-zinc-50">
-      <div className="max-w-7xl mx-auto ">
+    <section style={{ fontFamily: 'para_font' }} className="w-full py-12  bg-zinc-50">
+      <div className="max-w-7xl lg:px-10 px-3 mx-auto ">
         {/* Heading */}
         <h2
           style={{ fontFamily: "heading_font" }}
