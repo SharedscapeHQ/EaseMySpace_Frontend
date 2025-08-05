@@ -5,23 +5,30 @@ import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 
-export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
+export default function PaymentButtonSubs({
+  hasPaid,
+  setHasPaid,
+  planName,
+  isOtpVerified,
+  setShowOtpPopup,
+  userMobile,
+}) {
   const [userData, setUserData] = useState({});
   const [isPaying, setIsPaying] = useState(false);
   const [activeUserPhone, setActiveUserPhone] = useState("");
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
-  const [isOtpVerified, setIsOtpVerified] = useState(
-    () => localStorage.getItem("otp_verified") === "true"
-  );
 
   const plans = {
     standard: {
-      amount: 399,
-      description: "Standard Plan - Limited Access",
+      amount: 499,
+      description: "Standard Plan - 7 Days Access, 2 Contacts",
     },
     premium: {
       amount: 1499,
-      description: "Premium Plan - Unlimited Access",
+      description: "Premium Plan - 25 Days Access, 8 Contacts",
+    },
+    ultimate: {
+      amount: 2499,
+      description: "Ultimate Plan - 30 Days Access, Unlimited Contacts",
     },
   };
 
@@ -29,15 +36,12 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
     (async () => {
       try {
         const data = await getCurrentUser();
+        console.log("📌 Current User:", data);
         setUserData(data);
 
-        let determinedPhone =
-          data?.phone || localStorage.getItem("user_verified_mobile") || "";
-        if (data?.subscription_status === "paid") {
-          setHasPaid(true);
-        }
-
-        setActiveUserPhone(determinedPhone);
+        const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
+        if (data?.subscription_status === "paid") setHasPaid(true);
+        setActiveUserPhone(phone);
       } catch {
         const fallbackPhone = localStorage.getItem("user_verified_mobile");
         if (fallbackPhone) setActiveUserPhone(fallbackPhone);
@@ -48,20 +52,14 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
   useEffect(() => {
     if (activeUserPhone && !hasPaid) {
       axios
-        .get(
-          `https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`
-        )
+        .get(`https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`)
         .then((res) => {
           if (res.data.paid) {
             setHasPaid(true);
-            if (!userData.id) {
-              localStorage.setItem("has_paid_lead", "true");
-            }
+            if (!userData.id) localStorage.setItem("has_paid_lead", "true");
           }
         })
-        .catch((err) => {
-          console.error("Subscription check failed:", err);
-        });
+        .catch((err) => console.error("Subscription check failed:", err));
     }
   }, [activeUserPhone, hasPaid, setHasPaid, userData.id]);
 
@@ -75,65 +73,63 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
     });
 
   const loadRazorpay = async (planKey) => {
-    const amount = plans[planKey].amount;
+    const plan = plans[planKey];
+    if (!plan) {
+      toast.error("❌ Invalid plan selected.");
+      return;
+    }
+
+    const amount = plan.amount;
     setIsPaying(true);
 
     try {
-      const res = await loadScript(
-        "https://checkout.razorpay.com/v1/checkout.js"
-      );
-      if (!res) {
+      const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      if (!loaded) {
         toast.error("❌ Razorpay SDK failed to load.");
         setIsPaying(false);
         return;
       }
 
-      const { orderId, currency } = await createOrder(amount);
+      const { orderId, currency } = await createOrder({
+  amount: plan.amount,
+  planName: planKey,
+});
+      let phone = userData.phone || userMobile || localStorage.getItem("user_verified_mobile");
 
-      let finalPhoneNumber =
-        userData.phone ||
-        activeUserPhone ||
-        localStorage.getItem("user_verified_mobile");
-
-      if (!finalPhoneNumber) {
-        finalPhoneNumber = prompt(
-          "📱 Please enter your phone number for payment:"
-        );
-      }
-
-      if (!finalPhoneNumber) {
-        toast.error("Phone number is required.");
-        setIsPaying(false);
-        return;
+      if (!phone) {
+        phone = prompt("📱 Please enter your phone number for payment:");
+        if (!phone) {
+          toast.error("Phone number is required.");
+          setIsPaying(false);
+          return;
+        }
       }
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
         amount: amount * 100,
         currency,
-        name: "EasyMySpace",
-        description: plans[planKey].description,
+        name: "EaseMySpace",
+        description: plan.description,
         order_id: orderId,
         handler: async function (response) {
           try {
-            const paymentDetails = {
+            const result = await verifyPayment({
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount,
               user_id: userData.id || null,
-              phone: finalPhoneNumber,
+              phone,
               status: "paid",
               plan_type: planKey,
-            };
-
-            const result = await verifyPayment(paymentDetails);
+            });
 
             if (result.success) {
               setHasPaid(true);
               if (!userData.id) {
                 localStorage.setItem("has_paid_lead", "true");
-                localStorage.setItem("user_verified_mobile", finalPhoneNumber);
+                localStorage.setItem("user_verified_mobile", phone);
               }
               toast.success("✅ Payment successful!");
             } else {
@@ -149,9 +145,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
         prefill: {
           name: userData.firstName || "Guest User",
           email: userData.email || "guest@easemyspace.com",
-          contact: finalPhoneNumber.startsWith("+91")
-            ? finalPhoneNumber
-            : `+91${finalPhoneNumber}`,
+          contact: phone.startsWith("+91") ? phone : `+91${phone}`,
         },
         theme: { color: "#6366F1" },
         modal: {
@@ -165,38 +159,39 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", function (response) {
         setIsPaying(false);
-        console.error("Payment failed:", response.error);
         toast.error(`❌ Payment failed: ${response.error.description}`);
       });
 
       rzp.open();
     } catch (err) {
-      console.error("❌ Error during Razorpay setup:", err);
+      console.error("❌ Razorpay setup error:", err);
       toast.error("Something went wrong during payment setup.");
       setIsPaying(false);
     }
   };
 
-  const handlePayment = () => {
-    if (hasPaid || isPaying) return;
+ const handlePayment = () => {
+  if (hasPaid || isPaying) return;
 
-    let planKey;
-    if (planName.toLowerCase().includes("basic")) {
-      planKey = "standard";
-    } else if (planName.toLowerCase().includes("starter")) {
-      planKey = "premium";
-    } else {
-      toast.error("Unknown plan selected.");
-      return;
-    }
+  const planKey = planName?.toLowerCase();
 
-    if (!userData?.id && !isOtpVerified) {
+  if (!plans[planKey]) {
+    toast.error("❌ Invalid or missing plan name.");
+    return;
+  }
+
+  // ✅ If user is NOT logged in and OTP not verified, show OTP popup
+  if (!userData?.id && !isOtpVerified) {
+    if (typeof setShowOtpPopup === "function") {
       setShowOtpPopup(true);
-      return;
     }
+    return;
+  }
 
-    loadRazorpay(planKey);
-  };
+  // ✅ Proceed to payment if logged in OR OTP is verified
+  loadRazorpay(planKey);
+};
+
 
   useEffect(() => {
     const handler = () => handlePayment();
@@ -205,32 +200,17 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
   }, []);
 
   return (
-    <>
-      <button
-        style={{ fontFamily: "para_font" }}
-        className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
-          hasPaid
-            ? "bg-green-600 text-white cursor-default"
-            : "bg-indigo-600 hover:bg-indigo-700 text-white"
-        } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
-        disabled={hasPaid || isPaying}
-        onClick={handlePayment}
-      >
-        {hasPaid ? "Contact Unlocked" : isPaying ? "Processing..." : "Pay Now"}
-      </button>
-
-      {showOtpPopup && (
-        <OtpPopup
-        otpPurpose="Pay"
-          onVerified={() => {
-            setIsOtpVerified(true);
-            localStorage.setItem("otp_verified", "true");
-            setShowOtpPopup(false);
-            handlePayment();
-          }}
-          onClose={() => setShowOtpPopup(false)}
-        />
-      )}
-    </>
+    <button
+      style={{ fontFamily: "para_font" }}
+      className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
+        hasPaid
+          ? "bg-green-600 text-white cursor-default"
+          : "bg-indigo-600 hover:bg-indigo-700 text-white"
+      } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
+      disabled={hasPaid || isPaying}
+      onClick={handlePayment}
+    >
+      {hasPaid ? "Contact Unlocked" : isPaying ? "Processing..." : "Pay Now"}
+    </button>
   );
 }

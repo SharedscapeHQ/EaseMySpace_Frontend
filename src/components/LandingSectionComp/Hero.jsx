@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import pgImg from "/landing-assets/pgImg.png";
 import sharedImg from "/landing-assets/sharedImg.png";
 import vacantImg from "/landing-assets/vacantImg.png";
-import Hero_vid from "/heroImg/Hero_vid.mp4";
+import Hero_vid from "/heroImg/Hero_vid.webm";
 import PosterImg from "/heroImg/Poster.jpg";
 import "./Hero.css";
 

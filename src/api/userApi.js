@@ -29,5 +29,36 @@ export const fetchMyQueries = async () => {
   return res.data;
 };
 
+export const fetchUserContactStatus = async () => {
+  try {
+    const res = await axiosInstance.get("/contact-limit");
+    console.log(res.data);
+    return res.data;
+    
+  } catch (err) {
+    console.error("❌ Error fetching contact limit:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+export const unlockContact = async (property_id) => {
+  try {
+    const res = await axiosInstance.post("/use-contact", { property_id });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error unlocking contact:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+export const getUnlockedLeads = async () => {
+  try {
+    const res = await axiosInstance.get("/unlocked-leads");
+    return res.data.unlocked; // array of property_id
+  } catch (err) {
+    console.error("❌ Error fetching unlocked properties:", err.response?.data || err.message);
+    throw err;
+  }
+};
 
 export default axiosInstance;

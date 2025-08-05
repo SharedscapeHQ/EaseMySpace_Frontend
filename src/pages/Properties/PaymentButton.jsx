@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
+import { fetchUserContactStatus } from "../../api/userApi";
 import { Link } from "react-router-dom";
 
 export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
@@ -14,13 +14,18 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
   const plans = {
     standard: {
-      label: "EMS Basic Plan",
+      label: "Standard",
       amount: 399,
-      description: "Access up to 5 contacts for 15 days.",
+      description: "Access 2 contacts for 7 days.",
     },
     premium: {
-      label: "EMS Starter Plan",
+      label: "Premium",
       amount: 1499,
+      description: "Access 8 contacts for 25 days.",
+    },
+    ultimate: {
+      label: "Ultimate",
+      amount: 2499,
       description: "Unlimited contacts for 30 days.",
     },
   };
@@ -30,13 +35,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       try {
         const data = await getCurrentUser();
         setUserData(data);
-
-        let phone = data?.phone || localStorage.getItem("user_verified_mobile");
+        const phone = data?.phone || localStorage.getItem("user_verified_mobile");
         if (phone) setActiveUserPhone(phone);
-
-        if (data?.subscription_status === "paid") {
-          setHasPaid(true);
-        }
+        if (data?.subscription_status === "paid") setHasPaid(true);
       } catch {
         const phone = localStorage.getItem("user_verified_mobile");
         if (phone) setActiveUserPhone(phone);
@@ -46,21 +47,16 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
   useEffect(() => {
     if (activeUserPhone && !hasPaid) {
-      axios
-        .get(
-          `https://api.easemyspace.in/api/payment/check-subscription?phone=${activeUserPhone}`
-        )
+      fetchUserContactStatus()
         .then((res) => {
-          if (res.data.paid) {
+          if (res.hasPlan) {
             setHasPaid(true);
             if (!userData.id) {
               localStorage.setItem("has_paid_lead", "true");
             }
           }
         })
-        .catch((err) => {
-          console.error("Subscription check failed:", err);
-        });
+        .catch(() => {});
     }
   }, [activeUserPhone, hasPaid, setHasPaid, userData.id]);
 
@@ -79,11 +75,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     setIsPaying(true);
 
     try {
-      const loaded = await loadScript(
-        "https://checkout.razorpay.com/v1/checkout.js"
-      );
+      const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
       if (!loaded) {
-        toast.error("❌ Razorpay SDK failed to load.");
+        toast.error("Razorpay SDK failed to load.");
         setIsPaying(false);
         return;
       }
@@ -92,7 +86,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       let phone = userData.phone || userMobile || activeUserPhone;
 
       if (!phone) {
-        phone = prompt("📱 Please enter your phone number for payment:");
+        phone = prompt("Please enter your phone number:");
         if (!phone) {
           toast.error("Phone number is required.");
           setIsPaying(false);
@@ -104,16 +98,16 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         key: "rzp_live_5kR19yQxcQHzsv",
         amount: amount * 100,
         currency,
-        name: "EasyMySpace",
+        name: "EaseMySpace",
         description: plan.description,
         order_id: orderId,
         prefill: {
-          name: userData.firstName || "Guest User",
+          name: userData.firstName || "Guest",
           email: userData.email || "guest@easemyspace.com",
-          contact: phone.startsWith("+91") ? phone : `+91${phone}`,
+          contact: phone,
         },
         theme: { color: "#6366F1" },
-        handler: async function (response) {
+        handler: async (response) => {
           try {
             const result = await verifyPayment({
               razorpay_order_id: response.razorpay_order_id,
@@ -132,12 +126,11 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                 localStorage.setItem("has_paid_lead", "true");
                 localStorage.setItem("user_verified_mobile", phone);
               }
-              toast.success("✅ Payment successful!");
+              toast.success("Payment successful!");
             } else {
-              toast.error("⚠️ Payment verification failed!");
+              toast.error("Payment verification failed!");
             }
-          } catch (err) {
-            console.error("❌ Verification error:", err);
+          } catch {
             toast.error("Something went wrong during verification.");
           } finally {
             setIsPaying(false);
@@ -152,15 +145,12 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       };
 
       const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", function (response) {
+      rzp.on("payment.failed", (response) => {
         setIsPaying(false);
-        console.error("Payment failed:", response.error);
-        toast.error(`❌ Payment failed: ${response.error.description}`);
+        toast.error(`Payment failed: ${response.error.description}`);
       });
-
       rzp.open();
-    } catch (err) {
-      console.error("❌ Razorpay setup error:", err);
+    } catch {
       toast.error("Something went wrong during payment setup.");
       setIsPaying(false);
     }
@@ -173,8 +163,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   };
 
   const handlePayment = () => {
-    if (hasPaid || isPaying) return;
-    setShowPlanOptions(true);
+    if (!isPaying) setShowPlanOptions(true);
   };
 
   useEffect(() => {
@@ -188,13 +177,13 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       <button
         className={`mt-4 w-1/2 py-3 px-2 text-md font-semibold rounded-xl whitespace-nowrap transition-all ${
           hasPaid
-            ? "bg-green-600 text-white cursor-default"
+            ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-indigo-600 hover:bg-indigo-700 text-white"
         } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
-        disabled={hasPaid || isPaying}
+        disabled={isPaying}
         onClick={handlePayment}
       >
-        {hasPaid ? "Contact Unlocked" : isPaying ? "Processing..." : "Pay Now"}
+        {isPaying ? "Processing..." : hasPaid ? "Upgrade" : "Pay Now"}
       </button>
 
       {showPlanOptions && (
@@ -214,40 +203,46 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               &times;
             </button>
 
-            <h2 className="text-xl font-bold mb-4 text-center">
-              Choose Your Plan
-            </h2>
+            <h2 className="text-xl font-bold mb-4 text-center">Choose Your Plan</h2>
 
             <div className="space-y-4">
-              <div
-                className="relative border-2 border-indigo-400 bg-gradient-to-br from-indigo-50 to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer"
-                onClick={() => proceedToPayment("standard")}
-              >
-                <span className="absolute top-[-10px] right-[-10px] bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
-                  Standard
-                </span>
-                <h3 className="text-lg font-semibold text-indigo-600">
-                  Standard - ₹399 + GST
-                </h3>
-                <p className="text-sm text-gray-700">
-                  {plans.standard.description}
-                </p>
-              </div>
-
-              <div
-                className="relative border-2 border-yellow-400 bg-gradient-to-br from-yellow-50 to-white p-4 rounded-xl shadow-lg hover:scale-[1.02] transition-all cursor-pointer"
-                onClick={() => proceedToPayment("premium")}
-              >
-                <span className="absolute top-[-10px] right-[-10px] bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
-                  Premium
-                </span>
-                <h3 className="text-lg font-semibold text-yellow-600">
-                  Premium - ₹1499 + GST
-                </h3>
-                <p className="text-sm text-gray-700">
-                  {plans.premium.description}
-                </p>
-              </div>
+              {Object.entries(plans).map(([key, plan]) => (
+                <div
+                  key={key}
+                  className={`relative border-2 ${
+                    key === "standard"
+                      ? "border-indigo-400 from-indigo-50"
+                      : key === "premium"
+                      ? "border-yellow-400 from-yellow-50"
+                      : "border-red-500 from-purple-50"
+                  } bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`}
+                  onClick={() => proceedToPayment(key)}
+                >
+                  <span
+                    className={`absolute top-[-10px] right-[-10px] ${
+                      key === "standard"
+                        ? "bg-indigo-500"
+                        : key === "premium"
+                        ? "bg-yellow-400"
+                        : "bg-red-500"
+                    } text-white text-xs font-bold px-2 py-1 rounded-full shadow`}
+                  >
+                    {plan.label}
+                  </span>
+                  <h3
+                    className={`text-lg font-semibold ${
+                      key === "standard"
+                        ? "text-indigo-600"
+                        : key === "premium"
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {plan.label} - ₹{plan.amount} + GST
+                  </h3>
+                  <p className="text-sm text-gray-700">{plan.description}</p>
+                </div>
+              ))}
 
               <Link
                 to="/subscription"
