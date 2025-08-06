@@ -50,7 +50,7 @@ export default function PopupModal({ onClose }) {
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-4 ">
           {/* EMS Basic Plan */}
-          <PlanCard
+          {/* <PlanCard
             title="EMS Basic Plan"
             badge="Standard"
             badgeColor="indigo"
@@ -70,7 +70,7 @@ export default function PopupModal({ onClose }) {
             planName="standard"
             hasPaid={hasPaid}
             setHasPaid={setHasPaid}
-          />
+          /> */}
 
           {/* EMS Starter Plan */}
           <PlanCard

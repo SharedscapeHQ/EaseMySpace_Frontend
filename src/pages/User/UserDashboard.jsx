@@ -5,6 +5,9 @@ import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
 import MyQueries from "../../components/UserPageComp/MyQueries";
+import MyPlanDetails from "../../components/UserPageComp/MyPlanDetails";
+import UnlockedCards from "../../components/UserPageComp/UnlockedCards";
+
 import { logoutUser } from "../../api/authApi";
 
 export default function UserDashboard() {
@@ -69,34 +72,44 @@ export default function UserDashboard() {
       {/* Main Content */}
       <main className="flex-1 p-4 sm:p-6 lg:p-10  lg:ml-64">
         <h2 className="text-3xl font-semibold text-gray-800 mb-8">
-          {activeTab === "MyProperties"
-            ? "Your Listed Properties"
-            : "Your Raised Queries"}
-        </h2>
+  {activeTab === "MyProperties"
+    ? "Your Listed Properties"
+    : activeTab === "MyQueries"
+    ? "Your Raised Queries"
+    : activeTab === "MyPlan"
+    ? "Your Subscription Plan"
+    : "Unlocked Contacts"}
+</h2>
 
-        {activeTab === "MyProperties" ? (
-          loading ? (
-            <p>Loading your properties...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : properties.length === 0 ? (
-            <p className="text-center mt-20 text-gray-600">
-              You haven't added any properties yet.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {properties.map((property) => (
-                <PropertyCard
-                  key={property._id}
-                  property={property}
-                  onRaiseQuery={() => setSelectedProperty(property)}
-                />
-              ))}
-            </div>
-          )
-        ) : (
-          <MyQueries />
-        )}
+
+       {activeTab === "MyProperties" ? (
+  loading ? (
+    <p>Loading your properties...</p>
+  ) : error ? (
+    <p className="text-red-500">{error}</p>
+  ) : properties.length === 0 ? (
+    <p className="text-center mt-20 text-gray-600">
+      You haven't added any properties yet.
+    </p>
+  ) : (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {properties.map((property) => (
+        <PropertyCard
+          key={property._id}
+          property={property}
+          onRaiseQuery={() => setSelectedProperty(property)}
+        />
+      ))}
+    </div>
+  )
+) : activeTab === "MyQueries" ? (
+  <MyQueries />
+) : activeTab === "MyPlan" ? (
+  <MyPlanDetails />
+) : activeTab === "UnlockedContacts" ? (
+  <UnlockedCards />
+) : null}
+
 
         {/* Modals */}
         {viewProperty && (

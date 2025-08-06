@@ -5,15 +5,13 @@ const BASE_URL = "https://api.easemyspace.in/api/payment";
 // 1. Create Razorpay Order
 export const createOrder = async ({amount, planName}) => {
   try {
-    console.log("🔁 Creating order with:", { amount, planName });
 
     const res = await axios.post(
       `${BASE_URL}/create-order`,
-      { amount, planName }, // ✅ Correct structure
+      { amount, planName },
       { timeout: 10000 }
     );
 
-    console.log("✅ Order created successfully:", res.data);
     return res.data;
   } catch (err) {
     console.error("❌ Failed to create order:", err.response?.data || err.message);

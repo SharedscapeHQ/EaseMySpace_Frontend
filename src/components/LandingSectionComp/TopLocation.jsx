@@ -54,13 +54,13 @@ function TopLocation() {
                 <div
   key={i}
   onClick={() => handleLocationClick(loc.name)}
-  className="group w-[165px] sm:min-w-0 flex-shrink-0 bg-white-900 bg-gradient-to-r from-white to-[#cbe0fd] rounded-xl p-4 shadow-sm transition-all flex flex-col items-center text-center cursor-pointer"
+  className="group w-[165px] sm:min-w-0 flex-shrink-0 bg-white-900 bg-gradient-to-r from-white to-[#cbe0fd] rounded-xl p-4 shadow-sm transition-all flex flex-col items-center text-center cursor-pointer border-2 border-zinc-200"
 >
   {loc.image ? (
   <img
     src={loc.image}
     alt={loc.name}
-    className="w-28 h-28 object-cover mb-2 rounded"
+    className="w-32 h-32 object-cover  rounded"
   />
 ) : (
   <img

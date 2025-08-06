@@ -25,25 +25,25 @@ export default function SubscriptionPlans() {
   const [otpPopupPurpose, setOtpPopupPurpose] = useState("");
 
   const plans = [
-    {
-      type: "standard",
-      title: "EMS Basic Plan",
-      subtitle: "Freedom to Find Your Perfect Match",
-      description: "Limited Access Plan for Trial Users",
-      originalPrice: "₹699",
-      price: "₹499",
-      gst: "+ GST",
-      savings: "Save ₹200!",
-      color: "indigo",
-      features: [
-        { text: "Access to any 2 contact of your choice", included: true },
-        { text: "Help in scheduling visit", included: false },
-        { text: "Priority Support (Call/WhatsApp)", included: false },
-        { text: "100% Verified Listings", included: true },
-        { text: "Smart Match Recommendations", included: false },
-        { text: "Save Hours - Match Quickly", included: true },
-      ],
-    },
+    // {
+    //   type: "standard",
+    //   title: "EMS Basic Plan",
+    //   subtitle: "Freedom to Find Your Perfect Match",
+    //   description: "Limited Access Plan for Trial Users",
+    //   originalPrice: "₹699",
+    //   price: "₹499",
+    //   gst: "+ GST",
+    //   savings: "Save ₹200!",
+    //   color: "indigo",
+    //   features: [
+    //     { text: "Access to any 2 contact of your choice", included: true },
+    //     { text: "Help in scheduling visit", included: false },
+    //     { text: "Priority Support (Call/WhatsApp)", included: false },
+    //     { text: "100% Verified Listings", included: true },
+    //     { text: "Smart Match Recommendations", included: false },
+    //     { text: "Save Hours - Match Quickly", included: true },
+    //   ],
+    // },
     {
       type: "premium",
       title: "EMS Starter Plan",

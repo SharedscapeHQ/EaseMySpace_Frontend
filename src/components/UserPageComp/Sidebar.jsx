@@ -5,15 +5,34 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+   FiUserCheck, FiPhoneCall, FiCreditCard
 } from "react-icons/fi";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const tabs = [
-    { label: "My Properties", value: "MyProperties", icon: <FiHome /> },
-    { label: "My Queries", value: "MyQueries", icon: <FiMessageSquare /> },
-  ];
+ const tabs = [
+  {
+    label: "My Properties",
+    value: "MyProperties",
+    icon: <FiHome />,
+  },
+  {
+    label: "My Queries",
+    value: "MyQueries",
+    icon: <FiMessageSquare />, // Still a good match for queries/messages
+  },
+  {
+    label: "My Plan",
+    value: "MyPlan",
+    icon: <FiCreditCard />, // Credit card icon suits a subscription or plan
+  },
+  {
+    label: "Unlocked Contacts",
+    value: "UnlockedContacts",
+    icon: <FiPhoneCall />, // Phone call icon fits contact-related info
+  },
+];
 
   const handleTabClick = (value) => {
     setActiveTab(value);

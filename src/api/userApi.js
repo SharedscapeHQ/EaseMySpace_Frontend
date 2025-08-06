@@ -32,7 +32,6 @@ export const fetchMyQueries = async () => {
 export const fetchUserContactStatus = async () => {
   try {
     const res = await axiosInstance.get("/contact-limit");
-    console.log(res.data);
     return res.data;
     
   } catch (err) {
@@ -59,6 +58,16 @@ export const getUnlockedLeads = async () => {
     console.error("❌ Error fetching unlocked properties:", err.response?.data || err.message);
     throw err;
   }
+};
+
+export const getUserSubscription = async () => {
+  const res = await axiosInstance.get("/subscription");
+  return res.data;
+};
+
+export const getUnlockedProperties = async () => {
+  const res = await axiosInstance.get("/unlocked-contacts");
+  return res.data; // array of unlocked property objects
 };
 
 export default axiosInstance;

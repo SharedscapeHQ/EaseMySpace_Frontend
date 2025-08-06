@@ -3,8 +3,14 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaUserCircle } from "react-icons/fa";
 import brandLogo from "/navbar-assets/brand-logo.png";
-import { FaHome, FaInfoCircle, FaListUl, FaPhone, FaRegCreditCard,FaCrown  } from "react-icons/fa";
-
+import {
+  FaHome,
+  FaInfoCircle,
+  FaListUl,
+  FaPhone,
+  FaRegCreditCard,
+  FaCrown,
+} from "react-icons/fa";
 
 export default function Navbar() {
   const [user, setUser] = useState(() => {
@@ -42,44 +48,53 @@ export default function Navbar() {
   };
 
   const drawerV = {
-  hidden: { x: "-100%", opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { duration: 0.3, ease: "easeInOut" } },
-  exit: { x: "-100%", opacity: 0, transition: { duration: 0.2, ease: "easeInOut" } },
-};
-
-
-useEffect(() => {
-  function handleClickOutside(event) {
-    if (
-      profileOpen &&
-      window.innerWidth < 640 &&
-      !event.target.closest(".profile-dropdown-wrapper")
-    ) {
-      setProfileOpen(false);
-    }
-  }
-
-  function handleScroll() {
-    if (window.innerWidth < 640) {
-      setProfileOpen(false);
-    }
-  }
-
-  document.addEventListener("click", handleClickOutside);
-  window.addEventListener("scroll", handleScroll);
-
-  return () => {
-    document.removeEventListener("click", handleClickOutside);
-    window.removeEventListener("scroll", handleScroll);
+    hidden: { x: "-100%", opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+    exit: {
+      x: "-100%",
+      opacity: 0,
+      transition: { duration: 0.2, ease: "easeInOut" },
+    },
   };
-}, [profileOpen]);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        profileOpen &&
+        window.innerWidth < 640 &&
+        !event.target.closest(".profile-dropdown-wrapper")
+      ) {
+        setProfileOpen(false);
+      }
+    }
+
+    function handleScroll() {
+      if (window.innerWidth < 640) {
+        setProfileOpen(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [profileOpen]);
 
   return (
     <header>
-      <nav style={{fontFamily:"para_font"}} className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50">
+      <nav
+        style={{ fontFamily: "para_font" }}
+        className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50"
+      >
         <div className="flex items-center justify-center gap-3 ">
-           {/* Hamburger Menu */}
+          {/* Hamburger Menu */}
           <button
             aria-label="Toggle menu"
             className="w-6 h-6 sm:w-10 sm:h-10 mt-3 lg:mt-0 relative text-zinc-700"
@@ -88,15 +103,15 @@ useEffect(() => {
             <Hamburger animatedOpen={open} />
           </button>
 
-        <Link to="/" aria-label="Homepage" className="flex items-center">
-          <img
-            src={brandLogo}
-            alt="brand logo"
-            loading="eager"
-            fetchPriority="high"
-            className={`w-24 sm:w-36 md:w-48 lg:h-24 mt-4 transition-opacity duration-500 `}
-          />
-        </Link>
+          <Link to="/" aria-label="Homepage" className="flex items-center">
+            <img
+              src={brandLogo}
+              alt="brand logo"
+              loading="eager"
+              fetchPriority="high"
+              className={`w-24 sm:w-36 md:w-48 lg:h-24 mt-4 transition-opacity duration-500 `}
+            />
+          </Link>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-5 relative">
@@ -184,85 +199,112 @@ useEffect(() => {
               )}
             </AnimatePresence>
           </div>
-
-         
         </div>
       </nav>
 
-     <AnimatePresence>
-  {open && (
-    <>
-      <motion.div
-        key="overlay"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.35 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
-        className="fixed inset-0 z-50 bg-black backdrop-blur-sm"
-        onClick={() => setOpen(false)}
-      />
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.35 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-40 bg-black backdrop-blur-sm"
+              onClick={() => setOpen(false)}
+            />
 
-      <motion.aside
-        key="drawer"
-        variants={drawerV}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="fixed top-0 left-0 h-full w-[80vw] sm:w-[65vw] md:w-80 bg-white backdrop-blur-md shadow-2xl z-50 rounded-r-2xl px-6 py-6 flex flex-col"
-      >
-        {/* Close Button */}
-        <span className="flex justify-end mb-4">
-          <button
-            onClick={() => setOpen(false)}
-            className="text-zinc-600 transform transition-transform duration-300 hover:rotate-90 text-xl font-bold"
-            aria-label="Close drawer"
-          >
-            ✕
-          </button>
-        </span>
+            {/* Drawer */}
+            <motion.aside
+              key="drawer"
+              variants={drawerV}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed top-0 left-0 z-50 h-full w-[80vw] sm:w-[65vw] md:w-80 bg-white backdrop-blur-md shadow-2xl rounded-r-2xl px-6 py-6 flex flex-col"
+            >
+              {/* Header: Explore + Close */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-blue-600 text-2xl font-bold tracking-wide">
+                  Explore
+                </h2>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-zinc-700 text-2xl hover:rotate-90 transition-transform duration-300"
+                  aria-label="Close drawer"
+                >
+                  ✕
+                </button>
+              </div>
 
-        {/* Header */}
-        <div className="border-b pb-3 mb-4">
-          {user ? (
-            <h2 className="text-blue-600 text-xl font-semibold">Explore</h2>
-          ) : (
-            <div className="flex items-center gap-4 text-blue-500 font-semibold">
-              <Link to="/login" className="hover:underline">Login</Link>
-              <span>|</span>
-              <Link to="/register" className="hover:underline">Register</Link>
-            </div>
-          )}
-        </div>
+              {/* Optional User Section */}
 
-        {/* Navigation List */}
-        <ul className="space-y-4 text-zinc-800 text-[16px] font-medium">
-          {[
-            ["Home", <FaHome className="text-xl" />, "/", false],
-            ["About", <FaInfoCircle className="text-xl" />, "/about", false],
-            ["Listing", <FaListUl className="text-xl" />, "/view-properties", false],
-            ["Contact", <FaPhone className="text-xl" />, "/contact", false],
-            ["EMS Subscription Plans", <FaRegCreditCard className="text-xl" />, "/subscription", true],
-          ].map(([label, icon, href, isPremium]) => (
-            <li key={href}>
-              <Link
-                to={href}
-                onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  isPremium
-                    ? "bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow-sm border border-yellow-400"
-                    : "hover:bg-blue-100"
-                }`}
+              {/* Navigation */}
+              <motion.ul
+                className="space-y-3 text-zinc-800 font-medium text-base"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
               >
-                {icon}
-                <span>{label}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </motion.aside>
-    </>
-  )}
-</AnimatePresence>
+                {/* Section 1: Main Links */}
+                <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">
+                  Main
+                </p>
+                {[
+                  ["Home", <FaHome />, "/", false],
+                  ["About", <FaInfoCircle />, "/about", false],
+                  ["Listing", <FaListUl />, "/view-properties", false],
+                  ["Contact", <FaPhone />, "/contact", false],
+                ].map(([label, icon, href]) => (
+                  <li key={href}>
+                    <Link
+                      to={href}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg transition-all group hover:bg-blue-100"
+                    >
+                      <span className="text-lg group-hover:scale-110 transition-transform duration-200">
+                        {icon}
+                      </span>
+                      <span className="truncate group-hover:translate-x-1 transition-transform duration-200">
+                        {label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+
+                {/* Section 2: Premium */}
+                <p className="text-xs text-zinc-400 uppercase tracking-wide mt-6 mb-1">
+                  Premium
+                </p>
+                <li>
+                  <Link
+                    to="/subscription"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow border border-yellow-400 group"
+                  >
+                    <span className="text-lg group-hover:scale-110 transition-transform duration-200">
+                      <FaRegCreditCard />
+                    </span>
+                    <span className="truncate group-hover:translate-x-1 transition-transform duration-200">
+                      EMS Subscription Plans
+                    </span>
+                  </Link>
+                </li>
+              </motion.ul>
+
+              {/* Footer Actions */}
+              <div
+                style={{ fontFamily: "heading_font" }}
+                className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200"
+              >
+                Making Urban Living Easy
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

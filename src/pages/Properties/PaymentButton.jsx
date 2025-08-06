@@ -13,11 +13,11 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const plans = {
-    standard: {
-      label: "Standard",
-      amount: 399,
-      description: "Access 2 contacts for 7 days.",
-    },
+    // standard: {
+    //   label: "Standard",
+    //   amount: 499,
+    //   description: "Access 2 contacts for 7 days.",
+    // },
     premium: {
       label: "Premium",
       amount: 1499,
@@ -82,7 +82,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         return;
       }
 
-      const { orderId, currency } = await createOrder(amount, planKey);
+      const { orderId, currency } = await createOrder({ amount, planName: planKey });
       let phone = userData.phone || userMobile || activeUserPhone;
 
       if (!phone) {

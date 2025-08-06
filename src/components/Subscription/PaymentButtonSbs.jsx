@@ -36,7 +36,6 @@ export default function PaymentButtonSubs({
     (async () => {
       try {
         const data = await getCurrentUser();
-        console.log("📌 Current User:", data);
         setUserData(data);
 
         const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
