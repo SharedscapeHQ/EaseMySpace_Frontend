@@ -41,7 +41,7 @@ function TopLocation() {
           Top Locations
         </h2>
 
-        <div className="flex overflow-x-auto gap-5 scrollbar-hide">
+        <div className="flex overflow-x-auto gap-5 scrollbar-hide overflow-y-hidden">
           {loading
             ? Array.from({ length: 5 }).map((_, i) => (
                 <div
@@ -53,7 +53,7 @@ function TopLocation() {
                 <div
                   key={i}
                   onClick={() => handleLocationClick(loc.name)}
-                  className="group w-[150px] h-[150px] sm:min-w-0 flex-shrink-0 bg-gradient-to-br from-white to-blue-100 rounded-xl p-3 transition-all flex flex-col items-center justify-center text-center cursor-pointer border border-zinc-200"
+                  className="group w-[140px] h-[140px] sm:min-w-0 flex-shrink-0 bg-gradient-to-br from-white to-blue-100 rounded-xl p-3 transition-all flex flex-col items-center justify-center text-center cursor-pointer border border-zinc-200"
                 >
                   <img
                     src={loc.image}
