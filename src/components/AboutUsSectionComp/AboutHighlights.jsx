@@ -3,12 +3,13 @@ import { FaBullseye, FaUsers, FaEye } from "react-icons/fa";
 
 export default function AboutHighlights() {
   return (
-    <section className="bg-white py-24 px-6 md:px-16">
-      <div className="max-w-7xl mx-auto text-center mb-14">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4">
+    <section style={{fontFamily:"para_font"}} className="bg-white py-24 px-6 md:px-16">
+      <div className="max-w-7xl mx-auto mb-10">
+        <h2 style={{ fontFamily: "heading_font" }}
+          className="text-lg lg:text-3xl mb-0 text-black leading-tight">
           What Drives Us
         </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className=" text-gray-800 tracking-wider text-shadow">
           We’re here to redefine urban living — transparent, trusted, and tailored to you.
         </p>
       </div>
@@ -18,10 +19,10 @@ export default function AboutHighlights() {
         {/* Mission Card */}
         <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition">
           <div className="flex items-center gap-4 mb-4">
-            <div className="text-blue-700 text-3xl">
+            <div className="text-3xl">
               <FaBullseye />
             </div>
-            <h3 className="text-2xl font-bold text-blue-700">Our Mission</h3>
+            <h3 className="text-2xl font-bold ">Our Mission</h3>
           </div>
           <p className="text-gray-700 text-base leading-relaxed">
             At EaseMySpace, we believe a great life begins with a great space. Our mission is to help people find the perfect place and the right people to share it with, making every city feel like home.
@@ -31,10 +32,10 @@ export default function AboutHighlights() {
         {/* Why Choose Us Card */}
         <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition">
           <div className="flex items-center gap-4 mb-4">
-            <div className="text-blue-700 text-3xl">
+            <div className="text-3xl">
               <FaUsers />
             </div>
-            <h3 className="text-2xl font-bold text-blue-700">Why Choose Us?</h3>
+            <h3 className="text-2xl font-bold ">Why Choose Us?</h3>
           </div>
           <ul className="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
             <li><strong>Authentic Listings</strong></li>
@@ -46,10 +47,10 @@ export default function AboutHighlights() {
         {/* Vision Card */}
         <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition">
           <div className="flex items-center gap-4 mb-4">
-            <div className="text-blue-700 text-3xl">
+            <div className="text-3xl">
               <FaEye />
             </div>
-            <h3 className="text-2xl font-bold text-blue-700">Our Vision</h3>
+            <h3 className="text-2xl font-bold">Our Vision</h3>
           </div>
           <p className="text-gray-700 text-base leading-relaxed">
             To become Mumbai’s most trusted flat-sharing platform, ensuring a secure and reliable housing experience for all.

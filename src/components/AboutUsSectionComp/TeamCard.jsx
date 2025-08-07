@@ -1,94 +1,94 @@
 import React, { useState } from "react";
-import { FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaLinkedin } from "react-icons/fa";
 
-export default function TeamCard({ name, role, description, imageSrc, linkedin }) {
-  const [isFlipped, setIsFlipped] = useState(false);
+export default function TeamCard({
+  name,
+  role,
+  imageSrc,
+  description,
+  linkedin,
+  email,
+}) {
+  const [isMobileVisible, setIsMobileVisible] = useState(false);
 
-  const handleMobileFlip = () => {
-    if (window.innerWidth < 768) {
-      setIsFlipped(!isFlipped);
+  const handleMobileToggle = () => {
+    if (window.innerWidth < 1024) {
+      setIsMobileVisible((prev) => !prev);
     }
+  };
+
+  const handleClose = (e) => {
+    e.stopPropagation();
+    setIsMobileVisible(false);
   };
 
   return (
     <div
-      className="md:w-[280px] w-[350px] h-[420px] perspective cursor-pointer group"
-      onClick={handleMobileFlip}
+      onClick={handleMobileToggle}
+      className="relative lg:w-[280px] w-[325px] h-[400px] bg-gradient-to-br from-white to-blue-200 overflow-hidden rounded-2xl shadow-xl group cursor-pointer"
     >
+      {/* Profile Image */}
+      <img
+        src={imageSrc}
+        alt={name}
+        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+      />
+
+      {/* Bottom Overlay for Name and Role */}
+      <div className="absolute bottom-0 w-full bg-black/60 text-white px-4 py-3 z-10">
+        <h3 className="text-lg font-semibold">{name}</h3>
+        <p className="text-sm text-gray-300">{role}</p>
+      </div>
+
+      {/* Slide-Up Info */}
       <div
-        className={`relative w-full h-full preserve-3d transition-transform duration-700 ${
-          isFlipped ? "rotate-y-180" : ""
-        } md:group-hover:rotate-y-180`}
+        className={`
+          absolute inset-0 bg-blue-400/90 text-black px-4 py-6 flex flex-col justify-center items-center lg:items-start
+          transform transition-transform duration-500 z-20
+          ${isMobileVisible ? "translate-y-0" : "translate-y-full"}
+          lg:group-hover:translate-y-0
+        `}
       >
-        {/* Front Side */}
-        <div className="absolute w-full h-full bg-gradient-to-tr from-[#191b1f] to-[#1C1D20] text-white border border-blue-500/20 rounded-3xl  p-6 flex flex-col items-center justify-between backface-hidden">
-          {/* Profile Image with Animations */}
-          <div className="relative flex items-center justify-center w-48 h-48 mx-auto">
-            {/* Outer Pulse Animations */}
-            <div className="absolute w-full h-full rounded-full border-2 border-blue-500/20 animate-ping" />
-            <div className="absolute w-full h-full rounded-full border border-blue-500/10 animate-pulse delay-500" />
-            {/* Profile Image */}
-            <div className="relative w-full h-full rounded-full overflow-hidden border border-blue-500/20 backdrop-blur-lg bg-gradient-to-br from-black/80 to-zinc-800/60 shadow-xl transform transition-transform duration-500 group-hover:scale-110">
-              <img
-                src={imageSrc}
-                alt={`${name} photo`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
+        {/* Close button for mobile */}
+        <button
+          onClick={handleClose}
+          className="absolute top-3 right-3 text-black text-lg font-bold rounded-full md:hidden"
+        >
+          ✕
+        </button>
 
-          {/* Name & Role */}
-          <div className="text-center mt-6">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 bg-clip-text text-transparent animate-pulse">
-              {name}
-            </h3>
-            <p className="text-zinc-400 text-sm font-semibold">{role}</p>
-          </div>
-
-          {/* LinkedIn */}
-          {linkedin && (
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-full hover:bg-blue-700 transition mt-4"
-            >
-              <FaLinkedin />
-              Connect
-            </a>
-          )}
-          <p className="md:hidden text-xs text-zinc-400 mt-2 animate-pulse">
-  Tap to flip
-</p>
-
-          {/* Bouncing Dots */}
-          <div className="flex space-x-2 mt-4 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-100"></div>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-200"></div>
-          </div>
+        <div className="text-center lg:text-left">
+          <h4 className="text-lg font-bold mb-2">{name}</h4>
+          <p className="text-sm text-zinc-800 whitespace-pre-line">{description}</p>
         </div>
 
-        {/* Back Side */}
-        <div className="absolute w-full h-full bg-gradient-to-br from-[#111214] to-[#1F2125] text-zinc-300 border border-blue-500/30 rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center text-sm leading-relaxed text-center rotate-y-180 backface-hidden">
-          <div className="mb-3">
-            <h4 className="text-white font-semibold text-lg">About <span className="text-blue-500">{name}</span></h4>
-          </div>
+        {/* Social Icons */}
+        <div className="mt-4 flex gap-4 justify-center lg:justify-start w-full">
+  {/* Email */}
+  {email && (
+    <a
+      href={`mailto:${email}`}
+      style={{ clipPath: "url(#squircleClip)" }}
+      className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 border-green-300/50 rounded-xl flex items-center justify-center shadow-lg border cursor-pointer transition hover:scale-110 hover:-translate-y-2"
+    >
+      <FaEnvelope className="text-white text-xl" />
+    </a>
+  )}
 
-          <p className="whitespace-pre-line">{description}</p>
+  {/* LinkedIn */}
+  {linkedin && (
+    <a
+      href={linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ clipPath: "url(#squircleClip)" }}
+      className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-indigo-800 border-indigo-500/50 rounded-xl flex items-center justify-center shadow-lg border cursor-pointer transition hover:scale-110 hover:-translate-y-2"
+    >
+      <FaLinkedin className="text-white text-xl" />
+    </a>
+  )}
+</div>
 
-          {linkedin && (
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-full hover:bg-blue-700 transition"
-            >
-              <FaLinkedin />
-              Connect
-            </a>
-          )}
-        </div>
       </div>
     </div>
   );

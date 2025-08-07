@@ -1,64 +1,110 @@
 import React from "react";
 import { motion } from "framer-motion";
+import insta1 from "/insta-assets/insta1.jpeg";
+import insta2 from "/insta-assets/insta2.jpeg";
+import insta3 from "/insta-assets/insta3.jpeg";
+import insta4 from "/insta-assets/insta4.jpeg";
+import insta5 from "/insta-assets/insta5.jpeg";
+import insta6 from "/insta-assets/insta6.jpeg";
 
 export default function AboutUsHero() {
+  const images = [
+    { src: insta1, top: "5%", left: "5%", rotate: "-12deg", alwaysShow: true },
+    { src: insta2, top: "20%", right: "8%", rotate: "10deg", alwaysShow: true },
+    {
+      src: insta3,
+      bottom: "15%",
+      left: "10%",
+      rotate: "8deg",
+      alwaysShow: true,
+    },
+    {
+      src: insta4,
+      bottom: "10%",
+      right: "6%",
+      rotate: "-10deg",
+      alwaysShow: true,
+    },
+    { src: insta5, top: "3%", left: "45%", rotate: "-5deg", alwaysShow: false },
+    {
+      src: insta6,
+      bottom: "25%",
+      right: "25%",
+      rotate: "6deg",
+      alwaysShow: false,
+    },
+  ];
+
   return (
-    <section className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-indigo-50 flex items-center justify-center px-6 -mt-10 md:mt-0 md:px-16">
+    <section style={{fontFamily: "para_font"}} className="w-full min-h-screen bg-white flex flex-col items-center justify-center px-4 relative overflow-hidden">
+      {/* Scattered Animated Instagram Images */}
+      {images.map((img, index) => (
+        <motion.img
+          key={index}
+          src={img.src}
+          alt={`insta${index + 1}`}
+          className={`max-w-[150px] h-auto absolute rounded-lg lg:opacity-70 opacity-20 select-none pointer-events-none 
+            ${img.alwaysShow ? "" : "hidden md:block"}`}
+          style={{
+            ...img,
+            transform: `rotate(${img.rotate})`,
+            zIndex: 1,
+          }}
+          animate={{ y: [0, -10, 0] }}
+          transition={{
+            duration: 3 + index,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* Overlay for text clarity */}
+      <div className="absolute inset-0 bg-white/10 z-[2]" />
+
+      {/* Main Text Content */}
       <motion.div
+        className="text-center max-w-3xl z-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
-        className="max-w-5xl text-center md:-mt-20 mt-10"
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Headline */}
-        <h1 className="text-5xl md:text-6xl font-extrabold text-blue-700 leading-tight mb-6 tracking-wide drop-shadow-lg">
-          Discover Who We Are
+        <h1 className="text-3xl sm:text-5xl font-bold text-zinc-800 leading-tight mb-10">
+          About EaseMySpace
         </h1>
-
-        {/* Subheading */}
-        <p className="text-zinc-800 text-lg md:text-xl font-semibold mb-5 md:max-w-lg max-w-2xl mx-auto drop-shadow-sm">
-          We help people find the perfect flatmate with ease, safety, and simplicity.
+        <p className="text-base sm:text-lg text-zinc-700 text-justify lg:mb-20 mb-10">
+          EaseMySpace is a modern rental discovery platform built to simplify
+          urban living. We help individuals find verified shared accommodations
+          and connect with compatible flatmates making the process smarter,
+          safer, and more aligned with today’s lifestyle.
         </p>
-
-        {/* Card-like About Us block */}
-        <div
-          className="
-            bg-white rounded-3xl 
-            shadow-xl hover:shadow-2xl 
-            p-10 md:p-5
-            mx-auto
-            text-left border border-indigo-200 
-            hover:border-indigo-300
-            transition-shadow  duration-300
-            relative
-            "
-          style={{ 
-            borderImageSlice: 1,
-            borderImageSource: "linear-gradient(to bottom, #6366f1, #8b5cf6)" 
-          }}
-        >
-          {/* Vertical accent line */}
-          <div
-            className="absolute top-0 left-0 h-full w-1 rounded-l-3xl bg-gradient-to-b from-indigo-600 to-indigo-400"
-          />
-          <h2 className="text-3xl font-bold text-blue-700 mb-5 tracking-wide relative z-10">
-            About Us
-          </h2>
-          <p className="text-gray-700 leading-relaxed text-lg md:text-lg relative z-10">
-            Founded in <span className="font-semibold text-indigo-600">2025</span> by{" "}
-            <span className="font-semibold text-indigo-600">Rakesh Goswami</span> — a young Chartered Accountant and passionate entrepreneur — EaseMySpace was born out of a simple idea: to make city living easier.
-            <br />
-            <br />
-            Starting in Mumbai, India’s most vibrant and fast-paced metro, we’ve built a platform that helps people find rental spaces and like-minded flatmates with ease and confidence.
-            <br />
-            <br />
-            Currently serving only Mumbai, our mission is to eliminate the stress of moving by offering verified listings, flatmate matching, and a completely broker-free experience.
-            <br />
-            <br />
-            Our team’s combined professional expertise and skills drive to address a real gap in the housing market—providing young professionals and students with a smarter, more supportive way to find shared accommodations.
-          </p>
-        </div>
       </motion.div>
+
+      {/* Scroll Indicator */}
+      <div className="lg:flex flex-col items-center justify-center h-1/3  md:block z-10">
+        <p className="text-gray-400 mb-2 text-xl">
+          Scroll down to explore more
+        </p>
+        <div className="animate-bounce ">
+          <svg
+            className="w-full h-10 text-blue-500 rotate-180"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 3a1 1 0 01.707.293l4 4a1 1 0 01-1.414 1.414L10 5.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4A1 1 0 0110 3z"
+              clipRule="evenodd"
+            />
+            <path
+              fillRule="evenodd"
+              d="M10 10a1 1 0 01.707.293l4 4a1 1 0 01-1.414 1.414L10 12.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4A1 1 0 0110 10z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
     </section>
   );
 }

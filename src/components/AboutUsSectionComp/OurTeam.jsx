@@ -1,55 +1,89 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TeamCard from "./TeamCard";
-import RakeshImg from "/TeamImg/Rakesh.jpeg"
-import YogitaImg from "/TeamImg/Yogita.jpeg"
-import TaniyaImg from "/TeamImg/Taniya.jpeg"
-import ArvindImg from "/TeamImg/Arvind.jpg"
+import RakeshImg from "/TeamImg/test1.png";
+import YogitaImg from "/TeamImg/test3.png";
+import TaniyaImg from "/TeamImg/test2.png";
+import ArvindImg from "/TeamImg/test4.png";
+import { motion } from "framer-motion";
 
 const teamMembers = [
   {
     name: "Rakesh Goswami",
     role: "Founder & CEO",
     description:
-      "Chartered Accountant and entrepreneur, Rakesh founded EaseMySpace in 2025 to make finding flats and flatmates in Mumbai simple, safe, and stress-free.He's passionate about creating smarter solutions for urban living.",
-    imageSrc: RakeshImg,  
-    linkedin: "https://www.linkedin.com/in/rakeshgoswami09/"
+      "Chartered Accountant and entrepreneur, Rakesh founded EaseMySpace in 2025 to make finding flats and flatmates in Mumbai simple, safe, and stress-free. He's passionate about creating smarter solutions for urban living.",
+    imageSrc: RakeshImg,
+    linkedin: "https://www.linkedin.com/in/rakeshgoswami09/",
+    email: "rakeshgoswami@easemyspace.in",
   },
   {
     name: "Yogita Rathi",
     role: "Social Media",
-    description: "Manages partnerships and drives social media engagement to build strong community connections and brand presence. Passionate about creating meaningful conversations and expanding our reach.",
-    imageSrc: YogitaImg,  
-    linkedin: "https://www.linkedin.com/in/yogita-rathi-78190a1ba/"
+    description:
+      "Manages partnerships and drives social media engagement to build strong community connections and brand presence. Passionate about creating meaningful conversations and expanding our reach.",
+    imageSrc: YogitaImg,
+    linkedin: "https://www.linkedin.com/in/yogita-rathi-78190a1ba/",
+    email: "yogita.rathi@easemyspace.in",
   },
   {
     name: "Taniya Sarkar",
     role: "Business Data Analytics",
-    description: "Prepares and analyzes business data to deliver actionable insights. Helps steer strategic decisions with data-driven clarity and precision. Passionate about turning numbers into growth opportunities.",
-    imageSrc: TaniyaImg,  
-    linkedin: "https://www.linkedin.com/in/taniya-sarkar-8ab4b532a/"
+    description:
+      "Prepares and analyzes business data to deliver actionable insights. Helps steer strategic decisions with data-driven clarity and precision. Passionate about turning numbers into growth opportunities.",
+    imageSrc: TaniyaImg,
+    linkedin: "https://www.linkedin.com/in/taniya-sarkar-8ab4b532a/",
+    email: "taniya.sarkar@easemyspace.in",
   },
   {
     name: "Arvind Vishwakarma",
     role: "UI/UX & Full Stack Developer",
-    description:"A skilled full stack developer and UI/UX designer, managing all technical aspects to create seamless and engaging user experiences at EaseMySpace.",
-    imageSrc: ArvindImg, 
-    linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?"
+    description:
+      "A skilled full stack developer and UI/UX designer, managing all technical aspects to create seamless and engaging user experiences at EaseMySpace.",
+    imageSrc: ArvindImg,
+    linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
+    email: "arvind.vishwakrma@easemyspace.in",
   },
 ];
 
 export default function OurTeam() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
-    <section className="py-5  px-2">
-      <h2 className="md:text-5xl text-3xl font-bold text-center text-blue-700 mb-12">Meet Our Team</h2>
-      <div className="flex flex-wrap justify-center gap-8">
+    <section
+      style={{ fontFamily: "para_font" }}
+      className="py-5 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        transition={{ duration: 0.5 }}
+        className="w-full mb-6"
+      >
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+        >
+          Meet our Team
+        </h2>
+        <p className="font-bold mb-4 heading-font text-gray-500 tracking-wider text-shadow">
+          Passionate. Proactive. Expert.
+        </p>
+      </motion.div>
+
+      <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4">
         {teamMembers.map((member, index) => (
           <TeamCard
             key={index}
             name={member.name}
             role={member.role}
             description={member.description}
-            imageSrc={member.imageSrc}   // Pass imageSrc here
+            imageSrc={member.imageSrc}
             linkedin={member.linkedin}
+            email={member.email}
           />
         ))}
       </div>
