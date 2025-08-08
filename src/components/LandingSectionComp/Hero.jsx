@@ -71,7 +71,7 @@ export default function Hero() {
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1">
             {[
               {
-                title: "Paying Guest",
+                title: "PGs",
                 value: "pg",
                 icon: (
                   <img
@@ -84,7 +84,7 @@ export default function Hero() {
                 hoverBg: "hover:bg-blue-100",
               },
               {
-                title: "Shared Flat",
+                title: "Shared",
                 value: "flatmate",
                 icon: (
                   <img
@@ -97,7 +97,7 @@ export default function Hero() {
                 hoverBg: "hover:bg-green-100",
               },
               {
-                title: "Fully Vacant",
+                title: "Vacant",
                 value: "vacant",
                 icon: (
                   <img
