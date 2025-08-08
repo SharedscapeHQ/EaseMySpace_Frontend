@@ -50,7 +50,7 @@ export default function Hero() {
       style={{ fontFamily: "para_font" }}
       className="w-full bg-white pt-5 px-6 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-12 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Content */}
         <div>
           <h1
@@ -117,7 +117,7 @@ export default function Hero() {
   className={`group border-zinc-200 border-2 bg-white transition-all rounded-2xl p-4 sm:p-6 
     flex flex-col items-center gap-3
     ${item.hoverBg}
-    w-[100px] h-[100px] sm:w-auto sm:h-auto
+    w-[85px] h-[85px] sm:w-auto sm:h-auto
   `}
 >
   <div
