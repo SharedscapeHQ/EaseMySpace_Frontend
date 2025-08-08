@@ -71,7 +71,7 @@ export default function Hero() {
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1">
             {[
               {
-                title: "PGs",
+                title: "Paying Guest",
                 value: "pg",
                 icon: (
                   <img
@@ -84,7 +84,7 @@ export default function Hero() {
                 hoverBg: "hover:bg-blue-100",
               },
               {
-                title: "Shared",
+                title: "Shared Flat",
                 value: "flatmate",
                 icon: (
                   <img
@@ -97,7 +97,7 @@ export default function Hero() {
                 hoverBg: "hover:bg-green-100",
               },
               {
-                title: "Vacant",
+                title: "Fully Vacant",
                 value: "vacant",
                 icon: (
                   <img
@@ -114,11 +114,11 @@ export default function Hero() {
                 key={item.value}
                 to={`/view-properties?looking_for=${item.value}`}
                 className={`group border border-zinc-200 bg-white transition-all
-      rounded-2xl p-4 lg:px-6 px-8 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center gap-3 ${item.hoverBg}`}
+      rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center gap-3 ${item.hoverBg}`}
               >
                 <div
                   style={{ fontFamily: "heading_font" }}
-                  className="text-xs text-center lg:text-base text-zinc-700 group-hover:text-blue-600 tracking-tight"
+                  className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight"
                 >
                   {item.title}
                 </div>
