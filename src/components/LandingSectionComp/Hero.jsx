@@ -118,7 +118,7 @@ export default function Hero() {
               >
                 <div
                   style={{ fontFamily: "heading_font" }}
-                  className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight"
+                  className="text-xs text-center lg:text-base text-zinc-800 group-hover:text-blue-600 tracking-tight"
                 >
                   {item.title}
                 </div>
