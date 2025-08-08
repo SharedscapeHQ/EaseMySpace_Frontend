@@ -50,7 +50,7 @@ export default function Hero() {
       style={{ fontFamily: "para_font" }}
       className="w-full bg-white pt-5 px-6 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-12 items-center">
         {/* Left Content */}
         <div>
           <h1
@@ -68,10 +68,11 @@ export default function Hero() {
             Explore verified listings : Simple, secure, and smart urban housing.
           </p>
 
-          <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1">
+          <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-7 overflow-x-auto sm:overflow-visible justify-center items-center">
+
             {[
               {
-                title: "Paying Guest",
+                title: "PGs",
                 value: "pg",
                 icon: (
                   <img
@@ -84,7 +85,7 @@ export default function Hero() {
                 hoverBg: "hover:bg-blue-100",
               },
               {
-                title: "Shared Flat",
+                title: "Shared",
                 value: "flatmate",
                 icon: (
                   <img
@@ -97,7 +98,7 @@ export default function Hero() {
                 hoverBg: "hover:bg-green-100",
               },
               {
-                title: "Fully Vacant",
+                title: "Vacant",
                 value: "vacant",
                 icon: (
                   <img
@@ -110,24 +111,32 @@ export default function Hero() {
                 hoverBg: "hover:bg-purple-100",
               },
             ].map((item) => (
-              <Link
-                key={item.value}
-                to={`/view-properties?looking_for=${item.value}`}
-                className={`group border border-zinc-200 bg-white transition-all
-      rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center gap-3 ${item.hoverBg}`}
-              >
-                <div
-                  style={{ fontFamily: "heading_font" }}
-                  className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight"
-                >
-                  {item.title}
-                </div>
-                <div
-                  className={`w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full ${item.bg}`}
-                >
-                  {item.icon}
-                </div>
-              </Link>
+             <Link
+  key={item.value}
+  to={`/view-properties?looking_for=${item.value}`}
+  className={`group border-zinc-200 border-2 bg-white transition-all rounded-2xl p-4 sm:p-6 
+    flex flex-col items-center gap-3
+    ${item.hoverBg}
+    w-[100px] h-[100px] sm:w-auto sm:h-auto
+  `}
+>
+  <div
+    style={{ fontFamily: "heading_font" }}
+    className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight"
+  >
+    {item.title}
+  </div>
+  <div
+    className={`w-14 h-14 flex items-center justify-center rounded-full ${item.bg}`}
+  >
+    <img
+    src={item.icon.props.src} 
+    alt={item.title}
+    className="w-10 h-10 lg:w-16 lg:h-16 object-contain"
+  />
+  </div>
+</Link>
+
             ))}
           </div>
           <div className="mt-6 text-center">
