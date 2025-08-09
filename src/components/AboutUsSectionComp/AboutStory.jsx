@@ -18,7 +18,7 @@ function AboutStory() {
           >
             Our Story
           </h2>
-          <p className=" text-gray-800 tracking-wider text-shadow">
+          <p className=" text-xs lg:text-base mb-5">
             Where It All Began: A Smarter Way to Find a Space
           </p>
         </div>
@@ -26,7 +26,7 @@ function AboutStory() {
         {/* About Story Text Block */}
         <div className="relative bg-white rounded-3xl p-4 sm:p-6 md:p-10 shadow-md border border-zinc-100">
   <div className="relative z-10 text-left">
-    <p className="text-gray-700 text-sm sm:text-base leading-relaxed space-y-4">
+    <p className="text-gray-700 text-xs sm:text-base leading-relaxed space-y-4">
       <span className="block mb-4">
         Founded in <span className="font-semibold text-indigo-600">2025</span> by{" "}
         <span className="font-semibold text-indigo-600">Rakesh Goswami</span> a young Chartered Accountant and passionate entrepreneur EaseMySpace was born out of a simple idea: to make city living easier.

@@ -63,22 +63,23 @@ export default function AboutUsHero() {
       <div className="absolute inset-0 bg-white/10 z-[2]" />
 
       {/* Main Text Content */}
-      <motion.div
-        className="text-center max-w-3xl z-10"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
-        <h1 className="text-3xl sm:text-5xl font-bold text-zinc-800 leading-tight mb-10">
-          About EaseMySpace
-        </h1>
-        <p className="text-base sm:text-lg text-zinc-700 text-justify lg:mb-20 mb-10">
-          EaseMySpace is a modern rental discovery platform built to simplify
-          urban living. We help individuals find verified shared accommodations
-          and connect with compatible flatmates making the process smarter,
-          safer, and more aligned with today’s lifestyle.
-        </p>
-      </motion.div>
+     <motion.div
+  className="text-center max-w-3xl z-10 mt-[-70px] sm:mt-0"
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
+>
+  <h1 className="text-3xl sm:text-5xl font-bold text-zinc-800 leading-tight mb-6">
+    About EaseMySpace
+  </h1>
+  <p className="text-base sm:text-lg text-zinc-700 text-center mb-20">
+    EaseMySpace is a modern rental discovery platform built to simplify
+    urban living. We help individuals find verified shared accommodations
+    and connect with compatible flatmates making the process smarter,
+    safer, and more aligned with today’s lifestyle.
+  </p>
+</motion.div>
+
 
       {/* Scroll Indicator */}
       <div className="lg:flex flex-col items-center justify-center h-1/3  md:block z-10">

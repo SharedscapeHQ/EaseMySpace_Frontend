@@ -2,60 +2,84 @@ import React from "react";
 import { FaBullseye, FaUsers, FaEye } from "react-icons/fa";
 
 export default function AboutHighlights() {
+  const highlights = [
+    {
+      icon: <FaBullseye />,
+      title: "Our Mission",
+      description:
+        "At EaseMySpace, we believe a great life begins with a great space. Our mission is to help people find the perfect place and the right people to share it with, making every city feel like home.",
+      list: null,
+    },
+    {
+      icon: <FaUsers />,
+      title: "Why Choose Us?",
+      list: [
+        "Authentic Listings",
+        "24/7 Customer Assistance",
+        "Seamless Service",
+      ],
+      description: null,
+    },
+    {
+      icon: <FaEye />,
+      title: "Our Vision",
+      description:
+        "To become Mumbai’s most trusted flat-sharing platform, ensuring a secure and reliable housing experience for all.",
+      list: null,
+    },
+  ];
+
   return (
-    <section style={{fontFamily:"para_font"}} className="bg-white py-24 px-6 md:px-16">
+    <section
+      style={{ fontFamily: "para_font" }}
+      className="bg-white py-24 px-6 md:px-16"
+    >
       <div className="max-w-7xl mx-auto mb-10">
-        <h2 style={{ fontFamily: "heading_font" }}
-          className="text-lg lg:text-3xl mb-0 text-black leading-tight">
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+        >
           What Drives Us
         </h2>
-        <p className=" text-gray-800 tracking-wider text-shadow">
-          We’re here to redefine urban living — transparent, trusted, and tailored to you.
+        <p className="text-xs lg:text-base mb-5">
+          We’re here to redefine urban living — transparent, trusted, and
+          tailored to you.
         </p>
       </div>
 
       {/* Card Grid */}
       <div className="grid gap-10 md:grid-cols-3 max-w-7xl mx-auto">
-        {/* Mission Card */}
-        <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="text-3xl">
-              <FaBullseye />
+        {highlights.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="text-xl">{item.icon}</div>
+              <h3 className="font-bold text-zinc-900 text-base sm:text-lg ">{item.title}</h3>
             </div>
-            <h3 className="text-2xl font-bold ">Our Mission</h3>
-          </div>
-          <p className="text-gray-700 text-base leading-relaxed">
-            At EaseMySpace, we believe a great life begins with a great space. Our mission is to help people find the perfect place and the right people to share it with, making every city feel like home.
-          </p>
-        </div>
 
-        {/* Why Choose Us Card */}
-        <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="text-3xl">
-              <FaUsers />
-            </div>
-            <h3 className="text-2xl font-bold ">Why Choose Us?</h3>
-          </div>
-          <ul className="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-            <li><strong>Authentic Listings</strong></li>
-            <li><strong>24/7 Customer Assistance</strong></li>
-            <li><strong>Seamless Service</strong></li>
-          </ul>
-        </div>
+            {item.description && (
+              <p className="text-xs lg:text-sm text-zinc-800 lg:leading-relaxed mt-2">
+                {item.description}
+              </p>
+            )}
 
-        {/* Vision Card */}
-        <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow hover:shadow-lg transition">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="text-3xl">
-              <FaEye />
-            </div>
-            <h3 className="text-2xl font-bold">Our Vision</h3>
+           {item.list && (
+  <ul className="mt-2 space-y-1">
+    {item.list.map((point, i) => (
+      <li 
+        key={i} 
+        className="text-xs lg:text-sm text-zinc-800 lg:leading-relaxed"
+      >
+        {point}
+      </li>
+    ))}
+  </ul>
+)}
+
           </div>
-          <p className="text-gray-700 text-base leading-relaxed">
-            To become Mumbai’s most trusted flat-sharing platform, ensuring a secure and reliable housing experience for all.
-          </p>
-        </div>
+        ))}
       </div>
     </section>
   );
