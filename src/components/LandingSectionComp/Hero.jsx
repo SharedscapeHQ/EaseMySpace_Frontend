@@ -68,70 +68,68 @@ export default function Hero() {
             Explore verified listings : Simple, secure, and smart urban housing.
           </p>
 
-          <div className="flex w-full gap-4 px-1 sm:grid sm:grid-cols-2 lg:flex lg:justify-center lg:gap-6">
-  {[
-    {
-      title: "Paying Guest",
-      value: "pg",
-      icon: (
-        <img
-          src={pgImg}
-          alt="Paying Guest"
-          className="w-[40px] sm:w-[36px] md:w-[48px]"
-        />
-      ),
-      bg: "bg-blue-100/50",
-      hoverBg: "hover:bg-blue-100",
-    },
-    {
-      title: "Shared Flat",
-      value: "flatmate",
-      icon: (
-        <img
-          src={sharedImg}
-          alt="Shared Flat"
-          className="w-[40px] sm:w-[36px] md:w-[48px]"
-        />
-      ),
-      bg: "bg-green-100/50",
-      hoverBg: "hover:bg-green-100",
-    },
-    {
-      title: "Fully Vacant",
-      value: "vacant",
-      icon: (
-        <img
-          src={vacantImg}
-          alt="Fully Vacant"
-          className="w-[40px] sm:w-[36px] md:w-[48px]"
-        />
-      ),
-      bg: "bg-purple-100/50",
-      hoverBg: "hover:bg-purple-100",
-    },
-  ].map((item) => (
-    <div key={item.value} className="flex-1 aspect-square lg:aspect-auto lg:w-48">
-      <Link
-        to={`/view-properties?looking_for=${item.value}`}
-        className={`group border border-zinc-200 bg-white transition-all
-        rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center justify-center gap-3 w-full h-full ${item.hoverBg}`}
-      >
-        <div
-          style={{ fontFamily: "heading_font" }}
-          className="text-[9px] text-center lg:text-base text-zinc-700 group-hover:text-blue-600 tracking-tight"
-        >
-          {item.title}
-        </div>
-        <div
-          className={`w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full ${item.bg}`}
-        >
-          {item.icon}
-        </div>
-      </Link>
-    </div>
-  ))}
-</div>
-
+          <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible px-1">
+            {[
+              {
+                title: "Paying Guest",
+                value: "pg",
+                icon: (
+                  <img
+                    src={pgImg}
+                    alt="Paying Guest"
+                    className="w-[40px] sm:w-[36px] md:w-[48px]"
+                  />
+                ),
+                bg: "bg-blue-100/50",
+                hoverBg: "hover:bg-blue-100",
+              },
+              {
+                title: "Shared Flat",
+                value: "flatmate",
+                icon: (
+                  <img
+        src={sharedImg}
+        alt="Shared Flat"
+        className="w-[40px] sm:w-[36px] md:w-[48px]"
+      />
+                ),
+                bg: "bg-green-100/50",
+                hoverBg: "hover:bg-green-100",
+              },
+              {
+                title: "Fully Vacant",
+                value: "vacant",
+                icon: (
+                  <img
+        src={vacantImg}
+        alt="Fully Vacant"
+        className="w-[40px] sm:w-[36px] md:w-[48px]"
+      />
+                ),
+                bg: "bg-purple-100/50",
+                hoverBg: "hover:bg-purple-100",
+              },
+            ].map((item) => (
+              <Link
+                key={item.value}
+                to={`/view-properties?looking_for=${item.value}`}
+                className={`group border border-zinc-200 bg-white transition-all
+      rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center gap-3 ${item.hoverBg}`}
+              >
+                <div
+                  style={{ fontFamily: "heading_font" }}
+                  className="text-xs text-center lg:text-base text-zinc-600 group-hover:text-blue-600 tracking-tight"
+                >
+                  {item.title}
+                </div>
+                <div
+                  className={`w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full ${item.bg}`}
+                >
+                  {item.icon}
+                </div>
+              </Link>
+            ))}
+          </div>
           <div className="mt-6 text-center">
             <Link
               to="/view-properties"
