@@ -84,7 +84,7 @@ export default function Hero() {
       hoverBg: "hover:bg-blue-100",
     },
     {
-      title: "flatmate",
+      title: "Flatmate",
       value: "flatmate",
       icon: (
         <img
