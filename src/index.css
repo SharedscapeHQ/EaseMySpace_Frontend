@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 
+.non-selectable {
+  user-select: none;
+}
 
 
 

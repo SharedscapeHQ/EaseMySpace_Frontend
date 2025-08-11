@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import Landing from "./pages/Landing";
@@ -31,12 +26,12 @@ import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 // import Loader from "./components/Loader/Loader";
 import SubscriptionPlans from "./components/Subscription/Subscription";
 import UserPropertyDetails from "./components/UserPageComp/UserPropertyDetails";
+import LeadUserDashboard from "./pages/LeadUser/LeadUserDashboard";
+import ProtectedLeadUserRoute from "./components/ProtectedLeadUserRoute";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
   const { pathname } = useLocation();
-
-
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,6 +66,8 @@ function Layout({ children }) {
     </>
   );
 }
+
+const verifiedPhone = localStorage.getItem("user_verified_mobile") || "";
 
 /* ───── App ───── */
 export default function App() {
@@ -178,6 +175,16 @@ export default function App() {
               <ProtectedRoute allowedRoles={"user"}>
                 <UserDashboard />
               </ProtectedRoute>
+            </Layout>
+          }
+        />
+        <Route
+          path="/lead-dashboard"
+          element={
+            <Layout>
+              <ProtectedLeadUserRoute>
+                <LeadUserDashboard phone={verifiedPhone} />;
+              </ProtectedLeadUserRoute>
             </Layout>
           }
         />

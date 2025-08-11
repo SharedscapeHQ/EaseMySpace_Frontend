@@ -5,7 +5,7 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
-   FiUserCheck, FiPhoneCall, FiCreditCard
+  FiPhoneCall, FiCreditCard
 } from "react-icons/fi";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
