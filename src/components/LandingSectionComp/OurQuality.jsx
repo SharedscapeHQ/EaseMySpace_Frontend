@@ -1,8 +1,8 @@
 import React from 'react';
-import qualityImg1 from '/quality-assets/quality1.png';
-import qualityImg2 from '/quality-assets/quality2.png';
-import qualityImg3 from '/quality-assets/quality3.png';
-import qualityImg4 from '/quality-assets/quality4.png';
+import qualityImg1 from '/quality-assets/qtest1.png';
+import qualityImg2 from '/quality-assets/qtest2.png';
+import qualityImg3 from '/quality-assets/qtest3.png';
+import qualityImg4 from '/quality-assets/qtest4.png';
 
 function OurQuality() {
   const features = [
@@ -29,7 +29,7 @@ function OurQuality() {
   ];
 
   return (
-    <section style={{ fontFamily: 'para_font' }} className="w-full py-12  bg-zinc-50">
+    <section style={{ fontFamily: 'para_font' }} className="w-full py-12 ">
       <div className="max-w-7xl lg:px-10 px-3 mx-auto ">
         {/* Heading */}
         <h2
@@ -45,12 +45,12 @@ function OurQuality() {
           {features.map((feature, index) => (
             <div key={index} className="flex flex-col items-center text-left space-y-4">
               {/* Image */}
-              <div className="w-full h-[180px] flex items-center justify-center">
+              <div className="w-full h-[260px] flex items-center justify-center">
                 {feature.image ? (
                   <img
                     src={feature.image}
                     alt={feature.title}
-                    className="max-h-full max-w-full rounded-xl object-contain  "
+                    className="max-h-full "
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">
