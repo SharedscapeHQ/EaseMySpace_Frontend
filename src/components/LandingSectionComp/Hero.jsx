@@ -55,20 +55,20 @@ export default function Hero() {
         <div>
           <h1
             style={{ fontFamily: "heading_font" }}
-            className="text-2xl sm:text-4xl lg:text-5xl text-zinc-800 mb-6 lg:mb-10 leading-tight"
+            className="text-2xl sm:text-4xl lg:text-5xl text-zinc-800 mb-2 lg:mb-10 leading-tight"
           >
             Find Your Ideal <span className="underline-animate">Flat</span>,{" "}
             <span className="underline-animate">PGs</span>, or{" "}
             <span className="underline-animate">Roommate</span> in Mumbai
           </h1>
-          <p
+          {/* <p
             style={{ fontFamily: "para_font" }}
             className="text-xs lg:text-sm text-zinc-600 mb-6 lg:mb-10"
           >
             Explore verified listings : Simple, secure, and smart urban housing.
-          </p>
+          </p> */}
 
-          <div className="flex gap-4 px-1 justify-between lg:justify-center lg:gap-6">
+          <div className="flex gap-2 px-1 justify-between lg:justify-center lg:gap-6">
   {[
     {
       title: "PGs",
@@ -112,12 +112,12 @@ export default function Hero() {
   ].map((item) => (
     <div
       key={item.value}
-      className="w-24 aspect-square mt-5 lg:w-48 lg:aspect-auto" 
+      className="w-36 aspect-square mt-2 lg:w- lg:aspect-auto" 
     >
       <Link
         to={`/view-properties?looking_for=${item.value}`}
         className={`group border-2 border-zinc-200 bg-white transition-all
-        rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg flex flex-col items-center justify-center gap-3 w-full h-full ${item.hoverBg}`}
+        rounded-xl p-4 sm:p-6  flex flex-col items-center justify-center gap-3 w-full h-full ${item.hoverBg}`}
       >
         <div
           style={{ fontFamily: "heading_font" }}
@@ -135,10 +135,10 @@ export default function Hero() {
   ))}
 </div>
 
-          <div className="mt-6 text-center">
+          <div className=" text-center">
             <Link
               to="/view-properties"
-              className="lg:inline-block hidden bg-blue-600 hover:bg-blue-700 text-white  px-6 py-2 rounded-full transition"
+              className="lg:inline-block mt-7 hidden bg-blue-600 hover:bg-blue-700 text-white  px-6 py-2 rounded-full transition"
             >
               View All properties
             </Link>
