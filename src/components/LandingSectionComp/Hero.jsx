@@ -84,7 +84,7 @@ export default function Hero() {
       hoverBg: "hover:bg-blue-100",
     },
     {
-      title: "Shared",
+      title: "flatmate",
       value: "flatmate",
       icon: (
         <img
@@ -97,7 +97,7 @@ export default function Hero() {
       hoverBg: "hover:bg-green-100",
     },
     {
-      title: "Vacant",
+      title: "Flat",
       value: "vacant",
       icon: (
         <img
