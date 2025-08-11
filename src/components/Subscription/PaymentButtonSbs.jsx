@@ -23,11 +23,11 @@ export default function PaymentButtonSubs({
       description: "Standard Plan - 7 Days Access, 2 Contacts",
     },
     premium: {
-      amount: 1499,
+      amount: 1999,
       description: "Premium Plan - 25 Days Access, 8 Contacts",
     },
     ultimate: {
-      amount: 2499,
+      amount: 3499,
       description: "Ultimate Plan - 30 Days Access, Unlimited Contacts",
     },
   };

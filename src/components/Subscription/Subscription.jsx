@@ -25,70 +25,77 @@ export default function SubscriptionPlans() {
   const [otpPopupPurpose, setOtpPopupPurpose] = useState("");
 
   const plans = [
-    // {
-    //   type: "standard",
-    //   title: "EMS Basic Plan",
-    //   subtitle: "Freedom to Find Your Perfect Match",
-    //   description: "Limited Access Plan for Trial Users",
-    //   originalPrice: "₹699",
-    //   price: "₹499",
-    //   gst: "+ GST",
-    //   savings: "Save ₹200!",
-    //   color: "indigo",
-    //   features: [
-    //     { text: "Access to any 2 contact of your choice", included: true },
-    //     { text: "Help in scheduling visit", included: false },
-    //     { text: "Priority Support (Call/WhatsApp)", included: false },
-    //     { text: "100% Verified Listings", included: true },
-    //     { text: "Smart Match Recommendations", included: false },
-    //     { text: "Save Hours - Match Quickly", included: true },
-    //   ],
-    // },
-    {
-      type: "premium",
-      title: "EMS Starter Plan",
-      subtitle: "Everything you need to find your ideal space",
-      description: "Full access for 25 days",
-      originalPrice: "₹1699",
-      price: "₹1499",
-      gst: "+ GST",
-      savings: "Save ₹200!",
-      color: "yellow",
-      features: [
-        { text: "Access to any 8 contact of your choice", included: true },
-        { text: "Scheduling Visit Assistance", included: false },
-        { text: "Priority Support (Call/WhatsApp)", included: true },
-        { text: "100% Verified Listings", included: true },
-        { text: "Smart Match Recommendations", included: true },
-        { text: "Curated Suggestions", included: true },
-        { text: "Save Hours - Match Quickly", included: true },
-      ],
-    },
-    {
-      type: "ultimate",
-      title: "EMS Premium Plan",
-      subtitle: "Unlimited Access + Personal Guidance",
-      description: "All benefits for 30 days",
-      originalPrice: "₹2799",
-      price: "₹2499",
-      gst: "+ GST",
-      savings: "Save ₹300!",
-      color: "red",
-      features: [
-        { text: "Unlimited Contact Access", included: true },
-        { text: "Scheduling Visit Assistance", included: true },
-        { text: "Dedicated Relationship Manager", included: true },
-        { text: "100% Verified Listings", included: true },
-        { text: "Smart Match Recommendations", included: true },
-        { text: "Curated Suggestions", included: true },
-        { text: "Save Hours - Match Quickly", included: true },
-      ],
-    },
-  ];
+  // {
+  //   type: "standard",
+  //   title: "EMS Basic Plan",
+  //   subtitle: "Freedom to Find Your Perfect Match",
+  //   description: "Limited Access Plan for Trial Users",
+  //   originalPrice: "₹699",
+  //   price: "₹499",
+  //   gst: "+ GST",
+  //   savings: "Save ₹200!",
+  //   color: "indigo",
+  //   features: [
+  //     { text: "Access to any 2 contact of your choice", included: true },
+  //     { text: "Help in scheduling visit", included: false },
+  //     { text: "Priority Support (Call/WhatsApp)", included: false },
+  //     { text: "100% Verified Listings", included: true },
+  //     { text: "Smart Match Recommendations", included: false },
+  //     { text: "Save Hours - Match Quickly", included: true },
+  //   ],
+  // },
+  {
+    type: "premium",
+    title: "Starter Plan",
+    subtitle: "Quick, short-term search",
+    description: "15 days validity with essential services",
+    originalPrice: "₹2,199",
+    price: "₹1,999",
+    gst: "+ GST",
+    savings: "Save ₹200!",
+    color: "yellow",
+    features: [
+      { text: "Up to 5 Property Visits (In-person)", included: true },
+      { text: "Dedicated Relationship Manager", included: false },
+      { text: "Accompanied Property Visits (With EMS Executive)", included: false },
+      { text: "Up to 5 Video Tours Before Visit", included: true },
+      { text: "Relocation Assistance (On-call)", included: false },
+      { text: "Post-shifting Support - Standard", included: true },
+      { text: "Priority Access to New Listings", included: false },
+      { text: "Instant Notification of Newly Listed Property", included: false },
+      { text: "Match Recommendations - Basic", included: true },
+      { text: "Support - Basic", included: true }
+    ],
+  },
+  {
+    type: "ultimate",
+    title: "Premium Plan",
+    subtitle: "Full-service seekers wanting choice, convenience & time",
+    description: "45 days validity with all premium services",
+    originalPrice: "₹3,799",
+    price: "₹3,499",
+    gst: "+ GST",
+    savings: "Save ₹300!",
+    color: "red",
+    features: [
+      { text: "Up to 20 Property Visits (In-person)", included: true },
+      { text: "Dedicated Relationship Manager", included: true },
+      { text: "Accompanied Property Visits (With EMS Executive)", included: true },
+      { text: "Unlimited Video Tours Before Visit", included: true },
+      { text: "Relocation Assistance (On-call)", included: true },
+      { text: "Post-shifting Support - Extended & Priority", included: true },
+      { text: "Priority Access to New Listings", included: true },
+      { text: "Instant Notification of Newly Listed Property - 48 hours before others", included: true },
+      { text: "Match Recommendations - Hand-picked by RM", included: true },
+      { text: "Support - Dedicated", included: true }
+    ],
+  },
+];
+
 
   return (
     <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
-      <section className="pb-10 pt-3 lg:px-20 px-3">
+      <section className="pb-10 lg:px-10 pt-3 px-3">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,7 +110,7 @@ export default function SubscriptionPlans() {
         </p>
       </section>
 
-      <section className="max-w-7xl mx-auto lg:px-20 px-3 pb-10 lg:pt-10 pt-2 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section className=" mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {plans.map((plan, index) => (
           <motion.div
             key={index}
