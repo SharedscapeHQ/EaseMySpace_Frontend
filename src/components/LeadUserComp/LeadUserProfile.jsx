@@ -27,13 +27,17 @@ export default function LeadUserProfile() {
   useEffect(() => {
     async function fetchProfile() {
       try {
+        // Get stored phone with +91 prefix for display
         let storedPhone = localStorage.getItem("user_verified_mobile") || "";
-        if (storedPhone && !storedPhone.startsWith("+91")) {
-          storedPhone = "+91" + storedPhone;
-        }
+
+        // Prepare plain 10-digit phone for backend API call (strip +91 if present)
+        const phoneForApi = storedPhone.startsWith("+91")
+          ? storedPhone.slice(3)
+          : storedPhone;
+
         setProfile((prev) => ({ ...prev, phone: storedPhone }));
 
-        const data = await fetchLeadUserProfile(storedPhone);
+        const data = await fetchLeadUserProfile(phoneForApi);
         if (data.success && data.profile) {
           setProfile((prev) => ({
             ...prev,
@@ -90,7 +94,10 @@ export default function LeadUserProfile() {
 
   const handleUpdate = async () => {
     try {
-      const dataToSend = { phone: profile.phone };
+      // Send plain 10-digit phone to backend by stripping +91
+      const phonePlain = profile.phone.startsWith("+91") ? profile.phone.slice(3) : profile.phone;
+
+      const dataToSend = { phone: phonePlain };
 
       requiredFields.forEach((field) => {
         if (profile[field] && profile[field].toString().trim() !== "") {
@@ -110,7 +117,7 @@ export default function LeadUserProfile() {
 
       if (completed === 100) {
         try {
-          await finalizeRegistration(profile.phone);
+          await finalizeRegistration(phonePlain);
           toast.success("Registration finalized! Please login.");
           setFinalized(true);
         } catch (err) {

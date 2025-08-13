@@ -5,9 +5,9 @@ import {
   incrementPropertyView,
 } from "../../api/propertiesApi";
 import { getCurrentUser } from "../../api/authApi";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
+import { addRecentlyViewedProperty } from "../../api/userApi";
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -113,11 +113,14 @@ export default function NewlyListedProperties() {
       const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
       if (!visited.includes(property.id)) {
         incrementPropertyView(property.id);
+        addRecentlyViewedProperty(property.id).catch(console.error);
         sessionStorage.setItem(
           "viewedProps",
           JSON.stringify([...visited, property.id])
         );
       }
+      navigate(`/properties/${property.id}`);
+  event.preventDefault();
     }
   };
 

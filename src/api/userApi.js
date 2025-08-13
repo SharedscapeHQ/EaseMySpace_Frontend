@@ -70,4 +70,15 @@ export const getUnlockedProperties = async () => {
   return res.data; // array of unlocked property objects
 };
 
+export const getRecentlyViewedProperties = async () => {
+  const res = await axiosInstance.get("/recently-viewed");
+  return res.data.properties; // Adjust based on your backend response shape
+};
+
+// Send a property as recently viewed
+export const addRecentlyViewedProperty = async (propertyId) => {
+  const res = await axiosInstance.post("/recently-viewed", { propertyId });
+  return res.data;
+};
+
 export default axiosInstance;

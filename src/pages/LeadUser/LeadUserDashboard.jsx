@@ -3,29 +3,31 @@ import { useNavigate } from "react-router-dom";
 import LeadUserSidebar from "../../components/LeadUserComp/LeadUserSidebar";
 import LeadUserProfile from "../../components/LeadUserComp/LeadUserProfile";
 
+const TABS = {
+  PROFILE: "Profile",
+  MY_PLAN: "MyPlan",
+  UNLOCKED_LEADS: "UnlockedLeads",
+};
+
 export default function LeadUserDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("Profile");
+  const [activeTab, setActiveTab] = useState(TABS.PROFILE);
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
+    if (window.confirm("Are you sure you want to logout?")) {
+      localStorage.clear();
+      navigate("/");
+    }
   };
 
   return (
-    <div style={{fontFamily:"para_font"}} className="min-h-screen bg-gray-100 lg:flex">
-      {/* Sidebar */}
-      <LeadUserSidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        handleLogout={handleLogout}
-      />
+    <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-gray-100 lg:flex">
+      <LeadUserSidebar activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogout} />
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 lg:ml-64">
-        {activeTab === "Profile" && <LeadUserProfile />}
-        {activeTab === "MyPlan" && <p>My Plan content here...</p>}
-        {activeTab === "UnlockedLeads" && <p>Unlocked Leads content here...</p>}
+      <main className="flex-1 p-6 lg:ml-64 max-w-7xl mx-auto">
+        {activeTab === TABS.PROFILE && <LeadUserProfile />}
+        {activeTab === TABS.MY_PLAN && <p>My Plan content here...</p>}
+        {activeTab === TABS.UNLOCKED_LEADS && <p>Unlocked Leads content here...</p>}
       </main>
     </div>
   );

@@ -5,7 +5,9 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
-  FiPhoneCall, FiCreditCard
+  FiPhoneCall,
+  FiCreditCard,
+  FiClock,
 } from "react-icons/fi";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
@@ -32,6 +34,11 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
     value: "UnlockedContacts",
     icon: <FiPhoneCall />, // Phone call icon fits contact-related info
   },
+  {
+  label: "Recently Viewed",
+  value: "RecentlyViewed",
+  icon: <FiClock />,
+}
 ];
 
   const handleTabClick = (value) => {

@@ -62,13 +62,6 @@ export default function MyPlanDetails() {
   const isExpiringSoon = daysLeft !== null && daysLeft <= 21 && daysLeft >= 0;
 
 
-  // 🪵 Log to debug issue
-  console.log("📅 Now:", now);
-  console.log("📅 Plan End Date (raw):", plan.end_date);
-  console.log("📅 Plan End Date (parsed):", endDate);
-  console.log("📅 Days Left:", daysLeft);
-  console.log("⚠️ Is Expiring Soon:", isExpiringSoon);
-
   return (
     <div className="max-w-xl mx-auto bg-white shadow-md rounded-xl p-6 border border-gray-200">
       <h3 className="text-2xl font-bold text-indigo-700 mb-6 flex items-center gap-2">

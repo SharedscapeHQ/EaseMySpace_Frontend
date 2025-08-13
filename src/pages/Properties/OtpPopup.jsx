@@ -10,7 +10,6 @@ function OtpPopup({ onVerified, onClose, otpPurpose }) {
   const [isSending, setIsSending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // Load userMobile from localStorage if available on initial render
   useEffect(() => {
     const storedMobile = localStorage.getItem("user_verified_mobile");
     if (storedMobile) {
@@ -19,70 +18,79 @@ function OtpPopup({ onVerified, onClose, otpPurpose }) {
   }, []);
 
   const handleSendOtp = async () => {
-    if (userMobile.length === 10) {
-      try {
-        setIsSending(true);
-        setResending(true);
-        const res = await axios.post("https://api.easemyspace.in/api/leads/send-otp", {
-          phone: userMobile,
-        });
-
-        if (res.data.message === "otp_sent") {
-          setOtpSent(true);
-          toast.success("OTP sent successfully!");
-        } else {
-          toast.error(res.data.message || "Failed to send OTP.");
-        }
-      } catch (err) {
-        console.error("Error sending OTP:", err); // Log the actual error for debugging
-        toast.error("Error sending OTP. Please try again.");
-      } finally {
-        setIsSending(false);
-        setResending(false);
-      }
-    } else {
+    if (!/^\d{10}$/.test(userMobile)) {
       toast.error("Enter valid 10-digit mobile number");
+      return;
+    }
+    try {
+      setIsSending(true);
+      setResending(true);
+      const res = await axios.post(
+        "https://api.easemyspace.in/api/leads/send-otp",
+        { phone: userMobile },
+        { withCredentials: true }
+      );
+
+      if (res.data.message === "otp_sent") {
+        setOtpSent(true);
+        setUserOtp("");
+        toast.success("OTP sent successfully!");
+      } else {
+        toast.error(res.data.message || "Failed to send OTP.");
+      }
+    } catch (err) {
+      console.error("Error sending OTP:", err);
+      toast.error("Error sending OTP. Please try again.");
+    } finally {
+      setIsSending(false);
+      setResending(false);
     }
   };
 
   const handleVerifyOtp = async () => {
-    // Ensure the phone number is formatted correctly for the API if necessary
-    const formattedPhone = userMobile.startsWith("+91") ? userMobile : `+91${userMobile}`;
+  const formattedPhone = userMobile.startsWith("+91")
+    ? userMobile: `+91${userMobile}`;
 
-    try {
-      setIsVerifying(true);
-      const res = await axios.post("https://api.easemyspace.in/api/leads/verify-otp", {
+  try {
+    setIsVerifying(true);
+    const res = await axios.post(
+      "https://api.easemyspace.in/api/leads/verify-otp",
+      {
         phone: formattedPhone,
         code: userOtp,
-      });
+      },
+      { withCredentials: true }
+    );
+    console.log("OTP verify response:", res.data);
 
-      if (res.data.verified === true) {
-        localStorage.setItem("otp_verified", "true");
-        // --- NEW: Save the verified mobile number to localStorage ---
-        localStorage.setItem("user_verified_mobile", userMobile);
-        // --- END NEW ---
-        toast.success("OTP verified successfully!");
+    if (res.data.verified === true) {
+      localStorage.setItem("otp_verified", "true");
+      localStorage.setItem("user_verified_mobile", userMobile);
 
-        const lead = res.data.lead;
-        if (lead.subscription_status === "paid") {
-          localStorage.setItem("has_paid_lead", "true");
-          onVerified(true);
-        } else {
-          localStorage.setItem("has_paid_lead", "false");
-          onVerified(false);
-        }
-
-        onClose();
+      if (res.data.isUser && res.data.user) {
+        
+        localStorage.setItem("user", JSON.stringify(res.data.user));
       } else {
-        toast.error(res.data.message || "Invalid OTP.");
+       
+        localStorage.removeItem("user");
       }
-    } catch (err) {
-      console.error("Error verifying OTP:", err); // Log the actual error for debugging
-      toast.error("Error verifying OTP.");
-    } finally {
-      setIsVerifying(false);
+
+      toast.success("OTP verified successfully!");
+
+      onVerified(true);
+
+      onClose();
+    } else {
+      toast.error(res.data.message || "Invalid OTP.");
     }
-  };
+  } catch (err) {
+    console.error("Error verifying OTP:", err);
+    toast.error("Error verifying OTP.");
+  } finally {
+    setIsVerifying(false);
+  }
+};
+
 
   useEffect(() => {
     if (otpSent) {
@@ -98,37 +106,47 @@ function OtpPopup({ onVerified, onClose, otpPurpose }) {
       key={otpSent ? "otp-mode" : "mobile-mode"}
       className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
     >
-      <div style={{ fontFamily: "para_font" }} className="bg-white rounded-xl p-6 w-80 shadow-lg relative ">
+      <div
+        style={{ fontFamily: "para_font" }}
+        className="bg-white rounded-xl p-6 w-80 shadow-lg relative"
+      >
         <button
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-500 text-xl"
+          aria-label="Close OTP popup"
         >
           ×
         </button>
-        <h3 className="text-lg text-gray-800 mb-3">
-          Verify to {otpPurpose}
-        </h3>
+        <h3 className="text-lg text-gray-800 mb-3">Verify to {otpPurpose}</h3>
 
         <input
-          type="text"
+          type="tel"
           placeholder="Enter your mobile number"
           maxLength={10}
           className="w-full mb-2 px-3 py-2 border border-gray-300 rounded"
           value={userMobile}
-          onChange={(e) => setUserMobile(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^\d*$/.test(val)) setUserMobile(val);
+          }}
           disabled={isSending || isVerifying}
+          aria-label="Mobile Number"
         />
 
         {otpSent && (
           <>
             <input
               id="otpInput"
-              type="text"
+              type="tel"
               placeholder="Enter OTP"
               className="w-full mb-2 px-3 py-2 border border-gray-300 rounded"
               value={userOtp}
-              onChange={(e) => setUserOtp(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (/^\d*$/.test(val)) setUserOtp(val);
+              }}
               disabled={isVerifying}
+              aria-label="OTP Code"
             />
             <button
               onClick={handleSendOtp}

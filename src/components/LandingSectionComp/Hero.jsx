@@ -50,7 +50,7 @@ export default function Hero() {
       style={{ fontFamily: "para_font" }}
       className="w-full bg-white pt-5 px-6 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto mt-3 lg:mt-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl py-5 lg:py-0 mx-auto mt-3 lg:mt-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Content */}
         <div>
           <h1

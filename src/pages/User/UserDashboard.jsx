@@ -1,42 +1,93 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProperties, submitQuery } from "../../api/userApi";
+import {
+  getUserProperties,
+  submitQuery,
+  getRecentlyViewedProperties,
+} from "../../api/userApi";
 import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
 import MyQueries from "../../components/UserPageComp/MyQueries";
 import MyPlanDetails from "../../components/UserPageComp/MyPlanDetails";
 import UnlockedCards from "../../components/UserPageComp/UnlockedCards";
+import RecentlyViewed from "../../components/UserPageComp/RecentlyViewed";
 
 import { logoutUser } from "../../api/authApi";
+import { FiClock } from "react-icons/fi";
+
+const TAB_TITLES = {
+  MyProperties: "Your Listed Properties",
+  MyQueries: "Your Raised Queries",
+  MyPlan: "Your Subscription Plan",
+  UnlockedContacts: "Unlocked Contacts",
+  RecentlyViewed: "Recently Viewed Properties",
+};
+
+function LoadingMessage({ message }) {
+  return (
+    <div className="text-center text-gray-700 font-medium py-6">
+      <FiClock className="inline mr-2 animate-spin" /> {message}
+    </div>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return <p className="text-red-500">{message}</p>;
+}
 
 export default function UserDashboard() {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("MyProperties");
+
+  // Properties state
   const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [propertiesLoading, setPropertiesLoading] = useState(true);
+  const [propertiesError, setPropertiesError] = useState("");
+
+  // Recently viewed state
+  const [recentlyViewedProperties, setRecentlyViewedProperties] = useState([]);
+  const [recentLoading, setRecentLoading] = useState(false);
+  const [recentError, setRecentError] = useState("");
+
+  // Modal state
   const [viewProperty, setViewProperty] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     if (activeTab === "MyProperties") {
       fetchProperties();
+    } else if (activeTab === "RecentlyViewed") {
+      fetchRecentlyViewed();
     }
-    window.scrollTo(0, 0);
   }, [activeTab]);
 
   const fetchProperties = async () => {
     try {
-      setLoading(true);
+      setPropertiesLoading(true);
+      setPropertiesError("");
       const data = await getUserProperties();
       setProperties(data);
-      setError("");
-    } catch (err) {
-      setError("Failed to load properties.");
+    } catch {
+      setPropertiesError("Failed to load properties.");
     } finally {
-      setLoading(false);
+      setPropertiesLoading(false);
+    }
+  };
+
+  const fetchRecentlyViewed = async () => {
+    try {
+      setRecentLoading(true);
+      setRecentError("");
+      const data = await getRecentlyViewedProperties();
+      setRecentlyViewedProperties(data);
+    } catch {
+      setRecentError("Failed to load recently viewed properties.");
+    } finally {
+      setRecentLoading(false);
     }
   };
 
@@ -62,54 +113,68 @@ export default function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col lg:flex-row">
-      {/* Sidebar */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
       />
 
-      {/* Main Content */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-10  lg:ml-64">
+      <main className="flex-1 p-4 sm:p-6 lg:p-10 lg:ml-64">
         <h2 className="text-3xl font-semibold text-gray-800 mb-8">
-  {activeTab === "MyProperties"
-    ? "Your Listed Properties"
-    : activeTab === "MyQueries"
-    ? "Your Raised Queries"
-    : activeTab === "MyPlan"
-    ? "Your Subscription Plan"
-    : "Unlocked Contacts"}
-</h2>
+          {TAB_TITLES[activeTab] || ""}
+        </h2>
 
+        {activeTab === "MyProperties" && (
+          <>
+            {propertiesLoading ? (
+              <LoadingMessage message="Loading Property details..." />
+            ) : propertiesError ? (
+              <ErrorMessage message={propertiesError} />
+            ) : properties.length === 0 ? (
+              <p className="text-center mt-20 text-gray-600">
+                You haven't added any properties yet.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {properties.map((property) => (
+                  <PropertyCard
+                    key={property._id}
+                    property={property}
+                    onRaiseQuery={() => setSelectedProperty(property)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
 
-       {activeTab === "MyProperties" ? (
-  loading ? (
-    <p>Loading your properties...</p>
-  ) : error ? (
-    <p className="text-red-500">{error}</p>
-  ) : properties.length === 0 ? (
-    <p className="text-center mt-20 text-gray-600">
-      You haven't added any properties yet.
-    </p>
-  ) : (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {properties.map((property) => (
-        <PropertyCard
-          key={property._id}
-          property={property}
-          onRaiseQuery={() => setSelectedProperty(property)}
-        />
-      ))}
-    </div>
-  )
-) : activeTab === "MyQueries" ? (
-  <MyQueries />
-) : activeTab === "MyPlan" ? (
-  <MyPlanDetails />
-) : activeTab === "UnlockedContacts" ? (
-  <UnlockedCards />
-) : null}
+        {activeTab === "RecentlyViewed" && (
+          <>
+            {recentLoading ? (
+              <LoadingMessage message="Loading Recently Viewed Properties" />
+            ) : recentError ? (
+              <ErrorMessage message={recentError} />
+            ) : recentlyViewedProperties.length === 0 ? (
+              <p className="text-center mt-20 text-gray-600">
+                You haven't viewed any properties recently.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {recentlyViewedProperties.map((property) => (
+                  <RecentlyViewed
+                    key={property._id}
+                    property={property}
+                    onRaiseQuery={() => setSelectedProperty(property)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
 
+        {activeTab === "MyQueries" && <MyQueries />}
+        {activeTab === "MyPlan" && <MyPlanDetails />}
+        {activeTab === "UnlockedContacts" && <UnlockedCards />}
 
         {/* Modals */}
         {viewProperty && (

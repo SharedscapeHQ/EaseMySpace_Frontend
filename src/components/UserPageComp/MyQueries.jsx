@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchMyQueries } from "../../api/userApi";
 import { FaCheckCircle, FaHourglassHalf } from "react-icons/fa";
+import {FiClock} from "react-icons/fi"
 
 export default function MyQueries() {
   const [queries, setQueries] = useState([]);
@@ -20,7 +21,10 @@ export default function MyQueries() {
     getQueries();
   }, []);
 
-  if (loading) return <p className="text-center py-10 text-lg">Loading...</p>;
+  if (loading) return <div className="text-center text-gray-700 font-medium py-6">
+          <FiClock className="inline mr-2 animate-spin" /> Loading Queries
+          details...
+        </div>
 
   return (
     <div className="p-6 max-w-4xl mx-auto">

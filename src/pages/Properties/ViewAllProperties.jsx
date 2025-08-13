@@ -9,6 +9,7 @@ import { incrementPropertyView } from "../../api/propertiesApi.js";
 import OtpPopup from "./OtpPopup";
 import axios from "axios";
 import { getCurrentUser } from "../../api/authApi.js";
+import { addRecentlyViewedProperty } from "../../api/userApi.js";
 
 const parseImages = (raw) =>
   !raw
@@ -575,28 +576,31 @@ const PropertyCard = ({
   const thumbs = p.images.filter((img) => img !== p.cover).slice(0, 3);
   const extra = p.images.length - 1 - thumbs.length;
 
-  const handleViewDetailsClick = (event) => {
-    if (!isLoggedIn && !isOtpVerified) {
-      event.preventDefault();
-      setSelectedPropertyId(p.id);
-      setShowOtpPopup(true);
-    } else {
-      const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
-      if (!visited.includes(p.id)) {
-        incrementPropertyView(p.id);
-        sessionStorage.setItem(
-          "viewedProps",
-          JSON.stringify([...visited, p.id])
-        );
-      }
+  const handleViewDetailsClick = (event, p) => {
+  if (!isLoggedIn && !isOtpVerified) {
+    event.preventDefault();
+    setSelectedPropertyId(p.id);
+    setShowOtpPopup(true);
+  } else {
+    const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+    if (!visited.includes(p.id)) {
+      incrementPropertyView(p.id);
+      addRecentlyViewedProperty(p.id).catch(console.error);
+      sessionStorage.setItem(
+        "viewedProps",
+        JSON.stringify([...visited, p.id])
+      );
     }
-  };
+  }
+};
+
+
 
   return (
     <Link
       to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
       state={isLoggedIn || isOtpVerified ? { property: p } : null}
-      onClick={handleViewDetailsClick}
+      onClick={(e) => handleViewDetailsClick(e, p)}
       className="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-300 w-full max-w-3xl mx-auto overflow-x-hidden flex flex-col md:flex-row p-4 gap-4"
     >
       <div className="w-full md:w-64 flex-shrink-0">
@@ -657,7 +661,7 @@ const PropertyCard = ({
           <Link
             to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
             state={isLoggedIn || isOtpVerified ? { property: p } : null}
-            onClick={handleViewDetailsClick}
+            onClick={(e) => handleViewDetailsClick(e, p)}
             className="text-indigo-600 text-sm font-medium border border-indigo-600 px-4 py-1.5 rounded-full hover:bg-indigo-50 transition whitespace-nowrap"
           >
             View Details

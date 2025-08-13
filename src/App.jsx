@@ -28,6 +28,8 @@ import SubscriptionPlans from "./components/Subscription/Subscription";
 import UserPropertyDetails from "./components/UserPageComp/UserPropertyDetails";
 import LeadUserDashboard from "./pages/LeadUser/LeadUserDashboard";
 import ProtectedLeadUserRoute from "./components/ProtectedLeadUserRoute";
+import Careers from "./components/AboutUsSectionComp/CareersPageComp/Careers"
+import JobDetail from "./components/AboutUsSectionComp/CareersPageComp/JobDetail";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -75,7 +77,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       {/* <ScrollToTopButton /> */}
-      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       {/* <TidioWidget/> */}
 
       <Routes>
@@ -107,9 +109,9 @@ export default function App() {
         <Route
           path="/about"
           element={
-            <Layout>
+          
               <AboutUs />
-            </Layout>
+            
           }
         />
         <Route
@@ -120,6 +122,22 @@ export default function App() {
             </Layout>
           }
         />
+        <Route
+          path="/careers"
+          element={
+            <Layout>
+              <Careers />
+            </Layout>
+          }
+        />
+        <Route
+  path="/jobs/:id"
+  element={
+    <Layout>
+      <JobDetail />
+    </Layout>
+  }
+/>
         <Route
           path="/subscription"
           element={

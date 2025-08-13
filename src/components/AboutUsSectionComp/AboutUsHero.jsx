@@ -36,7 +36,7 @@ export default function AboutUsHero() {
   ];
 
   return (
-    <section style={{fontFamily: "para_font"}} className="w-full min-h-screen bg-white flex flex-col items-center justify-center px-4 relative overflow-hidden">
+    <section style={{fontFamily: "para_font"}} className="w-full  min-h-screen bg-white flex flex-col items-center justify-center px-4 relative overflow-hidden ">
       {/* Scattered Animated Instagram Images */}
       {images.map((img, index) => (
         <motion.img

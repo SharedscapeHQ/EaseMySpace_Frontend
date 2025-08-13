@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getUnlockedProperties } from "../../api/userApi";
+import { FiClock } from "react-icons/fi";
 
 export default function UnlockedCards() {
   const [unlocked, setUnlocked] = useState([]);
@@ -33,7 +34,9 @@ export default function UnlockedCards() {
       : baseUrl + imagePath.replace(/^\/+/, "");
   };
 
-  if (loading) return <p>Loading unlocked contacts...</p>;
+  if (loading) return <div className="text-center text-gray-700 font-medium py-6">
+        <FiClock className="inline mr-2 animate-spin" /> Loading Unlocked Contacts
+      </div>
 
   if (unlocked.length === 0)
     return (
