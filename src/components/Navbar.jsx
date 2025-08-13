@@ -76,7 +76,7 @@ export default function Navbar() {
 
   return (
     <header>
-      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50" style={{ fontFamily: "para_font" }}>
+      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white z-50" style={{ fontFamily: "para_font" }}>
         <div className="flex items-center gap-3">
           <button
             aria-label="Toggle menu"
