@@ -175,7 +175,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   return (
     <>
       <button
-        className={`mt-4 w-1/2 py-3 px-2 text-md font-semibold rounded-xl whitespace-nowrap transition-all ${
+        className={`mt-4 w-1/2 py-3 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${
           hasPaid
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-indigo-600 hover:bg-indigo-700 text-white"

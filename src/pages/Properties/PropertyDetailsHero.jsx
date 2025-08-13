@@ -6,6 +6,7 @@ import {
   fetchUserContactStatus,
 } from '../../api/userApi';
 import toast from 'react-hot-toast';
+import { FaPhoneAlt } from "react-icons/fa"
 
 function PropertyHeaderSection({
   property,
@@ -51,18 +52,41 @@ function PropertyHeaderSection({
       );
   }, [hasPaid, property?.id]);
 
-  const displayPhone = () => {
-    if (userRole === 'admin' || userRole === 'owner') {
-      return `📞 ${property.owner_phone || 'Unavailable'}`;
-    }
+const displayPhone = () => {
+  if (userRole === 'admin' || userRole === 'owner') {
+    return (
+      <span className="flex items-center gap-2">
+        <FaPhoneAlt className="text-indigo-600" />
+        {property.owner_phone || 'Unavailable'}
+      </span>
+    );
+  }
 
-    if (isUnlocked) {
-      if (!property.phone_visible) return '📞 Hidden by owner';
-      return `📞 ${property.owner_phone || 'Unavailable'}`;
+  if (isUnlocked) {
+    if (!property.phone_visible) {
+      return (
+        <span className="flex items-center gap-2 text-red-500">
+          <FaPhoneAlt className="text-indigo-600" />
+          Hidden by owner
+        </span>
+      );
     }
+    return (
+      <span className="flex items-center gap-2">
+        <FaPhoneAlt className="text-indigo-600" />
+        {property.owner_phone || 'Unavailable'}
+      </span>
+    );
+  }
 
-    return '📞 +91xxxxxxx';
-  };
+  return (
+    <span className="flex items-center gap-2">
+      <FaPhoneAlt className="text-indigo-600" />
+      +91xxxxxxx
+    </span>
+  );
+};
+
 
  const handleUnlock = async () => {
   setIsUnlocking(true);
@@ -110,7 +134,7 @@ function PropertyHeaderSection({
     <>
     
       {showConfirmPopup && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+        <div className="fixed  inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-80 text-center shadow-lg">
             <h2 className="text-lg font-semibold mb-3 text-gray-800">
               Confirm Unlock
@@ -145,10 +169,10 @@ function PropertyHeaderSection({
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row justify-center items-start gap-5 w-full">
+      <div className="flex  flex-col lg:flex-row justify-center items-start gap-5 w-full">
         <div className="w-full lg:w-[32rem]">
           <div
-            className="w-full h-80 sm:h-[26rem] rounded-2xl overflow-hidden cursor-pointer"
+            className="w-full h-80 sm:h-[26rem] rounded-lg overflow-hidden cursor-pointer"
             onClick={() => setLightboxIdx(0)}
           >
             <img
@@ -161,7 +185,7 @@ function PropertyHeaderSection({
             {[1, 2, 3].map((idx) => (
               <div
                 key={idx}
-                className="h-24 w-1/3 rounded-2xl overflow-hidden cursor-pointer"
+                className="h-24 w-1/3 rounded-lg overflow-hidden cursor-pointer"
                 onClick={() => setLightboxIdx(idx)}
               >
                 {property.images[idx] ? (
@@ -180,9 +204,9 @@ function PropertyHeaderSection({
           </div>
         </div>
 
-        <div className="hidden lg:flex flex-col gap-5 w-full lg:w-[16rem]">
+        <div className="hidden lg:flex flex-col gap-2 w-full lg:w-[16rem]">
           <div
-            className="h-24 w-full lg:h-48 rounded-2xl overflow-hidden cursor-pointer"
+            className="h-24 w-full lg:h-48 rounded-lg overflow-hidden cursor-pointer"
             onClick={() => setLightboxIdx(1)}
           >
             {property.images[1] ? (
@@ -198,7 +222,7 @@ function PropertyHeaderSection({
             )}
           </div>
           <div
-            className="h-24 w-full lg:h-48 relative rounded-2xl overflow-hidden cursor-pointer"
+            className="h-24 w-full lg:h-52 relative rounded-lg overflow-hidden cursor-pointer"
             onClick={() =>
               setLightboxIdx(
                 property.video ? property.images.length : property.images.length - 1
@@ -222,114 +246,92 @@ function PropertyHeaderSection({
           </div>
         </div>
 
-        <div className="flex flex-col justify-between gap-5 w-full lg:w-[24rem]">
-          <div className="w-full h-auto bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-800 mb-2">
-                Owner's Contact
-              </h2>
-              <div className="text-gray-700 text-base">
-                {isUnlocked ? (
-                  <span
-                    className={`font-medium ${
-                      !property.phone_visible ? 'text-red-500' : ''
-                    }`}
-                  >
-                    {displayPhone()}
-                  </span>
-                ) : user && hasPaid ? (
-                  <div className="flex flex-col gap-2">
-                    <span className="font-medium">📞 +91xxxxxxx</span>
-                    {contactLimitReached ? (
-                      <p
-                        className="mt-1 px-3 py-2 text-center bg-yellow-500  text-white text-sm rounded-md transition"
-                      >
-                        Upgrade Plan
-                      </p>
-                    ) : (
-                      <button
-                        onClick={() => setShowConfirmPopup(true)}
-                        disabled={isUnlocking}
-                        className={`mt-1 px-3 py-2 text-white text-sm rounded-md transition ${
-                          isUnlocking
-                            ? 'bg-indigo-400 cursor-not-allowed'
-                            : 'bg-indigo-600 hover:bg-indigo-700'
-                        }`}
-                      >
-                        {isUnlocking ? 'Unlocking...' : 'Unlock Contact'}
-                      </button>
-                    )}
-                  </div>
-                ) : (
-                  <span className="font-medium">📞 +91xxxxxxx</span>
-                )}
-              </div>
-            </div>
+        <div className="flex flex-col justify-between gap-6 w-full lg:w-[23rem]">
+  <div className="w-full h-auto bg-gradient-to-b from-white to-gray-50 border border-gray-200 rounded-2xl overflow-hidden p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col gap-6">
 
-            <div>
-              <p className="text-gray-600 text-sm mb-1">
-                One-time Service Fee
-                <button
-                  onClick={() => setShowPlanPopup(true)}
-                  className="text-sm text-blue-600 ml-2 hover:text-blue-800 transition"
-                >
-                  <span className="inline-flex items-center underline space-x-1">
-                    What’s included?
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
-                      />
-                    </svg>
-                  </span>
-                </button>
+    {/* Owner's Contact */}
+    <div className="flex flex-col gap-3">
+      <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+        
+        Owner's Contact
+      </h2>
+
+      <div className="text-gray-800 text-base">
+        {isUnlocked ? (
+          <span className={`font-medium ${!property.phone_visible ? 'text-red-500' : ''}`}>
+            {displayPhone()}
+          </span>
+        ) : user && hasPaid ? (
+          <div className="flex flex-col gap-3">
+            <span className="font-medium flex items-center gap-2">
+              <FaPhoneAlt className="text-indigo-600" /> +91xxxxxxx
+            </span>
+
+            {contactLimitReached ? (
+              <p className="px-4 py-2 text-center bg-yellow-500 text-white text-sm rounded-lg shadow-sm">
+                Upgrade Plan
               </p>
-            </div>
-
-            <PaymentButton
-              hasPaid={hasPaid}
-              userMobile={userMobile}
-              setHasPaid={setHasPaid}
-            />
-          </div>
-
-          <div className="w-full">
-            <div className="w-full bg-zinc-100 border border-gray-300 rounded-2xl flex items-center justify-between p-4 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-md bg-gray-100 flex items-center justify-center">
-                  <span className="text-blue-600 text-xl">📍</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-gray-800">
-                    In {property.location || 'Unknown Location'}
-                  </span>
-                  <span className="text-sm text-gray-700">
-                    <span className="text-green-500 font-medium">
-                      {property.distance_from_station || 'N/A'}
-                    </span>
-                  </span>
-                </div>
-              </div>
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  property.location
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 text-sm font-medium hover:underline"
+            ) : (
+              <button
+                onClick={() => setShowConfirmPopup(true)}
+                disabled={isUnlocking}
+                className={`w-full px-4 py-2 text-white text-sm rounded-lg shadow-md transition duration-200 ${
+                  isUnlocking ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+                }`}
               >
-                See on Map
-              </a>
-            </div>
+                {isUnlocking ? 'Unlocking...' : 'Unlock Contact'}
+              </button>
+            )}
           </div>
-        </div>
+        ) : (
+          <span className="font-medium flex items-center gap-2">
+            <FaPhoneAlt className="text-indigo-600" /> +91xxxxxxx
+          </span>
+        )}
+      </div>
+    </div>
+
+    <hr className="border-gray-200" />
+
+    {/* One-time Service Fee */}
+    <div>
+      <p className="text-gray-600 text-sm mb-2">
+        One-time Service Fee
+        <button
+          onClick={() => setShowPlanPopup(true)}
+          className="text-sm text-blue-600 ml-2 hover:text-blue-800 transition"
+        >
+          <span className="inline-flex items-center underline space-x-1">
+            What’s included?
+            <svg
+              className="w-5 h-5 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+              />
+            </svg>
+          </span>
+        </button>
+      </p>
+    </div>
+
+    <hr className="border-gray-200" />
+
+    {/* Payment Button */}
+    <PaymentButton
+      hasPaid={hasPaid}
+      userMobile={userMobile}
+      setHasPaid={setHasPaid}
+    />
+  </div>
+</div>
+
       </div>
     </>
   );

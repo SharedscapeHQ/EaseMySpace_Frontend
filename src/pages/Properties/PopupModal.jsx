@@ -14,11 +14,80 @@ const CrossIcon = () => (
   </svg>
 );
 
+// Plans data
+const plans = [
+  // {
+  //   type: "standard",
+  //   title: "EMS Basic Plan",
+  //   subtitle: "Freedom to Find Your Perfect Match",
+  //   description: "Limited Access Plan for Trial Users",
+  //   originalPrice: "₹699",
+  //   price: "₹499",
+  //   gst: "+ GST",
+  //   savings: "Save ₹200!",
+  //   color: "indigo",
+  //   features: [
+  //     { text: "Access to any 2 contact of your choice", included: true },
+  //     { text: "Help in scheduling visit", included: false },
+  //     { text: "Priority Support (Call/WhatsApp)", included: false },
+  //     { text: "100% Verified Listings", included: true },
+  //     { text: "Smart Match Recommendations", included: false },
+  //     { text: "Save Hours - Match Quickly", included: true },
+  //   ],
+  // },
+  {
+    type: "premium",
+    title: "Starter Plan",
+    subtitle: "Quick, short-term search",
+    description: "15 days validity with essential services",
+    originalPrice: "₹2,199",
+    price: "₹1,999",
+    gst: "+ GST",
+    savings: "Save ₹200!",
+    color: "yellow",
+    features: [
+      { text: "Up to 5 Property Visits (In-person)", included: true },
+      { text: "Dedicated Relationship Manager", included: false },
+      { text: "Accompanied Property Visits (With EMS Executive)", included: false },
+      { text: "Up to 5 Video Tours Before Visit", included: true },
+      { text: "Relocation Assistance (On-call)", included: false },
+      { text: "Post-shifting Support - Standard", included: true },
+      { text: "Priority Access to New Listings", included: false },
+      { text: "Instant Notification of Newly Listed Property", included: false },
+      { text: "Match Recommendations - Basic", included: true },
+      { text: "Support - Basic", included: true }
+    ],
+  },
+  {
+    type: "ultimate",
+    title: "Premium Plan",
+    subtitle: "Full-service seekers wanting choice, convenience & time",
+    description: "45 days validity with all premium services",
+    originalPrice: "₹3,799",
+    price: "₹3,499",
+    gst: "+ GST",
+    savings: "Save ₹300!",
+    color: "red",
+    features: [
+      { text: "Up to 20 Property Visits (In-person)", included: true },
+      { text: "Dedicated Relationship Manager", included: true },
+      { text: "Accompanied Property Visits (With EMS Executive)", included: true },
+      { text: "Unlimited Video Tours Before Visit", included: true },
+      { text: "Relocation Assistance (On-call)", included: true },
+      { text: "Post-shifting Support - Extended & Priority", included: true },
+      { text: "Priority Access to New Listings", included: true },
+      { text: "Instant Notification of Newly Listed Property - 48 hours before others", included: true },
+      { text: "Match Recommendations - Hand-picked by RM", included: true },
+      { text: "Support - Dedicated", included: true }
+    ],
+  },
+];
+
 export default function PopupModal({ onClose }) {
   const [hasPaid, setHasPaid] = useState(false);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-2 ">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-2">
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -33,13 +102,13 @@ export default function PopupModal({ onClose }) {
           &times;
         </button>
 
-        <section className="pt-3 pb-6 lg:px-4 ">
+        <section className="pt-3 pb-6 lg:px-4">
           <motion.h1
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             style={{ fontFamily: "heading_font" }}
-            className="text-2xl lg:text-3xl font-bold text-zinc-900 "
+            className="text-2xl lg:text-3xl font-bold text-zinc-900"
           >
             Choose Your Plan
           </motion.h1>
@@ -48,84 +117,34 @@ export default function PopupModal({ onClose }) {
           </p>
         </section>
 
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-4 ">
-          {/* EMS Basic Plan */}
-          {/* <PlanCard
-            title="EMS Basic Plan"
-            badge="Standard"
-            badgeColor="indigo"
-            bgFrom="from-indigo-50"
-            borderColor="border-indigo-400"
-            price="₹499"
-            originalPrice="₹699"
-            savings="₹200"
-            features={[
-              { text: "Access to any 2 contact of your choice", included: true },
-              { text: "Help in scheduling visit", included: false },
-              { text: "Priority Support (Call/WhatsApp)", included: false },
-              { text: "100% Verified Listings", included: true },
-              { text: "Smart Match Recommendations", included: false },
-              { text: "Save Hours - Match Quickly", included: true },
-            ]}
-            planName="standard"
-            hasPaid={hasPaid}
-            setHasPaid={setHasPaid}
-          /> */}
-
-          {/* EMS Starter Plan */}
-          <PlanCard
-            title="EMS Starter Plan"
-            badge="Premium"
-            badgeColor="yellow"
-            bgFrom="from-yellow-50"
-            borderColor="border-yellow-400"
-            price="₹1499"
-            originalPrice="₹1699"
-            savings="₹200"
-            features={[
-              { text: "Access to any 8 contact of your choice", included: true },
-              { text: "Scheduling Visit Assistance", included: false },
-              { text: "Priority Support (Call/WhatsApp)", included: true },
-              { text: "100% Verified Listings", included: true },
-              { text: "Smart Match Recommendations", included: true },
-              { text: "Curated Suggestions", included: true },
-              { text: "Save Hours - Match Quickly", included: true },
-            ]}
-            planName="premium"
-            hasPaid={hasPaid}
-            setHasPaid={setHasPaid}
-          />
-
-          {/* EMS Premium Plan */}
-          <PlanCard
-            title="EMS Premium Plan"
-            badge="Ultimate"
-            badgeColor="red"
-            bgFrom="from-red-50"
-            borderColor="border-red-400"
-            price="₹2499"
-            originalPrice="₹2799"
-            savings="₹300"
-            features={[
-              { text: "Unlimited Contact Access", included: true },
-              { text: "Scheduling Visit Assistance", included: true },
-              { text: "Dedicated Relationship Manager", included: true },
-              { text: "100% Verified Listings", included: true },
-              { text: "Smart Match Recommendations", included: true },
-              { text: "Curated Suggestions", included: true },
-              { text: "Save Hours - Match Quickly", included: true },
-            ]}
-            planName="ultimate"
-            hasPaid={hasPaid}
-            setHasPaid={setHasPaid}
-          />
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-4">
+          {plans.map((plan, idx) => (
+            <PlanCard
+              key={idx}
+              title={plan.title}
+              badge={plan.type === "premium" ? "Premium" : plan.type === "ultimate" ? "Ultimate" : "Standard"}
+              badgeColor={plan.color}
+              bgFrom={`from-${plan.color}-50`}
+              borderColor={`border-${plan.color}-400`}
+              price={plan.price}
+              originalPrice={plan.originalPrice}
+              savings={plan.savings}
+              features={plan.features}
+              planName={plan.type}
+              hasPaid={hasPaid}
+              setHasPaid={setHasPaid}
+              subtitle={plan.subtitle}
+              description={plan.description}
+              gst={plan.gst}
+            />
+          ))}
         </section>
       </motion.div>
     </div>
   );
 }
 
-// PlanCard component
+// PlanCard Component
 const PlanCard = ({
   title,
   badge,
@@ -139,25 +158,16 @@ const PlanCard = ({
   planName,
   hasPaid,
   setHasPaid,
+  subtitle,
+  description,
+  gst,
 }) => {
-  const subtitles = {
-    Standard: "Freedom to Find Your Perfect Match",
-    Premium: "Everything you need to find your ideal space",
-    Ultimate: "Unlimited Access + Personal Guidance",
-  };
-
-  const descriptions = {
-    Standard: "Limited Access Plan for Trial Users",
-    Premium: "Full access for 25 days",
-    Ultimate: "All benefits for 30 days",
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`relative border-2 ${borderColor} bg-gradient-to-br ${bgFrom} to-white p-6 rounded-3xl shadow-lg hover:scale-[1.02] transition-all `}
+      className={`relative border-2 ${borderColor} bg-gradient-to-br ${bgFrom} to-white p-6 rounded-3xl shadow-lg hover:scale-[1.02] transition-all`}
     >
       <span
         className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-${badgeColor}-500 text-white text-xs px-3 py-1 rounded-full shadow uppercase tracking-wider`}
@@ -167,13 +177,15 @@ const PlanCard = ({
 
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
         <div className="lg:w-1/3">
-          <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{title}</h2>
-          <p className="text-sm mb-1">{subtitles[badge]}</p>
-          <p className="text-xs italic mb-4">{descriptions[badge]}</p>
+          <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">
+            {title}
+          </h2>
+          <p className="text-sm mb-1">{subtitle}</p>
+          <p className="text-xs italic mb-4">{description}</p>
           <div className="mb-4">
             <p className="line-through text-zinc-500 text-sm">{originalPrice}</p>
             <p className={`text-2xl font-extrabold text-${badgeColor}-500`}>
-              {price} <span className="text-base font-normal">+ GST</span>
+              {price} <span className="text-base font-normal">{gst}</span>
             </p>
             <p className="text-green-500 font-semibold text-xs">{savings}</p>
           </div>
@@ -181,23 +193,15 @@ const PlanCard = ({
 
         <div className="lg:w-2/3">
           <ul className="space-y-2 text-sm mb-4">
-            {features.map((item, idx) => {
-              const text = typeof item === "string" ? item : item.text;
-              const included = typeof item === "string" || item.included !== false;
-              return (
-                <li key={idx} className="flex items-start gap-2">
-                  {included ? <CheckIcon /> : <CrossIcon />}
-                  {text}
-                </li>
-              );
-            })}
+            {features.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                {item.included ? <CheckIcon /> : <CrossIcon />}
+                {item.text}
+              </li>
+            ))}
           </ul>
           <div className="flex justify-center lg:justify-end">
-            <PaymentButtonSubs
-              hasPaid={hasPaid}
-              setHasPaid={setHasPaid}
-              planName={planName}
-            />
+            <PaymentButtonSubs hasPaid={hasPaid} setHasPaid={setHasPaid} planName={planName} />
           </div>
         </div>
       </div>

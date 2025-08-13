@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FaWifi,
   FaParking,
@@ -51,53 +51,102 @@ const amenityIcons = {
 };
 
 function PropertyAmenities({ amenities, property }) {
+  const [showAllMobile, setShowAllMobile] = useState(false);
+
   const availableAmenities = amenities || [];
 
+  const allAmenities = [
+    ...knownAmenities.map((amenity) => ({
+      name: amenity,
+      isAvailable: availableAmenities.some(
+        (item) => item?.toLowerCase() === amenity.toLowerCase()
+      ),
+      icon: amenityIcons[amenity.toLowerCase()] || <FaPuzzlePiece />,
+    })),
+    ...(property?.amenities || [])
+      .filter((item) => item && !knownAmenities.includes(item.toLowerCase()))
+      .map((extra) => ({
+        name: extra,
+        isAvailable: true,
+        icon: <FaPuzzlePiece />,
+      })),
+  ];
+
+  // Limit for mobile
+  const mobileLimited = allAmenities.slice(0, 6);
+
   return (
-    <div>
-      <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {knownAmenities.map((amenity, idx) => {
-          const isAvailable = availableAmenities.some(
-            (item) => item?.toLowerCase() === amenity.toLowerCase()
-          );
-          const IconComponent = amenityIcons[amenity.toLowerCase()] || <FaPuzzlePiece />;
+    <div style={{ fontFamily: "para_font" }} className="bg-white rounded-xl border p-6">
+      <h2
+        style={{ fontFamily: "heading_font" }}
+        className="text-[16px] lg:text-xl text-left text-black mb-3"
+      >
+        Amenities
+      </h2>
 
-          return (
-            <div
-              key={`known-${idx}`}
-              className={`flex flex-col lg:flex-row justify-center text-center items-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] ${
-                isAvailable
-                  ? 'bg-green-50 border-2 border-green-200'
-                  : 'bg-gray-100 border-2 border-gray-200'
-              }`}
-            >
-              <div
-                className={`text-2xl ${
-                  isAvailable ? 'text-green-600 animate-pulse' : 'text-gray-400'
-                }`}
-              >
-                {IconComponent}
-              </div>
-              <span className="text-gray-800 font-normal capitalize">{amenity}</span>
+      {/* Desktop: Show all */}
+      <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
+        {allAmenities.map((item, idx) => (
+          <div key={idx} className="flex items-center gap-3">
+            <div className={`text-xl ${item.isAvailable ? 'text-green-500' : 'text-gray-400'}`}>
+              {item.icon}
             </div>
-          );
-        })}
-
-        {(property?.amenities || [])
-          .filter((item) => item && !knownAmenities.includes(item.toLowerCase()))
-          .map((extra, idx) => (
-            <div
-              key={`extra-${idx}`}
-              className="flex items-center flex-col lg:flex-row text-center justify-center gap-4 px-5 py-4 rounded-xl shadow-md transition-transform duration-300 hover:scale-[1.03] bg-green-50 border border-green-200"
-            >
-              <div className="text-2xl text-green-600 animate-pulse">
-                <FaPuzzlePiece />
-              </div>
-              <span className="text-gray-800 font-normal capitalize">{extra}</span>
-            </div>
-          ))}
+            <span className="text-md text-gray-700">{item.name}</span>
+          </div>
+        ))}
       </div>
+
+      {/* Mobile: Show limited */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-4 md:hidden">
+        {mobileLimited.map((item, idx) => (
+          <div key={idx} className="flex items-center gap-3">
+            <div className={`text-xl ${item.isAvailable ? 'text-green-500' : 'text-gray-400'}`}>
+              {item.icon}
+            </div>
+            <span className="text-md text-gray-700">{item.name}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* More button on mobile */}
+      {allAmenities.length > 6 && (
+        <button
+          className="mt-3 text-blue-600 text-sm md:hidden"
+          onClick={() => setShowAllMobile(true)}
+        >
+          + More
+        </button>
+      )}
+
+      {/* Popup for mobile */}
+      {showAllMobile && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-11/12 max-h-[80vh] overflow-y-auto shadow-lg">
+            <h3
+              style={{ fontFamily: "heading_font" }}
+              className="text-lg font-semibold mb-4"
+            >
+              All Amenities
+            </h3>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {allAmenities.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <div className={`text-xl ${item.isAvailable ? 'text-green-500' : 'text-gray-400'}`}>
+                    {item.icon}
+                  </div>
+                  <span className="text-md text-gray-700">{item.name}</span>
+                </div>
+              ))}
+            </div>
+            <button
+              className="mt-4 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg w-full"
+              onClick={() => setShowAllMobile(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

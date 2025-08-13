@@ -8,10 +8,13 @@ import { FiEye, FiCheckCircle } from "react-icons/fi";
 import PropertyAmenities from "./PropertyAmenities";
 import PropertyHeaderSection from "./PropertyDetailsHero";
 import LightboxViewer from "./LightboxViewer";
-import InfoItem from "./InfoItem";
 import PopupModal from "./PopupModal";
 import PropertySkeleton from "./PropertySkeleton";
 import { getCurrentUser } from "../../api/authApi";
+import PropertyMap from "./PropertyMap";
+import RelatedProperties from "./RelatedProperties";
+import Footer from "../../components/Footer";
+
 
 function PropertyDetail() {
   const stripQuotes = (v) =>
@@ -146,21 +149,21 @@ function PropertyDetail() {
         />
       )}
 
-      <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4 sm:px-6 md:px-8">
-        <div className="flex flex-col bg-white p-5 rounded-2xl gap-4 max-w-6xl mx-auto">
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="text-xl font-semibold text-gray-800">
+      <main style={{fontFamily:"para_font"}} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
+        <div className=" flex flex-col  p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
+          <div className=" flex items-center gap-2 flex-wrap">
+            <div className=" text-base lg:text-xl font-semibold text-gray-800">
               {generateTitle(property.title)}
             </div>
 
             {property.verified && (
-              <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
-                <FiCheckCircle className="text-sm" />
+              <span className="bg-green-500 text-white text-[8px]  px-2 py-1 rounded-full flex items-center gap-1">
+                <FiCheckCircle className="text-xs" />
                 Verified
               </span>
             )}
             {visitCount > 0 && (
-              <span className="inline-flex items-center gap-1 text-sm text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
+              <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
                 <FiEye className="text-gray-500" />
                 {visitCount} Visits
               </span>
@@ -177,38 +180,65 @@ function PropertyDetail() {
             setHasPaid={setHasPaid}
             setShowPlanPopup={setShowPlanPopup}
           />
+      <div className="mt-6 border border-gray-300 p-6 rounded-lg bg-white">
+  {/* Section Heading */}
+  <h2
+    style={{ fontFamily: "heading_font" }}
+    className="text-[16px] lg:text-xl text-left text-black mb-4"
+  >
+    Essential Details
+  </h2>
 
-          <div>
-            <h2 className="text-xl font-bold text-indigo-700 mb-3">
+  {/* Responsive Container */}
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
+    {[
+      { label: "Rent", value: `₹${property.price || "N/A"}` },
+      { label: "Deposit", value: `₹${property.deposit || "N/A"}` },
+      { label: "Flat Status", value: property.flat_status || "N/A" },
+      { label: "BHK Type", value: property.bhk_type || "N/A" },
+      { label: "Looking For", value: property.looking_for || "N/A" },
+      { label: "Occupancy", value: property.occupancy || "N/A" },
+      { label: "Gender", value: property.gender || "N/A" },
+    ].map((item, idx) => (
+      <div
+        key={idx}
+        className="flex flex-col items-center justify-center text-center px-2 py-3 bg-white rounded-md lg:shadow-none lg:border-l border-b lg:border-b-0"
+      >
+        <span className="text-xs lg:text-base text-gray-600 font-medium">{item.label}</span>
+        <span className="text-xs lg:text-base text-gray-900 font-semibold">{item.value}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+
+
+
+          <div className="bg-white rounded-xl border p-6 ">
+            <h2 style={{fontFamily:"heading_font"}} className="text-[16px] lg:text-xl text-left text-black mb-3">
               Property Description
             </h2>
-            <p className="text-gray-700 text-sm lg:text-base leading-relaxed whitespace-pre-line">
+            <p className="text-gray-700 text-sm lg:text-md leading-relaxed whitespace-pre-line">
               {property.description}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 text-center sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            <InfoItem label="Rent" value={`₹${property.price || "N/A"}`} />
-            <InfoItem label="Deposit" value={`₹${property.deposit || "N/A"}`} />
-            <InfoItem
-              label="Flat Status"
-              value={property.flat_status || "N/A"}
-            />
-            <InfoItem label="BHK Type" value={property.bhk_type || "N/A"} />
-            <InfoItem
-              label="Looking For"
-              value={property.looking_for || "N/A"}
-            />
-            <InfoItem label="Occupancy" value={property.occupancy || "N/A"} />
-            <InfoItem label="Gender" value={property.gender || "N/A"} />
-          </div>
+          
 
           <PropertyAmenities
             amenities={property.amenities}
             property={property}
           />
+
+          <PropertyMap
+  address={property.location}
+  title={property.title}
+/>
         </div>
+        <RelatedProperties currentProperty={property} />
       </main>
+      <Footer/>
     </>
   );
 }
