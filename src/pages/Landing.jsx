@@ -12,11 +12,11 @@ import OurQuality from '../components/LandingSectionComp/OurQuality'
 function Landing() {
   return (
     <>
-    <div className='w-full'>
+    <div className='w-full -pt-10'>
       <HeroSection/>
       <NewlyListedProperties/>
       <RecentAddedProperties/>
-      <TopLocation/>
+      {/* <TopLocation/> */}
     <div className=" hidden bg-zinc-50 pb-5  gap-y-4 px-3 lg:px-20">
   {[
     { icon: "✅", text: "Verified Listings" },

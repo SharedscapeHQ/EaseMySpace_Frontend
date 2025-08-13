@@ -48,14 +48,14 @@ export default function Hero() {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="w-full bg-white pt-5 px-6 overflow-hidden"
+      className="w-full bg-white lg:pt-5 px-6 overflow-hidden"
     >
-      <div className="max-w-7xl py-5 lg:py-0 mx-auto mt-3 lg:mt-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl py-0 mx-auto mt-3 lg:mt-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Content */}
         <div>
           <h1
             style={{ fontFamily: "heading_font" }}
-            className="text-2xl sm:text-4xl lg:text-5xl text-zinc-800 mb-2 lg:mb-10 leading-tight"
+            className="text-2xl hidden lg:block sm:text-4xl lg:text-5xl text-zinc-800 mb-2 lg:mb-10 leading-tight"
           >
             Find Your Ideal <span className="underline-animate">Flat</span>,{" "}
             <span className="underline-animate">PGs</span>, or{" "}
