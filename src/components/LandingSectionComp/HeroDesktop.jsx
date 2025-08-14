@@ -104,7 +104,7 @@ export default function HeroDesktop() {
           <video
             ref={videoRef}
             src={Hero_vid}
-            poster={PosterImg}
+            // poster={PosterImg}
             autoPlay
             muted
             loop
