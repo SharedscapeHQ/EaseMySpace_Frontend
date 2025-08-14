@@ -76,7 +76,6 @@ export default function NewlyListedProperties() {
       setLoading(true);
       try {
         const { data } = await newlyListedProperties();
-        console.log(data);
         const filtered = data
         
           .filter((p) => p.is_newly_listed && p.status === "approved")

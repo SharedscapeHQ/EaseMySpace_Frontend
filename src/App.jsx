@@ -71,6 +71,9 @@ function Layout({ children }) {
 
 const verifiedPhone = localStorage.getItem("user_verified_mobile") || "";
 
+
+
+
 /* ───── App ───── */
 export default function App() {
   return (
@@ -79,6 +82,7 @@ export default function App() {
       {/* <ScrollToTopButton /> */}
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       {/* <TidioWidget/> */}
+<TidioWidget />
 
       <Routes>
         {/* Routes with Layout (Navbar, padding, etc.) */}
