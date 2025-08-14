@@ -29,6 +29,8 @@ import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import DeletedPropertyCard from "../../components/OwnerPageComp/DeletedProperties";
 import { FiSearch } from "react-icons/fi";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
+import ManageRMs from "../../components/AdminPageComp/ManageRMs";
+
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -582,6 +584,8 @@ export default function OwnerDashboard() {
               )}
             </section>
           )}
+
+          {activeTab === "ManageRMs" && <ManageRMs />}
 
           <EditModal
             editForm={editForm}

@@ -1,29 +1,13 @@
 import React from "react";
-
-function formatDateTime12h(dateString) {
-  const date = new Date(dateString);
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear()).slice(-2);
-
-  let hours = date.getHours();
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const ampm = hours >= 12 ? "PM" : "AM";
-
-  hours = hours % 12;
-  hours = hours === 0 ? 12 : hours; // convert 0 to 12 for 12 AM
-
-  return `${day}/${month}/${year} ${hours}:${minutes} ${ampm}`;
-}
+import dayjs from "dayjs";
 
 export default function RecentlyViewed({ property }) {
   return (
     <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition border border-gray-200 flex flex-col relative">
       {/* Badge for timestamp */}
       {property.viewed_at && (
-        <div className="absolute top-2 right-2 bg-zinc-700 text-white text-xs px-2 py-1 rounded-full select-none z-10">
-          Viewed {formatDateTime12h(property.viewed_at)}
+        <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full select-none z-10">
+          Viewed {dayjs(property.viewed_at).format("DD/MM/YY hh:mm A")}
         </div>
       )}
 

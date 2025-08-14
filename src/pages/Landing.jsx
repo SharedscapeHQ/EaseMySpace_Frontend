@@ -7,13 +7,17 @@ import NewlyListedProperties from '../components/LandingSectionComp/NewlyListedP
 import RecentAddedProperties from '../components/LandingSectionComp/RecentAddedProperties'
 import TopLocation from '../components/LandingSectionComp/TopLocation'
 import OurQuality from '../components/LandingSectionComp/OurQuality'
+import HeroMobile from '../components/LandingSectionComp/HeroMobile'
+import HeroDesktop from '../components/LandingSectionComp/HeroDesktop'
 
 
 function Landing() {
   return (
     <>
     <div className='w-full -pt-10'>
-      <HeroSection/>
+      {/* <HeroSection/> */}
+      <HeroMobile />
+      <HeroDesktop />
       <NewlyListedProperties/>
       <RecentAddedProperties/>
       {/* <TopLocation/> */}

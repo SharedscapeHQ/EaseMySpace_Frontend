@@ -136,7 +136,7 @@ const displayPhone = () => {
       {showConfirmPopup && (
         <div className="fixed  inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-80 text-center shadow-lg">
-            <h2 className="text-lg font-semibold mb-3 text-gray-800">
+            <h2 className="text-lg mb-3 text-gray-800">
               Confirm Unlock
             </h2>
             <p className="text-sm text-gray-700 mb-4">
@@ -238,7 +238,7 @@ const displayPhone = () => {
             ) : (
               <div className="w-full h-full bg-gray-300" />
             )}
-            <div className="absolute inset-0 bg-black/60 text-white flex items-center justify-center text-center px-2 font-semibold text-sm sm:text-base">
+            <div className="absolute inset-0 bg-black/60 text-white flex items-center justify-center text-center px-2  text-sm sm:text-base">
               {property.video
                 ? `📹 Video + ${property.images.length} Images`
                 : `${property.images.length} Images`}
@@ -251,7 +251,7 @@ const displayPhone = () => {
 
     {/* Owner's Contact */}
     <div className="flex flex-col gap-3">
-      <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+      <h2 style={{fontFamily:"heading_font"}} className="text-lg  text-gray-900 flex items-center gap-2">
         
         Owner's Contact
       </h2>

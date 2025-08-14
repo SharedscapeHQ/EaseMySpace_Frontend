@@ -76,7 +76,9 @@ export default function NewlyListedProperties() {
       setLoading(true);
       try {
         const { data } = await newlyListedProperties();
+        console.log(data);
         const filtered = data
+        
           .filter((p) => p.is_newly_listed && p.status === "approved")
           .sort(
             (a, b) =>
@@ -206,73 +208,74 @@ export default function NewlyListedProperties() {
             role="list"
           >
             {newlyListed.map((p) => (
-              <Link
-                to={`/properties/${p.id}`}
-                key={p.id}
-                onClick={(e) => handlePropertyCardClick(e, p)}
-                className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden transition-all duration-300"
-              >
-                {p.images?.length > 0 ? (
-                  <div className="h-48 w-full p-3 pt-3 pb-0">
-                    <div className="h-full w-full overflow-hidden rounded-xl">
-                      {(() => {
-                        const url = p.images?.[0];
-                        if (!url) return null;
+             <Link
+  to={`/properties/${p.id}`}
+  key={p.id}
+  onClick={(e) => handlePropertyCardClick(e, p)}
+  className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden transition-all duration-300"
+>
+  {/* Image with Verified badge on top-left */}
+  {p.images?.length > 0 ? (
+    <div className="relative h-48 w-full p-3 pt-3 pb-0">
+      <div className="h-full w-full overflow-hidden rounded-xl">
+        {(() => {
+          const url = p.images?.[0];
+          if (!url) return null;
 
-                        const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-                        const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+          const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+          const isVideo = /\.(mp4|mov|webm)$/i.test(url);
 
-                        return isImage ? (
-                          <img
-                            src={url}
-                            alt={p.title || `Property image`}
-                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            loading="lazy"
-                          />
-                        ) : isVideo ? (
-                          <video
-                            src={url}
-                            controls
-                            className="h-full w-full object-cover"
-                          />
-                        ) : null;
-                      })()}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
-                    No Media
-                  </div>
-                )}
+          return isImage ? (
+            <img
+              src={url}
+              alt={p.title || `Property image`}
+              className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          ) : isVideo ? (
+            <video
+              src={url}
+              controls
+              className="h-full w-full object-cover"
+            />
+          ) : null;
+        })()}
+      </div>
 
-                <div className="p-4 flex flex-col gap-1">
-                  {/* Top row: Title + Verified | Price */}
-                  <div className="flex justify-between items-start gap-2">
-                    {/* Title + Verified */}
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-md text-blue-600 truncate max-w-[160px]">
-                        {p.title}
-                      </h3>
-                      {p.verified && (
-                        <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-                          <FiCheckCircle className="text-[10px]" />
-                          Verified
-                        </span>
-                      )}
-                    </div>
+      {/* Verified Badge - top left */}
+      {p.verified && (
+        <span className="absolute top-4 left-4 bg-green-500 text-white text-[10px] px-2 py-1 rounded-lg flex items-center gap-1 shadow-md">
+          <FiCheckCircle className="text-[12px]" />
+          Verified
+        </span>
+      )}
+    </div>
+  ) : (
+    <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
+      No Media
+    </div>
+  )}
 
-                    {/* Price */}
-                    <p className="text-blue-600 font-bold text-xs lg:text-base whitespace-nowrap">
-                      ₹ {Number(p.price).toLocaleString()}
-                    </p>
-                  </div>
+  {/* Card Body */}
+  <div className="p-4 flex flex-col gap-1">
+    {/* Property Type */}
+    <h3 style={{fontFamily:"heading_font"}} className="font-semibold text-md text-zinc-800 truncate max-w-[160px]">
+      {p.bhk_type} {/* e.g., 1 BHK */}
+    </h3>
 
-                  {/* Location */}
-                  <p className="text-gray-600 text-xs">
-                    {p.location?.trim().split(/\s+/).slice(-2).join(" ")}
-                  </p>
-                </div>
-              </Link>
+    {/* Rent per month */}
+    <p style={{fontFamily:"heading_font"}} className="text-zinc-800 font-bold
+     text-xs lg:text-base whitespace-nowrap">
+      ₹ {Number(p.price).toLocaleString()}/mo
+    </p>
+
+    {/* Address / Location */}
+    <p className="text-gray-600 text-xs">
+      {p.location}
+    </p>
+  </div>
+</Link>
+
             ))}
           </div>
         </div>

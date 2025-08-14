@@ -23,6 +23,9 @@ import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
+import ManageRMs from "../../components/AdminPageComp/ManageRMs";
+import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
+
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -458,6 +461,14 @@ export default function AdminDashboard() {
               <ManageTopLocations />
             </section>
           )}
+
+          {activeTab === "ManageRMs" && <ManageRMs />}
+
+          {activeTab === "UltimateSubscribers" && (
+  <section>
+    <UltimateSubscribers />
+  </section>
+)}
 
           <EditModal
             editForm={editForm}

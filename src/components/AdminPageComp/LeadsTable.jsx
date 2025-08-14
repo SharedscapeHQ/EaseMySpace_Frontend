@@ -3,14 +3,23 @@ import { markFollowUp } from "../../api/adminApi";
 import { clearFollowUp } from "../../api/ownerApi";
 import toast from "react-hot-toast";
 
+// Constants
+const FLAGGED_NUMBERS = ["9136547739", "9867637509"];
+
 export default function LeadsTable({ leads }) {
   const [remarks, setRemarks] = useState({});
   const [localLeads, setLocalLeads] = useState(leads);
   const [filter, setFilter] = useState("all");
 
-  // Get user role from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const userRole = user?.role || "";
+
+  // Helper: Check if phone is flagged
+  const isFlaggedPhone = (phone) => {
+    if (!phone) return false;
+    const normalized = phone.replace(/\D/g, ""); // remove non-numeric
+    return FLAGGED_NUMBERS.some((num) => normalized.endsWith(num));
+  };
 
   const handleRemarkChange = (id, value) => {
     setRemarks((prev) => ({ ...prev, [id]: value }));
@@ -18,27 +27,17 @@ export default function LeadsTable({ leads }) {
 
   const handleFollowUp = async (leadId) => {
     const remark = remarks[leadId];
-    if (!remark) {
-      toast.error("Please enter a remark");
-      return;
-    }
+    if (!remark) return toast.error("Please enter a remark");
 
     try {
       const res = await markFollowUp({ leadId, remark });
       if (res.data.success) {
         toast.success("Follow-up marked successfully");
-        setLocalLeads((prev) =>
-          prev.map((lead) =>
-            lead.id === leadId
-              ? {
-                  ...lead,
-                  follow_up_done: true,
-                  remark: res.data?.lead?.remark || remark,
-                  followed_by: res.data?.lead?.followed_by || user?.firstName || "You",
-                }
-              : lead
-          )
-        );
+        updateLead(leadId, {
+          follow_up_done: true,
+          remark: res.data?.lead?.remark || remark,
+          followed_by: res.data?.lead?.followed_by || user?.firstName || "You",
+        });
         setRemarks((prev) => ({ ...prev, [leadId]: "" }));
       } else {
         toast.error(res.data.message || "Failed to mark follow-up");
@@ -54,18 +53,11 @@ export default function LeadsTable({ leads }) {
       const res = await clearFollowUp({ leadId });
       if (res.data.success) {
         toast.success("Follow-up cleared");
-        setLocalLeads((prev) =>
-          prev.map((lead) =>
-            lead.id === leadId
-              ? {
-                  ...lead,
-                  follow_up_done: false,
-                  remark: null,
-                  followed_by: null,
-                }
-              : lead
-          )
-        );
+        updateLead(leadId, {
+          follow_up_done: false,
+          remark: null,
+          followed_by: null,
+        });
       } else {
         toast.error(res.data.message || "Failed to clear follow-up");
       }
@@ -73,6 +65,12 @@ export default function LeadsTable({ leads }) {
       console.error(error);
       toast.error("Error occurred while clearing follow-up");
     }
+  };
+
+  const updateLead = (id, changes) => {
+    setLocalLeads((prev) =>
+      prev.map((lead) => (lead.id === id ? { ...lead, ...changes } : lead))
+    );
   };
 
   const filteredLeads = localLeads.filter((lead) => {
@@ -84,6 +82,7 @@ export default function LeadsTable({ leads }) {
 
   return (
     <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
+      {/* Filter */}
       <div className="flex items-center justify-end p-4">
         <label className="text-sm mr-2 text-gray-700 font-medium">Filter:</label>
         <select
@@ -97,6 +96,7 @@ export default function LeadsTable({ leads }) {
         </select>
       </div>
 
+      {/* Table */}
       {filteredLeads.length === 0 ? (
         <div className="text-center py-8 text-gray-500">No leads found.</div>
       ) : (
@@ -114,17 +114,30 @@ export default function LeadsTable({ leads }) {
           <tbody>
             {filteredLeads.map((lead) => (
               <tr key={lead.id} className="even:bg-gray-50 border-b align-top">
-                <td className="px-5 py-3">{lead.phone}</td>
+                {/* Phone */}
+                <td
+                  className={`px-5 py-3 ${
+                    isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""
+                  }`}
+                >
+                  {lead.phone}
+                </td>
+
+                {/* First Seen */}
                 <td className="px-5 py-3">
                   {lead.first_seen
                     ? new Date(lead.first_seen).toLocaleString()
                     : "—"}
                 </td>
+
+                {/* Last Verified */}
                 <td className="px-5 py-3">
                   {lead.last_verified_at
                     ? new Date(lead.last_verified_at).toLocaleString()
                     : "—"}
                 </td>
+
+                {/* Follow-up Column */}
                 <td className="px-5 py-3">
                   {lead.follow_up_done ? (
                     <div className="flex flex-col gap-1">
@@ -168,7 +181,11 @@ export default function LeadsTable({ leads }) {
                     </div>
                   )}
                 </td>
+
+                {/* Followed By */}
                 <td className="px-5 py-3">{lead.followed_by || "—"}</td>
+
+                {/* Remark */}
                 <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">
                   {lead.remark || "—"}
                 </td>

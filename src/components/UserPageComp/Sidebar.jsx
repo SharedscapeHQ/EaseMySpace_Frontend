@@ -8,38 +8,24 @@ import {
   FiPhoneCall,
   FiCreditCard,
   FiClock,
+  FiUser,
 } from "react-icons/fi";
 
-export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
+export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPlan }) {
   const [isOpen, setIsOpen] = useState(false);
 
- const tabs = [
-  {
-    label: "My Properties",
-    value: "MyProperties",
-    icon: <FiHome />,
-  },
-  {
-    label: "My Queries",
-    value: "MyQueries",
-    icon: <FiMessageSquare />, // Still a good match for queries/messages
-  },
-  {
-    label: "My Plan",
-    value: "MyPlan",
-    icon: <FiCreditCard />, // Credit card icon suits a subscription or plan
-  },
-  {
-    label: "Unlocked Contacts",
-    value: "UnlockedContacts",
-    icon: <FiPhoneCall />, // Phone call icon fits contact-related info
-  },
-  {
-  label: "Recently Viewed",
-  value: "RecentlyViewed",
-  icon: <FiClock />,
-}
-];
+  const tabs = [
+    { label: "My Properties", value: "MyProperties", icon: <FiHome /> },
+    { label: "My Queries", value: "MyQueries", icon: <FiMessageSquare /> },
+    { label: "My Plan", value: "MyPlan", icon: <FiCreditCard /> },
+    { label: "Unlocked Contacts", value: "UnlockedContacts", icon: <FiPhoneCall /> },
+    { label: "Recently Viewed", value: "RecentlyViewed", icon: <FiClock /> },
+  ];
+
+  // Conditionally add Dedicated RM if plan is ultimate
+  if (userPlan === "ultimate") {
+    tabs.splice(3, 0, { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> });
+  }
 
   const handleTabClick = (value) => {
     setActiveTab(value);
@@ -48,13 +34,10 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
 
   return (
     <>
-      {/* Mobile Header (Below Navbar) */}
+      {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-16 z-40">
         <h2 className="text-xl font-bold text-indigo-700">Dashboard</h2>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-2xl text-gray-700"
-        >
+        <button onClick={() => setIsOpen(!isOpen)} className="text-2xl text-gray-700">
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
@@ -66,12 +49,10 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout }) {
         } fixed top-0 lg:top-20 left-0 z-50 w-64 bg-white shadow-md border-r h-full transform transition-transform duration-300 ease-in-out
         lg:h-[calc(100vh-5rem)]`}
       >
-        {/* Sidebar Header - always visible inside sidebar */}
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-indigo-700">User Panel</h2>
         </div>
 
-        {/* Navigation Tabs */}
         <nav className="flex-1 px-6 py-4 space-y-2 overflow-y-auto">
           {tabs.map(({ label, value, icon }) => (
             <button

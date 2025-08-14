@@ -1,22 +1,27 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { FiEye, FiCheckCircle } from "react-icons/fi";
+
 import {
   getPropertyById,
   getPropertyVisitCount,
 } from "../../api/propertiesApi";
-import { FiEye, FiCheckCircle } from "react-icons/fi";
+import { getCurrentUser } from "../../api/authApi";
+
 import PropertyAmenities from "./PropertyAmenities";
 import PropertyHeaderSection from "./PropertyDetailsHero";
 import LightboxViewer from "./LightboxViewer";
 import PopupModal from "./PopupModal";
 import PropertySkeleton from "./PropertySkeleton";
-import { getCurrentUser } from "../../api/authApi";
 import PropertyMap from "./PropertyMap";
 import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 
-
 function PropertyDetail() {
+  const { id } = useParams();
+  const location = useLocation();
+
+  // ---------------- Utility Functions ----------------
   const stripQuotes = (v) =>
     v == null
       ? ""
@@ -46,17 +51,12 @@ function PropertyDetail() {
   const generateTitle = (title) => {
     if (!title) return "Property Listing";
     const firstWord = title.trim().split(" ")[0];
-    const possessive = firstWord.endsWith("s")
-      ? `${firstWord}'`
-      : `${firstWord}'s`;
+    const possessive = firstWord.endsWith("s") ? `${firstWord}'` : `${firstWord}'s`;
     return `${possessive} listed home`;
   };
 
-  const { id } = useParams();
-  const location = useLocation();
-  const init = location.state?.property
-    ? enrich(location.state.property)
-    : null;
+  // ---------------- Component State ----------------
+  const init = location.state?.property ? enrich(location.state.property) : null;
 
   const [property, setProperty] = useState(init);
   const [loading, setLoading] = useState(!init);
@@ -66,6 +66,7 @@ function PropertyDetail() {
   const [hasPaid, setHasPaid] = useState(false);
   const [showPlanPopup, setShowPlanPopup] = useState(false);
 
+  // ---------------- Fetch Logged-In User ----------------
   useEffect(() => {
     async function fetchUser() {
       try {
@@ -78,34 +79,44 @@ function PropertyDetail() {
     fetchUser();
   }, []);
 
+  // ---------------- Set Paid Access ----------------
   useEffect(() => {
-    const isPrivileged =
-      loggedInUser?.role === "admin" || loggedInUser?.role === "owner";
+    const isPrivileged = ["admin", "owner"].includes(loggedInUser?.role);
     const isSubscribed = loggedInUser?.subscription_status === "paid";
     const leadPaid = localStorage.getItem("has_paid_lead") === "true";
 
     setHasPaid(isPrivileged || isSubscribed || leadPaid);
   }, [loggedInUser]);
 
+  // ---------------- Fetch Property by ID ----------------
   useEffect(() => {
-    if (!property) {
-      getPropertyById(id)
-        .then(({ data }) => setProperty(enrich(data)))
-        .finally(() => setLoading(false));
+    setLoading(true);
+    async function fetchProperty() {
+      try {
+        const { data } = await getPropertyById(id);
+        setProperty(enrich(data));
+      } catch (err) {
+        console.error("Failed to fetch property:", err);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [id, property]);
 
-  useEffect(() => {
-    if (id) {
-      getPropertyVisitCount(id)
-        .then((res) => setVisitCount(res?.data?.visitCount || 0))
-        .catch((err) => {
-          console.error("Failed to fetch visit count", err);
-          setVisitCount(0);
-        });
-    }
+    fetchProperty();
   }, [id]);
 
+  // ---------------- Fetch Property Visit Count ----------------
+  useEffect(() => {
+    if (!id) return;
+    getPropertyVisitCount(id)
+      .then((res) => setVisitCount(res?.data?.visitCount || 0))
+      .catch((err) => {
+        console.error("Failed to fetch visit count", err);
+        setVisitCount(0);
+      });
+  }, [id]);
+
+  // ---------------- Lightbox Handlers ----------------
   const stepLightbox = useCallback(
     (dir) => {
       if (!property) return;
@@ -126,9 +137,8 @@ function PropertyDetail() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxIdx, stepLightbox]);
 
-  if (loading || !property) {
-    return <PropertySkeleton />;
-  }
+  // ---------------- Render ----------------
+  if (loading || !property) return <PropertySkeleton />;
 
   return (
     <>
@@ -149,27 +159,27 @@ function PropertyDetail() {
         />
       )}
 
-      <main style={{fontFamily:"para_font"}} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
-        <div className=" flex flex-col  p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
-          <div className=" flex items-center gap-2 flex-wrap">
-            <div className=" text-base lg:text-xl font-semibold text-gray-800">
+      <main style={{ fontFamily: "para_font" }} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
+        <div className="flex flex-col p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
+
+          {/* Title & Status */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="text-base lg:text-xl font-semibold text-gray-800">
               {generateTitle(property.title)}
             </div>
-
             {property.verified && (
-              <span className="bg-green-500 text-white text-[8px]  px-2 py-1 rounded-full flex items-center gap-1">
-                <FiCheckCircle className="text-xs" />
-                Verified
+              <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
+                <FiCheckCircle className="text-xs" /> Verified
               </span>
             )}
             {visitCount > 0 && (
               <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
-                <FiEye className="text-gray-500" />
-                {visitCount} Visits
+                <FiEye className="text-gray-500" /> {visitCount} Visits
               </span>
             )}
           </div>
 
+          {/* Property Header Section */}
           <PropertyHeaderSection
             property={property}
             lightboxIdx={lightboxIdx}
@@ -180,43 +190,33 @@ function PropertyDetail() {
             setHasPaid={setHasPaid}
             setShowPlanPopup={setShowPlanPopup}
           />
-      <div className="mt-6 border border-gray-300 p-6 rounded-lg bg-white">
-  {/* Section Heading */}
-  <h2
-    style={{ fontFamily: "heading_font" }}
-    className="text-[16px] lg:text-xl text-left text-black mb-4"
-  >
-    Essential Details
-  </h2>
 
-  {/* Responsive Container */}
-  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
-    {[
-      { label: "Rent", value: `₹${property.price || "N/A"}` },
-      { label: "Deposit", value: `₹${property.deposit || "N/A"}` },
-      { label: "Flat Status", value: property.flat_status || "N/A" },
-      { label: "BHK Type", value: property.bhk_type || "N/A" },
-      { label: "Looking For", value: property.looking_for || "N/A" },
-      { label: "Occupancy", value: property.occupancy || "N/A" },
-      { label: "Gender", value: property.gender || "N/A" },
-    ].map((item, idx) => (
-      <div
-        key={idx}
-        className="flex flex-col items-center justify-center text-center px-2 py-3 bg-white rounded-md lg:shadow-none lg:border-l border-b lg:border-b-0"
-      >
-        <span className="text-xs lg:text-base text-gray-600 font-medium">{item.label}</span>
-        <span className="text-xs lg:text-base text-gray-900 font-semibold">{item.value}</span>
-      </div>
-    ))}
-  </div>
-</div>
+          {/* Essential Details */}
+          <div className="mt-6 border border-gray-300 p-6 rounded-lg bg-white">
+            <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-4">
+              Essential Details
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
+              {[
+                { label: "Rent", value: `₹${property.price || "N/A"}` },
+                { label: "Deposit", value: `₹${property.deposit || "N/A"}` },
+                { label: "Flat Status", value: property.flat_status || "N/A" },
+                { label: "BHK Type", value: property.bhk_type || "N/A" },
+                { label: "Looking For", value: property.looking_for || "N/A" },
+                { label: "Occupancy", value: property.occupancy || "N/A" },
+                { label: "Gender", value: property.gender || "N/A" },
+              ].map((item, idx) => (
+                <div key={idx} className="flex flex-col items-center justify-center text-center px-2 py-3 bg-white rounded-md lg:shadow-none lg:border-l border-b lg:border-b-0">
+                  <span className="text-xs lg:text-base text-gray-600 font-medium">{item.label}</span>
+                  <span className="text-xs lg:text-base text-gray-900 font-semibold">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-
-
-
-
-          <div className="bg-white rounded-xl border p-6 ">
-            <h2 style={{fontFamily:"heading_font"}} className="text-[16px] lg:text-xl text-left text-black mb-3">
+          {/* Description */}
+          <div className="bg-white rounded-xl border p-6">
+            <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">
               Property Description
             </h2>
             <p className="text-gray-700 text-sm lg:text-md leading-relaxed whitespace-pre-line">
@@ -224,21 +224,18 @@ function PropertyDetail() {
             </p>
           </div>
 
-          
+          {/* Amenities */}
+          <PropertyAmenities amenities={property.amenities} property={property} />
 
-          <PropertyAmenities
-            amenities={property.amenities}
-            property={property}
-          />
-
-          <PropertyMap
-  address={property.location}
-  title={property.title}
-/>
+          {/* Map */}
+          <PropertyMap address={property.location} title={property.title} />
         </div>
+
+        {/* Related Properties */}
         <RelatedProperties currentProperty={property} />
       </main>
-      <Footer/>
+
+      <Footer />
     </>
   );
 }

@@ -17,10 +17,7 @@ export default function MyPlanDetails() {
 
   useEffect(() => {
     getUserSubscription()
-      .then((data) => {
-        console.log("✅ Plan Data Fetched:", data);
-        setPlan(data);
-      })
+      .then((data) => setPlan(data))
       .catch((err) => console.error("❌ Failed to fetch plan:", err))
       .finally(() => setLoading(false));
   }, []);
@@ -28,8 +25,7 @@ export default function MyPlanDetails() {
   if (loading) {
     return (
       <div className="text-center text-gray-700 font-medium py-6">
-        <FiClock className="inline mr-2 animate-spin" /> Loading your plan
-        details...
+        <FiClock className="inline mr-2 animate-spin" /> Loading your plan details...
       </div>
     );
   }
@@ -37,9 +33,7 @@ export default function MyPlanDetails() {
   if (!plan) {
     return (
       <div className="bg-white max-w-xl mx-auto rounded-lg p-6 shadow border border-gray-200 text-center">
-        <p className="text-red-500 font-medium mb-4">
-          ⚠️ No active subscription found.
-        </p>
+        <p className="text-red-500 font-medium mb-4">⚠️ No active subscription found.</p>
         <button
           onClick={() => navigate("/subscriptions")}
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition"
@@ -51,16 +45,11 @@ export default function MyPlanDetails() {
   }
 
   const now = new Date();
-  const endDate = new Date(plan.end_date);
   const startDate = new Date(plan.start_date);
+  const endDate = new Date(plan.end_date);
   const isValidEndDate = !isNaN(endDate.getTime());
-
-  const daysLeft = isValidEndDate
-    ? Math.ceil((endDate - now) / (1000 * 60 * 60 * 24))
-    : null;
-
+  const daysLeft = isValidEndDate ? Math.ceil((endDate - now) / (1000 * 60 * 60 * 24)) : null;
   const isExpiringSoon = daysLeft !== null && daysLeft <= 21 && daysLeft >= 0;
-
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow-md rounded-xl p-6 border border-gray-200">
@@ -84,13 +73,11 @@ export default function MyPlanDetails() {
         </li>
         <li className="flex items-center gap-3">
           <FiCalendar className="text-blue-500" />
-          <strong>Start Date:</strong>{" "}
-          {startDate.toLocaleDateString("en-IN")}
+          <strong>Start Date:</strong> {startDate.toLocaleDateString("en-IN")}
         </li>
         <li className="flex items-center gap-3">
           <FiCalendar className="text-red-500" />
-          <strong>End Date:</strong>{" "}
-          {isValidEndDate ? endDate.toLocaleDateString("en-IN") : "Invalid date"}
+          <strong>End Date:</strong> {isValidEndDate ? endDate.toLocaleDateString("en-IN") : "Invalid date"}
           {isExpiringSoon && (
             <span className="ml-3 px-2 py-0.5 bg-yellow-200 text-yellow-800 text-sm rounded font-medium">
               ⏳ {daysLeft} day{daysLeft !== 1 ? "s" : ""} left

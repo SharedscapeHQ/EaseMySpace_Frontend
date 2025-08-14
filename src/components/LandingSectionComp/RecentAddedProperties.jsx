@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiCheckCircle } from "react-icons/fi";
 import axios from "axios";
 import { getCurrentUser } from "../../api/authApi";
 import { incrementPropertyView } from "../../api/propertiesApi";
@@ -70,7 +69,7 @@ export default function RecentAddedProperties() {
         const res = await axios.get("https://api.easemyspace.in/api/properties/all");
         const sorted = res.data
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .slice(0, 7)
+          .slice(0, 6)
           .map((p) => ({ ...p, images: parseImages(p.image) }));
         setRecentProperties(sorted);
       } catch {
@@ -81,15 +80,6 @@ export default function RecentAddedProperties() {
     }
     fetchRecent();
   }, []);
-
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -300 : 300,
-        behavior: "smooth",
-      });
-    }
-  };
 
   const handlePropertyCardClick = (e, property) => {
     if (!isLoggedIn && !isOtpVerified) {
@@ -140,12 +130,12 @@ export default function RecentAddedProperties() {
 
   return (
     <div className="bg-zinc-50 pb-5">
-      <section className="lg:px-10 px-3 rounded-2xl max-w-7xl mx-auto relative" aria-labelledby="new-properties-heading" style={{ fontFamily: "para_font" }}>
+      <section className="lg:px-10 px-3 rounded-2xl max-w-7xl mx-auto relative" style={{ fontFamily: "para_font" }}>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[16px] lg:text-3xl text-left text-black" style={{ fontFamily: "heading_font" }}>
             Discover the Latest Properties
           </h2>
-          <Link to="/view-properties" className="text-blue-600 text-[13px] lg:text-base font-medium hover:underline" style={{ fontFamily: "para_font" }}>
+          <Link to="/view-properties" className="text-blue-600 text-[13px] lg:text-base font-medium hover:underline">
             View All
           </Link>
         </div>
@@ -157,46 +147,32 @@ export default function RecentAddedProperties() {
                 to={`/properties/${p.id}`}
                 key={p.id}
                 onClick={(e) => handlePropertyCardClick(e, p)}
-                className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 transition-all duration-300 flex-shrink-0"
-                aria-label={`View details of ${p.title}`}
+                className="min-w-[270px] max-w-[270px] bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden group"
               >
-                <article className="rounded-2xl h-full flex flex-col">
-                  {p.images.length > 0 ? (
-                    <figure className="h-48 w-full p-3">
-                      <div className="h-full w-full rounded-xl overflow-hidden">
-                        {(() => {
-                          const url = p.images[0];
-                          if (!url) return null;
-                          const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-                          const isVideo = /\.(mp4|mov|webm)$/i.test(url);
-                          if (isImage) return <img src={url} alt="Property image" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />;
-                          if (isVideo) return <video src={url} controls className="h-full w-full object-cover" loading="lazy" />;
-                          return null;
-                        })()}
-                      </div>
-                    </figure>
-                  ) : (
-                    <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
-                      No Media
+                <article className="flex flex-col h-full">
+                  <div className="relative h-48 w-full p-3">
+                    <div className="absolute top-4 left-4 z-10 bg-blue-500 text-white text-[10px] px-2 py-1 rounded-lg shadow-md">
+  New
+</div>
+
+                    <div className="h-full w-full rounded-xl overflow-hidden">
+                      {(() => {
+                        const url = p.images[0];
+                        if (!url) return null;
+                        const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+                        const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+                        if (isImage) return <img src={url} alt="Property" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />;
+                        if (isVideo) return <video src={url} controls className="h-full w-full object-cover" loading="lazy" />;
+                        return null;
+                      })()}
                     </div>
-                  )}
+                  </div>
 
                   <div className="p-4 flex flex-col gap-1">
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-md text-blue-600 truncate max-w-[160px]">{p.title}</h3>
-                        {p.verified && (
-                          <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-                            <FiCheckCircle className="text-[10px]" />
-                            Verified
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-blue-600 font-bold text-xs lg:text-base whitespace-nowrap">₹ {Number(p.price).toLocaleString()}</p>
-                    </div>
-                    <p className="text-gray-600 text-xs">
-                      {p.location?.split(/\s+/).slice(-2).map((w) => w.replace(/[^a-zA-Z]/g, "")).join(" ")}
-                    </p>
+                    <h3 className="font-semibold text-md text-black truncate">{p.bhk_type || p.title}</h3>
+                    <p style={{fontFamily:"heading_font"}} className="text-zinc-800 font-bold
+     text-xs lg:text-base whitespace-nowrap">₹ {Number(p.price).toLocaleString()}/mo</p>
+                    <p className="text-gray-600 text-xs truncate">{p.location}</p>
                   </div>
                 </article>
               </Link>

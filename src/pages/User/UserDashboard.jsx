@@ -4,7 +4,9 @@ import {
   getUserProperties,
   submitQuery,
   getRecentlyViewedProperties,
+  getUserSubscription,
 } from "../../api/userApi";
+
 import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
@@ -12,9 +14,9 @@ import MyQueries from "../../components/UserPageComp/MyQueries";
 import MyPlanDetails from "../../components/UserPageComp/MyPlanDetails";
 import UnlockedCards from "../../components/UserPageComp/UnlockedCards";
 import RecentlyViewed from "../../components/UserPageComp/RecentlyViewed";
-
 import { logoutUser } from "../../api/authApi";
 import { FiClock } from "react-icons/fi";
+import DedicatedRM from "../../components/UserPageComp/DedicatedRM";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -38,31 +40,35 @@ function ErrorMessage({ message }) {
 
 export default function UserDashboard() {
   const navigate = useNavigate();
-
   const [activeTab, setActiveTab] = useState("MyProperties");
 
-  // Properties state
   const [properties, setProperties] = useState([]);
   const [propertiesLoading, setPropertiesLoading] = useState(true);
   const [propertiesError, setPropertiesError] = useState("");
 
-  // Recently viewed state
   const [recentlyViewedProperties, setRecentlyViewedProperties] = useState([]);
   const [recentLoading, setRecentLoading] = useState(false);
   const [recentError, setRecentError] = useState("");
 
-  // Modal state
-  const [viewProperty, setViewProperty] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [userPlan, setUserPlan] = useState(""); // Track user plan
 
+  const [user, setUser] = useState(null);
+
+  // Fetch subscription and store plan
+  useEffect(() => {
+    getUserSubscription()
+      .then((data) => {
+        if (data?.plan_name) setUserPlan(data.plan_name.toLowerCase());
+      })
+      .catch((err) => console.error("❌ Failed to fetch plan:", err));
+  }, []);
+
+  // Fetch properties or recently viewed based on active tab
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    if (activeTab === "MyProperties") {
-      fetchProperties();
-    } else if (activeTab === "RecentlyViewed") {
-      fetchRecentlyViewed();
-    }
+    if (activeTab === "MyProperties") fetchProperties();
+    else if (activeTab === "RecentlyViewed") fetchRecentlyViewed();
   }, [activeTab]);
 
   const fetchProperties = async () => {
@@ -90,14 +96,17 @@ export default function UserDashboard() {
       setRecentLoading(false);
     }
   };
+  useEffect(() => {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  if (storedUser) setUser(storedUser);
+}, []);
 
   const handleQuerySubmit = async (propertyId, message) => {
     try {
       await submitQuery(propertyId, message);
       alert("Query submitted successfully.");
       setSelectedProperty(null);
-    } catch (error) {
-      console.error("Error submitting query:", error);
+    } catch {
       alert("Failed to submit query.");
     }
   };
@@ -117,6 +126,7 @@ export default function UserDashboard() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         handleLogout={handleLogout}
+        userPlan={userPlan} // Pass plan as prop
       />
 
       <main className="flex-1 p-4 sm:p-6 lg:p-10 lg:ml-64">
@@ -175,14 +185,8 @@ export default function UserDashboard() {
         {activeTab === "MyQueries" && <MyQueries />}
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
+        {activeTab === "DedicatedRM" && <DedicatedRM userId={user.id} />}
 
-        {/* Modals */}
-        {viewProperty && (
-          <ViewPropertyModal
-            property={viewProperty}
-            onClose={() => setViewProperty(null)}
-          />
-        )}
         <RaiseQueryModal
           isOpen={!!selectedProperty}
           onClose={() => setSelectedProperty(null)}
