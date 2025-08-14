@@ -21,7 +21,7 @@ import TermsAndConditions from "./components/FooterSectionComp/TermsAndCondition
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import NotFound from "./pages/NotFound";
-import TidioWidget from "./components/TidioWidget";
+import TidioWidget from "./components/Chats/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 // import Loader from "./components/Loader/Loader";
 import SubscriptionPlans from "./components/Subscription/Subscription";
@@ -30,6 +30,7 @@ import LeadUserDashboard from "./pages/LeadUser/LeadUserDashboard";
 import ProtectedLeadUserRoute from "./components/ProtectedLeadUserRoute";
 import Careers from "./components/AboutUsSectionComp/CareersPageComp/Careers"
 import JobDetail from "./components/AboutUsSectionComp/CareersPageComp/JobDetail";
+import WhatsAppButton from "./components/Chats/WhatsAppButton";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -83,6 +84,7 @@ export default function App() {
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       {/* <TidioWidget/> */}
 <TidioWidget />
+<WhatsAppButton/>
 
       <Routes>
         {/* Routes with Layout (Navbar, padding, etc.) */}

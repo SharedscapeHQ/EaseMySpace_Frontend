@@ -88,7 +88,7 @@ export default function HeroDesktop() {
     ))}
   </div>
 
-  <div className="text-center">
+  <div style={{fontFamily:"para_font"}} className="text-center">
     <Link
       to="/view-properties"
       className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full"

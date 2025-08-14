@@ -135,8 +135,9 @@ export default function Hero() {
   ))}
 </div>
 
-          <div className=" text-center">
+          <div  className=" text-center">
             <Link
+            
               to="/view-properties"
               className="lg:inline-block mt-7 hidden bg-blue-600 hover:bg-blue-700 text-white  px-6 py-2 rounded-full transition"
             >

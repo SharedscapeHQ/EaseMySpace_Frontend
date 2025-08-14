@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaUserCircle, FaHome, FaInfoCircle, FaListUl, FaPhone, FaRegCreditCard } from "react-icons/fa";
+import { FaUserCircle, FaHome, FaInfoCircle, FaBuilding, FaPhone, FaRegCreditCard } from "react-icons/fa";
 import brandLogo from "/navbar-assets/brand-logo.png";
 
 export default function AboutNav() {
@@ -112,13 +112,20 @@ export default function AboutNav() {
 
 
         <div className="flex items-center gap-3 sm:gap-5 relative">
-          <Link
-            to="/add-properties"
-            className="px-3 py-1.5 text-[9px] sm:px-4 sm:py-2 sm:text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg shadow transition"
-            style={{ fontFamily: "para_font" }}
-          >
-            Add&nbsp;Property <span className="text-green-500 lg:text-xs text-[9px]">Free</span>
-          </Link>
+         <div className="relative inline-block">
+  <Link
+      to="/add-properties"
+      className="px-2 py-1 text-[8px] sm:text-sm bg-indigo-100 text-indigo-700  lg:rounded-lg rounded-md shadow hover:bg-indigo-200 transition inline-block"
+      style={{ fontFamily: "para_font" }}
+    >
+      Add Property
+    </Link>
+    
+    <span className="absolute -top-2.5 -right-2 inline-block px-1.5 py-0.2 text-[7px] sm:text-xs text-green-700 bg-green-100 lg:rounded-md rounded-sm shadow">
+      FREE
+    </span>
+</div>
+
 
           
 
@@ -179,88 +186,78 @@ export default function AboutNav() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              key="overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.35 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-40 bg-black backdrop-blur-sm"
+        <>
+         <div className="relative">
+        {/* Overlay */}
+        <div
+          className={`fixed inset-0 z-40 bg-black backdrop-blur-sm transition-opacity duration-300 ${
+            open ? "opacity-35 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => setOpen(false)}
+        />
+      
+        {/* Drawer */}
+        <aside
+          className={`fixed top-0 left-0 z-50 h-full w-[80vw] sm:w-[65vw] md:w-80 bg-white backdrop-blur-md shadow-2xl rounded-r-2xl px-6 py-6 flex flex-col transform transition-transform duration-300 ${
+            open ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-blue-600 text-2xl font-bold tracking-wide">Explore</h2>
+            <button
               onClick={() => setOpen(false)}
-            />
-
-            <motion.aside
-              key="drawer"
-              variants={drawerV}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="fixed top-0 left-0 z-50 h-full w-[80vw] sm:w-[65vw] md:w-80 bg-white backdrop-blur-md shadow-2xl rounded-r-2xl px-6 py-6 flex flex-col"
+              className="text-zinc-700 text-2xl hover:rotate-90 transition-transform duration-300"
+              aria-label="Close drawer"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-blue-600 text-2xl font-bold tracking-wide">Explore</h2>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="text-zinc-700 text-2xl hover:rotate-90 transition-transform duration-300"
-                  aria-label="Close drawer"
-                >
-                  ✕
-                </button>
-              </div>
+              ✕
+            </button>
+          </div>
+      
+          {/* Menu Items */}
+          <ul className="space-y-3 text-zinc-800 font-medium text-base">
+  <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">Main</p>
+  {[
+    ["Home", <FaHome />, "/"],                   // Home
+    ["About Us", <FaInfoCircle />, "/about"],    // About
+    ["Listings", <FaBuilding />, "/view-properties"], // Listings (building icon)
+    ["Contact", <FaPhone />, "/contact"],        // Contact
+  ].map(([label, icon, href]) => (
+    <li key={href}>
+      <Link
+        to={href}
+        onClick={() => setOpen(false)}
+        className="flex items-center gap-3 px-4 py-2 rounded-lg transition-all group hover:bg-blue-100"
+      >
+        <span className="text-lg text-blue-600 group-hover:scale-110 transition-transform duration-200">{icon}</span>
+        <span className="truncate group-hover:translate-x-1 transition-transform duration-200">{label}</span>
+      </Link>
+    </li>
+  ))}
 
-              <motion.ul
-                className="space-y-3 text-zinc-800 font-medium text-base"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">Main</p>
-                {[
-                  ["Home", <FaHome />, "/", false],
-                  ["About", <FaInfoCircle />, "/about", false],
-                  ["Listing", <FaListUl />, "/view-properties", false],
-                  ["Contact", <FaPhone />, "/contact", false],
-                ].map(([label, icon, href]) => (
-                  <li key={href}>
-                    <Link
-                      to={href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg transition-all group hover:bg-blue-100"
-                    >
-                      <span className="text-lg group-hover:scale-110 transition-transform duration-200">{icon}</span>
-                      <span className="truncate group-hover:translate-x-1 transition-transform duration-200">{label}</span>
-                    </Link>
-                  </li>
-                ))}
-                
-
-                <p className="text-xs text-zinc-400 uppercase tracking-wide mt-6 mb-1">Premium</p>
-                <li>
-                  <Link
-                    to="/subscription"
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow border border-yellow-400 group"
-                  >
-                    <span className="text-lg group-hover:scale-110 transition-transform duration-200">
-                      <FaRegCreditCard />
-                    </span>
-                    <span className="truncate group-hover:translate-x-1 transition-transform duration-200">
-                      EMS Subscription Plans
-                    </span>
-                  </Link>
-                </li>
-              </motion.ul>
-
-              <div className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200" style={{ fontFamily: "heading_font" }}>
-                Making Urban Living Easy
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+  <p className="text-xs text-zinc-400 uppercase tracking-wide mt-6 mb-1">Premium</p>
+  <li>
+    <Link
+      to="/subscription"
+      onClick={() => setOpen(false)}
+      className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow border border-yellow-400 group"
+    >
+      <span className="text-lg text-yellow-700 group-hover:scale-110 transition-transform duration-200">
+        <FaRegCreditCard />
+      </span>
+      <span className="truncate group-hover:translate-x-1 transition-transform duration-200">
+        EMS Subscription Plans
+      </span>
+    </Link>
+  </li>
+</ul>
+      
+          <div className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200" style={{ fontFamily: "heading_font" }}>
+            Making Urban Living Easy
+          </div>
+        </aside>
+      </div>
+      
+        </>
     </header>
   );
 }
