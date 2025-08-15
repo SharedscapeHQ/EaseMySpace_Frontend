@@ -107,7 +107,7 @@ export default function Navbar() {
     Add Property
   </Link>
   
-  <span className="absolute lg:-top-2.5 -top-0.5 -right-2 inline-block px-1.5 py-0.2 text-[7px] sm:text-xs text-green-800 bg-green-100 lg:rounded-md rounded-sm shadow">
+  <span className="absolute lg:-top-2.5 -top-0.5 lg:font-thin -right-2 inline-block px-1.5 py-0.2 text-[7px] sm:text-xs text-green-800 bg-green-100 lg:rounded-md rounded-sm shadow">
     FREE
   </span>
 </div>
