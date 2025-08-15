@@ -127,7 +127,7 @@ export default function NewlyListedProperties() {
 
   if (loading) {
     return (
-      <section className="py-10 mt-10 lg:px-10 px-3 max-w-7xl mx-auto">
+      <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
         <h2
           style={{ fontFamily: "heading_font" }}
           className="text-lg lg:text-3xl mb-0 text-black leading-tight"

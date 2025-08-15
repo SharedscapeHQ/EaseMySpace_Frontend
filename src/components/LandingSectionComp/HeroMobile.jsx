@@ -67,71 +67,75 @@ export default function HeroMobile({ properties }) {
   };
 
   return (
-    <section className="lg:hidden w-full bg-white px-4 py-6">
-      {/* Heading */}
-      <div className="w-full text-left">
-        <h1
-          style={{ fontFamily: "heading_font" }}
-          className="text-3xl sm:text-4xl text-zinc-800 mb-6"
+   <section
+  className="lg:hidden w-full bg-white px-4 py-6"
+  style={{ height: "calc(100vh - 5rem)" }}
+>
+  {/* Heading */}
+  <div className="w-full text-left">
+    <h1
+      style={{ fontFamily: "heading_font" }}
+      className="text-3xl sm:text-4xl text-zinc-800 mb-8"
+    >
+      Find your next home with ease
+    </h1>
+  </div>
+
+  {/* Options */}
+  <div className="flex justify-between gap-3 mb-6">
+    {options.map((item) => (
+      <Link
+        key={item.value}
+        to={`/view-properties?looking_for=${item.value}`}
+        className="relative flex flex-col items-center justify-center p-4 rounded-xl shadow-md border border-zinc-50 bg-white w-1/3 transition-transform"
+      >
+        <div
+          className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center`}
         >
-          Find your next home with ease
-        </h1>
-      </div>
-
-      {/* Options */}
-      <div className="flex justify-between gap-3 mb-6">
-        {options.map((item) => (
-          <Link
-            key={item.value}
-            to={`/view-properties?looking_for=${item.value}`}
-            className="relative flex flex-col items-center justify-center p-4 rounded-xl shadow-md border border-zinc-50 bg-white w-1/3 transition-transform"
-          >
-            <div
-              className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center`}
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-14 h-14 object-contain"
-              />
-            </div>
-
-            <span
-              style={{ fontFamily: "heading_font" }}
-              className="text-sm text-zinc-700 mt-2"
-            >
-              {item.title}
-            </span>
-            <span className="text-xs text-zinc-500 mt-1 text-center">
-              {item.subtitle}
-            </span>
-          </Link>
-        ))}
-      </div>
-
-      {/* Big Image Section with Search Bar */}
-      <div className="relative w-full h-52 rounded-xl overflow-hidden">
-        <img src={heroImg} alt="Hero" className="w-full h-full object-cover" />
-
-        {/* Search bar on top */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]">
-          <div className="relative">
-            <IoSearchOutline
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg"
-            />
-            <input
-              type="text"
-              name="location"
-              value={filters.location}
-              onChange={handleFilterChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Search by location or property"
-              className="w-full bg-white rounded-full py-3 pl-12 pr-4 shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+          <img
+            src={item.img}
+            alt={item.title}
+            className="w-14 h-14 object-contain"
+          />
         </div>
+
+        <span
+          style={{ fontFamily: "heading_font" }}
+          className="text-sm text-zinc-700 mt-2"
+        >
+          {item.title}
+        </span>
+        <span className="text-xs text-zinc-500 mt-1 text-center">
+          {item.subtitle}
+        </span>
+      </Link>
+    ))}
+  </div>
+
+  {/* Big Image Section with Search Bar */}
+  <div className="relative w-full h-56 rounded-xl overflow-hidden">
+    <img src={heroImg} alt="Hero" className="w-full h-full object-cover" />
+
+    {/* Search bar on top */}
+    <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]">
+      <div className="relative">
+        <IoSearchOutline
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg"
+        />
+        <input
+          type="text"
+          name="location"
+          value={filters.location}
+          onChange={handleFilterChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Search by location or property"
+          className="w-full bg-white rounded-full py-3 pl-12 pr-4 shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
   );
 }
 
