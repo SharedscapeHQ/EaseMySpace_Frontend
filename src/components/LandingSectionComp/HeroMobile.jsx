@@ -68,7 +68,7 @@ export default function HeroMobile({ properties }) {
 
   return (
    <section
-  className="lg:hidden w-full bg-white px-4 py-6"
+  className="lg:hidden w-full bg-white px-4 py-6 flex flex-col"
   style={{ height: "calc(100vh - 5rem)" }}
 >
   {/* Heading */}
@@ -113,7 +113,7 @@ export default function HeroMobile({ properties }) {
   </div>
 
   {/* Big Image Section with Search Bar */}
-  <div className="relative w-full h-56 rounded-xl overflow-hidden">
+  <div className="relative w-full h-56 rounded-xl overflow-hidden mt-auto">
     <img src={heroImg} alt="Hero" className="w-full h-full object-cover" />
 
     {/* Search bar on top */}
@@ -135,6 +135,7 @@ export default function HeroMobile({ properties }) {
     </div>
   </div>
 </section>
+
 
   );
 }
