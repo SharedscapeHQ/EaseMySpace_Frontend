@@ -5,7 +5,6 @@ import pgImg from "/landing-assets/pgImg.png";
 import sharedImg from "/landing-assets/sharedImg.png";
 import vacantImg from "/landing-assets/vacantImg.png";
 import heroImg from "/heroImg/hero.jpg";
-import inDay from "/heroImg/independeceDay.png";
 
 export default function HeroMobile({ properties }) {
   const navigate = useNavigate();
@@ -69,28 +68,21 @@ export default function HeroMobile({ properties }) {
 
   return (
    <section
-  className="lg:hidden w-full bg-white px-4 pb-6"
+  className="lg:hidden w-full bg-white px-4 py-6"
   style={{ height: "calc(100vh - 5rem)" }}
 >
-  <div className="w-full flex justify-center mb-3">
-    <img
-      src={inDay}
-      alt="Independence Day"
-      className="w-full h-36 rounded-lg object-fill transform transition-transform duration-700"
-    />
-  </div>
   {/* Heading */}
-  {/* <div className="w-full text-left">
+  <div className="w-full text-left">
     <h1
       style={{ fontFamily: "heading_font" }}
       className="text-3xl sm:text-4xl text-zinc-800 mb-8"
     >
       Find your next home with ease
     </h1>
-  </div> */}
+  </div>
 
   {/* Options */}
-  <div className="flex justify-between gap-3 mb-4">
+  <div className="flex justify-between gap-3 mb-6">
     {options.map((item) => (
       <Link
         key={item.value}
