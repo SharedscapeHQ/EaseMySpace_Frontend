@@ -7,23 +7,23 @@ import qualityImg4 from '/quality-assets/qtest4.png';
 function OurQuality() {
   const features = [
     {
-      title: 'Break the clutter, find real matches',
-      description: 'No more fake leads or spam. EMS connects you with real, verified users on WhatsApp fast and easy.',
+      title: 'Break the clutter, find your flatmate',
+      description: 'Skip the fake profiles. EMS connects you instantly with verified flatmate options on WhatsApp so you can match faster, stress-free.',
       image: qualityImg1,
     },
     {
-      title: 'Grow your chances, not your efforts',
-      description: 'One profile, more matches. EMS helps you connect faster and manage everything from one place.',
+      title: 'More matches, less effort',
+      description: 'Create your profile once and let EMS bring you the best flatmate or room options — all in one place, without the endless searching.',
       image: qualityImg2,
     },
     {
-      title: 'Smart conversations, zero confusion',
-      description: 'Chat directly, filter replies, and skip the back-and-forth. Only talk to serious matches.',
+      title: 'Chat smart, move in faster',
+      description: 'Talk directly to verified matches, filter out irrelevant chats, and save time. Only serious seekers and listers, no time-wasters.',
       image: qualityImg3,
     },
     {
-      title: 'One platform, all sources',
-      description: 'EMS brings Insta, WhatsApp, and more into one simple flow no switching apps.',
+      title: 'One platform, all your matches',
+      description: 'Get flatmate and room leads from every source in one place. With EMS, you can find, chat, and close deals without juggling multiple platforms.',
       image: qualityImg4,
     },
   ];

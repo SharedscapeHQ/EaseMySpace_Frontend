@@ -48,10 +48,10 @@ const PrivacyPolicy = () => {
             <p>
               If you have any questions about this Privacy Policy, contact us at{' '}
               <a
-                href="mailto:hello@easemyspace.in"
+                href="mailto:support@easemyspace.in"
                 className="text-blue-600 hover:underline"
               >
-                hello@easemyspace.in
+                support@easemyspace.in
               </a>.
             </p>
           </div>

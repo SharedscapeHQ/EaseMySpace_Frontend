@@ -121,8 +121,8 @@ export default function Footer() {
   <div className="text-sm space-y-4 ml-32  max-w-xs w-full ">
     <div className="flex items-center gap-2">
       <span className="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-      <a href="mailto:hello@easemyspace.in" className="hover:underline">
-        hello@easemyspace.in
+      <a href="mailto:support@easemyspace.in" className="hover:underline">
+        support@easemyspace.in
       </a>
     </div>
 

@@ -34,10 +34,10 @@ const CancellationRefundPolicy = () => {
         <p className="text-gray-700 mb-2">
           For any queries or concerns, you can reach out to us at{' '}
           <a
-            href="mailto:hello@easemyspace.in"
+            href="mailto:support@easemyspace.in"
             className="text-blue-600 hover:underline"
           >
-            hello@easemyspace.in
+            support@easemyspace.in
           </a>.
         </p>
         <p className="text-gray-700">
