@@ -56,10 +56,10 @@ export default function ContactPage() {
               <span className="font-semibold">Address:</span> WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400025
             </div>
             <div>
-              <span className="font-semibold">Phone:</span> +91 9867637509, +91 9004463371
+              <span className="font-semibold">Phone:</span> +91 9004463371
             </div>
             <div>
-              <span className="font-semibold">Email:</span> hello@easemyspace.in
+              <span className="font-semibold">Email:</span> support@easemyspace.in
             </div>
           </div>
         </motion.aside>
