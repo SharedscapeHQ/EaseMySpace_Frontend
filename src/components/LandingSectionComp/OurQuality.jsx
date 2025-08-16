@@ -8,7 +8,7 @@ function OurQuality() {
   const features = [
     {
       title: 'Break the clutter, find your flatmate',
-      description: 'Skip the fake profiles. EMS connects you instantly with verified flatmate options on WhatsApp so you can match faster, stress-free.',
+      description: 'Skip the fake profiles. EMS connects you instantly with verified flatmate options.',
       image: qualityImg1,
     },
     {
