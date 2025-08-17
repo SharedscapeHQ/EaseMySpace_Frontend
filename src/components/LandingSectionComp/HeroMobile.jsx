@@ -79,8 +79,8 @@ export default function HeroMobile({ properties }) {
 
   return (
   <section
-      className={`lg:hidden w-full bg-white px-4 py-6 transition-all duration-500`}
-      style={{ height: scrolled ? "75vh" : "100vh" }} 
+      className={`lg:hidden w-full bg-white px-4 py-6 transition-all duration-200`}
+      style={{ height: scrolled ? "74vh" : "100vh" }} 
     >
   {/* Heading */}
   <div className="w-full text-left">
@@ -93,7 +93,7 @@ export default function HeroMobile({ properties }) {
   </div>
 
   {/* Options */}
-  <div className="flex justify-between gap-3 mb-6">
+  <div className="flex justify-between gap-3 mb-10">
     {options.map((item) => (
       <Link
         key={item.value}
@@ -125,7 +125,7 @@ export default function HeroMobile({ properties }) {
 
   {/* Big Image Section with Search Bar */}
   <div className="relative w-full h-56 rounded-xl overflow-hidden">
-    <img src={heroImg} alt="Hero" className="w-full h-full object-cover" />
+    <img src={heroImg} alt="Hero" className="w-full h-[110%] object-cover" />
 
     {/* Search bar on top */}
     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]">
