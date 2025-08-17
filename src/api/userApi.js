@@ -75,10 +75,48 @@ export const getRecentlyViewedProperties = async () => {
   return res.data.properties; // Adjust based on your backend response shape
 };
 
-// Send a property as recently viewed
 export const addRecentlyViewedProperty = async (propertyId) => {
   const res = await axiosInstance.post("/recently-viewed", { propertyId });
   return res.data;
 };
+
+export const fetchBookingLimitInfo = async () => {
+  try {
+    const res = await axiosInstance.get("/booking-limit");
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error fetching booking limit:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+// Create a new booking
+export const createBooking = async (property_id, booking_date, booking_time) => {
+  try {
+    const res = await axiosInstance.post("/create-booking", { 
+      property_id,
+      booking_date,
+      booking_time,
+    });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error creating booking:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+// Fetch all bookings of the logged-in user
+export const getMyBookings = async () => {
+  try {
+    const res = await axiosInstance.get("/my-bookings");
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error fetching bookings:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+
+
 
 export default axiosInstance;

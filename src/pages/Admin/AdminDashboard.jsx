@@ -20,11 +20,10 @@ import EditModal from "../../components/AdminPageComp/EditModal";
 import PropertyCard from "../../components/AdminPageComp/PropertyCard";
 import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
-import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
-import ManageRMs from "../../components/AdminPageComp/ManageRMs";
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
+import CareersPage from "../../components/AdminPageComp/CareersPage";
 
 
 export default function AdminDashboard() {
@@ -272,30 +271,28 @@ export default function AdminDashboard() {
 
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-indigo-800 mb-6">
-            Admin Dashboard
-          </h1>
+          
 
-          {activeTab === "Users" && (
-  <section>
-    <h2 className="text-xl font-semibold mb-4">Users</h2>
+       {activeTab === "Users" && (
+  <section className="mt-6">
+    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Users</h2>
+
     {loadingUsers ? (
-      <p>Loading users...</p>
+      <p className="text-gray-500">Loading users...</p>
     ) : (
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 text-center">
+      <div className="overflow-x-auto shadow border border-gray-200 rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200 text-left">
           <thead className="bg-indigo-50">
             <tr>
-              <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
                 Contact
               </th>
-              <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
                 Subscription
               </th>
-             
             </tr>
           </thead>
 
@@ -309,24 +306,30 @@ export default function AdminDashboard() {
                   : "-";
 
               return (
-                <tr key={u.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center align-middle">
+                <tr
+                  key={u.id}
+                  className="hover:bg-gray-50 transition duration-150"
+                >
+                  {/* Name */}
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {u.firstName} {u.lastName}
                   </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center align-middle">
+                  {/* Contact */}
+                  <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
                     <div>{u.email || <span className="italic text-gray-400">N/A</span>}</div>
                     <div className="mt-1">{u.phone || <span className="italic text-gray-400">N/A</span>}</div>
                   </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-center align-middle">
+                  {/* Subscription */}
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
                     <div>
                       {status === "paid" ? (
-                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium text-sm inline-block">
                           Paid
                         </span>
                       ) : status === "unpaid" ? (
-                        <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                        <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium text-sm inline-block">
                           Unpaid
                         </span>
                       ) : (
@@ -344,6 +347,7 @@ export default function AdminDashboard() {
     )}
   </section>
 )}
+
 
 
           {activeTab === "Leads" && (
@@ -388,7 +392,6 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <PropertyPieChart data={pieData} />
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {searchedProperties.map((property) => (
@@ -406,10 +409,10 @@ export default function AdminDashboard() {
 
           {activeTab === "NewlyListed" && (
             <section>
-              <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
+              <h2 style={{fontFamily:"heading_font"}} className="text-xl mb-4">Featured Listing</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {approved
-                  .slice() // to avoid mutating original array
+                  .slice()
                   .sort((a, b) => {
                     const aListed = a.is_newly_listed;
                     const bListed = b.is_newly_listed;
@@ -455,20 +458,18 @@ export default function AdminDashboard() {
 
           {activeTab === "ManageLocations" && (
             <section>
-              <h2 className="text-xl font-semibold mb-4">
-                Manage Top Locations
-              </h2>
               <ManageTopLocations />
             </section>
           )}
 
-          {activeTab === "ManageRMs" && <ManageRMs />}
 
           {activeTab === "UltimateSubscribers" && (
   <section>
     <UltimateSubscribers />
   </section>
+
 )}
+{activeTab === "Careers" && <CareersPage />}
 
           <EditModal
             editForm={editForm}

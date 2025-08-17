@@ -24,12 +24,10 @@ import EditModal from "../../components/AdminPageComp/EditModal";
 import PropertyCard from "../../components/AdminPageComp/PropertyCard";
 import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
-import PropertyPieChart from "../../components/AdminPageComp/PropertyPieChart";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import DeletedPropertyCard from "../../components/OwnerPageComp/DeletedProperties";
 import { FiSearch } from "react-icons/fi";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
-import ManageRMs from "../../components/AdminPageComp/ManageRMs";
 
 
 export default function OwnerDashboard() {
@@ -401,32 +399,34 @@ export default function OwnerDashboard() {
                             </td>
 
                             <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
-                              <span
-                                className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold capitalize ${
-                                  u.role === "admin"
-                                    ? "bg-red-100 text-red-700"
-                                    : u.role === "owner"
-                                    ? "bg-yellow-100 text-yellow-700"
-                                    : "bg-blue-100 text-blue-700"
-                                }`}
-                              >
-                                {u.role}
-                              </span>
-                            </td>
+  <span
+    className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold capitalize ${
+      u.role === "admin"
+        ? "bg-red-100 text-red-700"
+        : u.role === "owner"
+        ? "bg-yellow-100 text-yellow-700"
+        : u.role === "RM"
+        ? "bg-purple-100 text-purple-700"
+        : "bg-blue-100 text-blue-700"
+    }`}
+  >
+    {u.role}
+  </span>
+</td>
 
                             <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
                               {u.role !== "owner" ? (
                                 <div className="flex justify-center items-center gap-3">
-                                  <select
-                                    value={u.role}
-                                    onChange={(e) =>
-                                      handleRoleChange(u.id, e.target.value)
-                                    }
-                                    className="border border-gray-300 rounded-md px-3 py-1 text-sm"
-                                  >
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
-                                  </select>
+                                 <select
+  value={u.role}
+  onChange={(e) => handleRoleChange(u.id, e.target.value)}
+  className="border border-gray-300 rounded-md px-3 py-1 text-sm"
+>
+  <option value="user">User</option>
+  <option value="admin">Admin</option>
+  <option value="RM">RM</option>
+</select>
+
                                   <button
                                     onClick={() => handleDeleteUser(u.id)}
                                     className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md text-sm"
@@ -492,7 +492,6 @@ export default function OwnerDashboard() {
                 </div>
               </div>
 
-              <PropertyPieChart data={pieData} />
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {searchedProperties.map((property) => (
@@ -510,7 +509,7 @@ export default function OwnerDashboard() {
 
           {activeTab === "NewlyListed" && (
             <section>
-              <h2 className="text-xl font-semibold mb-4">Newly Listed</h2>
+              <h2 style={{fontFamily:"heading_font"}} className="text-xl mb-4">Featured Listing</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {approved
                   .slice() // to avoid mutating original array
@@ -585,7 +584,6 @@ export default function OwnerDashboard() {
             </section>
           )}
 
-          {activeTab === "ManageRMs" && <ManageRMs />}
 
           <EditModal
             editForm={editForm}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import pgImg from "/landing-assets/pgImg.png";
@@ -7,9 +7,10 @@ import vacantImg from "/landing-assets/vacantImg.png";
 import heroImg from "/heroImg/hero.jpg";
 
 export default function HeroMobile({ properties }) {
-  const navigate = useNavigate();
+   const navigate = useNavigate();
   const [filters, setFilters] = useState({ location: "" });
   const [filtered, setFiltered] = useState(properties || []);
+  const [scrolled, setScrolled] = useState(false);
 
   const options = [
     {
@@ -66,11 +67,21 @@ export default function HeroMobile({ properties }) {
     if (e.key === "Enter") handleSearch();
   };
 
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10); 
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
   return (
-   <section
-  className="lg:hidden w-full bg-white px-4 py-6"
-  style={{ height: "calc(100vh - 5rem)" }}
->
+  <section
+      className={`lg:hidden w-full bg-white px-4 py-6 transition-all duration-500`}
+      style={{ height: scrolled ? "75vh" : "100vh" }} 
+    >
   {/* Heading */}
   <div className="w-full text-left">
     <h1

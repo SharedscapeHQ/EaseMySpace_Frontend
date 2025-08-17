@@ -31,6 +31,7 @@ import ProtectedLeadUserRoute from "./components/ProtectedLeadUserRoute";
 import Careers from "./components/AboutUsSectionComp/CareersPageComp/Careers"
 import JobDetail from "./components/AboutUsSectionComp/CareersPageComp/JobDetail";
 import WhatsAppButton from "./components/Chats/WhatsAppButton";
+import RMDashboard from "./pages/RmUser/RmDashboard";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -198,6 +199,16 @@ export default function App() {
             <Layout>
               <ProtectedRoute allowedRoles={"user"}>
                 <UserDashboard />
+              </ProtectedRoute>
+            </Layout>
+          }
+        />
+        <Route
+          path="/rm-dashboard"
+          element={
+            <Layout>
+              <ProtectedRoute allowedRoles={"RM"}>
+                <RMDashboard />
               </ProtectedRoute>
             </Layout>
           }

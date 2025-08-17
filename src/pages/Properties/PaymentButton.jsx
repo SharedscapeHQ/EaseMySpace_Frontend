@@ -175,7 +175,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   return (
     <>
       <button
-        className={`mt-4 w-1/2 py-3 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${
+        className={` w-1/2 py-3 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${
           hasPaid
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-indigo-600 hover:bg-indigo-700 text-white"
@@ -225,7 +225,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                         : key === "premium"
                         ? "bg-yellow-400"
                         : "bg-red-500"
-                    } text-white text-xs font-bold px-2 py-1 rounded-full shadow`}
+                    } text-white text-xs  px-2 py-1 rounded-full shadow`}
                   >
                     {plan.label}
                   </span>

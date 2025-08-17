@@ -17,6 +17,7 @@ import RecentlyViewed from "../../components/UserPageComp/RecentlyViewed";
 import { logoutUser } from "../../api/authApi";
 import { FiClock } from "react-icons/fi";
 import DedicatedRM from "../../components/UserPageComp/DedicatedRM";
+import MyBookings from "../../components/UserPageComp/MyBookings";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -24,6 +25,7 @@ const TAB_TITLES = {
   MyPlan: "Your Subscription Plan",
   UnlockedContacts: "Unlocked Contacts",
   RecentlyViewed: "Recently Viewed Properties",
+  MyBookings: "Your Bookings",
 };
 
 function LoadingMessage({ message }) {
@@ -185,6 +187,7 @@ export default function UserDashboard() {
         {activeTab === "MyQueries" && <MyQueries />}
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
+        {activeTab === "MyBookings" && <MyBookings />}
         {activeTab === "DedicatedRM" && <DedicatedRM userId={user.id} />}
 
         <RaiseQueryModal

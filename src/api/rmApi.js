@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios instance for admin RM-related APIs
 const rmAxios = axios.create({
-  baseURL: "https://api.easemyspace.in/api/rm",
+  baseURL: "https://api.easemyspace.in/api/admin/rm",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -43,6 +43,16 @@ export const fetchMyRM = async (userId) => {
   const res = await axios.get(`https://api.easemyspace.in/api/user/my-rm/${userId}`, {
     withCredentials: true,
   });
+  return res.data;
+};
+
+export const getAllBookings = async () => {
+  const res = await rmAxios.get("/booking/all");
+  return res.data;
+};
+
+export const getAssignedUsers = async (rmId) => {
+  const res = await rmAxios.get(`/assigned-users/${rmId}`);
   return res.data;
 };
 

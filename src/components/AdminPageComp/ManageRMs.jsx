@@ -87,12 +87,12 @@ export default function ManageRMs() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-8 text-gray-800">Manage RMs</h2>
+    <div style={{fontFamily:"para_font"}} className="p-6 max-w-5xl mx-auto">
+      <h2 style={{fontFamily:"heading_font"}} className="text-3xl mb-8 text-zinc-800">Manage RMs</h2>
 
       {/* Add RM Form */}
       <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
-        <h3 className="text-xl font-semibold mb-5 text-gray-700 flex items-center gap-2">
+        <h3 className="text-xl mb-5 text-gray-700 flex items-center gap-2">
           <FiUserPlus size={22} /> Add New RM
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

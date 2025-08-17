@@ -143,39 +143,61 @@ export default function RecentAddedProperties() {
         <div className="relative">
           <div ref={scrollRef} className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide">
             {recentProperties.map((p) => (
-              <Link
-                to={`/properties/${p.id}`}
-                key={p.id}
-                onClick={(e) => handlePropertyCardClick(e, p)}
-                className="min-w-[270px] max-w-[270px] bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden group"
-              >
-                <article className="flex flex-col h-full">
-                  <div className="relative h-48 w-full p-3">
-                    <div className="absolute top-4 left-4 z-10 bg-blue-500 text-white text-[10px] px-2 py-1 rounded-lg shadow-md">
-  New
-</div>
+             <Link
+  to={`/properties/${p.id}`}
+  key={p.id}
+  onClick={(e) => handlePropertyCardClick(e, p)}
+  className="min-w-[270px] max-w-[270px] bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden group relative transition-all duration-300"
+>
+  {/* Blue Fill Overlay */}
+    <div className="hidden lg:block absolute inset-x-0 bottom-0 bg-blue-500 h-0 group-hover:h-full transition-all duration-300 ease-in-out z-0 rounded-2xl"></div>
 
-                    <div className="h-full w-full rounded-xl overflow-hidden">
-                      {(() => {
-                        const url = p.images[0];
-                        if (!url) return null;
-                        const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-                        const isVideo = /\.(mp4|mov|webm)$/i.test(url);
-                        if (isImage) return <img src={url} alt="Property" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />;
-                        if (isVideo) return <video src={url} controls className="h-full w-full object-cover" loading="lazy" />;
-                        return null;
-                      })()}
-                    </div>
-                  </div>
 
-                  <div className="p-4 flex flex-col gap-1">
-                    <h3 className="font-semibold text-md text-black truncate">{p.bhk_type || p.title}</h3>
-                    <p style={{fontFamily:"heading_font"}} className="text-zinc-800 font-bold
-     text-xs lg:text-base whitespace-nowrap">₹ {Number(p.price).toLocaleString()}/mo</p>
-                    <p className="text-gray-600 text-xs truncate">{p.location}</p>
-                  </div>
-                </article>
-              </Link>
+  <article className="flex flex-col h-full relative z-10">
+    <div className="relative h-48 w-full p-3 z-10">
+      <div className="absolute top-4 left-4 z-20 bg-blue-600 text-white text-[10px] px-2 py-1 rounded-lg shadow-md">
+        New
+      </div>
+
+      <div className="h-full w-full rounded-xl overflow-hidden">
+        {(() => {
+          const url = p.images[0];
+          if (!url) return null;
+          const isImage = /\.(jpe?g|png|webp)$/i.test(url);
+          const isVideo = /\.(mp4|mov|webm)$/i.test(url);
+          if (isImage)
+            return (
+              <img
+                src={url}
+                alt="Property"
+                className="h-full w-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-transform duration-300"
+                loading="lazy"
+              />
+            );
+          if (isVideo)
+            return (
+              <video
+                src={url}
+                controls
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            );
+          return null;
+        })()}
+      </div>
+    </div>
+
+    <div className="p-4 flex flex-col gap-1 z-10 relative lg:group-hover:text-white transition-colors duration-300">
+      <h3 className="font-semibold text-md truncate">{p.bhk_type || p.title}</h3>
+      <p style={{ fontFamily: "heading_font" }} className="font-bold text-xs lg:text-base whitespace-nowrap">
+        ₹ {Number(p.price).toLocaleString()}/mo
+      </p>
+      <p className="text-gray-600 lg:group-hover:text-white text-xs truncate">{p.location}</p>
+    </div>
+  </article>
+</Link>
+
             ))}
           </div>
         </div>

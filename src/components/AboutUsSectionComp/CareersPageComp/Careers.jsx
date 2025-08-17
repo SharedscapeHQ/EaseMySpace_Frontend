@@ -94,37 +94,36 @@ export default function Careers() {
 
       {/* Open Positions */}
       <section className="py-12 px-6 lg:px-20">
-        <h2 className="text-2xl font-semibold mb-8">Open Positions</h2>
+  <h2 className="text-2xl font-semibold mb-8">Open Positions</h2>
 
-        {jobs.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {jobs.map((job, idx) => (
-              <div
-                key={idx}
-                className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between"
-              >
-                <div>
-                  <h3 className="text-lg font-bold">{job.role}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{job.dept}</p>
-                  <p className="text-sm text-gray-500">{job.location}</p>
-                  <p className="text-gray-600 text-sm mt-4">{job.description}</p>
-                </div>
-                <Link
-                  to={`/jobs/${job.id}`}
-                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 inline-block text-center"
-                >
-                  Apply Now
-                </Link>
-              </div>
-            ))}
+  {jobs.length > 0 ? (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {jobs.map((job, idx) => (
+        <div
+          key={idx}
+          className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between hover:shadow-xl transition"
+        >
+          <div>
+            <h3 className="text-lg font-bold text-gray-800">{job.role}</h3>
+            <p className="text-sm text-blue-600 mt-1">{job.dept}</p>
+            <p className="text-gray-600 text-sm mt-3 line-clamp-3">{job.description}</p>
           </div>
-        ) : (
-          <p className="text-gray-600 text-lg">
-            No openings at the moment — stay tuned!
-            You can still submit your application below so we can reach out when a matching position is available.
-          </p>
-        )}
-      </section>
+          <Link
+            to={`/jobs/${job.id}`}
+            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-center font-medium"
+          >
+            Apply Now
+          </Link>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-600 text-lg">
+      No openings at the moment — stay tuned! You can still submit your application below, and we will reach out when a matching position is available.
+    </p>
+  )}
+</section>
+
 
       {/* Perks & Benefits + Form */}
       <section className="bg-white py-16 px-6 lg:px-20 border-t border-gray-200">

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { markFollowUp } from "../../api/adminApi";
 import { clearFollowUp } from "../../api/ownerApi";
 import toast from "react-hot-toast";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FiDownload } from "react-icons/fi";
 
 // Constants
 const FLAGGED_NUMBERS = ["9136547739", "9867637509"];
@@ -80,20 +83,59 @@ export default function LeadsTable({ leads }) {
     return true;
   });
 
+  // ─── Export to Excel ───
+  const exportToExcel = () => {
+    if (!localLeads || localLeads.length === 0) {
+      toast.error("No leads to export");
+      return;
+    }
+
+    const data = localLeads.map((lead) => ({
+      Phone: lead.phone,
+      "First Seen": lead.first_seen
+        ? new Date(lead.first_seen).toLocaleString()
+        : "",
+      "Last Verified": lead.last_verified_at
+        ? new Date(lead.last_verified_at).toLocaleString()
+        : "",
+      "Follow-up Done": lead.follow_up_done ? "Yes" : "No",
+      "Followed By": lead.followed_by || "",
+      Remark: lead.remark || "",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Leads");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "leads.xlsx");
+  };
+
   return (
     <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
-      {/* Filter */}
-      <div className="flex items-center justify-end p-4">
-        <label className="text-sm mr-2 text-gray-700 font-medium">Filter:</label>
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="border rounded-md px-3 py-1 text-sm"
+      {/* Filter + Export */}
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center">
+          <label className="text-sm mr-2 text-gray-700 font-medium">Filter:</label>
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="border rounded-md px-3 py-1 text-sm"
+          >
+            <option value="all">All</option>
+            <option value="done">Follow-up Done</option>
+            <option value="pending">Not Followed-up</option>
+          </select>
+        </div>
+
+        <button
+          onClick={exportToExcel}
+          className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
         >
-          <option value="all">All</option>
-          <option value="done">Follow-up Done</option>
-          <option value="pending">Not Followed-up</option>
-        </select>
+          <FiDownload size={16} />
+          Export
+        </button>
       </div>
 
       {/* Table */}
@@ -114,49 +156,24 @@ export default function LeadsTable({ leads }) {
           <tbody>
             {filteredLeads.map((lead) => (
               <tr key={lead.id} className="even:bg-gray-50 border-b align-top">
-                {/* Phone */}
-                <td
-                  className={`px-5 py-3 ${
-                    isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""
-                  }`}
-                >
+                <td className={`px-5 py-3 ${isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""}`}>
                   {lead.phone}
                 </td>
-
-                {/* First Seen */}
                 <td className="px-5 py-3">
-                  {lead.first_seen
-                    ? new Date(lead.first_seen).toLocaleString()
-                    : "—"}
+                  {lead.first_seen ? new Date(lead.first_seen).toLocaleString() : "—"}
                 </td>
-
-                {/* Last Verified */}
                 <td className="px-5 py-3">
-                  {lead.last_verified_at
-                    ? new Date(lead.last_verified_at).toLocaleString()
-                    : "—"}
+                  {lead.last_verified_at ? new Date(lead.last_verified_at).toLocaleString() : "—"}
                 </td>
-
-                {/* Follow-up Column */}
                 <td className="px-5 py-3">
                   {lead.follow_up_done ? (
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked
-                          disabled
-                          className="accent-green-600 w-4 h-4"
-                        />
-                        <span className="text-green-600 font-medium text-xs">
-                          Follow-up done
-                        </span>
+                        <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
+                        <span className="text-green-600 font-medium text-xs">Follow-up done</span>
                       </div>
                       {userRole === "owner" && (
-                        <button
-                          onClick={() => handleClearFollowUp(lead.id)}
-                          className="text-red-600 text-xs hover:underline mt-1 self-start"
-                        >
+                        <button onClick={() => handleClearFollowUp(lead.id)} className="text-red-600 text-xs hover:underline mt-1 self-start">
                           Clear Follow-up
                         </button>
                       )}
@@ -168,9 +185,7 @@ export default function LeadsTable({ leads }) {
                         className="border rounded-md px-2 py-1 text-xs focus:outline-indigo-500 resize-none"
                         placeholder="Enter remark"
                         value={remarks[lead.id] || ""}
-                        onChange={(e) =>
-                          handleRemarkChange(lead.id, e.target.value)
-                        }
+                        onChange={(e) => handleRemarkChange(lead.id, e.target.value)}
                       />
                       <button
                         onClick={() => handleFollowUp(lead.id)}
@@ -181,14 +196,8 @@ export default function LeadsTable({ leads }) {
                     </div>
                   )}
                 </td>
-
-                {/* Followed By */}
                 <td className="px-5 py-3">{lead.followed_by || "—"}</td>
-
-                {/* Remark */}
-                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">
-                  {lead.remark || "—"}
-                </td>
+                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">{lead.remark || "—"}</td>
               </tr>
             ))}
           </tbody>

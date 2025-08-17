@@ -9,6 +9,7 @@ import {
   FiCreditCard,
   FiClock,
   FiUser,
+  FiCalendar,
 } from "react-icons/fi";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPlan }) {
@@ -26,6 +27,10 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
   if (userPlan === "ultimate") {
     tabs.splice(3, 0, { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> });
   }
+
+  // Add My Bookings after My Plan (or after Dedicated RM if ultimate)
+  const bookingsIndex = userPlan === "ultimate" ? 4 : 3;
+  tabs.splice(bookingsIndex, 0, { label: "My Bookings", value: "MyBookings", icon: <FiCalendar /> });
 
   const handleTabClick = (value) => {
     setActiveTab(value);

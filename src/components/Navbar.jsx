@@ -40,6 +40,8 @@ export default function Navbar() {
         return "/admin-dashboard";
       case "owner":
         return "/owner-dashboard";
+      case "RM":
+        return "/rm-dashboard";
       default:
         return "/dashboard";
     }

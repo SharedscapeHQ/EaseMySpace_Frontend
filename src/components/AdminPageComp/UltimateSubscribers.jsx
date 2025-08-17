@@ -6,7 +6,7 @@ export default function UltimateSubscribers() {
   const [users, setUsers] = useState([]);
   const [rms, setRms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [assigning, setAssigning] = useState({}); // Track assignment per user
+  const [assigning, setAssigning] = useState({});
 
   useEffect(() => {
     fetchUltimateUsers();
@@ -24,7 +24,7 @@ export default function UltimateSubscribers() {
         }))
       );
     } catch (err) {
-      console.error("Failed to fetch users:", err);
+      console.error(err);
       toast.error("Failed to fetch users");
     } finally {
       setLoading(false);
@@ -36,16 +36,13 @@ export default function UltimateSubscribers() {
       const data = await getAllRMs();
       setRms(data);
     } catch (err) {
-      console.error("Failed to fetch RMs:", err);
+      console.error(err);
       toast.error("Failed to fetch RMs");
     }
   };
 
   const assignRM = async (userId, rmId) => {
-    if (!userId || !rmId) {
-      toast.error("Please select an RM first");
-      return;
-    }
+    if (!userId || !rmId) return toast.error("Please select an RM first");
 
     try {
       setAssigning((prev) => ({ ...prev, [userId]: true }));
@@ -56,20 +53,19 @@ export default function UltimateSubscribers() {
         prev.map((u) => (u.id === userId ? { ...u, selectedRM: rmId } : u))
       );
     } catch (err) {
-      console.error("Failed to assign RM:", err.response?.data || err.message);
+      console.error(err);
       toast.error("Failed to assign RM");
     } finally {
       setAssigning((prev) => ({ ...prev, [userId]: false }));
     }
   };
 
-  const capitalizeName = (name) => {
-    return name
+  const capitalizeName = (name) =>
+    name
       .trim()
       .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
       .join(" ");
-  };
 
   if (loading)
     return (
@@ -84,14 +80,14 @@ export default function UltimateSubscribers() {
         Ultimate Subscribers
       </h2>
 
-      <div className="overflow-x-auto shadow-lg rounded-lg border border-gray-200">
+      <div className="overflow-x-auto shadow-lg border border-gray-200 rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-indigo-50">
             <tr>
               {["Name", "Email", "Phone", "Assign RM"].map((col) => (
                 <th
                   key={col}
-                  className="px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-700 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-sm sm:text-base font-semibold text-gray-700 uppercase tracking-wider"
                 >
                   {col}
                 </th>
@@ -103,20 +99,20 @@ export default function UltimateSubscribers() {
             {users.map((user) => (
               <tr
                 key={user.id}
-                className="hover:bg-gray-50 transition-colors duration-150"
+                className="hover:bg-gray-50 transition duration-150"
               >
-                <td className="px-4 py-3 whitespace-nowrap text-gray-900 font-medium text-sm sm:text-base">
+                <td className="px-6 py-4 whitespace-nowrap text-gray-900 font-medium text-sm sm:text-base">
                   {user.name}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-gray-700 text-sm sm:text-base">
-                  {user.email}
+                <td className="px-6 py-4 text-gray-700 text-sm sm:text-base whitespace-nowrap">
+                  {user.email || <span className="italic text-gray-400">N/A</span>}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-gray-700 text-sm sm:text-base">
-                  {user.phone}
+                <td className="px-6 py-4 text-gray-700 text-sm sm:text-base whitespace-nowrap">
+                  {user.phone || <span className="italic text-gray-400">N/A</span>}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
+                <td className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
                   <select
-                    className="border rounded px-3 py-2 text-gray-700 text-sm sm:text-base w-full sm:w-auto focus:ring-2 focus:ring-indigo-400 transition"
+                    className="border border-gray-300 rounded px-3 py-2 text-gray-700 text-sm sm:text-base w-full sm:w-auto focus:ring-2 focus:ring-indigo-400 transition"
                     value={user.selectedRM}
                     onChange={(e) => {
                       const rmId = e.target.value;
@@ -154,7 +150,9 @@ export default function UltimateSubscribers() {
         </table>
 
         {users.length === 0 && (
-          <p className="text-gray-500 text-center py-6">No ultimate subscribers found.</p>
+          <p className="text-gray-500 text-center py-6">
+            No ultimate subscribers found.
+          </p>
         )}
       </div>
     </div>
