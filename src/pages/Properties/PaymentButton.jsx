@@ -175,7 +175,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   return (
     <>
       <button
-        className={` w-1/2 py-3 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${
+        className={` w-1/2 py-2.5 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${
           hasPaid
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-indigo-600 hover:bg-indigo-700 text-white"
@@ -183,7 +183,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         disabled={isPaying}
         onClick={handlePayment}
       >
-        {isPaying ? "Processing..." : hasPaid ? "Upgrade" : "Pay Now"}
+        {isPaying ? "Processing..." : hasPaid ? "Upgrade" : "Subscribe"}
       </button>
 
       {showPlanOptions && (

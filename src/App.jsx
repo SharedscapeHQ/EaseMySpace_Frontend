@@ -32,6 +32,7 @@ import Careers from "./components/AboutUsSectionComp/CareersPageComp/Careers"
 import JobDetail from "./components/AboutUsSectionComp/CareersPageComp/JobDetail";
 import WhatsAppButton from "./components/Chats/WhatsAppButton";
 import RMDashboard from "./pages/RmUser/RmDashboard";
+import HRMDashboard from "./pages/HrUser/HrDashboard";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -209,6 +210,16 @@ export default function App() {
             <Layout>
               <ProtectedRoute allowedRoles={"RM"}>
                 <RMDashboard />
+              </ProtectedRoute>
+            </Layout>
+          }
+        />
+        <Route
+          path="/hr-dashboard"
+          element={
+            <Layout>
+              <ProtectedRoute allowedRoles={"HR"}>
+                <HRMDashboard />
               </ProtectedRoute>
             </Layout>
           }

@@ -42,6 +42,8 @@ export default function Navbar() {
         return "/owner-dashboard";
       case "RM":
         return "/rm-dashboard";
+      case "HR":
+        return "/hr-dashboard";
       default:
         return "/dashboard";
     }

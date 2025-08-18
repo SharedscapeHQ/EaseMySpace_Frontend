@@ -5,8 +5,9 @@ import { logoutUser } from "../../api/authApi";
 
 export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
   const tabs = [
-    { label: "Booking Schedule", value: "BookingSchedule", icon: <FiCalendar /> },
-    { label: "Assigned Users", value: "AssignedUsers", icon: <FiUserCheck /> },
+    { label: "All Booking", value: "BookingSchedule", icon: <FiCalendar /> },
+    { label: "Assigned Users", value: "RMUsers", icon: <FiUserCheck /> }, 
+    { label: "My Bookings", value: "AssignedUsersBooking", icon: <FiUserCheck /> },
   ];
 
   const [isOpen, setIsOpen] = useState(false);

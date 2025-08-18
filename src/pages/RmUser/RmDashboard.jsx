@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import RMDashboardSidebar from "../../components/RmUserComp/Sidebar";
 import BookingSchedule from "../../components/RmUserComp/BookingSchedule";
+import AssignedUserBooking from "../../components/RmUserComp/AssignedUserBooking";
 import AssignedUsers from "../../components/RmUserComp/AssignedUsers";
 
 export default function RMDashboard() {
@@ -17,9 +18,10 @@ export default function RMDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 ml-0 lg:ml-64 bg-gray-50 min-h-screen">
-        {activeTab === "BookingSchedule" && <BookingSchedule />}
-        {activeTab === "AssignedUsers" && <AssignedUsers />}
-      </main>
+  {activeTab === "BookingSchedule" && <BookingSchedule />}
+  {activeTab === "AssignedUsersBooking" && <AssignedUserBooking />}
+  {activeTab === "RMUsers" && <AssignedUsers />}
+</main>
     </div>
   );
 }

@@ -209,7 +209,7 @@ export default function PaymentButtonSubs({
       disabled={hasPaid || isPaying}
       onClick={handlePayment}
     >
-      {hasPaid ? "Contact Unlocked" : isPaying ? "Processing..." : "Pay Now"}
+      {hasPaid ? "Contact Unlocked" : isPaying ? "Processing..." : "Subscribe"}
     </button>
   );
 }

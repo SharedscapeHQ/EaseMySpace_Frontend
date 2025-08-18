@@ -146,7 +146,7 @@ export default function HeroDesktop() {
             <Link
               ref={buttonRef}
               to="/view-properties"
-              className="bg-blue-600 hover:text-blue-600 hover:bg-white hover:border border-zinc-400 text-white px-6 py-2 rounded-full shadow-md transform transition-all duration-300 "
+              className="bg-blue-600 hover:text-blue-600 hover:bg-white hover:border-2 border-zinc-200 text-white px-6 py-2 rounded-full transform transition-all duration-300 "
             >
               View All properties
             </Link>

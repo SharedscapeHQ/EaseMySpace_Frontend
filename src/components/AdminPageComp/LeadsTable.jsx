@@ -7,7 +7,7 @@ import { saveAs } from "file-saver";
 import { FiDownload } from "react-icons/fi";
 
 // Constants
-const FLAGGED_NUMBERS = ["9136547739", "9867637509"];
+const FLAGGED_NUMBERS = ["9136547739", "9867637509", "9586132074"];
 
 export default function LeadsTable({ leads }) {
   const [remarks, setRemarks] = useState({});

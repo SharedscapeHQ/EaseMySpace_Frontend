@@ -83,7 +83,7 @@ export default function HeroMobile({ properties }) {
 
   return (
     <section
-      className="lg:hidden w-full bg-white px-4 py-6 transition-all duration-200"
+      className="lg:hidden w-full bg-white px-4 py-6 transition-all duration-400"
       style={{ height: scrolled ? "74vh" : "100vh" }}
     >
       {/* Heading */}

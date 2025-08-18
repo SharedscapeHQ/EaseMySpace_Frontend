@@ -9,13 +9,7 @@ import {
   markNewlyListed,
   fetchPendingQueries,
 } from "../../api/adminApi";
-import {
-  getAllUsers,
-  updateUserRole,
-  deleteUserById,
-  getDeletedProperties,
-  restorePropertyById,
-} from "../../api/ownerApi";
+import { getDeletedProperties, restorePropertyById } from "../../api/ownerApi";
 import { logoutUser } from "../../api/authApi";
 import { toast } from "react-hot-toast";
 
@@ -28,30 +22,35 @@ import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import DeletedPropertyCard from "../../components/OwnerPageComp/DeletedProperties";
 import { FiSearch } from "react-icons/fi";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
-
+import UserAccessControl from "../../components/OwnerPageComp/UserAccessControl";
+import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
+import CareersPage from "../../components/HrUserComp/CareersPage";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
   const mainRef = useRef(null);
   const [activeTab, setActiveTab] = useState("Users");
 
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
-
+  // Leads state
   const [leads, setLeads] = useState([]);
+  const [loadingLeads, setLoadingLeads] = useState(true);
+
+  // Properties state
   const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingProps, setLoadingProps] = useState(true);
 
+  // Queries state
   const [pendingQueries, setPendingQueries] = useState([]);
   const [loadingQueries, setLoadingQueries] = useState(true);
 
+  // Deleted properties state
   const [deletedProperties, setDeletedProperties] = useState([]);
   const [loadingDeletedProps, setLoadingDeletedProps] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Editing state
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -62,16 +61,14 @@ export default function OwnerDashboard() {
     newly_listed_position: "",
   });
 
+  // Scroll to top when tab changes
   useEffect(() => {
     if (mainRef.current) {
       mainRef.current.scrollTo({ top: 0 });
     }
   }, [activeTab]);
 
-  useEffect(() => {
-    if (activeTab === "Users") fetchUsers();
-  }, [activeTab]);
-
+  // Fetch leads
   useEffect(() => {
     (async () => {
       try {
@@ -86,10 +83,12 @@ export default function OwnerDashboard() {
     })();
   }, []);
 
+  // Fetch properties
   useEffect(() => {
     fetchProperties();
   }, []);
 
+  // Fetch queries
   useEffect(() => {
     (async () => {
       try {
@@ -104,6 +103,7 @@ export default function OwnerDashboard() {
     })();
   }, []);
 
+  // Fetch deleted properties only when needed
   useEffect(() => {
     if (activeTab === "DeletedProperties") fetchDeletedProperties();
   }, [activeTab]);
@@ -117,18 +117,6 @@ export default function OwnerDashboard() {
       toast.error("Error loading deleted properties");
     } finally {
       setLoadingDeletedProps(false);
-    }
-  };
-
-  const fetchUsers = async () => {
-    try {
-      setLoadingUsers(true);
-      const { data } = await getAllUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error("Error fetching users", err);
-    } finally {
-      setLoadingUsers(false);
     }
   };
 
@@ -227,26 +215,6 @@ export default function OwnerDashboard() {
     }
   };
 
-  const handleRoleChange = async (userId, newRole) => {
-    try {
-      await updateUserRole(userId, newRole);
-      await fetchUsers();
-    } catch (err) {
-      console.error("Error updating user role", err);
-    }
-  };
-
-  const handleDeleteUser = async (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await deleteUserById(userId);
-        await fetchUsers();
-      } catch (err) {
-        console.error("Error deleting user", err);
-      }
-    }
-  };
-
   const handleRestore = async (id) => {
     try {
       await restorePropertyById(id);
@@ -315,140 +283,7 @@ export default function OwnerDashboard() {
             Owner Dashboard
           </h1>
 
-          {activeTab === "Users" && (
-            <section>
-              <h2 className="text-xl font-semibold mb-4">Users</h2>
-              {loadingUsers ? (
-                <p>Loading users...</p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200 text-center">
-                    <thead className="bg-indigo-50">
-                      <tr>
-                        <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
-                          Name
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
-                          Contact
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
-                          Subscription
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
-                          Role
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-indigo-700 uppercase tracking-wider">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {users.map((u) => {
-                        const status = u.subscription_status
-                          ?.trim()
-                          .toLowerCase();
-                        const expiry = u.subscription_expiry;
-                        const formattedExpiry =
-                          expiry && !isNaN(new Date(expiry))
-                            ? new Date(expiry).toLocaleDateString()
-                            : "-";
-
-                        return (
-                          <tr key={u.id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center align-middle">
-                              {u.firstName} {u.lastName}
-                            </td>
-
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-center align-middle">
-                              <div>
-                                {u.email || (
-                                  <span className="italic text-gray-400">
-                                    N/A
-                                  </span>
-                                )}
-                              </div>
-                              <div className="mt-1">
-                                {u.phone || (
-                                  <span className="italic text-gray-400">
-                                    N/A
-                                  </span>
-                                )}
-                              </div>
-                            </td>
-
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-center align-middle">
-                              <div>
-                                {status === "paid" ? (
-                                  <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
-                                    Paid
-                                  </span>
-                                ) : status === "unpaid" ? (
-                                  <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium inline-block">
-                                    Unpaid
-                                  </span>
-                                ) : (
-                                  <span className="text-gray-400 italic text-sm">
-                                    N/A
-                                  </span>
-                                )}
-                              </div>
-                              <div className="mt-1 text-gray-500">
-                                {formattedExpiry}
-                              </div>
-                            </td>
-
-                            <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
-  <span
-    className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold capitalize ${
-      u.role === "admin"
-        ? "bg-red-100 text-red-700"
-        : u.role === "owner"
-        ? "bg-yellow-100 text-yellow-700"
-        : u.role === "RM"
-        ? "bg-purple-100 text-purple-700"
-        : "bg-blue-100 text-blue-700"
-    }`}
-  >
-    {u.role}
-  </span>
-</td>
-
-                            <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
-                              {u.role !== "owner" ? (
-                                <div className="flex justify-center items-center gap-3">
-                                 <select
-  value={u.role}
-  onChange={(e) => handleRoleChange(u.id, e.target.value)}
-  className="border border-gray-300 rounded-md px-3 py-1 text-sm"
->
-  <option value="user">User</option>
-  <option value="admin">Admin</option>
-  <option value="RM">RM</option>
-</select>
-
-                                  <button
-                                    onClick={() => handleDeleteUser(u.id)}
-                                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md text-sm"
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
-                              ) : (
-                                <span className="italic text-gray-400 text-sm">
-                                  Owner (locked)
-                                </span>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </section>
-          )}
+          {activeTab === "Users" && <UserAccessControl />}
 
           {activeTab === "Leads" && (
             <section>
@@ -492,7 +327,6 @@ export default function OwnerDashboard() {
                 </div>
               </div>
 
-
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {searchedProperties.map((property) => (
                   <PropertyCard
@@ -509,7 +343,12 @@ export default function OwnerDashboard() {
 
           {activeTab === "NewlyListed" && (
             <section>
-              <h2 style={{fontFamily:"heading_font"}} className="text-xl mb-4">Featured Listing</h2>
+              <h2
+                style={{ fontFamily: "heading_font" }}
+                className="text-xl mb-4"
+              >
+                Featured Listing
+              </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {approved
                   .slice() // to avoid mutating original array
@@ -584,6 +423,13 @@ export default function OwnerDashboard() {
             </section>
           )}
 
+          {activeTab === "UltimateSubscribers" && (
+            <section>
+              <UltimateSubscribers />
+            </section>
+          )}
+
+          {activeTab === "Careers" && <CareersPage />}
 
           <EditModal
             editForm={editForm}

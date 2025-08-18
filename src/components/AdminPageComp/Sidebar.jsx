@@ -22,10 +22,15 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
     { label: "Top Locations", value: "ManageLocations", icon: <FiMapPin /> },
-    ...(role === "Owner" ? [{ label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> }] : []),
     { label: "Pending Queries", value: "PendingQueries", icon: <FiMessageCircle />, badge: pendingCount },
-    { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
+    ...(role === "Owner"
+      ? [
+          { label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> },
+          { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
+        ]
+      : []),
   ];
+
 
   const [isOpen, setIsOpen] = useState(false);
 

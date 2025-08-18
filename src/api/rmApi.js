@@ -15,17 +15,6 @@ export const getAllRMs = async () => {
   return res.data;
 };
 
-// 🔹 POST add a new RM (admin only)
-export const addRM = async (rmData) => {
-  const res = await rmAxios.post("/", rmData);
-  return res.data;
-};
-
-// 🔹 DELETE an RM by ID (admin only)
-export const deleteRM = async (rmId) => {
-  const res = await rmAxios.delete(`/${rmId}`);
-  return res.data;
-};
 
 // 🔹 POST assign RM to a premium user
 export const assignRMToUser = async (userId, rmId) => {
@@ -48,6 +37,11 @@ export const fetchMyRM = async (userId) => {
 
 export const getAllBookings = async () => {
   const res = await rmAxios.get("/booking/all");
+  return res.data;
+};
+
+export const getAssignedUserBooking = async (rmId) => {
+  const res = await rmAxios.get(`/assigned-user-booking/${rmId}`);
   return res.data;
 };
 

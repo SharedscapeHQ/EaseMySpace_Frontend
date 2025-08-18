@@ -32,6 +32,7 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
     return (
       userRole === "admin" ||
       userRole === "owner" ||
+      userRole === "RM" ||
       unlockedPropertyIds.some((id) => String(id) === String(property?.id))
     );
   }, [userRole, unlockedPropertyIds, property?.id]);
@@ -77,7 +78,7 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
       if (!property.phone_visible) return <span className="flex items-center gap-2 text-red-500"><FaPhoneAlt className="text-indigo-600" />Hidden by owner</span>;
       return <span className="flex items-center gap-2"><FaPhoneAlt className="text-indigo-600" />{property.owner_phone || "Unavailable"}</span>;
     }
-    return <span className="flex items-center gap-2"><FaPhoneAlt className="text-indigo-600" />+91xxxxxxx</span>;
+    return <div><span className="flex items-center gap-2"><FaPhoneAlt className="text-indigo-600" />+91xxxxxxx </span> <span className="text-gray-500 text-sm ">Subscribe to unlock</span></div> ;
   };
 
   const handleUnlock = async () => {

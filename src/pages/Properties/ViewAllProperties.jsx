@@ -5,11 +5,9 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaSlidersH } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 
-import { incrementPropertyView } from "../../api/propertiesApi.js";
 import OtpPopup from "./OtpPopup";
 import axios from "axios";
 import { getCurrentUser } from "../../api/authApi.js";
-import { addRecentlyViewedProperty } from "../../api/userApi.js";
 
 const parseImages = (raw) =>
   !raw
@@ -576,22 +574,15 @@ const PropertyCard = ({
   const thumbs = p.images.filter((img) => img !== p.cover).slice(0, 3);
   const extra = p.images.length - 1 - thumbs.length;
 
-  const handleViewDetailsClick = (event, p) => {
+const handleViewDetailsClick = (event, p) => {
   if (!isLoggedIn && !isOtpVerified) {
     event.preventDefault();
     setSelectedPropertyId(p.id);
     setShowOtpPopup(true);
-  } else {
-    const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
-    if (!visited.includes(p.id)) {
-      incrementPropertyView(p.id);
-      addRecentlyViewedProperty(p.id).catch(console.error);
-      sessionStorage.setItem(
-        "viewedProps",
-        JSON.stringify([...visited, p.id])
-      );
-    }
+    return;
   }
+
+  navigate(`/properties/${p.id}`);
 };
 
 

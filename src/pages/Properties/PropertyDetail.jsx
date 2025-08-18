@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { FiEye, FiCheckCircle } from "react-icons/fi";
+import { markPropertyAsViewed } from "../../api/userApi";
+import { incrementPropertyView } from "../../api/propertiesApi";
 
 import {
   getPropertyById,
@@ -104,6 +106,28 @@ function PropertyDetail() {
 
     fetchProperty();
   }, [id]);
+
+// recently viewed and visit trigger 
+
+useEffect(() => {
+  if (!property || !loggedInUser) return;
+
+  const viewedProps = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+
+  // Increment property view only if not already counted in this session
+  if (!viewedProps.includes(property.id)) {
+    incrementPropertyView(property.id).catch(console.error);
+    sessionStorage.setItem(
+      "viewedProps",
+      JSON.stringify([...viewedProps, property.id])
+    );
+  }
+
+  // Always mark as viewed to update timestamp
+  markPropertyAsViewed(property.id).catch(console.error);
+}, [property, loggedInUser]);
+
+
 
   // ---------------- Fetch Property Visit Count ----------------
   useEffect(() => {

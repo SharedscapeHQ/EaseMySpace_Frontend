@@ -71,14 +71,25 @@ export const getUnlockedProperties = async () => {
 };
 
 export const getRecentlyViewedProperties = async () => {
-  const res = await axiosInstance.get("/recently-viewed");
-  return res.data.properties; // Adjust based on your backend response shape
+  try {
+    const res = await axiosInstance.get("/recently-viewed");
+    return res.data.properties;
+  } catch (err) {
+    console.error("Failed to fetch recently viewed properties:", err);
+    return [];
+  }
 };
 
-export const addRecentlyViewedProperty = async (propertyId) => {
-  const res = await axiosInstance.post("/recently-viewed", { propertyId });
-  return res.data;
+export const markPropertyAsViewed = async (propertyId) => {
+  try {
+    const res = await axiosInstance.post("/recently-viewed", { propertyId });
+    return res.data;
+  } catch (err) {
+    console.error("Failed to mark property as viewed:", err);
+    return { success: false };
+  }
 };
+
 
 export const fetchBookingLimitInfo = async () => {
   try {

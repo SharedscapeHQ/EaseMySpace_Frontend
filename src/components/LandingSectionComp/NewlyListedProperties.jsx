@@ -2,12 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   newlyListedProperties,
-  incrementPropertyView,
 } from "../../api/propertiesApi";
 import { getCurrentUser } from "../../api/authApi";
 import { FiCheckCircle } from "react-icons/fi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
-import { addRecentlyViewedProperty } from "../../api/userApi";
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -105,25 +103,17 @@ export default function NewlyListedProperties() {
     }
   };
 
-  const handlePropertyCardClick = (event, property) => {
-    if (!isLoggedIn && !isOtpVerified) {
-      event.preventDefault();
-      setSelectedPropertyId(property.id);
-      setShowOtpPopup(true);
-    } else {
-      const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
-      if (!visited.includes(property.id)) {
-        incrementPropertyView(property.id);
-        addRecentlyViewedProperty(property.id).catch(console.error);
-        sessionStorage.setItem(
-          "viewedProps",
-          JSON.stringify([...visited, property.id])
-        );
-      }
-      navigate(`/properties/${property.id}`);
-  event.preventDefault();
-    }
-  };
+ const handlePropertyCardClick = (event, property) => {
+  if (!isLoggedIn && !isOtpVerified) {
+    event.preventDefault();
+    setSelectedPropertyId(property.id);
+    setShowOtpPopup(true);
+    return;
+  }
+
+  navigate(`/properties/${property.id}`);
+};
+
 
   if (loading) {
     return (

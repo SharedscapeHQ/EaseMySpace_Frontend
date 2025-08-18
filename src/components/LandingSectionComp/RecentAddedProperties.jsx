@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getCurrentUser } from "../../api/authApi";
-import { incrementPropertyView } from "../../api/propertiesApi";
-import { addRecentlyViewedProperty } from "../../api/userApi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 
 const parseImages = (raw) => {
@@ -81,20 +79,16 @@ export default function RecentAddedProperties() {
     fetchRecent();
   }, []);
 
-  const handlePropertyCardClick = (e, property) => {
-    if (!isLoggedIn && !isOtpVerified) {
-      e.preventDefault();
-      setSelectedPropertyId(property.id);
-      setShowOtpPopup(true);
-    } else {
-      const visited = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
-      if (!visited.includes(property.id)) {
-        incrementPropertyView(property.id);
-        addRecentlyViewedProperty(property.id).catch(() => {});
-        sessionStorage.setItem("viewedProps", JSON.stringify([...visited, property.id]));
-      }
-    }
-  };
+const handlePropertyCardClick = (e, property) => {
+  if (!isLoggedIn && !isOtpVerified) {
+    e.preventDefault();
+    setSelectedPropertyId(property.id);
+    setShowOtpPopup(true);
+    return;
+  }
+
+  navigate(`/properties/${property.id}`);
+};
 
   if (loading)
     return (

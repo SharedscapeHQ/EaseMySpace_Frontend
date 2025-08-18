@@ -51,7 +51,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
       <aside
         className={`${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } fixed top-0 lg:top-20 left-0 z-50 w-64 bg-white shadow-md border-r h-full transform transition-transform duration-300 ease-in-out
+        } fixed top-0 lg:top-20 left-0 z-50 lg:z-30 w-64 bg-white shadow-md border-r h-full transform transition-transform duration-300 ease-in-out
         lg:h-[calc(100vh-5rem)]`}
       >
         <div className="p-6 border-b border-gray-200">

@@ -39,4 +39,29 @@ export const deleteJob = async (jobId) => {
   return res.data;
 };
 
+
+export const applyForJob = async (applicationData) => {
+    
+  const formData = new FormData();
+  formData.append("name", applicationData.name);
+  formData.append("role", applicationData.role);
+  formData.append("email", applicationData.email);
+  formData.append("phone", applicationData.phone);
+
+  if (applicationData.resume) {
+    formData.append("resume", applicationData.resume);
+  }
+  if (applicationData.audio) {
+    formData.append("audio", applicationData.audio);
+  }
+
+  const res = await jobAxios.post("/apply", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+};
+
 export default jobAxios;
