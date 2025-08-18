@@ -115,7 +115,7 @@ export default function SubscriptionPlans() {
           Choose Your Plan
         </motion.h1>
         <p className="mt-3 text-xs lg:text-base text-zinc-700">
-          Get started with verified properties and premium support — your perfect match is one step away.
+          Get started with verified properties and expert support - your perfect match is one step away.
         </p>
       </section>
 
