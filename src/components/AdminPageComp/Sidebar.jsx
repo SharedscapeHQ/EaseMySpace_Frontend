@@ -10,11 +10,14 @@ import {
   FiTrash2,
   FiMessageCircle,
   FiUserPlus,
-  FiBriefcase
+  FiBriefcase,
+  FiClock
 } from "react-icons/fi";
 import { LuCrown } from "react-icons/lu";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout, pendingCount, role }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const tabs = [
     { label: "Users", value: "Users", icon: <FiUsers /> },
     { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
@@ -29,20 +32,18 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
           { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
         ]
       : []),
+    { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },
   ];
-
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleTabClick = (value) => {
     setActiveTab(value);
-    setIsOpen(false);
+    setIsOpen(false); // close on mobile
   };
 
   return (
     <>
       {/* Mobile Header */}
-      <div style={{fontFamily:"para_font"}} className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-50">
+      <div className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-40">
         <h2 className="text-xl font-bold text-indigo-700">{role} Panel</h2>
         <div className="flex items-center gap-3">
           <button onClick={handleLogout} className="text-red-600 hover:text-red-700 transition">
@@ -56,17 +57,14 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
 
       {/* Sidebar */}
       <aside
-        style={{ fontFamily: "para_font" }}
         className={`${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } fixed top-0 left-0 z-40 w-64 bg-gradient-to-b from-white via-gray-50 to-gray-100 shadow-lg border-r min-h-screen transform transition-transform duration-300 ease-in-out
-        lg:fixed lg:top-20 lg:h-[calc(100vh-5rem)] flex flex-col`}
+        } fixed top-0 lg:top-20 left-0 z-50 lg:z-30 w-64 bg-white shadow-lg border-r h-full transform transition-transform duration-300 ease-in-out
+        lg:h-[calc(100vh-5rem)]`}
       >
-        {/* Desktop Header with separate logout */}
+        {/* Desktop Header */}
         <div className="p-6 border-b hidden lg:flex items-center justify-between">
-          <h2 style={{ fontFamily: "heading_font" }} className="text-xl text-indigo-700 ">
-            {role} Panel
-          </h2>
+          <h2 className="text-xl font-bold text-indigo-700">{role} Panel</h2>
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 text-red-600 hover:text-red-700 transition px-3 py-1 rounded-md border border-red-200"
@@ -75,18 +73,17 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
           </button>
         </div>
 
-        {/* Navigation (scrollable) */}
-        <nav className="flex-1 px-4 py-3 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        {/* Navigation */}
+        <nav className="flex-1 px-4 py-3 space-y-2 overflow-y-auto">
           {tabs.map(({ label, value, icon, badge }) => (
             <button
               key={value}
               onClick={() => handleTabClick(value)}
-              className={`flex items-center justify-between w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${
+              className={`flex items-center justify-between w-full text-left px-4 py-2 rounded transition ${
                 activeTab === value
-                  ? "bg-indigo-100 text-indigo-700 shadow-inner"
-                  : "hover:bg-indigo-50 hover:text-indigo-700 text-gray-700"
+                  ? "bg-indigo-100 text-indigo-700 font-semibold"
+                  : "hover:bg-gray-100 text-gray-700"
               }`}
-              style={activeTab === value ? { fontFamily: "heading_font" } : {}}
             >
               <div className="flex items-center gap-3">
                 <span className="text-lg">{icon}</span>
@@ -102,7 +99,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
         </nav>
       </aside>
 
-      {/* Overlay */}
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}

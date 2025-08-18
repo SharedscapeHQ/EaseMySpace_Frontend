@@ -24,6 +24,7 @@ import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
 import CareersPage from "../../components/HrUserComp/CareersPage";
+import OldProperties from "../../components/AdminPageComp/OldProperties";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -483,6 +484,11 @@ export default function AdminDashboard() {
           {activeTab === "UltimateSubscribers" && (
             <section>
               <UltimateSubscribers />
+            </section>
+          )}
+          {activeTab === "OldProperties" && (
+            <section>
+              <OldProperties />
             </section>
           )}
 

@@ -25,6 +25,7 @@ import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocation
 import UserAccessControl from "../../components/OwnerPageComp/UserAccessControl";
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
 import CareersPage from "../../components/HrUserComp/CareersPage";
+import OldProperties from "../../components/AdminPageComp/OldProperties";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -430,6 +431,12 @@ export default function OwnerDashboard() {
           )}
 
           {activeTab === "Careers" && <CareersPage />}
+
+           {activeTab === "OldProperties" && (
+                      <section>
+                        <OldProperties />
+                      </section>
+                    )}
 
           <EditModal
             editForm={editForm}

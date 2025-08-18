@@ -3,7 +3,7 @@ import { FiCheckCircle } from "react-icons/fi";
 
 export default function PropertyCard({ property, onApprove, onEdit, onDelete }) {
   return (
-    <div style={{fontFamily:"para_font"}} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div style={{ fontFamily: "para_font" }} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
       {/* Property Image */}
       <div className="relative">
         <img
@@ -22,24 +22,22 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
       {/* Property Details */}
       <div className="p-5">
         <div className="flex items-center justify-between">
-          <h3 style={{fontFamily:"heading_font"}} className="text-zinc-800 text-xs md:text-base truncate">
-                      {property.title}
-                    </h3>
-                    
-                      <span  className="bg-yellow-400 text-zinc-900 px-3 py-0.5 text-sm rounded-md">
+          <h3 style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base truncate">
+            {property.title}
+          </h3>
+          <span className="bg-yellow-400 text-zinc-900 px-3 py-0.5 text-sm rounded-md">
             {property.owner_code}
           </span>
-                    
-                  </div>
-          
-                  <p style={{fontFamily:"heading_font"}} className="text-zinc-800 text-xs md:text-base">
-                    ₹ {Number(property.price).toLocaleString()}/mo
-                  </p>
-                  <p className="text-gray-600 text-sm">{property.location}</p>
+        </div>
+
+        <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base">
+          ₹ {Number(property.price).toLocaleString()}/mo
+        </p>
+        <p className="text-gray-600 text-sm">{property.location}</p>
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2 mt-3">
-          {property.status === "pending" && (
+          {onApprove && property.status === "pending" && (
             <button
               onClick={() => onApprove(property.id)}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
@@ -48,19 +46,23 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
             </button>
           )}
 
-          <button
-            onClick={() => onEdit(property)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
-          >
-            Edit
-          </button>
+          {onEdit && (
+            <button
+              onClick={() => onEdit(property)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+            >
+              Edit
+            </button>
+          )}
 
-          <button
-            onClick={() => onDelete(property.id)}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
-          >
-            Delete
-          </button>
+          {onDelete && (
+            <button
+              onClick={() => onDelete(property.id)}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+            >
+              Delete
+            </button>
+          )}
 
           <button
             onClick={() => window.open(`/properties/${property.id}`, "_blank")}
