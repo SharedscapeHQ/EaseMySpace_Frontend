@@ -222,7 +222,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
               htmlFor="moveIn"
               className="text-gray-600 lg:text-sm text-[10px] mb-1"
             >
-              Move-in Date
+              Move-in Date (Optional)
             </label>
             <input
               type="date"
@@ -244,7 +244,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
             style={{ fontFamily: "heading_font" }}
             className="text-sm lg:text-xl text-gray-900"
           >
-            Your lifestyle preferences
+            Your lifestyle preferences (Optional)
           </h2>
         </div>
 
