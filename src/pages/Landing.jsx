@@ -20,7 +20,7 @@ function Landing() {
       <HeroMobile />
       <HeroDesktop />
       <NewlyListedProperties/>
-      <NearbyProperties/>
+      {/* <NearbyProperties/> */}
       <RecentAddedProperties/>
       {/* <TopLocation/> */}
 
