@@ -128,6 +128,26 @@ export const getMyBookings = async () => {
 };
 
 
+export const saveRequirement = async (requirementData) => {
+  try {
+    const res = await axiosInstance.post("/requirement", requirementData);
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error saving requirement:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+export const getMyRequirement = async () => {
+  try {
+    const res = await axiosInstance.get("/requirement");
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error fetching requirement:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
 
 
 export default axiosInstance;

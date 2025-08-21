@@ -103,15 +103,23 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3 sm:gap-5 relative">
           <div className="relative inline-block">
+         <div className="hidden lg:inline-block border-2 pt-2 border-blue-500 pl-3 rounded-full">
+  <Link to="demand-form">
+    <div className="relative text-blue-600 mr-14  text-lg font-bold inline-block">
+      EMS
+      <span className="absolute -top-1 left-full ml-1 text-xs">FlipUI</span>
+    </div>
+  </Link>
+</div>
   <Link
     to="/add-properties"
-    className="px-2 py-1 text-[8px] sm:text-sm bg-indigo-100 text-indigo-700  lg:rounded-lg rounded-md shadow hover:bg-indigo-200 transition inline-block"
+    className="lg:hidden px-2 py-1 text-[8px] sm:text-sm bg-indigo-100 text-indigo-700  lg:rounded-lg rounded-md shadow hover:bg-indigo-200 transition inline-block"
     style={{ fontFamily: "para_font" }}
   >
     Add Property
   </Link>
   
-  <span className="absolute lg:-top-2.5 -top-0.5 lg:font-thin -right-2 inline-block px-1.5 py-0.2 text-[7px] sm:text-xs text-green-800 bg-green-100 lg:rounded-md rounded-sm shadow">
+  <span className="lg:hidden absolute lg:-top-2.5 -top-0.5 lg:font-thin -right-2 inline-block px-1.5 py-0.2 text-[7px] sm:text-xs text-green-800 bg-green-100 lg:rounded-md rounded-sm shadow">
     FREE
   </span>
 </div>

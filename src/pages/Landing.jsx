@@ -9,6 +9,7 @@ import TopLocation from '../components/LandingSectionComp/TopLocation'
 import OurQuality from '../components/LandingSectionComp/OurQuality'
 import HeroMobile from '../components/LandingSectionComp/HeroMobile'
 import HeroDesktop from '../components/LandingSectionComp/HeroDesktop'
+import NearbyProperties from '../components/LandingSectionComp/NearbyProperties'
 
 
 function Landing() {
@@ -19,9 +20,11 @@ function Landing() {
       <HeroMobile />
       <HeroDesktop />
       <NewlyListedProperties/>
+      <NearbyProperties/>
       <RecentAddedProperties/>
       {/* <TopLocation/> */}
-    <div className=" hidden bg-zinc-50 pb-5  gap-y-4 px-3 lg:px-20">
+
+    {/* <div className=" hidden bg-zinc-50 pb-5  gap-y-4 px-3 lg:px-20">
   {[
     { icon: "✅", text: "Verified Listings" },
     { icon: "💸", text: "Rent Smart" },
@@ -38,7 +41,7 @@ function Landing() {
       {b.text}
     </div>
   ))}
-</div>
+</div> */}
 
 
 

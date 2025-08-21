@@ -33,6 +33,10 @@ import JobDetail from "./components/AboutUsSectionComp/CareersPageComp/JobDetail
 import WhatsAppButton from "./components/Chats/WhatsAppButton";
 import RMDashboard from "./pages/RmUser/RmDashboard";
 import HRMDashboard from "./pages/HrUser/HrDashboard";
+import DemandForm from "./components/DemandSide/RequirementForm";
+import RequirementPage from "./pages/Demand/RequirementPage";
+import RequirementSummary from "./components/DemandSide/RequirementSummary";
+import RequirementDashboard from "./components/DemandSide/RequirementDashboard";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -202,6 +206,22 @@ export default function App() {
                 <UserDashboard />
               </ProtectedRoute>
             </Layout>
+          }
+        />
+        <Route
+          path="/demand-form"
+          element={
+              <ProtectedRoute allowedRoles={"user"}>
+                <RequirementPage />
+              </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/requirement-dashboard"
+          element={
+              <ProtectedRoute allowedRoles={"user"}>
+                <RequirementDashboard />
+              </ProtectedRoute>
           }
         />
         <Route

@@ -1,17 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React from "react";
 
 import qualityImg1 from "/quality-assets/qtest1.png";
 import qualityImg2 from "/quality-assets/qtest2.png";
 import qualityImg3 from "/quality-assets/qtest3.png";
 import qualityImg4 from "/quality-assets/qtest4.png";
 
-gsap.registerPlugin(ScrollTrigger);
-
 function OurQuality() {
-  const sectionRef = useRef(null);
-
   const features = [
     {
       title: "Break the clutter, find your flatmate",
@@ -39,77 +33,17 @@ function OurQuality() {
     },
   ];
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Animate heading
-      gsap.fromTo(
-        ".quality-heading",
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-
-      // Animate description
-      gsap.fromTo(
-        ".quality-subheading",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-
-      // Animate feature cards one by one
-      gsap.fromTo(
-        ".quality-card",
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert(); // cleanup so it re-runs on remount
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      style={{ fontFamily: "para_font" }}
-      className="w-full py-12"
-    >
+    <section style={{ fontFamily: "para_font" }} className="w-full py-12">
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">
         {/* Heading */}
         <h2
           style={{ fontFamily: "heading_font" }}
-          className="quality-heading text-lg sm:text-3xl text-left"
+          className="text-lg sm:text-3xl text-left"
         >
           Choose the EMS advantage
         </h2>
-        <p className="quality-subheading text-xs lg:text-base mb-5">
+        <p className="text-xs lg:text-base mb-5">
           Use EMS to connect instantly on WhatsApp - Find flatmates faster, rent
           vacant rooms
         </p>
@@ -119,7 +53,7 @@ function OurQuality() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="quality-card flex flex-col items-center text-left space-y-4"
+              className="flex flex-col items-center text-left space-y-4"
             >
               {/* Image */}
               <div className="w-full h-[260px] flex items-center justify-center">
