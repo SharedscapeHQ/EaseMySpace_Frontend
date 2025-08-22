@@ -25,6 +25,7 @@ import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocation
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
 import CareersPage from "../../components/HrUserComp/CareersPage";
 import OldProperties from "../../components/AdminPageComp/OldProperties";
+import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -373,6 +374,12 @@ export default function AdminDashboard() {
               ) : (
                 <LeadsTable leads={leads} />
               )}
+            </section>
+          )}
+
+           {activeTab === "Requests" && (
+            <section>
+              <RequestsTable />
             </section>
           )}
 

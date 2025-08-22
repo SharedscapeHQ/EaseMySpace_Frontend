@@ -14,6 +14,8 @@ import {
   FiClock
 } from "react-icons/fi";
 import { LuCrown } from "react-icons/lu";
+import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
+
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout, pendingCount, role }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +23,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
   const tabs = [
     { label: "Users", value: "Users", icon: <FiUsers /> },
     { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
+    { label: "CallBack Requests", value: "Requests", icon: <VscGitPullRequestGoToChanges /> },
     { label: "Ultimate Subscribers", value: "UltimateSubscribers", icon: <LuCrown /> },
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },

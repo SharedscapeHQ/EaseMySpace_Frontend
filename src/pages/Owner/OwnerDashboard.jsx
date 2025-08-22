@@ -26,6 +26,7 @@ import UserAccessControl from "../../components/OwnerPageComp/UserAccessControl"
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
 import CareersPage from "../../components/HrUserComp/CareersPage";
 import OldProperties from "../../components/AdminPageComp/OldProperties";
+import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -296,6 +297,13 @@ export default function OwnerDashboard() {
               )}
             </section>
           )}
+
+           {activeTab === "Requests" && (
+                      <section>
+                        <RequestsTable />
+                      </section>
+                    )}
+          
 
           {activeTab === "Properties" && (
             <section>

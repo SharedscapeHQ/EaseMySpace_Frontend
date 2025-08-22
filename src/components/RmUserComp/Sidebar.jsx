@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiCalendar, FiUserCheck, FiLogOut, FiMenu, FiX } from "react-icons/fi";
+import { FiCalendar, FiUserCheck, FiLogOut, FiMenu, FiX, FiUserPlus } from "react-icons/fi";
 import { logoutUser } from "../../api/authApi";
+import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
+
 
 export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
   const tabs = [
     { label: "All Booking", value: "BookingSchedule", icon: <FiCalendar /> },
     { label: "Assigned Users", value: "RMUsers", icon: <FiUserCheck /> }, 
     { label: "My Bookings", value: "AssignedUsersBooking", icon: <FiUserCheck /> },
+        { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
+        { label: "CallBack Requests", value: "Requests", icon: <VscGitPullRequestGoToChanges /> },
+    
   ];
 
   const [isOpen, setIsOpen] = useState(false);

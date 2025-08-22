@@ -9,7 +9,8 @@ import TopLocation from '../components/LandingSectionComp/TopLocation'
 import OurQuality from '../components/LandingSectionComp/OurQuality'
 import HeroMobile from '../components/LandingSectionComp/HeroMobile'
 import HeroDesktop from '../components/LandingSectionComp/HeroDesktop'
-import NearbyProperties from '../components/LandingSectionComp/NearbyProperties'
+import Banner from '../components/LandingSectionComp/Banner'
+// import NearbyProperties from '../components/LandingSectionComp/NearbyProperties'
 
 
 function Landing() {
@@ -43,7 +44,7 @@ function Landing() {
   ))}
 </div> */}
 
-
+<Banner/>
 
 <OurQuality/>
       <FeatureSection/>
