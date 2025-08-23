@@ -5,7 +5,7 @@ import { saveRequest } from "../../api/requestApi"; // use same API
 export default function SalesPersonCard() {
   const name = "Dharmendra Mishra";
   const phone = "+91 8090200513"; 
-  const role = "Relationship Manager";
+  const role = "EMS consultant";
   const bullets = [
     "Helps you discover the best listings",
     "Matches you with verified flatmates",
