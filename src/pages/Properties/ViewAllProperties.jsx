@@ -237,6 +237,7 @@ export default function ViewAllProperties() {
               </button>
 
            <Select
+           Products={"Products"}
   name="looking_for"
   opts={[
     ["", "Any"],
@@ -301,25 +302,33 @@ export default function ViewAllProperties() {
           </div>
 
           {/* Listings */}
-          <section className="w-full max-w-4xl space-y-8">
-            {loading ? (
-             <PropertyCardSkeleton/>
-            ) : paginatedProperties.length === 0 ? (
-              <p className="text-center text-gray-500 text-lg mt-20">No properties match your filters.</p>
-            ) : (
-              paginatedProperties.map((p) => (
-                <PropertyCard
-                  key={p.id}
-                  p={p}
-                  setShowOtpPopup={setShowOtpPopup}
-                  setIsOtpVerified={setIsOtpVerified}
-                  setSelectedPropertyId={setSelectedPropertyId}
-                  isOtpVerified={isOtpVerified}
-                  isLoggedIn={isLoggedIn}
-                />
-              ))
-            )}
-          </section>
+         <section className="w-full max-w-4xl space-y-8">
+  {loading ? (
+    <PropertyCardSkeleton/>
+  ) : paginatedProperties.length === 0 ? (
+    <p className="text-center text-gray-500 text-lg mt-20">No properties match your filters.</p>
+  ) : (
+    paginatedProperties.map((p, index) => (
+      <React.Fragment key={p.id}>
+        {/* Show SalesPersonCard after 3rd card on mobile */}
+        {index === 3 && (
+          <div className="block xl:hidden">
+            <SalesPersonCard />
+          </div>
+        )}
+        <PropertyCard
+          p={p}
+          setShowOtpPopup={setShowOtpPopup}
+          setIsOtpVerified={setIsOtpVerified}
+          setSelectedPropertyId={setSelectedPropertyId}
+          isOtpVerified={isOtpVerified}
+          isLoggedIn={isLoggedIn}
+        />
+      </React.Fragment>
+    ))
+  )}
+</section>
+
 
           {/* Pagination */}
           <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />

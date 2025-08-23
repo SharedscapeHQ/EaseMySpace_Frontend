@@ -7,7 +7,7 @@ export default function Pagination({ currentPage, totalPages, setCurrentPage }) 
   return (
    
       <>
-      <div className="w-full bg-blue-100 mt-5 flex flex-col md:flex-row items-center justify-between px-4 py-2 rounded-lg shadow-sm">
+      <div className="w-full bg-blue-100 mt-5 flex flex-col md:flex-row items-center justify-between px-4 py-4 rounded-lg shadow-sm">
   <div className="mb-2 md:mb-0">
     <div className="text-xs font-semibold text-gray-900">
       Didn't get what you are searching for?
@@ -18,9 +18,9 @@ export default function Pagination({ currentPage, totalPages, setCurrentPage }) 
   </div>
   <Link
     to="/demand-form"
-    className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition"
+    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition"
   >
-    Find My Space
+    Post Requirements
   </Link>
 </div>
 

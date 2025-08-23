@@ -78,7 +78,7 @@ export default function SalesPersonCard() {
   };
 
   return (
-    <div style={{ fontFamily: "para_font" }} className=" z-40 w-full bg-white shadow-xl rounded-lg p-6 sticky top-24 flex flex-col gap-4">
+    <div style={{ fontFamily: "para_font" }} className="lg:z-40 z-0 w-full bg-white shadow-xl rounded-lg p-6 sticky top-24 flex flex-col gap-4">
       <h2 style={{ fontFamily: "heading_font" }} className="text-xl text-zinc-900">Meet Our Expert</h2>
 
       <div className="flex items-center gap-4">
