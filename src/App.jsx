@@ -113,7 +113,7 @@ export default function App() {
           </Layout>
         } />
         <Route path="/demand-form" element={
-          <ProtectedRoute allowedRoles={["user"]} showContentBehindPopup={true}>
+          <ProtectedRoute allowedRoles={["user", "owner", "admin"]} showContentBehindPopup={true}>
             <RequirementPage />
           </ProtectedRoute>
         } />
