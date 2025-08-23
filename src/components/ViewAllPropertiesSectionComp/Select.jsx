@@ -1,9 +1,8 @@
-export default function Select({ label, name, opts, filters, handleChange, Products, className = "" }) {
+export default function Select({ label, name, opts, filters, handleChange, className = "" }) {
   return (
     <div>
       {label && <label className="block mb-2 text-gray-700">{label}</label>}
       <select
-      label={Products}
         name={name}
         value={filters[name] || ""}
         onChange={handleChange}
@@ -18,3 +17,5 @@ export default function Select({ label, name, opts, filters, handleChange, Produ
     </div>
   );
 }
+
+

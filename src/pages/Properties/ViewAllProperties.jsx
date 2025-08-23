@@ -15,6 +15,7 @@ import PropertyCard from "../../components/ViewAllPropertiesSectionComp/Property
 import Pagination from "../../components/ViewAllPropertiesSectionComp/Pagination.jsx";
 import SalesPersonCard from "../../components/ViewAllPropertiesSectionComp/SalesPersonCard.jsx";
 import PropertyCardSkeleton from "../../components/ViewAllPropertiesSectionComp/PropertyCardSkeleton.jsx";
+import ProductSelect from "../../components/ViewAllPropertiesSectionComp/ProductSelect.jsx";
 
 // --- helpers ---
 const parseImages = (raw) =>
@@ -236,18 +237,11 @@ export default function ViewAllProperties() {
                 <FaSlidersH />
               </button>
 
-           <Select
-           Products={"Products"}
+         <ProductSelect
   name="looking_for"
-  opts={[
-    ["", "Any"],
-    ["pg", "PGs"],
-    ["flatmate", "Flatmate"],
-    ["vacant", "Vacant"],
-  ]}
   filters={filters}
   handleChange={handleFilterChange}
-  className="hidden md:inline whitespace-nowrap font-medium text-gray-600 text-sm px-3 py-1.5 rounded-lg border"
+  className=" whitespace-nowrap font-medium text-gray-600 text-sm px-3 py-1.5 rounded-xl border-gray-200 "
 />
 
               {/* Search Input */}
@@ -274,6 +268,7 @@ export default function ViewAllProperties() {
                   placeholder="Search by location"
                   className="w-full pl-8 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 />
+                
               </div>
 
               <div className="flex gap-2 md:pl-0 pl-1">
