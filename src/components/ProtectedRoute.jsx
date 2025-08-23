@@ -16,38 +16,26 @@ export default function ProtectedRoute({
 
     const checkAuth = async () => {
       try {
-        console.log("🔍 [ProtectedRoute] Starting auth check...");
-        console.log("🔍 [ProtectedRoute] Raw allowedRoles prop:", allowedRoles);
-
         const { data } = await axios.get(
           "https://api.easemyspace.in/api/auth/me",
           { withCredentials: true, signal: controller.signal }
         );
 
-        // normalize roles
         const normalizedAllowed = Array.isArray(allowedRoles)
           ? allowedRoles.map((r) => String(r).toLowerCase().trim())
           : [String(allowedRoles).toLowerCase().trim()];
+
         const userRole = String(data.role || "").toLowerCase().trim();
 
-        // 👇 detailed logs
-        console.log("🔍 [ProtectedRoute] Backend full response:", data);
-        console.log("🔍 [ProtectedRoute] Backend role:", data.role);
-        console.log("🔍 [ProtectedRoute] Normalized userRole:", userRole);
-        console.log("🔍 [ProtectedRoute] Normalized allowedRoles:", normalizedAllowed);
-
         if (!normalizedAllowed.includes(userRole)) {
-          console.warn("🚫 [ProtectedRoute] Access DENIED → userRole not in allowedRoles");
           setShowModal(true);
-          setIsAuthorized(false); // ← FIX: explicitly mark unauthorized
+          setIsAuthorized(false);
         } else {
-          console.log("✅ [ProtectedRoute] Access GRANTED");
           setIsAuthorized(true);
         }
       } catch (err) {
-        console.error("❌ [ProtectedRoute] Auth check error:", err.response?.data || err.message);
         setShowModal(true);
-        setIsAuthorized(false); // ← mark unauthorized on error
+        setIsAuthorized(false);
       }
     };
 
@@ -56,15 +44,13 @@ export default function ProtectedRoute({
   }, [allowedRoles]);
 
   const handleCancel = () => {
-    console.log("↩️ [ProtectedRoute] Cancel clicked → navigating back");
     setShowModal(false);
     navigate(-1);
   };
 
   const handleLogin = () => {
-    console.log("🔑 [ProtectedRoute] Login clicked → redirecting to /login");
-    navigate("/login", { replace: true });
-  };
+  navigate(`/login?redirect=${encodeURIComponent(window.location.pathname)}`, { replace: true });
+};
 
   if (isAuthorized === null) {
     return (
