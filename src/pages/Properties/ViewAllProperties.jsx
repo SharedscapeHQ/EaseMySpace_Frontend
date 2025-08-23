@@ -196,7 +196,7 @@ export default function ViewAllProperties() {
   }, [filtered, filters.looking_for]);
 
   return (
-    <div className="w-full bg-zinc-50  min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
+    <div className="w-full pb-5 bg-zinc-50  min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
       <div className="w-full mx-auto px-1 flex gap-2">
         {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">
