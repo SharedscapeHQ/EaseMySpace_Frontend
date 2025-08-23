@@ -20,51 +20,33 @@ const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified
   };
 
   return (
-    
-    <div className="relative z-0 w-full max-w-3xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto relative z-10">
       <Link
         to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
         state={isLoggedIn || isOtpVerified ? { property: p } : null}
         onClick={(e) => handleViewDetailsClick(e, p)}
-        className="bg-white rounded-lg shadow-sm hover:shadow-md transition border border-gray-300 w-full overflow-x-hidden flex flex-col md:flex-row p-4 gap-4 relative"
+        className="bg-white rounded-lg shadow-sm hover:shadow-md transition border border-gray-300 w-full overflow-x-hidden flex flex-col md:flex-row p-4 gap-4"
       >
         {/* Main Image */}
         <div className="w-full md:w-64 flex-shrink-0">
           {p.cover ? (
-            <img
-              src={p.cover}
-              alt={p.title}
-              loading="lazy"
-              className="w-full h-48 object-cover rounded-lg"
-            />
+            <img src={p.cover} alt={p.title} loading="lazy" className="w-full h-48 object-cover rounded-lg" />
           ) : (
-            <div className="w-full h-48 bg-gray-100 flex items-center justify-center italic text-gray-400 rounded-lg">
-              No Image
-            </div>
+            <div className="w-full h-48 bg-gray-100 flex items-center justify-center italic text-gray-400 rounded-lg">No Image</div>
           )}
 
           {/* Thumbnails */}
           <div className="flex gap-2 mt-2">
             {thumbs.map((t, i) => (
               <div key={i} className="relative h-20 w-1/3">
-                <img
-                  src={t}
-                  alt=""
-                  loading="lazy"
-                  className="h-full w-full object-cover rounded-lg"
-                />
+                <img src={t} alt="" loading="lazy" className="h-full w-full object-cover rounded-lg" />
                 {i === thumbs.length - 1 && extra > 0 && (
-                  <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs rounded-lg z-10">
-                    +{extra}
-                  </span>
+                  <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs rounded-lg">+{extra}</span>
                 )}
               </div>
             ))}
             {Array.from({ length: 3 - thumbs.length }).map((_, i) => (
-              <div
-                key={i}
-                className="h-20 w-1/3 bg-gray-50 border border-dashed border-gray-200 rounded-lg"
-              />
+              <div key={i} className="h-20 w-1/3 bg-gray-50 border border-dashed border-gray-200 rounded-lg" />
             ))}
           </div>
         </div>
@@ -74,9 +56,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified
           <div className="flex items-start justify-between flex-wrap gap-y-1">
             <div>
               <h2 className="text-lg flex items-center gap-1 text-gray-800 leading-snug">
-                {p.looking_for === "pg"
-                  ? `${p.title || "Untitled Property"}'s PG`
-                  : p.title || "Untitled Property"}{" "}
+                {p.looking_for === "pg" ? `${p.title || "Untitled Property"}'s PG` : p.title || "Untitled Property"}{" "}
                 {p.verified && (
                   <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
                     <FiCheckCircle className="text-[10px]" />
@@ -98,11 +78,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified
 
           {p.looking_for && (
             <span className="inline-block bg-indigo-50 text-indigo-600 text-xs font-medium px-2 py-[2px] rounded-full w-max">
-              {p.looking_for === "flatmate"
-                ? "Flatmate"
-                : p.looking_for === "pg"
-                ? "Paying Guest"
-                : "Vacant Flat"}
+              {p.looking_for === "flatmate" ? "Flatmate" : p.looking_for === "pg" ? "Paying Guest" : "Vacant Flat"}
             </span>
           )}
 
@@ -120,7 +96,6 @@ const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified
           </div>
         </div>
       </Link>
-      
     </div>
   );
 };

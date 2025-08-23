@@ -196,7 +196,7 @@ export default function ViewAllProperties() {
   }, [filtered, filters.looking_for]);
 
   return (
-    <div className="w-full bg-indigo-50/30 min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
+    <div className="w-full bg-zinc-50  min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
       <div className="w-full mx-auto px-1 flex gap-2">
         {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">
@@ -226,7 +226,7 @@ export default function ViewAllProperties() {
           </section>
 
           {/* Search + Sort */}
-          <div className="sticky top-20 mb-4 z-40 md:shadow-sm shadow-none md:border md:bg-white bg-zinc-50 md:border-gray-300 px-4 py-3 rounded-lg w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
+          <div className="sticky top-20 mb-4 z-20 md:shadow-sm shadow-none md:border md:bg-white bg-zinc-50 md:border-gray-300 px-4 py-3 rounded-lg w-full max-w-3xl mx-auto overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-2 min-w-max">
               {/* Mobile Filter Icon Button */}
               <button
