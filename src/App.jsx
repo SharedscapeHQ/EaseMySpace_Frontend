@@ -78,9 +78,6 @@ function Layout({ children }) {
 
 const verifiedPhone = localStorage.getItem("user_verified_mobile") || "";
 
-
-
-
 /* ───── App ───── */
 export default function App() {
   return (
@@ -89,231 +86,105 @@ export default function App() {
       {/* <ScrollToTopButton /> */}
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       {/* <TidioWidget/> */}
-<TidioWidget />
-<WhatsAppButton/>
+      <TidioWidget />
+      <WhatsAppButton/>
 
       <Routes>
         {/* Routes with Layout (Navbar, padding, etc.) */}
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Landing />
-            </Layout>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <Layout>
-              <Login />
-            </Layout>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <Layout>
-              <Register />
-            </Layout>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-          
-              <AboutUs />
-            
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <Layout>
-              <ContactPage />
-            </Layout>
-          }
-        />
-        <Route
-          path="/careers"
-          element={
-            <Layout>
-              <Careers />
-            </Layout>
-          }
-        />
-        <Route
-  path="/jobs/:id"
-  element={
-    <Layout>
-      <JobDetail />
-    </Layout>
-  }
-/>
-        <Route
-          path="/subscription"
-          element={
-            <Layout>
-              <SubscriptionPlans />
-            </Layout>
-          }
-        />
-        <Route
-          path="/cancellation-refund"
-          element={
-            <Layout>
-              <CancellationRefundPolicy />
-            </Layout>
-          }
-        />
-        <Route
-          path="/terms-conditions"
-          element={
-            <Layout>
-              <TermsAndConditions />
-            </Layout>
-          }
-        />
-        <Route
-          path="/privacy-policy"
-          element={
-            <Layout>
-              <PolicyPrivacy />
-            </Layout>
-          }
-        />
-        <Route
-          path="/view-properties"
-          element={
-            <Layout>
-              <ViewAllProperties />
-            </Layout>
-          }
-        />
-        <Route
-          path="/properties/:id"
-          element={
-            <Layout>
-              <PropertyDetail />
-            </Layout>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={"user"}>
-                <UserDashboard />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/demand-form"
-          element={
-              <ProtectedRoute allowedRoles={"user"}>
-                <RequirementPage />
-              </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/requirement-dashboard"
-          element={
-              <ProtectedRoute allowedRoles={"user"}>
-                <RequirementDashboard />
-              </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/rm-dashboard"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={"RM"}>
-                <RMDashboard />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/hr-dashboard"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={"HR"}>
-                <HRMDashboard />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/lead-dashboard"
-          element={
-            <Layout>
-              <ProtectedLeadUserRoute>
-                <LeadUserDashboard phone={verifiedPhone} />;
-              </ProtectedLeadUserRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/dashboard/my-properties/:id"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={"user"}>
-                <UserPropertyDetails />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/add-properties"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={["user", "admin", "owner"]}>
-                <AddProperty />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/admin-dashboard"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/admin/property/:id"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPropertyDetails />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/owner-dashboard"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={["owner"]}>
-                <OwnerDashboard />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
-        <Route
-          path="/owner-dashboard/deleted-property-details/:id"
-          element={
-            <Layout>
-              <ProtectedRoute allowedRoles={["owner"]}>
-                <DeletedPropertyDetails />
-              </ProtectedRoute>
-            </Layout>
-          }
-        />
+        <Route path="/" element={<Layout><Landing /></Layout>} />
+        <Route path="/login" element={<Layout><Login /></Layout>} />
+        <Route path="/register" element={<Layout><Register /></Layout>} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+        <Route path="/careers" element={<Layout><Careers /></Layout>} />
+        <Route path="/jobs/:id" element={<Layout><JobDetail /></Layout>} />
+        <Route path="/subscription" element={<Layout><SubscriptionPlans /></Layout>} />
+        <Route path="/cancellation-refund" element={<Layout><CancellationRefundPolicy /></Layout>} />
+        <Route path="/terms-conditions" element={<Layout><TermsAndConditions /></Layout>} />
+        <Route path="/privacy-policy" element={<Layout><PolicyPrivacy /></Layout>} />
+        <Route path="/view-properties" element={<Layout><ViewAllProperties /></Layout>} />
+        <Route path="/properties/:id" element={<Layout><PropertyDetail /></Layout>} />
+
+        <Route path="/dashboard" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["user"]}>
+              <UserDashboard />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/demand-form" element={
+          <ProtectedRoute allowedRoles={["user"]} showContentBehindPopup={true}>
+            <RequirementPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/requirement-dashboard" element={
+          <ProtectedRoute allowedRoles={["user"]}>
+            <RequirementDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/rm-dashboard" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["rm"]}>
+              <RMDashboard />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/hr-dashboard" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["hr"]}>
+              <HRMDashboard />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/lead-dashboard" element={
+          <Layout>
+            <ProtectedLeadUserRoute>
+              <LeadUserDashboard phone={verifiedPhone} />
+            </ProtectedLeadUserRoute>
+          </Layout>
+        } />
+        <Route path="/dashboard/my-properties/:id" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["user"]}>
+              <UserPropertyDetails />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/add-properties" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["user", "admin", "owner"]}>
+              <AddProperty />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/admin-dashboard" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/admin/property/:id" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminPropertyDetails />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/owner-dashboard" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["owner"]}>
+              <OwnerDashboard />
+            </ProtectedRoute>
+          </Layout>
+        } />
+        <Route path="/owner-dashboard/deleted-property-details/:id" element={
+          <Layout>
+            <ProtectedRoute allowedRoles={["owner"]}>
+              <DeletedPropertyDetails />
+            </ProtectedRoute>
+          </Layout>
+        } />
 
         {/* 404 page OUTSIDE Layout – no navbar */}
         <Route path="*" element={<NotFound />} />

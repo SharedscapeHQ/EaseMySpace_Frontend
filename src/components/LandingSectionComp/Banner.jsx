@@ -12,30 +12,63 @@ function Banner() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      // 🔹 Save request in backend
-      await saveRequest(formData);
-      setSubmitted(true);
+  // Phone validation
+  const phonePattern = /^[0-9]{10}$/; // exactly 10 digits
+  const invalidNumbers = [
+  "1111111111",
+  "0000000000",
+  "1234567890",
+  "0987654321",
+  "2222222222",
+  "3333333333",
+  "4444444444",
+  "5555555555",
+  "6666666666",
+  "7777777777",
+  "8888888888",
+  "9999999999",
+  "1212121212",
+  "1122334455",
+  "1020304050",
+  "9876543210",
+  "1357913579",
+  "2468246824",
+  "1231231231",
+  "3213213210"
+];
 
-      // Reset form
-      setFormData({ name: "", phone: "", email: "" });
 
-      // Auto-close after 2.5 sec
-      setTimeout(() => {
-        setSubmitted(false);
-        setIsOpen(false);
-      }, 2500);
-    } catch (err) {
-      console.error("❌ Failed to save request:", err);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!phonePattern.test(formData.phone) || invalidNumbers.includes(formData.phone)) {
+    alert("Please enter a valid 10-digit phone number.");
+    setLoading(false);
+    return; // stop submission
+  }
+
+  try {
+    // 🔹 Save request in backend
+    await saveRequest(formData);
+    setSubmitted(true);
+
+    // Reset form
+    setFormData({ name: "", phone: "", email: "" });
+
+    // Auto-close after 2.5 sec
+    setTimeout(() => {
+      setSubmitted(false);
+      setIsOpen(false);
+    }, 2500);
+  } catch (err) {
+    console.error("❌ Failed to save request:", err);
+    alert("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div
@@ -102,7 +135,7 @@ function Banner() {
                     How can we help you?
                   </h2>
                   <p className="text-sm text-gray-600 mb-4">
-                    Speak with a workspace solution expert.
+                    Speak with a pace solution expert.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-3">
@@ -115,15 +148,19 @@ function Banner() {
                       required
                       className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="*Enter your mobile number"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
+                   <input
+  type="tel"
+  name="phone"
+  placeholder="*Enter your mobile number"
+  value={formData.phone}
+  onChange={(e) => {
+    const onlyNums = e.target.value.replace(/\D/g, ""); // remove non-digits
+    setFormData({ ...formData, phone: onlyNums });
+  }}
+  maxLength={10} // optional, restrict to 10 digits
+  required
+  className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+/>
                     <input
                       type="email"
                       name="email"
