@@ -118,7 +118,7 @@ export default function App() {
           </ProtectedRoute>
         } />
         <Route path="/requirement-dashboard" element={
-          <ProtectedRoute allowedRoles={["user"]}>
+          <ProtectedRoute allowedRoles={["user", "owner", "admin"]}>
             <RequirementDashboard />
           </ProtectedRoute>
         } />
