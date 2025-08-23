@@ -96,7 +96,7 @@ export default function SalesPersonCard() {
 
       <h4 className="text-gray-800 mt-2 text-xs">Find Your Best Listings with Expert Guidance</h4>
 
-      <ul className="list-disc list-inside text-gray-600 text-[11px] space-y-1">
+      <ul className="list-disc list-inside text-gray-600 text-xs space-y-1">
         {bullets.map((b, idx) => <li key={idx}>{b}</li>)}
       </ul>
 
