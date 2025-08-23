@@ -20,6 +20,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified
   };
 
   return (
+    
     <div className="relative z-0 w-full max-w-3xl mx-auto">
       <Link
         to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
@@ -119,6 +120,7 @@ const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified
           </div>
         </div>
       </Link>
+      
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaSlidersH } from "react-icons/fa";
@@ -197,7 +197,7 @@ export default function ViewAllProperties() {
 
   return (
     <div className="w-full bg-indigo-50/30 min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
-      <div className="max-w-8xl mx-auto px-4 flex gap-2">
+      <div className="w-full mx-auto px-1 flex gap-2">
         {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">
           <div className="sticky top-16 md:top-24 bg-white shadow-md rounded-lg p-4 border border-gray-100 text-sm">
@@ -322,7 +322,25 @@ export default function ViewAllProperties() {
       </React.Fragment>
     ))
   )}
+      <div className="w-full bg-blue-100 mt-5 flex flex-col md:flex-row items-center justify-between px-4 py-4 rounded-lg shadow-sm">
+  <div className="mb-2 md:mb-0">
+    <div className="text-xs font-semibold text-gray-900">
+      Didn't get what you are searching for?
+    </div>
+    <div className="text-xs text-gray-600 mt-1">
+      Post your requirement and we’ll connect to solve your space issue.
+    </div>
+  </div>
+  <Link
+    to="/demand-form"
+    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition"
+  >
+    Post Requirements
+  </Link>
+</div>
 </section>
+
+
 
 
           {/* Pagination */}

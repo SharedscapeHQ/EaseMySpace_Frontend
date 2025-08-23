@@ -7,9 +7,11 @@ export default function SalesPersonCard() {
   const phone = "+91 8090200513"; 
   const role = "Relationship Manager";
   const bullets = [
-    "Assists clients in finding best solutions",
-    "Helps with corporate relocations",
-    "Provides expert consultation",
+    "Helps you discover the best listings",
+    "Matches you with verified flatmates",
+    "Provides personal guidance throughout",
+    "Assists listers in getting quality responses",
+    "Helps listers showcase their property better"
   ];
 
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +28,7 @@ export default function SalesPersonCard() {
   const maskPhone = (num) => {
     const clean = num.replace("+91 ", "");
     if (!clean || clean.length < 10) return num;
-    return `+91 ${clean.slice(0, 2)}80xxxxxx13${clean.slice(-2)}`;
+    return `+91 ${clean.slice(0, 2)}xxxxxx${clean.slice(-2)}`;
   };
 
   const handleChange = (e) => {
@@ -78,7 +80,7 @@ export default function SalesPersonCard() {
   };
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="lg:z-40 z-0 w-full bg-white shadow-xl rounded-lg p-6 sticky top-24 flex flex-col gap-4">
+    <div style={{ fontFamily: "para_font" }} className="lg:z-40 z-0 bg-white shadow-xl rounded-lg p-4 sticky top-24 flex flex-col gap-4">
       <h2 style={{ fontFamily: "heading_font" }} className="text-xl text-zinc-900">Meet Our Expert</h2>
 
       <div className="flex items-center gap-4">
@@ -94,7 +96,7 @@ export default function SalesPersonCard() {
 
       <h4 className="text-gray-800 mt-2 text-xs">Find Your Best Listings with Expert Guidance</h4>
 
-      <ul className="list-disc list-inside text-gray-600 text-xs space-y-1">
+      <ul className="list-disc list-inside text-gray-600 text-[11px] space-y-1">
         {bullets.map((b, idx) => <li key={idx}>{b}</li>)}
       </ul>
 
