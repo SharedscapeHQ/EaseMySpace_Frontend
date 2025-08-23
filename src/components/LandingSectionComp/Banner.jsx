@@ -135,7 +135,7 @@ const handleSubmit = async (e) => {
                     How can we help you?
                   </h2>
                   <p className="text-sm text-gray-600 mb-4">
-                    Speak with a pace solution expert.
+                    Speak with a space solution expert.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-3">
