@@ -25,7 +25,7 @@ export default function TeamCard({
   return (
     <div
       onClick={handleMobileToggle}
-      className="relative lg:w-[280px] w-[325px] h-[400px] bg-gradient-to-br from-white to-blue-200 overflow-hidden rounded-2xl shadow-xl group cursor-pointer"
+      className="relative lg:w-[280px] w-[325px] h-[400px] bg-gradient-to-br from-white to-blue-300 overflow-hidden rounded-2xl shadow-xl group cursor-pointer"
     >
       {/* Profile Image */}
       <img
