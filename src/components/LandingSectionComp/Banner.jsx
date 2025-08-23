@@ -83,7 +83,7 @@ const handleSubmit = async (e) => {
             Looking for a flatmate or have a room to rent?
           </div>
           <div className="text-sm text-gray-700">
-            Talk to our dedicated relationship manager & they will guide you to the best verified options.
+            Talk to our experts for complete guidance and get the best verified options tailored to your needs
           </div>
         </div>
       </div>
