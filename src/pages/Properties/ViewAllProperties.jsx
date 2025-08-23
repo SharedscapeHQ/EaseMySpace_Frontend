@@ -196,7 +196,7 @@ export default function ViewAllProperties() {
 
   return (
     <div className="w-full bg-indigo-50/30 min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
-      <div className="max-w-8xl mx-auto px-4 flex gap-5">
+      <div className="max-w-8xl mx-auto px-4 flex gap-2">
         {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">
           <div className="sticky top-16 md:top-24 bg-white shadow-md rounded-lg p-4 border border-gray-100 text-sm">
