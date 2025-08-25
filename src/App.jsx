@@ -152,7 +152,7 @@ export default function App() {
         } />
         <Route path="/add-properties" element={
           <Layout>
-            <ProtectedRoute allowedRoles={["user", "admin", "owner"]}>
+            <ProtectedRoute allowedRoles={["user", "admin", "owner"]} showContentBehindPopup={true}>
               <AddProperty />
             </ProtectedRoute>
           </Layout>

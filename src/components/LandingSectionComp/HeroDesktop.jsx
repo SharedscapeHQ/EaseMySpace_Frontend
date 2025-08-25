@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import pgImg from "/landing-assets/pgImg.png";
@@ -8,7 +8,6 @@ import Hero_vid from "/heroImg/Hero_vid.webm";
 import Poster from "/heroImg/Poster.jpg";
 
 export default function HeroDesktop() {
-  const [isDemand, setIsDemand] = useState(false);
   const videoRef = useRef(null);
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
@@ -16,7 +15,7 @@ export default function HeroDesktop() {
   const flipButtonRef = useRef(null);
 
   useEffect(() => {
-    // Play video
+    // Try playing video (fix autoplay on mobile)
     const playVideo = () => {
       const video = videoRef.current;
       if (video && video.paused) {
@@ -29,14 +28,16 @@ export default function HeroDesktop() {
 
     // Heading animation
     const heading = headingRef.current;
-    const span = heading.querySelector("span");
-    gsap.fromTo(
-      span,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
-    );
+    if (heading) {
+      const span = heading.querySelector("span");
+      gsap.fromTo(
+        span,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
+      );
+    }
 
-    // Cards animation (page load)
+    // Cards animation
     gsap.fromTo(
       cardsRef.current,
       { y: 40, opacity: 0, scale: 0.95 },
@@ -51,7 +52,7 @@ export default function HeroDesktop() {
       }
     );
 
-    // Animate both buttons
+    // Buttons animation
     [buttonRef.current, flipButtonRef.current].forEach((btn, i) => {
       if (btn) {
         gsap.fromTo(
@@ -69,7 +70,7 @@ export default function HeroDesktop() {
       }
     });
 
-    // Card hover animations
+    // Hover animation for cards
     cardsRef.current.forEach((card) => {
       if (!card) return;
       const tl = gsap.timeline({ paused: true });
@@ -106,7 +107,7 @@ export default function HeroDesktop() {
           <h1
             ref={headingRef}
             style={{ fontFamily: "heading_font" }}
-            className="text-3xl sm:text-5xl text-zinc-800 mb-10 overflow-hidden"
+            className="text-3xl lg:text-5xl text-zinc-800 mb-14 overflow-hidden"
           >
             <span
               className="inline-block"
@@ -118,25 +119,28 @@ export default function HeroDesktop() {
             </span>
           </h1>
 
-          <div className="flex gap-6 justify-center mb-8">
+          {/* Property Cards */}
+          <div className="flex gap-6 justify-center mb-12">
             {cards.map((item, idx) => (
               <Link
                 key={item.value}
                 to={`/view-properties?looking_for=${item.value}`}
                 ref={(el) => (cardsRef.current[idx] = el)}
                 className="group relative border-2 border-zinc-200 px-10 rounded-lg py-3 flex flex-col items-center justify-center gap-3 opacity-0 overflow-hidden"
+                aria-label={`Explore ${item.title} listings`}
               >
                 {/* Hover overlay */}
                 <span
-                  className={`absolute inset-0 ${item.bg} transform scale-y-0 group-hover:scale-y-100 origin-bottom transition-transform duration-300 ease-in-out`}
+                  className={`absolute inset-0 ${item.bg} transform scale-y-0 group-hover:scale-y-100  origin-bottom transition-transform duration-300 ease-in-out`}
                 />
                 <div
-                  className={`relative z-10 w-20 group-hover:bg-transparent h-20 flex items-center justify-center rounded-full mb-2 ${item.bg}`}
+                  className={`relative z-10 w-20 h-20 flex items-center justify-center rounded-full  mb-2 ${item.bg} group-hover:bg-transparent`}
                 >
                   <img
                     src={item.img}
-                    alt={item.title}
+                    alt={`${item.title} icon`}
                     className="max-w-[80%] max-h-[80%] object-contain"
+                    loading="lazy"
                   />
                 </div>
                 <span className="relative z-10 text-base font-semibold text-zinc-700 group-hover:text-blue-600">
@@ -148,34 +152,38 @@ export default function HeroDesktop() {
 
           {/* Buttons */}
           <div
-  style={{ fontFamily: "para_font" }}
-  className="text-center flex gap-4 justify-center"
->
-  {/* View All */}
-  <Link
-    ref={buttonRef}
-    to="/view-properties"
-    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-transparent bg-blue-600 px-6 py-2 text-white transition-colors duration-300"
-  >
-    <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
-      View All properties
-    </span>
-    <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-500 ease-out group-hover:w-full" />
-  </Link>
+            style={{ fontFamily: "para_font" }}
+            className="text-center flex gap-4 justify-center"
+          >
+            {/* View All */}
+            <Link
+              ref={buttonRef}
+              to="/view-properties"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-transparent bg-blue-600 px-6 py-2 text-white transition-colors duration-300"
+              aria-label="View all available properties"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
+                View All Properties
+              </span>
+              <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-500 ease-out group-hover:w-full" />
+            </Link>
 
-  {/* Switch to Supply UI */}
-  <Link
-    ref={flipButtonRef}
-    to="/add-properties"
-    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-blue-600 bg-white px-6 py-2 text-blue-600 transition-colors duration-300"
-  >
-    <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
-     Add Property <span className="text-green-700 group-hover:text-green-300">Free</span>
-    </span>
-    <span className="absolute left-0 top-0 h-full w-0 bg-blue-600 transition-all duration-300 ease-in-out group-hover:w-full" />
-  </Link>
-</div>
-
+            {/* Add Property */}
+            <Link
+              ref={flipButtonRef}
+              to="/add-properties"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-blue-600 bg-white px-6 py-2 text-blue-600 transition-colors duration-300"
+              aria-label="Add your property for free"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
+                Add Property{" "}
+                <span className="text-green-700 group-hover:text-green-300">
+                  Free
+                </span>
+              </span>
+              <span className="absolute left-0 top-0 h-full w-0 bg-blue-600 transition-all duration-300 ease-in-out group-hover:w-full" />
+            </Link>
+          </div>
         </div>
 
         {/* Right Video */}
@@ -190,6 +198,7 @@ export default function HeroDesktop() {
             playsInline
             preload="auto"
             className="w-full h-full object-cover"
+            aria-label="Video showcasing modern properties"
           />
         </div>
       </div>

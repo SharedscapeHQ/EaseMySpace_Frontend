@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllLocations } from "../../api/adminApi";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import locationVid from "/location-vid.mp4";
 
 function TopLocation() {
   const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const scrollContainerRef = useRef(null);
+  const [scrollIndex, setScrollIndex] = useState(0);
 
   useEffect(() => {
     async function fetchLocations() {
@@ -18,7 +24,6 @@ function TopLocation() {
         setLoading(false);
       }
     }
-
     fetchLocations();
   }, []);
 
@@ -26,45 +31,131 @@ function TopLocation() {
     navigate(`/view-properties?location=${encodeURIComponent(location)}`);
   };
 
+  const scrollBy = (direction) => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const cardWidth = container.children[0].offsetWidth + 24; // 24 = gap
+    container.scrollBy({ left: direction * cardWidth, behavior: "smooth" });
+    setScrollIndex((prev) => prev + direction);
+  };
+
   if (!loading && locations.length === 0) return null;
 
   return (
-    <section
-      style={{ fontFamily: "para_font" }}
-      className="w-full lg:pb-10 bg-zinc-50"
-    >
-      <div className="max-w-7xl lg:px-10 px-3 mx-auto">
+    <section className="w-full py-5 bg-blue-100 relative">
+      <div className="max-w-7xl mx-auto px-3 lg:px-10 relative z-10">
         <h2
           style={{ fontFamily: "heading_font" }}
-          className="text-lg sm:text-3xl mb-5 text-left"
+          className="text-lg lg:text-3xl text-black leading-tight"
         >
-          Top Locations
+          Explore Top Locations
         </h2>
 
-        <div className="flex overflow-x-auto gap-5 scrollbar-hide overflow-y-hidden">
-          {loading
-            ? Array.from({ length: 5 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="group w-[170px] h-[170px] sm:min-w-0 flex-shrink-0 bg-zinc-200 animate-pulse rounded-xl"
-                />
-              ))
-            : locations.map((loc, i) => (
-                <div
-                  key={i}
-                  onClick={() => handleLocationClick(loc.name)}
-                  className="group w-[140px] h-[140px] sm:min-w-0 flex-shrink-0 bg-gradient-to-br from-white to-blue-100 rounded-xl p-3 transition-all flex flex-col items-center justify-center text-center cursor-pointer border border-zinc-200"
-                >
-                  <img
-                    src={loc.image}
-                    alt={loc.name}
-                    className="w-32 h-32 object-cover rounded-lg transition-transform duration-300"
+        {/* ----- MOBILE VIEW (scrollable cards with arrows) ----- */}
+        <div className="relative lg:hidden mt-6">
+          
+
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide"
+          >
+            {loading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-40 h-52 bg-gray-700 rounded-2xl flex-shrink-0"
                   />
-                  <p className=" pb-4 text-[13px] capitalize text-zinc-800 font-medium lg:group-hover:scale-125 transition-all duration-200">
-                    {loc.name}
-                  </p>
-                </div>
-              ))}
+                ))
+              : locations.map((loc, i) => (
+                  <motion.div
+                    key={i}
+                    onClick={() => handleLocationClick(loc.name)}
+                    className="relative w-40 h-52 flex-shrink-0 cursor-pointer rounded-2xl bg-zinc-100 overflow-hidden shadow-lg"
+                  >
+                    <div className="w-full h-40 bg-gradient-to-br from-gray-100 via-blue-400 to-blue-700 flex items-center justify-center">
+                      <img
+                        src={loc.image}
+                        alt={loc.name}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </div>
+                    <div className="p-2">
+                      <h3 className="text-zinc-800 font-semibold text-sm text-center">
+                        {loc.name}
+                      </h3>
+                    </div>
+                  </motion.div>
+                ))}
+          </div>
+        </div>
+
+        {/* ----- LAPTOP VIEW (split layout with video + 2x2 grid) ----- */}
+        <div className="hidden lg:flex gap-12 items-center relative">
+          {/* Left: Video (overflow effect) */}
+          <div className="w-1/2 relative -my-16 rounded-xl overflow-hidden ">
+            <video
+              src={locationVid}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-[420px] object-cover"
+            />
+          </div>
+
+          {/* Right: Cards grid */}
+          <div className="w-1/2 relative">
+            {/* Arrows */}
+           {locations.length > 4 && (
+  <>
+    <button className="absolute left-[-2rem] top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:scale-105 transition">
+      <ChevronLeft size={24} />
+    </button>
+    <button className="absolute right-[-2rem] top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:scale-105 transition">
+      <ChevronRight size={24} />
+    </button>
+  </>
+)}
+
+            {/* Grid of cards */}
+            <div className="grid grid-cols-2 gap-6">
+              {loading
+                ? Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-full h-72 bg-gray-700 animate-pulse rounded-2xl"
+                    />
+                  ))
+                : locations.slice(0, 4).map((loc, i) => (
+                 <motion.div
+  key={i}
+  onClick={() => handleLocationClick(loc.name)}
+  whileHover={{ scale: 1.02 }}
+  className="relative group cursor-pointer rounded-2xl bg-gradient-to-br from-gray-100 via-blue-400 to-blue-700 overflow-hidden"
+>
+  <div className="w-full h-48 bg-blue-300 flex items-center justify-center">
+    <img
+      src={loc.image}
+      alt={loc.name}
+      className="max-h-full max-w-full object-cover scale-125"
+    />
+  </div>
+<div className="p-3 relative">
+  <h3 className="text-white text-center font-semibold text-lg">
+    {loc.name}
+  </h3>
+
+</div>
+<div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+  <span className="bg-zinc-700 text-white text-xs px-3 py-1 rounded-lg shadow-lg whitespace-nowrap">
+    Explore Properties in {loc.name}
+  </span>
+</div>
+</motion.div>
+
+                  ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

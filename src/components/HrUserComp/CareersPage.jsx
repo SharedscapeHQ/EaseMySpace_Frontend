@@ -18,15 +18,15 @@ function TagsInput({ tags, setTags, placeholder }) {
   };
 
   const handleKeyDown = (e) => {
-  if (e.key === "Enter") {   // Only Enter triggers tag addition
+  if (e.key === "Enter") {   
     e.preventDefault();
     const value = input.trim();
     if (value && !tags.includes(value)) {
       setTags([...tags, value]);
     }
-    setInput("");  // Clear input
+    setInput(""); 
   } else if (e.key === "Backspace" && !input) {
-    setTags(tags.slice(0, -1)); // Remove last tag if input is empty
+    setTags(tags.slice(0, -1)); 
   }
 };
 

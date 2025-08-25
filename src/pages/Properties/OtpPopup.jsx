@@ -102,81 +102,93 @@ function OtpPopup({ onVerified, onClose, otpPurpose }) {
   }, [otpSent]);
 
   return (
-    <div
-      key={otpSent ? "otp-mode" : "mobile-mode"}
-      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
+   <div
+  key={otpSent ? "otp-mode" : "mobile-mode"}
+  className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center backdrop-blur-sm"
+>
+  <div
+    style={{ fontFamily: "para_font" }}
+    className="bg-white rounded-2xl p-6 w-80 shadow-2xl relative flex flex-col gap-4"
+  >
+    {/* Close Button */}
+    <button
+      onClick={onClose}
+      className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold transition"
+      aria-label="Close OTP popup"
     >
-      <div
-        style={{ fontFamily: "para_font" }}
-        className="bg-white rounded-xl p-6 w-80 shadow-lg relative"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-3 text-gray-500 text-xl"
-          aria-label="Close OTP popup"
-        >
-          ×
-        </button>
-        <h3 className="text-lg text-gray-800 mb-3">Verify to {otpPurpose}</h3>
+      ×
+    </button>
 
+    {/* Header */}
+    <h3 className="text-xl font-semibold text-gray-800 text-center">
+      Verify to {otpPurpose}
+    </h3>
+    <p className="text-sm text-gray-500 text-center">
+      Enter your mobile number to continue
+    </p>
+
+    {/* Mobile Number Input */}
+    <input
+      type="tel"
+      placeholder="Mobile Number"
+      maxLength={10}
+      className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+      value={userMobile}
+      onChange={(e) => {
+        const val = e.target.value;
+        if (/^\d*$/.test(val)) setUserMobile(val);
+      }}
+      disabled={isSending || isVerifying}
+      aria-label="Mobile Number"
+    />
+
+    {/* OTP Input */}
+    {otpSent && (
+      <>
         <input
+          id="otpInput"
           type="tel"
-          placeholder="Enter your mobile number"
-          maxLength={10}
-          className="w-full mb-2 px-3 py-2 border border-gray-300 rounded"
-          value={userMobile}
+          placeholder="Enter OTP"
+          className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+          value={userOtp}
           onChange={(e) => {
             const val = e.target.value;
-            if (/^\d*$/.test(val)) setUserMobile(val);
+            if (/^\d*$/.test(val)) setUserOtp(val);
           }}
-          disabled={isSending || isVerifying}
-          aria-label="Mobile Number"
+          disabled={isVerifying}
+          aria-label="OTP Code"
         />
+        <button
+          onClick={handleSendOtp}
+          className="text-indigo-600 text-sm hover:underline disabled:text-gray-400 self-end"
+          disabled={resending || isSending}
+        >
+          {resending ? "Resending..." : "Resend OTP"}
+        </button>
+      </>
+    )}
 
-        {otpSent && (
-          <>
-            <input
-              id="otpInput"
-              type="tel"
-              placeholder="Enter OTP"
-              className="w-full mb-2 px-3 py-2 border border-gray-300 rounded"
-              value={userOtp}
-              onChange={(e) => {
-                const val = e.target.value;
-                if (/^\d*$/.test(val)) setUserOtp(val);
-              }}
-              disabled={isVerifying}
-              aria-label="OTP Code"
-            />
-            <button
-              onClick={handleSendOtp}
-              className="text-indigo-600 text-sm mb-2 hover:underline disabled:text-gray-400"
-              disabled={resending || isSending}
-            >
-              {resending ? "Resending..." : "Resend OTP"}
-            </button>
-          </>
-        )}
+    {/* Action Button */}
+    {!otpSent ? (
+      <button
+        onClick={handleSendOtp}
+        className="w-full bg-blue-600 text-white py-2 rounded-xl font-medium hover:bg-blue-700 transition disabled:opacity-60"
+        disabled={isSending}
+      >
+        {isSending ? "Sending..." : "Send OTP"}
+      </button>
+    ) : (
+      <button
+        onClick={handleVerifyOtp}
+        className="w-full bg-green-600 text-white py-2 rounded-xl font-medium hover:bg-green-700 transition disabled:opacity-60"
+        disabled={isVerifying}
+      >
+        {isVerifying ? "Verifying..." : "Verify OTP"}
+      </button>
+    )}
+  </div>
+</div>
 
-        {!otpSent ? (
-          <button
-            onClick={handleSendOtp}
-            className="w-full bg-blue-500 text-white py-2 rounded mt-2 font-medium disabled:opacity-60"
-            disabled={isSending}
-          >
-            {isSending ? "Sending..." : "Send OTP"}
-          </button>
-        ) : (
-          <button
-            onClick={handleVerifyOtp}
-            className="w-full bg-green-600 text-white py-2 rounded mt-2 font-medium disabled:opacity-60"
-            disabled={isVerifying}
-          >
-            {isVerifying ? "Verifying..." : "Verify OTP"}
-          </button>
-        )}
-      </div>
-    </div>
   );
 }
 
