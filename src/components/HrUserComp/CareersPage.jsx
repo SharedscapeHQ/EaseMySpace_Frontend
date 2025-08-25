@@ -18,21 +18,25 @@ function TagsInput({ tags, setTags, placeholder }) {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "," || e.key === "Enter") {
-      e.preventDefault();
-      addTag(input);
-      setInput("");
-    } else if (e.key === "Backspace" && !input) {
-      setTags(tags.slice(0, -1));
-    }
-  };
-
-  const handlePaste = (e) => {
+  if (e.key === "Enter") {   // Only Enter triggers tag addition
     e.preventDefault();
-    const paste = e.clipboardData.getData("text");
-    addTag(paste);
-    setInput("");
-  };
+    const value = input.trim();
+    if (value && !tags.includes(value)) {
+      setTags([...tags, value]);
+    }
+    setInput("");  // Clear input
+  } else if (e.key === "Backspace" && !input) {
+    setTags(tags.slice(0, -1)); // Remove last tag if input is empty
+  }
+};
+
+
+ const handlePaste = (e) => {
+  e.preventDefault();
+  const paste = e.clipboardData.getData("text").trim();
+  if (paste && !tags.includes(paste)) setTags([...tags, paste]);
+  setInput("");
+};
 
   return (
     <div className="border rounded-md px-2 py-1 flex flex-wrap gap-1 focus-within:ring-2 focus-within:ring-indigo-300 transition">
