@@ -5,7 +5,7 @@ import ConnectPopup from "./ConnectPopup";
 
 export default function SalesPersonCard() {
   const name = "Dharmendra Mishra";
-  const phone = "+91 8090200513"; 
+  const phone = "+91 9004463371"; 
   const role = "EMS consultant";
   const bullets = [
     "Helps you discover the best listings",
