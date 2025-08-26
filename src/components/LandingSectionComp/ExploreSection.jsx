@@ -4,7 +4,6 @@ import RentalMatchSection from "./MatchSection";
 import VibeSection from "./KnowTheVibe";
 import { FaHome, FaSmile, FaRegPaperPlane } from "react-icons/fa";
 import Card from "./ExplorSectionCard";
-import { Link } from "react-router-dom";
 
 export default function ExploreSection() {
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -34,21 +33,21 @@ export default function ExploreSection() {
             <Card
               title="Find Your Ideal Rental"
               text="Answer 5 quick questions. See matching homes."
-              icon={<FaHome className="svg" />}
+              icon={<FaHome className="svg text-xl" />}
               buttonLabel="Start"
               onClick={() => setSelectedFeature("rental")}
             />
             <Card
               title="Discover Your Vibe"
               text="Take a quick quiz to know your vibe and style"
-              icon={<FaSmile className="svg" />}
+              icon={<FaSmile className="svg text-xl" />}
               buttonLabel="Start"
               onClick={() => setSelectedFeature("vibe")}
             />
            <Card
   title="Post Your Requirement"
   text="Tell us your exact requirements and we’ll find the right property for you."
-  icon={<FaRegPaperPlane className="svg" />}
+  icon={<FaRegPaperPlane className="svg text-xl" />}
   buttonLabel="Post"
   link="/demand-form"
 />
