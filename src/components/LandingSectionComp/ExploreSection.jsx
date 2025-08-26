@@ -40,7 +40,7 @@ export default function ExploreSection() {
             />
             <Card
               title="Discover Your Vibe"
-              text="Take a quick quiz to explore spaces matching your lifestyle."
+              text="Take a quick quiz to know your vibe and style"
               icon={<FaSmile className="svg" />}
               buttonLabel="Start"
               onClick={() => setSelectedFeature("vibe")}
