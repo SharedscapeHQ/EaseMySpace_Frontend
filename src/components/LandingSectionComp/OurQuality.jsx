@@ -75,7 +75,7 @@ function OurQuality() {
                 <h3 className="font-bold text-zinc-900 text-base sm:text-lg lg:min-h-[60px]">
                   {feature.title}
                 </h3>
-                <p className="text-xs text-zinc-800 lg:leading-relaxed leading-none mt-2">
+                <p className="text-xs text-zinc-800 lg:leading-relaxed leading-1 tracking-wider mt-2">
                   {feature.description}
                 </p>
               </div>

@@ -21,4 +21,15 @@ export const getAllRequests = async () => {
   return res.data;
 };
 
+
+export const markFollowUp = async ({ requestId, remark }) => {
+  const res = await requestAxios.post("/mark-followup", { requestId, remark });
+  return res.data;
+};
+
+export const clearFollowUp = async (requestId) => {
+  const res = await requestAxios.post("/clear-followup", { requestId });
+  return res.data;
+};
+
 export default requestAxios;

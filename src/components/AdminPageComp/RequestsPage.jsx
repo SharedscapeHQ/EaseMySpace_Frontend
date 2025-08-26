@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { getAllRequests } from "../../api/requestApi";
+import { getAllRequests, markFollowUp, clearFollowUp } from "../../api/requestApi";
 import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { FiDownload } from "react-icons/fi";
 
-// Helper to format date as dd/mm/yyyy hh:mm AM/PM
+// Helper: format date
 const formatDate = (dateStr) => {
   if (!dateStr) return "—";
   const date = new Date(dateStr);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-  let hours = date.getHours();
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+  return date.toLocaleString();
 };
 
 export default function RequestsTable() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [remarks, setRemarks] = useState({});
+  const [loadingIds, setLoadingIds] = useState({});
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role;
 
   useEffect(() => {
     async function fetchRequests() {
@@ -36,7 +33,6 @@ export default function RequestsTable() {
         setLoading(false);
       }
     }
-
     fetchRequests();
   }, []);
 
@@ -51,7 +47,10 @@ export default function RequestsTable() {
       Name: req.name || "",
       Email: req.email || "",
       Phone: req.phone || "",
-      "Created At": formatDate(req.createdAt),
+      "Created At": formatDate(req.created_at),
+      "Follow-up Done": req.follow_up_done ? "Yes" : "No",
+      "Followed By": req.followed_by || "—",
+      Remark: req.remark || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -63,12 +62,53 @@ export default function RequestsTable() {
     saveAs(blob, "requests.xlsx");
   };
 
+  // ─── Mark Follow-up ───
+  const handleMarkFollowUp = async (requestId) => {
+    const remark = remarks[requestId];
+    if (!remark) return toast.error("Please enter a remark");
+
+    setLoadingIds((prev) => ({ ...prev, [requestId]: true }));
+    try {
+      const res = await markFollowUp({ requestId, remark });
+      setRequests((prev) =>
+        prev.map((r) => (r.id === requestId ? { ...r, ...res.request } : r))
+      );
+      setRemarks((prev) => ({ ...prev, [requestId]: "" }));
+      toast.success(res.message || "Follow-up marked");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to mark follow-up");
+    } finally {
+      setLoadingIds((prev) => ({ ...prev, [requestId]: false }));
+    }
+  };
+
+  // ─── Clear Follow-up ───
+  const handleClearFollowUp = async (requestId) => {
+    setLoadingIds((prev) => ({ ...prev, [requestId]: true }));
+    try {
+      const res = await clearFollowUp(requestId);
+      setRequests((prev) =>
+        prev.map((r) => (r.id === requestId ? { ...r, ...res.request } : r))
+      );
+      toast.success(res.message || "Follow-up cleared");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to clear follow-up");
+    } finally {
+      setLoadingIds((prev) => ({ ...prev, [requestId]: false }));
+    }
+  };
+
+  const handleRemarkChange = (id, value) => {
+    setRemarks((prev) => ({ ...prev, [id]: value }));
+  };
+
   if (loading) return <div className="text-center py-8">Loading requests...</div>;
 
   return (
     <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
-      {/* Export */}
-      <div className="flex items-center justify-end p-4">
+      {/* Header Bar */}
+      <div className="flex items-center justify-between p-4">
+        <div />
         <button
           onClick={exportToExcel}
           className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
@@ -86,18 +126,75 @@ export default function RequestsTable() {
           <thead className="bg-indigo-50 text-gray-700 text-sm">
             <tr>
               <th className="px-5 py-3 text-left font-semibold">Name</th>
-              <th className="px-5 py-3 text-left font-semibold">Email</th>
-              <th className="px-5 py-3 text-left font-semibold">Phone</th>
-              <th className="px-5 py-3 text-left font-semibold">Created At</th>
+              <th className="px-5 py-3 text-left font-semibold">Contact</th>
+              <th className="px-5 py-3 text-left font-semibold">Date & Time</th>
+              <th className="px-5 py-3 text-left font-semibold">Follow-up</th>
+              <th className="px-5 py-3 text-left font-semibold">Followed By</th>
+              <th className="px-5 py-3 text-left font-semibold">Remark</th>
             </tr>
           </thead>
           <tbody>
             {requests.map((req) => (
               <tr key={req.id} className="even:bg-gray-50 border-b align-top">
+                {/* Name */}
                 <td className="px-5 py-3">{req.name || "—"}</td>
-                <td className="px-5 py-3">{req.email || "—"}</td>
-                <td className="px-5 py-3">{req.phone || "—"}</td>
+
+                {/* Contact */}
+                <td className="px-5 py-3 flex flex-col gap-1">
+                  <span>{req.email || "—"}</span>
+                  <span>{req.phone || "—"}</span>
+                </td>
+
+                {/* Date & Time */}
                 <td className="px-5 py-3">{formatDate(req.created_at)}</td>
+
+                {/* Follow-up */}
+                <td className="px-5 py-3">
+                  {req.follow_up_done ? (
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
+                        <span className="text-green-600 font-medium text-xs">Done</span>
+                      </div>
+                      {role === "owner" && (
+                        <button
+                          onClick={() => handleClearFollowUp(req.id)}
+                          disabled={loadingIds[req.id]}
+                          className="text-red-600 text-xs hover:underline mt-1 self-start disabled:opacity-50"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-1">
+                      {(role === "admin" || role === "RM" || role === "owner") && (
+                        <>
+                          <textarea
+                            rows="2"
+                            className="border rounded-md px-2 py-1 text-xs focus:outline-indigo-500 resize-none"
+                            placeholder="Enter remark"
+                            value={remarks[req.id] || ""}
+                            onChange={(e) => handleRemarkChange(req.id, e.target.value)}
+                          />
+                          <button
+                            onClick={() => handleMarkFollowUp(req.id)}
+                            disabled={loadingIds[req.id]}
+                            className="bg-indigo-600 text-white px-3 py-1 rounded text-xs hover:bg-indigo-700 transition disabled:opacity-50"
+                          >
+                            Mark
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </td>
+
+                {/* Followed By */}
+                <td className="px-5 py-3 text-xs text-gray-600">{req.followed_by || "—"}</td>
+
+                {/* Remark */}
+                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">{req.remark || "—"}</td>
               </tr>
             ))}
           </tbody>
