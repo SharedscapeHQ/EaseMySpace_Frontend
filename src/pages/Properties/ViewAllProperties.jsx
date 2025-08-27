@@ -210,7 +210,7 @@ export default function ViewAllProperties() {
 
         {/* Main Section */}
         <main className="flex-1 flex flex-col items-center w-full overflow-visible">
-           <section className="w-full max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 px-2 md:px-8">
+           <section className="w-full max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 lg:px-0 px-2">
             <h1
               style={{ fontFamily: "heading_font" }}
               className="text-lg lg:text-3xl mb-0 text-black leading-tight"
