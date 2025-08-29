@@ -113,7 +113,7 @@ export default function HeroMobile({ properties }) {
 
       {/* Hero Image Section */}
       <div className="relative w-full h-56 rounded-xl overflow-hidden" ref={heroRef}>
-        <img src={heroImg} alt="Hero" className="w-full h-[100%] object-cover " />
+        <img src={heroImg} alt="Hero" className="w-full h-[110%] object-cover " />
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]" ref={searchRef}>
           <div className="relative">
             <IoSearchOutline className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg" />

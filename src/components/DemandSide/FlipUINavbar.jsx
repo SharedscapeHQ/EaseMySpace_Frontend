@@ -75,7 +75,7 @@ function FlipUINavbar({ onPostRequirementClick }) {
             Post Requirement
           </button>
           <Link
-            to="/dashboard"
+            to="/requirement-dashboard"
             className="px-4 py-2 rounded-lg border border-zinc-200 text-gray-700 hover:bg-blue-600 hover:text-white transition"
             onClick={() => setMenuOpen(false)}
           >
