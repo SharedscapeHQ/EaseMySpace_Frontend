@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import pgImg from "/landing-assets/pgImg.png";
 import sharedImg from "/landing-assets/sharedImg.png";
 import vacantImg from "/landing-assets/vacantImg.png";
-import heroImg from "/heroImg/hero.jpg";
+import heroImg from "/heroImg/hero.png";
 
 export default function HeroMobile({ properties }) {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ export default function HeroMobile({ properties }) {
 
   return (
     <section
-      className="lg:hidden w-full bg-white px-4 py-6 transition-all duration-400"
+      className="lg:hidden w-full bg-white px-4 py-4 transition-all duration-400"
       style={{ height: scrolled ? "74vh" : "100vh" }}
     >
       {/* Heading */}
@@ -94,7 +94,7 @@ export default function HeroMobile({ properties }) {
       </div>
 
       {/* Options */}
-      <div className="flex justify-between gap-3 mb-10">
+      <div className="flex justify-between gap-3 mb-8">
         {options.map((item, i) => (
           <Link
             key={item.value}
@@ -113,7 +113,7 @@ export default function HeroMobile({ properties }) {
 
       {/* Hero Image Section */}
       <div className="relative w-full h-56 rounded-xl overflow-hidden" ref={heroRef}>
-        <img src={heroImg} alt="Hero" className="w-full h-[110%] object-cover" />
+        <img src={heroImg} alt="Hero" className="w-full h-[100%] object-fill scale-105" />
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]" ref={searchRef}>
           <div className="relative">
             <IoSearchOutline className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg" />

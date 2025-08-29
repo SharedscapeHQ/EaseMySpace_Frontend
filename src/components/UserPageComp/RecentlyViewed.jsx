@@ -1,67 +1,58 @@
 import React from "react";
 import dayjs from "dayjs";
+import { FiCheckCircle } from "react-icons/fi";
+
 
 export default function RecentlyViewed({ property }) {
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition border border-gray-200 flex flex-col relative">
-      {/* Badge for timestamp */}
-      {property.viewed_at && (
-        <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full select-none z-10">
-          Viewed {dayjs(property.viewed_at).format("DD/MM/YY hh:mm A")}
-        </div>
-      )}
+<div
+  key={property.id}
+  onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+  className="group min-w-[270px] lg:max-w-[300px] bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden relative transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg"
+>
+  {/* Hover Blue Overlay */}
+  <div className="hidden lg:block absolute inset-x-0 bottom-0 bg-blue-500 h-0 group-hover:h-full transition-all duration-300 ease-in-out z-0 rounded-2xl"></div>
 
-      {/* Rest of your card */}
-      <div className="w-full h-48 overflow-hidden rounded-t-2xl">
-        <img
-          src={
-            Array.isArray(property.image)
-              ? property.image[0]
-              : property.image || "https://via.placeholder.com/300x160?text=No+Image"
-          }
-          alt={property.title}
-          className="w-full h-full object-cover object-center"
-          loading="lazy"
-        />
-      </div>
-
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
-            {property.title}
-          </h3>
-          {property.verified && (
-            <span className="text-green-700 bg-green-100 text-xs font-semibold px-2 py-1 rounded-full select-none">
-              ✅ Verified
-            </span>
-          )}
-        </div>
-
-        <div className="text-sm text-gray-600 space-y-1 flex-grow">
-          <p>
-            <strong>Rent:</strong>{" "}
-            <span className="text-gray-900 font-medium">
-              ₹{Number(property.price).toLocaleString()}
-            </span>
-          </p>
-          <p>
-            <strong>Location:</strong> {property.location}
-          </p>
-        </div>
-      </div>
-
-      <div className="px-5 py-3 border-t border-gray-100 bg-gray-50 flex justify-end">
-        <button
-          className="text-sm px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
-          onClick={(e) => {
-            e.stopPropagation();
-            window.location.href = `/dashboard/my-properties/${property.id}`;
-          }}
-          aria-label={`View details of ${property.title}`}
-        >
-          View Details
-        </button>
-      </div>
+  {/* Image */}
+  <div className="relative h-48 w-full p-3 pt-3 pb-0 z-10">
+    <div className="h-full w-full overflow-hidden rounded-xl">
+      <img
+        src={
+          Array.isArray(property.image)
+            ? property.image[0]
+            : property.image || "https://via.placeholder.com/300x160?text=No+Image"
+        }
+        alt={property.title}
+        className="h-full w-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-transform duration-300"
+        loading="lazy"
+      />
     </div>
+
+    {/* Viewed timestamp - top-right corner */}
+    {property.viewed_at && (
+      <div className="absolute top-3 right-3 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-full select-none z-10">
+        Viewed {dayjs(property.viewed_at).format("DD/MM/YY hh:mm A")}
+      </div>
+    )}
+  </div>
+
+  {/* Content */}
+  <div className="p-4 flex flex-col gap-1 z-10 relative">
+    <h3 className="font-semibold text-md truncate max-w-[160px] lg:group-hover:text-white transition-colors duration-300">
+      {property.title}
+    </h3>
+
+    <p className="text-gray-600 text-xs lg:group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+      📍 {property.location || "Unknown location"}
+    </p>
+
+    <p className="text-zinc-800 font-bold text-xs lg:text-base whitespace-nowrap lg:group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+      💰 ₹{Number(property.price || 0).toLocaleString()}
+    </p>
+  </div>
+</div>
+
+
+
   );
 }

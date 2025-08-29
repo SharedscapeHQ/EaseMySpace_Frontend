@@ -10,11 +10,8 @@ import OurQuality from "../components/LandingSectionComp/OurQuality";
 import HeroMobile from "../components/LandingSectionComp/HeroMobile";
 import HeroDesktop from "../components/LandingSectionComp/HeroDesktop";
 import Banner from "../components/LandingSectionComp/Banner";
-import KnowTheVibe from "../components/LandingSectionComp/KnowTheVibe";
-import Marquee from "../components/LandingSectionComp/Marquee";
-import MatchSection from "../components/LandingSectionComp/MatchSection";
 import ExploreSection from "../components/LandingSectionComp/ExploreSection";
-import Card from "../components/LandingSectionComp/ExplorSectionCard";
+import BottomNav from "../components/LandingSectionComp/BottomNav";
 // import NearbyProperties from '../components/LandingSectionComp/NearbyProperties'
 
 function Landing() {
@@ -39,6 +36,7 @@ function Landing() {
         {/* <KnowTheVibe/> */}
         {/* <Card/> */}
         <FAQSection />
+        <BottomNav />
         <Footer />
       </div>
     </>

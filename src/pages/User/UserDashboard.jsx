@@ -16,6 +16,7 @@ import UnlockedCards from "../../components/UserPageComp/UnlockedCards";
 import RecentlyViewed from "../../components/UserPageComp/RecentlyViewed";
 import { logoutUser } from "../../api/authApi";
 import { FiClock } from "react-icons/fi";
+import { AiOutlineWhatsApp } from "react-icons/ai";
 import DedicatedRM from "../../components/UserPageComp/DedicatedRM";
 import MyBookings from "../../components/UserPageComp/MyBookings";
 
@@ -23,8 +24,9 @@ const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
   MyQueries: "Your Raised Queries",
   MyPlan: "Your Subscription Plan",
+  DedicatedRM: "Your Dedicated RM",
   UnlockedContacts: "Unlocked Contacts",
-  RecentlyViewed: "Recently Viewed Properties",
+  RecentlyViewed: "Recently Viewed",
   MyBookings: "Your Bookings",
 };
 
@@ -99,9 +101,9 @@ export default function UserDashboard() {
     }
   };
   useEffect(() => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  if (storedUser) setUser(storedUser);
-}, []);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) setUser(storedUser);
+  }, []);
 
   const handleQuerySubmit = async (propertyId, message) => {
     try {
@@ -123,7 +125,7 @@ export default function UserDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[linear-gradient(135deg,#dbeafe,#e0f2fe)] flex flex-col lg:flex-row">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -131,9 +133,25 @@ export default function UserDashboard() {
         userPlan={userPlan} // Pass plan as prop
       />
 
-      <main className="flex-1 p-4 sm:p-6 lg:p-10 lg:ml-64">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-10 pt-20 lg:ml-64">
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-2xl lg:text-3xl text-black mb-8 flex items-center gap-4"
+        >
           {TAB_TITLES[activeTab] || ""}
+
+          <a
+            href="https://wa.me/919004463371?text=Hello!%20I%20have%20a%20suggestion%20for%20your%20website."
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Suggest Changes"
+            className="text-green-600 hover:text-green-800 transition flex items-center gap-1 text-lg"
+          >
+            <AiOutlineWhatsApp className="block lg:hidden" />
+            <span className="hidden lg:inline-flex items-center gap-1">
+              <AiOutlineWhatsApp /> Suggest Changes
+            </span>
+          </a>
         </h2>
 
         {activeTab === "MyProperties" && (

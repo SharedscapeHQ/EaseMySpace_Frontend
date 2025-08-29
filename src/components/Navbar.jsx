@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaUserCircle, FaHome, FaInfoCircle, FaBuilding, FaPhone, FaRegCreditCard } from "react-icons/fa";
 import brandLogo from "/navbar-assets/brand-logo.png";
+import { logoutUser } from "../api/authApi";
 
 export default function Navbar() {
   const [user, setUser] = useState(() => {
@@ -78,6 +79,15 @@ export default function Navbar() {
     };
   }, [profileOpen]);
 
+    const handleLogout = async () => {
+      try {
+        await logoutUser();
+      } catch {}
+      localStorage.clear();
+      window.dispatchEvent(new Event("auth-change"));
+      navigate("/");
+    };
+
   return (
     <header style={{ fontFamily: "para_font" }}>
       <nav  className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white lg:shadow-sm z-40" style={{ fontFamily: "para_font" }}>
@@ -125,60 +135,74 @@ export default function Navbar() {
 </div>
 
 
-          <div
-            className="relative group profile-dropdown-wrapper"
-            onMouseEnter={() => window.innerWidth >= 640 && setProfileOpen(true)}
-            onMouseLeave={() => window.innerWidth >= 640 && setProfileOpen(false)}
-          >
+         <div
+  className="relative group profile-dropdown-wrapper"
+  onMouseEnter={() => window.innerWidth >= 640 && setProfileOpen(true)}
+  onMouseLeave={() => window.innerWidth >= 640 && setProfileOpen(false)}
+>
+  <button
+    onClick={() => {
+      if (window.innerWidth < 640) setProfileOpen((prev) => !prev);
+    }}
+    className="flex items-center gap-1 text-zinc-700"
+  >
+    {user && (
+      <span className="hidden sm:inline capitalize text-sm font-medium">
+        Hello, {user.firstName}
+      </span>
+    )}
+    <FaUserCircle className="text-2xl" />
+  </button>
+
+  <AnimatePresence>
+    {profileOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-50 border"
+      >
+        <div className="px-4 py-2 text-blue-600 font-semibold text-sm border-b">
+          {user ? "My Account" : "LOGIN / REGISTER"}
+        </div>
+        <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 font-medium space-y-2">
+          {user || isVerified ? (
+            <Link to={dashRoute()} onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
+              Dashboard
+            </Link>
+          ) : (
+            <Link to="/login" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
+              Login
+            </Link>
+          )}
+          <Link to="/view-properties" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
+            View Listings
+          </Link>
+          {(user || isVerified) && (
+            <Link to="/contact" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
+              Contact Support
+            </Link>
+          )}
+
+          {/* Logout Button */}
+          {user && (
             <button
               onClick={() => {
-                if (window.innerWidth < 640) setProfileOpen((prev) => !prev);
+                handleLogout();
+                setProfileOpen(false);
               }}
-              className="flex items-center gap-1 text-zinc-700"
+              className="text-red-600 hover:text-red-700 text-left"
             >
-              {user && (
-                <span className="hidden sm:inline capitalize text-sm font-medium">
-                  Hello, {user.firstName}
-                </span>
-              )}
-              <FaUserCircle className="text-2xl" />
+              Logout
             </button>
+          )}
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
 
-            <AnimatePresence>
-              {profileOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-50 border"
-                >
-                  <div className="px-4 py-2 text-blue-600 font-semibold text-sm border-b">
-                    {user ? "My Account" : "LOGIN / REGISTER"}
-                  </div>
-                  <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 font-medium space-y-2">
-                    {user || isVerified ? (
-                      <Link to={dashRoute()} onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                        Dashboard
-                      </Link>
-                    ) : (
-                      <Link to="/login" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                        Login
-                      </Link>
-                    )}
-                    <Link to="/view-properties" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                      View Listings
-                    </Link>
-                    {(user || isVerified) && (
-                      <Link to="/contact" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                        Contact Support
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </div>
       </nav>
 

@@ -33,7 +33,7 @@ export default function WhatsAppButton() {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-10 right-6 bg-green-500 text-white rounded-full shadow-lg p-3 flex items-center justify-center z-50"
+      className="fixed bottom-16 right-4 bg-green-500 text-white rounded-full shadow-lg p-3 flex items-center justify-center z-50"
     >
       <FaWhatsapp size={28} />
     </a>

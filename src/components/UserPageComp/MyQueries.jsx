@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchMyQueries } from "../../api/userApi";
-import { FaCheckCircle, FaHourglassHalf } from "react-icons/fa";
-import {FiClock} from "react-icons/fi"
+import { FaCheckCircle, FaHourglassHalf, FaBuilding } from "react-icons/fa";
+import { FiClock } from "react-icons/fi";
 
 export default function MyQueries() {
   const [queries, setQueries] = useState([]);
@@ -21,31 +21,33 @@ export default function MyQueries() {
     getQueries();
   }, []);
 
-  if (loading) return <div className="text-center text-gray-700 font-medium py-6">
-          <FiClock className="inline mr-2 animate-spin" /> Loading Queries
-          details...
-        </div>
+  if (loading)
+    return (
+      <div className="text-left text-gray-700 font-medium py-6 flex items-center justify-center gap-2">
+        <FiClock className="animate-spin text-xl" /> Loading queries...
+      </div>
+    );
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-indigo-700 mb-6">📋 My Queries</h2>
+    <div className=" max-w-4xl">
+     
 
       {queries.length === 0 ? (
-        <p className="text-gray-500 italic">No queries submitted yet.</p>
+        <p className="text-gray-500 italic text-left">No queries submitted yet.</p>
       ) : (
         <ul className="space-y-6">
           {queries.map((q) => (
             <li
               key={q.id}
-              className={`rounded-xl p-6 shadow-md border transition-all duration-300 ${
+              className={`relative rounded-lg p-6  border  ${
                 q.resolved
                   ? "bg-gradient-to-r from-green-50 to-green-100 border-green-300"
                   : "bg-gradient-to-r from-yellow-50 to-yellow-100 border-yellow-300"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  🏠 {q.property_title}
+                <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <FaBuilding className="text-indigo-500" /> {q.property_title}
                 </h3>
                 <span
                   className={`inline-flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-full ${
@@ -56,25 +58,22 @@ export default function MyQueries() {
                 >
                   {q.resolved ? (
                     <>
-                      <FaCheckCircle className="text-green-500" />
-                      Resolved
+                      <FaCheckCircle className="text-green-500" /> Resolved
                     </>
                   ) : (
                     <>
-                      <FaHourglassHalf className="text-yellow-500 animate-pulse" />
-                      Pending
+                      <FaHourglassHalf className="text-yellow-500 animate-pulse" /> Pending
                     </>
                   )}
                 </span>
               </div>
 
-              <p className="text-gray-700 mb-2">
+              <p className="text-gray-700 mb-2 text-left">
                 <strong>Message:</strong> {q.message}
               </p>
 
-              <p className="text-sm text-gray-500">
-                <strong>Submitted on:</strong>{" "}
-                {new Date(q.created_at).toLocaleString()}
+              <p className="text-sm text-gray-500 text-left flex items-center gap-1">
+                <FiClock /> Submitted on: {new Date(q.created_at).toLocaleString()}
               </p>
             </li>
           ))}

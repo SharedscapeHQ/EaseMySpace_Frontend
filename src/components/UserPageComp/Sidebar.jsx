@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FiHome,
   FiMessageSquare,
   FiLogOut,
-  FiMenu,
-  FiX,
   FiPhoneCall,
   FiCreditCard,
   FiClock,
   FiUser,
   FiCalendar,
 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPlan }) {
-  const [isOpen, setIsOpen] = useState(false);
-
+  // Define tabs
   const tabs = [
     { label: "My Properties", value: "MyProperties", icon: <FiHome /> },
     { label: "My Queries", value: "MyQueries", icon: <FiMessageSquare /> },
@@ -32,68 +30,60 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
   const bookingsIndex = userPlan === "ultimate" ? 4 : 3;
   tabs.splice(bookingsIndex, 0, { label: "My Bookings", value: "MyBookings", icon: <FiCalendar /> });
 
-  const handleTabClick = (value) => {
-    setActiveTab(value);
-    setIsOpen(false); // Close sidebar on mobile
-  };
+  const handleTabClick = (value) => setActiveTab(value);
 
   return (
     <>
-      {/* Mobile Header */}
-      <div className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-16 z-40">
-        <h2 className="text-xl font-bold text-indigo-700">Dashboard</h2>
-        <button onClick={() => setIsOpen(!isOpen)} className="text-2xl text-gray-700">
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>
-      </div>
-
-      {/* Sidebar */}
-      <aside
-        className={`${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } fixed top-0 lg:top-20 left-0 z-50 lg:z-30 w-64 bg-white shadow-md border-r h-full transform transition-transform duration-300 ease-in-out
-        lg:h-[calc(100vh-5rem)]`}
+    <div className="lg:hidden fixed top-20 left-0 right-0 z-30 bg-zinc-100 border-b border-gray-200 shadow-md">
+  <div className="flex overflow-x-auto no-scrollbar">
+    {tabs.map(({ label, value, icon }) => (
+      <button
+        key={value}
+        onClick={() => handleTabClick(value)}
+        className={`flex items-center gap-2 px-5 py-3 flex-shrink-0 border-b-2 transition-colors ${
+          activeTab === value
+            ? "border-indigo-600 text-indigo-700 font-semibold"
+            : "border-transparent text-gray-700"
+        }`}
       >
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-indigo-700">User Panel</h2>
-        </div>
+        <span className="text-lg">{icon}</span>
+        <span className="whitespace-nowrap text-sm">{label}</span>
+      </button>
+    ))}
+  </div>
+</div>
 
-        <nav className="flex-1 px-6 py-4 space-y-2 overflow-y-auto">
-          {tabs.map(({ label, value, icon }) => (
-            <button
-              key={value}
-              onClick={() => handleTabClick(value)}
-              className={`flex items-center gap-2 w-full text-left px-4 py-2 rounded transition ${
-                activeTab === value
-                  ? "bg-indigo-100 text-indigo-700 font-semibold"
-                  : "hover:bg-gray-100 text-gray-700"
-              }`}
-            >
-              <span className="text-lg">{icon}</span>
-              <span>{label}</span>
-            </button>
-          ))}
-        </nav>
 
-        {/* Logout */}
-        <div className="px-6 py-4 border-t border-gray-200 mb-24">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 w-full text-red-600 hover:bg-red-100 px-4 py-2 rounded transition"
-          >
-            <FiLogOut className="text-lg" />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
 
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden"
-        />
-      )}
+      {/* Desktop Sidebar - unchanged */}
+     <aside className="hidden lg:flex fixed top-20 left-0 h-[calc(100vh-4rem)] w-64 bg-white shadow-md border-r flex-col">
+  {/* Header with Logout */}
+  <div className="flex items-center justify-between p-6 border-b border-gray-200">
+    <h2 className="text-xl font-bold text-indigo-700">User Panel</h2>
+    <button onClick={handleLogout} className="text-red-600 hover:text-red-700 transition">
+      <FiLogOut className="text-xl" />
+    </button>
+  </div>
+
+  {/* Navigation */}
+  <nav className="flex-1 px-6 py-4 space-y-2 overflow-y-auto">
+    {tabs.map(({ label, value, icon }) => (
+      <button
+        key={value}
+        onClick={() => handleTabClick(value)}
+        className={`flex items-center gap-2 w-full text-left px-4 py-2 rounded transition ${
+          activeTab === value
+            ? "bg-indigo-100 text-indigo-700 font-semibold"
+            : "hover:bg-gray-100 text-gray-700"
+        }`}
+      >
+        <span className="text-lg">{icon}</span>
+        <span>{label}</span>
+      </button>
+    ))}
+  </nav>
+</aside>
+
     </>
   );
 }
