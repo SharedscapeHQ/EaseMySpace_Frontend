@@ -34,8 +34,8 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
 
   return (
     <>
-    <div className="lg:hidden scrollbar-hide fixed top-20 left-0 right-0 z-30 bg-zinc-100 border-b border-gray-200 shadow-md">
-  <div className="flex overflow-x-auto no-scrollbar">
+    <div className="lg:hidden  fixed top-20 left-0 right-0 z-30 bg-zinc-100 border-b border-gray-200 shadow-md">
+  <div className="flex overflow-x-auto scrollbar-hide no-scrollbar">
     {tabs.map(({ label, value, icon }) => (
       <button
         key={value}
