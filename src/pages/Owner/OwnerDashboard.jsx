@@ -27,6 +27,8 @@ import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscrib
 import CareersPage from "../../components/HrUserComp/CareersPage";
 import OldProperties from "../../components/AdminPageComp/OldProperties";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
+import RequirementReq from "../../components/AdminPageComp/RequirementReq";
+import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -281,9 +283,7 @@ export default function OwnerDashboard() {
       />
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-indigo-800 mb-6">
-            Owner Dashboard
-          </h1>
+          
 
           {activeTab === "Users" && <UserAccessControl />}
 
@@ -303,6 +303,19 @@ export default function OwnerDashboard() {
                         <RequestsTable />
                       </section>
                     )}
+
+
+                     {activeTab === "SendSMS" && (
+                                <section> 
+                                  <SendSMSForm />
+                                </section>
+                              )}
+
+                    {activeTab === "PostRequirement" && (
+            <section>
+              <RequirementReq />
+            </section>
+          )}
           
 
           {activeTab === "Properties" && (

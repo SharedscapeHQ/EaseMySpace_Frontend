@@ -17,7 +17,7 @@ import BottomNav from "../components/LandingSectionComp/BottomNav";
 function Landing() {
   return (
     <>
-      <div className="w-full -pt-10">
+      <div className="w-full -pt-10 lg:pb-0 pb-9">
         {/* <HeroSection/> */}
         <HeroMobile />
         <HeroDesktop />

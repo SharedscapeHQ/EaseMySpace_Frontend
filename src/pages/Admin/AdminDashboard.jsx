@@ -26,6 +26,8 @@ import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscrib
 import CareersPage from "../../components/HrUserComp/CareersPage";
 import OldProperties from "../../components/AdminPageComp/OldProperties";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
+import RequirementReq from "../../components/AdminPageComp/RequirementReq";
+import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -382,6 +384,11 @@ export default function AdminDashboard() {
               <RequestsTable />
             </section>
           )}
+           {activeTab === "SendSMS" && (
+            <section> 
+              <SendSMSForm />
+            </section>
+          )}
 
           {activeTab === "Properties" && (
             <section>
@@ -485,6 +492,11 @@ export default function AdminDashboard() {
           {activeTab === "ManageLocations" && (
             <section>
               <ManageTopLocations />
+            </section>
+          )}
+          {activeTab === "PostRequirement" && (
+            <section>
+              <RequirementReq />
             </section>
           )}
 

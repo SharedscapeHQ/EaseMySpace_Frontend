@@ -42,7 +42,7 @@ function TopLocation() {
   if (!loading && locations.length === 0) return null;
 
   return (
-  <section className="w-full py-5 bg-blue-200 relative lg:rounded-none rounded-3xl">
+  <section className="w-full py-5 bg-blue-100 relative lg:rounded-none rounded-3xl">
   <div className="max-w-7xl mx-auto lg:px-10 px-3 relative z-10">
     <h2
       style={{ fontFamily: "heading_font" }}

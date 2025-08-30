@@ -151,7 +151,7 @@ export default function Footer() {
 
       </div>
 
-      <div className="mt-10 pt-4 border-t text-center text-sm text-zinc-600">
+      <div className="mt-10 pt-4 flex justify-center items-center border-t text-center text-sm text-zinc-600">
         © {new Date().getFullYear()} EaseMySpace.in — All rights reserved.
       </div>
     </footer>

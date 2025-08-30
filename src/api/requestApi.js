@@ -32,4 +32,9 @@ export const clearFollowUp = async (requestId) => {
   return res.data;
 };
 
+export const requirementReq = async () => {
+  const res = await requestAxios.get("/requirement-request");
+  return res.data.requests; 
+};
+
 export default requestAxios;

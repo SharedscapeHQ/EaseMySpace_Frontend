@@ -102,3 +102,7 @@ export const addLocation = (payload) => {
 export const deleteLocation = (id) => {
   return adminAxios.delete(`/locations/${id}`);
 };
+
+export const sendSMS = (recipient, message) => {
+  return adminAxios.post("/sendSMS", { recipient, message });
+};

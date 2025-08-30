@@ -165,7 +165,7 @@ export default function HeroDesktop() {
               <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
                 View All Properties
               </span>
-              <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-500 ease-out group-hover:w-full" />
+              <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-300 ease-out group-hover:w-full" />
             </Link>
 
             {/* Add Property */}
