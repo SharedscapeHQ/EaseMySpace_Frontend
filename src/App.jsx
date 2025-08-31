@@ -35,6 +35,7 @@ import HRMDashboard from "./pages/HrUser/HrDashboard";
 import RequirementPage from "./pages/Demand/RequirementPage";
 import RequirementDashboard from "./components/DemandSide/RequirementDashboard";
 import PageWrapper from "./components/PageTranstion/PageWrapper";
+import AnalyticsTracker from "./components/Seo/AnalyticsTracker";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -121,6 +122,7 @@ export default function App() {
       <TidioWidget />
       <WhatsAppButton />
       <AnimatedRoutes />
+      <AnalyticsTracker />
     </BrowserRouter>
   );
 }
