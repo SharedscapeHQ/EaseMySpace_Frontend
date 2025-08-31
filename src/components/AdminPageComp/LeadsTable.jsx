@@ -13,9 +13,14 @@ export default function LeadsTable({ leads }) {
   const [remarks, setRemarks] = useState({});
   const [localLeads, setLocalLeads] = useState(leads);
   const [filter, setFilter] = useState("all");
+  const [filterDate, setFilterDate] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userRole = user?.role || "";
+
+  // Get today's local date (YYYY-MM-DD) to restrict future selection
+  const today = new Date();
+  const localToday = today.toLocaleDateString("en-CA");
 
   // Helper: Check if phone is flagged
   const isFlaggedPhone = (phone) => {
@@ -76,10 +81,21 @@ export default function LeadsTable({ leads }) {
     );
   };
 
+  // Apply both "status filter" and "date filter"
   const filteredLeads = localLeads.filter((lead) => {
-    if (filter === "all") return true;
-    if (filter === "done") return lead.follow_up_done;
-    if (filter === "pending") return !lead.follow_up_done;
+    // Status filter
+    if (filter === "done" && !lead.follow_up_done) return false;
+    if (filter === "pending" && lead.follow_up_done) return false;
+
+    // Date filter
+    if (filterDate) {
+      const leadDate = lead.last_verified_at
+        ? new Date(lead.last_verified_at).setHours(0, 0, 0, 0)
+        : null;
+      const selectedDate = new Date(filterDate).setHours(0, 0, 0, 0);
+      if (!leadDate || leadDate !== selectedDate) return false;
+    }
+
     return true;
   });
 
@@ -114,10 +130,11 @@ export default function LeadsTable({ leads }) {
 
   return (
     <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
-      {/* Filter + Export */}
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center">
-          <label className="text-sm mr-2 text-gray-700 font-medium">Filter:</label>
+      {/* Filter + Date + Export */}
+      <div className="flex items-center justify-between p-4 flex-wrap gap-3">
+        {/* Status Filter */}
+        <div className="flex items-center gap-3">
+          <label className="text-sm text-gray-700 font-medium">Filter:</label>
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
@@ -127,8 +144,26 @@ export default function LeadsTable({ leads }) {
             <option value="done">Follow-up Done</option>
             <option value="pending">Not Followed-up</option>
           </select>
+
+          {/* Date Filter */}
+          <input
+            type="date"
+            value={filterDate}
+            max={localToday}
+            onChange={(e) => setFilterDate(e.target.value)}
+            className="border rounded-md px-3 py-1 text-sm"
+          />
+          {filterDate && (
+            <button
+              onClick={() => setFilterDate("")}
+              className="text-xs text-red-600 underline ml-2"
+            >
+              Clear Date
+            </button>
+          )}
         </div>
 
+        {/* Export Button */}
         <button
           onClick={exportToExcel}
           className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
@@ -156,24 +191,42 @@ export default function LeadsTable({ leads }) {
           <tbody>
             {filteredLeads.map((lead) => (
               <tr key={lead.id} className="even:bg-gray-50 border-b align-top">
-                <td className={`px-5 py-3 ${isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""}`}>
+                <td
+                  className={`px-5 py-3 ${
+                    isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""
+                  }`}
+                >
                   {lead.phone}
                 </td>
                 <td className="px-5 py-3">
-                  {lead.first_seen ? new Date(lead.first_seen).toLocaleString() : "—"}
+                  {lead.first_seen
+                    ? new Date(lead.first_seen).toLocaleString()
+                    : "—"}
                 </td>
                 <td className="px-5 py-3">
-                  {lead.last_verified_at ? new Date(lead.last_verified_at).toLocaleString() : "—"}
+                  {lead.last_verified_at
+                    ? new Date(lead.last_verified_at).toLocaleString()
+                    : "—"}
                 </td>
                 <td className="px-5 py-3">
                   {lead.follow_up_done ? (
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
-                        <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
-                        <span className="text-green-600 font-medium text-xs">Follow-up done</span>
+                        <input
+                          type="checkbox"
+                          checked
+                          disabled
+                          className="accent-green-600 w-4 h-4"
+                        />
+                        <span className="text-green-600 font-medium text-xs">
+                          Follow-up done
+                        </span>
                       </div>
                       {userRole === "owner" && (
-                        <button onClick={() => handleClearFollowUp(lead.id)} className="text-red-600 text-xs hover:underline mt-1 self-start">
+                        <button
+                          onClick={() => handleClearFollowUp(lead.id)}
+                          className="text-red-600 text-xs hover:underline mt-1 self-start"
+                        >
                           Clear Follow-up
                         </button>
                       )}
@@ -185,7 +238,9 @@ export default function LeadsTable({ leads }) {
                         className="border rounded-md px-2 py-1 text-xs focus:outline-indigo-500 resize-none"
                         placeholder="Enter remark"
                         value={remarks[lead.id] || ""}
-                        onChange={(e) => handleRemarkChange(lead.id, e.target.value)}
+                        onChange={(e) =>
+                          handleRemarkChange(lead.id, e.target.value)
+                        }
                       />
                       <button
                         onClick={() => handleFollowUp(lead.id)}
@@ -197,7 +252,9 @@ export default function LeadsTable({ leads }) {
                   )}
                 </td>
                 <td className="px-5 py-3">{lead.followed_by || "—"}</td>
-                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">{lead.remark || "—"}</td>
+                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">
+                  {lead.remark || "—"}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -41,17 +41,20 @@ export default function SendSMSForm() {
         Send SMS
       </h2>
       <form onSubmit={handleSend} className="space-y-5">
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">Recipient Number</label>
-          <input
-            type="text"
-            value={recipient}
-            onChange={(e) => setRecipient(e.target.value)}
-            placeholder="10-digit number"
-            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            maxLength={10}
-          />
-        </div>
+       <div>
+  <label className="block mb-1 font-medium text-gray-700">Recipient Number</label>
+  <input
+    type="text"
+    value={recipient}
+    onChange={(e) => {
+      const onlyNums = e.target.value.replace(/\D/g, ""); // remove non-digits
+      setRecipient(onlyNums);
+    }}
+    placeholder="10-digit number"
+    className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    maxLength={10}
+  />
+</div>
         <div>
           <label className="block mb-1 font-medium text-gray-700">Message</label>
           <textarea

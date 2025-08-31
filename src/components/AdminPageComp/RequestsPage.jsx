@@ -17,9 +17,14 @@ export default function RequestsTable() {
   const [loading, setLoading] = useState(true);
   const [remarks, setRemarks] = useState({});
   const [loadingIds, setLoadingIds] = useState({});
+  const [filterDate, setFilterDate] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
+
+  // ✅ Local today (not UTC)
+  const today = new Date();
+  const localToday = today.toLocaleDateString("en-CA");
 
   useEffect(() => {
     async function fetchRequests() {
@@ -102,13 +107,29 @@ export default function RequestsTable() {
     setRemarks((prev) => ({ ...prev, [id]: value }));
   };
 
+  // ✅ Filter by exact date
+  const filteredRequests = requests.filter((req) => {
+    if (!filterDate) return true;
+    const reqDate = new Date(req.created_at).setHours(0, 0, 0, 0);
+    const selectedDate = new Date(filterDate).setHours(0, 0, 0, 0);
+    return reqDate === selectedDate;
+  });
+
   if (loading) return <div className="text-center py-8">Loading requests...</div>;
 
   return (
     <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
       {/* Header Bar */}
       <div className="flex items-center justify-between p-4">
-        <div />
+        {/* Date Filter */}
+        <input
+          type="date"
+          value={filterDate}
+          max={localToday}
+          onChange={(e) => setFilterDate(e.target.value)}
+          className="border rounded-lg px-3 py-1 text-sm"
+        />
+
         <button
           onClick={exportToExcel}
           className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
@@ -119,7 +140,7 @@ export default function RequestsTable() {
       </div>
 
       {/* Table */}
-      {requests.length === 0 ? (
+      {filteredRequests.length === 0 ? (
         <div className="text-center py-8 text-gray-500">No requests found.</div>
       ) : (
         <table className="min-w-full text-sm text-gray-800">
@@ -134,7 +155,7 @@ export default function RequestsTable() {
             </tr>
           </thead>
           <tbody>
-            {requests.map((req) => (
+            {filteredRequests.map((req) => (
               <tr key={req.id} className="even:bg-gray-50 border-b align-top">
                 {/* Name */}
                 <td className="px-5 py-3">{req.name || "—"}</td>
@@ -153,8 +174,15 @@ export default function RequestsTable() {
                   {req.follow_up_done ? (
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
-                        <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
-                        <span className="text-green-600 font-medium text-xs">Done</span>
+                        <input
+                          type="checkbox"
+                          checked
+                          disabled
+                          className="accent-green-600 w-4 h-4"
+                        />
+                        <span className="text-green-600 font-medium text-xs">
+                          Done
+                        </span>
                       </div>
                       {role === "owner" && (
                         <button
@@ -168,14 +196,18 @@ export default function RequestsTable() {
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1">
-                      {(role === "admin" || role === "RM" || role === "owner") && (
+                      {(role === "admin" ||
+                        role === "RM" ||
+                        role === "owner") && (
                         <>
                           <textarea
                             rows="2"
                             className="border rounded-md px-2 py-1 text-xs focus:outline-indigo-500 resize-none"
                             placeholder="Enter remark"
                             value={remarks[req.id] || ""}
-                            onChange={(e) => handleRemarkChange(req.id, e.target.value)}
+                            onChange={(e) =>
+                              handleRemarkChange(req.id, e.target.value)
+                            }
                           />
                           <button
                             onClick={() => handleMarkFollowUp(req.id)}
@@ -191,10 +223,14 @@ export default function RequestsTable() {
                 </td>
 
                 {/* Followed By */}
-                <td className="px-5 py-3 text-xs text-gray-600">{req.followed_by || "—"}</td>
+                <td className="px-5 py-3 text-xs text-gray-600">
+                  {req.followed_by || "—"}
+                </td>
 
                 {/* Remark */}
-                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">{req.remark || "—"}</td>
+                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">
+                  {req.remark || "—"}
+                </td>
               </tr>
             ))}
           </tbody>

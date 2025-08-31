@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // ⬅ added useLocation
 import {
   getUserProperties,
   submitQuery,
@@ -44,7 +44,14 @@ function ErrorMessage({ message }) {
 
 export default function UserDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("MyProperties");
+  const location = useLocation();
+
+  // 👉 initialize tab from URL param (default to MyProperties)
+  const getInitialTab = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get("tab") || "MyProperties";
+  };
+  const [activeTab, setActiveTab] = useState(getInitialTab);
 
   const [properties, setProperties] = useState([]);
   const [propertiesLoading, setPropertiesLoading] = useState(true);
@@ -67,6 +74,15 @@ export default function UserDashboard() {
       })
       .catch((err) => console.error("❌ Failed to fetch plan:", err));
   }, []);
+
+  // Keep activeTab in sync with URL param
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get("tab");
+    if (tab && tab !== activeTab) {
+      setActiveTab(tab);
+    }
+  }, [location]);
 
   // Fetch properties or recently viewed based on active tab
   useEffect(() => {
@@ -100,6 +116,7 @@ export default function UserDashboard() {
       setRecentLoading(false);
     }
   };
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) setUser(storedUser);
@@ -206,7 +223,7 @@ export default function UserDashboard() {
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
         {activeTab === "MyBookings" && <MyBookings />}
-        {activeTab === "DedicatedRM" && <DedicatedRM userId={user.id} />}
+        {activeTab === "DedicatedRM" && user && <DedicatedRM userId={user.id} />}
 
         <RaiseQueryModal
           isOpen={!!selectedProperty}

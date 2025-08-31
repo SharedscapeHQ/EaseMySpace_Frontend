@@ -14,30 +14,34 @@ export default function ProtectedRoute({
   useEffect(() => {
     const controller = new AbortController();
 
-    const checkAuth = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://api.easemyspace.in/api/auth/me",
-          { withCredentials: true, signal: controller.signal }
-        );
+   const checkAuth = async () => {
+  try {
+    const { data } = await axios.get(
+      "https://api.easemyspace.in/api/auth/me",
+      { withCredentials: true, signal: controller.signal }
+    );
+    const normalizedAllowed = Array.isArray(allowedRoles)
+      ? allowedRoles.map((r) => String(r).toLowerCase().trim())
+      : [String(allowedRoles).toLowerCase().trim()];
 
-        const normalizedAllowed = Array.isArray(allowedRoles)
-          ? allowedRoles.map((r) => String(r).toLowerCase().trim())
-          : [String(allowedRoles).toLowerCase().trim()];
+    const userRole = String(data.role || "").toLowerCase().trim();
 
-        const userRole = String(data.role || "").toLowerCase().trim();
+    if (!normalizedAllowed.includes(userRole)) {
+      setShowModal(true);
+      setIsAuthorized(false);
+    } else {
+      setIsAuthorized(true);
+    }
+  } catch (err) {
+  if (err.name === "CanceledError") {
+    return;
+  }
+  console.error("ProtectedRoute: Auth check failed", err);
+  setShowModal(true);
+  setIsAuthorized(false);
+}
+};
 
-        if (!normalizedAllowed.includes(userRole)) {
-          setShowModal(true);
-          setIsAuthorized(false);
-        } else {
-          setIsAuthorized(true);
-        }
-      } catch (err) {
-        setShowModal(true);
-        setIsAuthorized(false);
-      }
-    };
 
     checkAuth();
     return () => controller.abort();

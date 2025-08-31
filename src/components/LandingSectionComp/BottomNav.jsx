@@ -134,7 +134,7 @@ export default function BottomNav() {
     if (!user && isVerified) {
       navigate("/lead-dashboard");
     } else {
-      navigate("/dashboard");
+      navigate("/dashboard?tab=MyBookings");
     }
   };
 
