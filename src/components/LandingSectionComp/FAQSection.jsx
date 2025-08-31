@@ -45,7 +45,12 @@ export default function FAQSection() {
   };
 
   return (
-    <section style={{ fontFamily: "para_font" }} className="w-full py-10 bg-white">
+    <section
+      style={{ fontFamily: "para_font" }}
+      className="w-full py-10 bg-white"
+      aria-label="Frequently Asked Questions about EaseMySpace"
+      role="region"
+    >
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">
         <h2
           style={{ fontFamily: "heading_font" }}
@@ -57,37 +62,41 @@ export default function FAQSection() {
         <div className="space-y-1 divide-y divide-gray-200">
           {faqs.map((faq, idx) => (
             <div key={idx}>
-              <button
-                className="w-full flex justify-between items-center py-4 text-left"
-                onClick={() => toggle(idx)}
-              >
-                <span className="text-sm lg:text-lg font-medium text-zinc-900">
-                  {faq.question}
-                </span>
-                <span
-                  className={`text-2xl transition-transform duration-300 ${
-                    openIndex === idx ? "rotate-180" : ""
-                  }`}
+              <h3>
+                <button
+                  className="w-full flex justify-between items-center py-4 text-left"
+                  onClick={() => toggle(idx)}
+                  aria-expanded={openIndex === idx}
+                  aria-controls={`faq-answer-${idx}`}
                 >
-                  <FiChevronDown />
-                </span>
-              </button>
+                  <span className="text-sm lg:text-lg font-medium text-zinc-900">
+                    {faq.question}
+                  </span>
+                  <span
+                    className={`text-2xl transition-transform duration-300 ${
+                      openIndex === idx ? "rotate-180" : ""
+                    }`}
+                  >
+                    <FiChevronDown />
+                  </span>
+                </button>
+              </h3>
 
               <div
+                id={`faq-answer-${idx}`}
                 className={`text-sm text-zinc-600 transition-all duration-300 ease-in-out overflow-hidden ${
                   openIndex === idx ? "max-h-40 pb-4" : "max-h-0"
                 }`}
               >
                 <p>{faq.answer}</p>
                 {faq.button && openIndex === idx && (
-  <Link
-    to={faq.button.link}
-    className="mt-2 text-xs hover:underline sm:text-sm  text-blue-600 rounded-md transition"
-  >
-    {faq.button.text} {">"}
-  </Link>
-)}
-
+                  <Link
+                    to={faq.button.link}
+                    className="mt-2 text-xs hover:underline sm:text-sm text-blue-600 rounded-md transition"
+                  >
+                    {faq.button.text} {">"}
+                  </Link>
+                )}
               </div>
             </div>
           ))}

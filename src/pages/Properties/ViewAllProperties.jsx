@@ -5,6 +5,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaSlidersH } from "react-icons/fa";
 import axios from "axios";
 import Select from "../../components/ViewAllPropertiesSectionComp/Select.jsx";
+import { Helmet } from "react-helmet";
 
 import OtpPopup from "./OtpPopup";
 import { getCurrentUser } from "../../api/authApi.js";
@@ -197,6 +198,19 @@ export default function ViewAllProperties() {
 
   return (
     <div className="w-full pb-5 bg-zinc-50  min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
+
+{/* Helmet for SEO */}
+      <Helmet>
+        <title>Find Verified PGs, Flatmates & Vacant Flats in Andheri, Goregaon, Thane, Ghatkopar | EaseMySpace</title>
+        <meta
+          name="description"
+          content="Search verified PGs, shared accommodations, flatmates, and vacant flats in Mumbai areas like Andheri, Goregaon, Thane, and Ghatkopar. EaseMySpace makes finding rental spaces hassle-free and broker-free."
+        />
+        <meta name="keywords" content="PG in Andheri, PG in Goregaon, Flatmates in Mumbai, Shared Flats Mumbai, Vacant Rooms Thane, Flats in Ghatkopar, Mumbai Rentals, Verified PGs Mumbai" />
+        <link rel="canonical" href="https://easemyspace.in/view-properties" />
+      </Helmet>
+
+
       <div className="w-full mx-auto px-1 flex gap-2">
         {/* Sidebar */}
         <aside className="hidden md:block w-72 flex-shrink-0">

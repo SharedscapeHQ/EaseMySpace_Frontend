@@ -30,35 +30,47 @@ const features = [
 
 const FeatureSection = () => {
   return (
-   <section style={{ fontFamily: "para_font" }} className="w-full py-10  bg-white">
-  <div className="max-w-7xl lg:px-10 px-3 mx-auto">
-    <h2 style={{ fontFamily: "heading_font" }} className="text-lg sm:text-3xl  mb-5 text-left">
-      Why Choose EaseMySpace.in ?
-    </h2>
-
-    <div className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-4 ">
-      {features.map((feature, index) => (
-        <div
-          key={index}
-          className={`flex items-center sm:items-center flex-row sm:flex-col text-left sm:text-center px-4 py-6
-            border-b border-gray-200 sm:border-b-0
-            sm:border-r ${index % 4 === 3 ? 'sm:border-r-0' : ''}`}
+    <section
+      style={{ fontFamily: "para_font" }}
+      className="w-full py-10 bg-white"
+      aria-label="Key features and advantages of EaseMySpace"
+      role="region"
+    >
+      <div className="max-w-7xl lg:px-10 px-3 mx-auto">
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-lg sm:text-3xl mb-5 text-left"
         >
-          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl mr-4 sm:mr-0 sm:mb-4">
-            {feature.icon}
-          </div>
-          <div>
-            <h3 className="font-bold text-zinc-900 text-base sm:text-lg mb-1 ">{feature.title}</h3>
-            <p className="text-xs text-zinc-800 lg:leading-relaxed leading-none">{feature.description}</p>
-          </div>
+          Why Choose EaseMySpace.in?
+        </h2>
+
+        <div className="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className={`flex items-center sm:items-center flex-row sm:flex-col text-left sm:text-center px-4 py-6
+                border-b border-gray-200 sm:border-b-0
+                sm:border-r ${index % 4 === 3 ? "sm:border-r-0" : ""}`}
+            >
+              <div
+                className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl mr-4 sm:mr-0 sm:mb-4"
+                aria-hidden="true"
+              >
+                {feature.icon}
+              </div>
+              <div>
+                <h3 className="font-bold text-zinc-900 text-base sm:text-lg mb-1">
+                  {feature.title}
+                </h3>
+                <p className="text-xs text-zinc-800 lg:leading-relaxed leading-none">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-
-
+      </div>
+    </section>
   );
 };
 

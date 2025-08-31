@@ -6,7 +6,6 @@ import pgImg from "/landing-assets/pgImg.png";
 import sharedImg from "/landing-assets/sharedImg.png";
 import vacantImg from "/landing-assets/vacantImg.png";
 import heroImg from "/heroImg/hero.png";
-import { Helmet } from "react-helmet";
 
 export default function HeroMobile({ properties }) {
   const navigate = useNavigate();
@@ -84,19 +83,7 @@ export default function HeroMobile({ properties }) {
 
   return (
     <>
-    
-     <Helmet>
-        <title>Find PGs, Flatmates & Flats in Mumbai | EaseMySpace</title>
-        <meta
-          name="description"
-          content="Search PGs, shared flats, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, and more with EaseMySpace."
-        />
-        <meta name="keywords" content="flatmate in Mumbai, PG in Andheri, flat for rent, paying guest Mumbai" />
-        <meta property="og:title" content="Find Your Next Home in Mumbai | EaseMySpace" />
-        <meta property="og:description" content="Search PGs, shared flats, and vacant flats in Mumbai easily." />
-        <meta property="og:image" content="/heroImg/hero.png" />
-        <meta property="og:url" content="https://easemyspace.in" />
-      </Helmet>
+
     <section
       className="lg:hidden w-full bg-white px-4 py-4 transition-all duration-400"
       style={{ height: scrolled ? "74vh" : "100vh" }}

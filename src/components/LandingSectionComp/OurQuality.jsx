@@ -34,56 +34,59 @@ function OurQuality() {
   ];
 
   return (
-    <section style={{ fontFamily: "para_font" }} className="w-full py-12">
-      <div className="max-w-7xl lg:px-10 px-3 mx-auto">
-        {/* Heading */}
-        <h2
-          style={{ fontFamily: "heading_font" }}
-          className="text-lg sm:text-3xl text-left"
-        >
-          Choose the EMS advantage
-        </h2>
-        <p className="text-xs lg:text-base mb-5">
-          Use EMS to connect instantly on WhatsApp - Find flatmates faster, rent
-          vacant rooms
-        </p>
+    <>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center text-left space-y-4"
-            >
-              {/* Image */}
-              <div className="w-full h-[260px] flex items-center justify-center">
-                {feature.image ? (
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    className="max-h-full"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">
-                    No Image
-                  </div>
-                )}
-              </div>
+      <section style={{ fontFamily: "para_font" }} className="w-full py-12">
+        <div className="max-w-7xl lg:px-10 px-3 mx-auto">
+          {/* Heading */}
+          <h1
+            style={{ fontFamily: "heading_font" }}
+            className="text-lg sm:text-3xl text-left"
+          >
+            Choose the EMS advantage
+          </h1>
+          <p className="text-xs lg:text-base mb-5">
+            Use EMS to connect instantly on WhatsApp - Find flatmates faster, rent
+            vacant rooms
+          </p>
 
-              {/* Title & Description */}
-              <div className="px-2 w-full">
-                <h3 className="font-bold text-zinc-900 text-base sm:text-lg lg:min-h-[60px]">
-                  {feature.title}
-                </h3>
-                <p className="text-xs text-zinc-800 lg:leading-relaxed leading-1 tracking-wider mt-2">
-                  {feature.description}
-                </p>
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center text-left space-y-4"
+              >
+                {/* Image */}
+                <div className="w-full h-[260px] flex items-center justify-center">
+                  {feature.image ? (
+                    <img
+                      src={feature.image}
+                      alt={feature.title}
+                      className="max-h-full"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">
+                      No Image
+                    </div>
+                  )}
+                </div>
+
+                {/* Title & Description */}
+                <div className="px-2 w-full">
+                  <h2 className="font-bold text-zinc-900 text-base sm:text-lg lg:min-h-[60px]">
+                    {feature.title}
+                  </h2>
+                  <p className="text-xs text-zinc-800 lg:leading-relaxed leading-1 tracking-wider mt-2">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 

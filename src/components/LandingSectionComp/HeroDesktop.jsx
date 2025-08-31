@@ -97,6 +97,8 @@ export default function HeroDesktop() {
   ];
 
   return (
+    <>
+
     <section
       className="hidden lg:block w-full bg-white px-6"
       style={{ height: "calc(100vh - 5rem)" }}
@@ -203,5 +205,6 @@ export default function HeroDesktop() {
         </div>
       </div>
     </section>
+    </>
   );
 }

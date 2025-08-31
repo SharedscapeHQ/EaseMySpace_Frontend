@@ -53,40 +53,59 @@ export default function OurTeam() {
   }, []);
 
   return (
-    <section
-      style={{ fontFamily: "para_font" }}
-      className="py-5 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
+   <section
+  style={{ fontFamily: "para_font" }}
+  className="py-5 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
+  itemScope
+  itemType="https://schema.org/Organization"
+>
+  <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    className="w-full mb-6"
+  >
+    <h2
+      style={{ fontFamily: "heading_font" }}
+      className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+      itemProp="employee"
     >
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
-        className="w-full mb-6"
-      >
-        <h2
-          style={{ fontFamily: "heading_font" }}
-          className="text-lg lg:text-3xl mb-0 text-black leading-tight"
-        >
-          Meet our Team
-        </h2>
-        <p className="font-bold mb-4 heading-font text-gray-500 tracking-wider text-shadow">
-          Passionate. Proactive. Expert.
-        </p>
-      </motion.div>
+      Meet our Team
+    </h2>
+    <p
+      className="font-bold mb-4 heading-font text-gray-500 tracking-wider text-shadow"
+      itemProp="description"
+    >
+      Passionate. Proactive. Expert.
+    </p>
+  </motion.div>
 
-      <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4">
-        {teamMembers.map((member, index) => (
-          <TeamCard
-            key={index}
-            name={member.name}
-            role={member.role}
-            description={member.description}
-            imageSrc={member.imageSrc}
-            linkedin={member.linkedin}
-            email={member.email}
-          />
-        ))}
-      </div>
-    </section>
+  <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4">
+    {teamMembers.map((member, index) => (
+      <article
+        key={index}
+        itemScope
+        itemType="https://schema.org/Person"
+        className="team-card"
+      >
+        <TeamCard
+          name={member.name}
+          role={member.role}
+          description={member.description}
+          imageSrc={member.imageSrc}
+          linkedin={member.linkedin}
+          email={member.email}
+        />
+        <meta itemProp="name" content={member.name} />
+        <meta itemProp="jobTitle" content={member.role} />
+        <meta itemProp="description" content={member.description} />
+        <meta itemProp="image" content={member.imageSrc} />
+        {member.linkedin && <meta itemProp="sameAs" content={member.linkedin} />}
+        {member.email && <meta itemProp="email" content={member.email} />}
+      </article>
+    ))}
+  </div>
+</section>
+
   );
 }

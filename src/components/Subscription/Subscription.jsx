@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 import PaymentButtonSubs from "./PaymentButtonSbs";
 import Footer from "../Footer";
 
@@ -34,7 +35,6 @@ export default function SubscriptionPlans() {
   const [showOtpPopup, setShowOtpPopup] = useState(false);
   const [otpPopupPurpose, setOtpPopupPurpose] = useState("");
 
-  // Color mappings for Tailwind
   const borderColors = {
     yellow: "border-yellow-400",
     red: "border-red-400",
@@ -104,7 +104,22 @@ export default function SubscriptionPlans() {
 
   return (
     <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
-      <section className="pb-10  lg:px-10 pt-3 px-3">
+      
+      {/* Helmet for SEO */}
+      <Helmet>
+        <title>Subscription Plans Of EaseMySpace | Verified PGs, Flats & Flatmates in Mumbai</title>
+        <meta
+          name="description"
+          content="Choose the perfect subscription plan to access verified PGs, shared flats, and flatmates in Mumbai areas like Andheri, Goregaon, Thane, and Ghatkopar. Get expert support and premium services to find your ideal rental space quickly and hassle-free."
+        />
+        <meta
+          name="keywords"
+          content="PG subscription Mumbai, Flatmates subscription Mumbai, Verified flats Mumbai, Premium property access, EaseMySpace plans, Andheri PGs, Goregaon flats, Thane shared flats, Ghatkopar rentals"
+        />
+        <link rel="canonical" href="https://easemyspace.in/subscription-plans" />
+      </Helmet>
+
+      <section className="pb-10 lg:px-10 pt-3 px-3">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -115,7 +130,7 @@ export default function SubscriptionPlans() {
           Choose Your Plan
         </motion.h1>
         <p className="mt-3 text-xs lg:text-base text-zinc-700">
-          Get started with verified properties and expert support - your perfect match is one step away.
+          Get started with verified PGs, shared flats, flatmates, and expert support in Mumbai – your perfect rental space is one step away.
         </p>
       </section>
 
