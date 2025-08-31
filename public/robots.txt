@@ -1,14 +1,8 @@
-User-agent: *
-Disallow: /index
-Disallow: /profiles
-Disallow: /profile_details
-Disallow: /vacant_listings
-Disallow: /pricing.php
-Disallow: /feedback.html
+
 
 Sitemap: https://easemyspace.in/sitemap.xml
 
-# Redirect static old PHP pages
+# Static 301 redirects
 Redirect 301 /profiles https://easemyspace.in/view-properties
 Redirect 301 /pricing.php https://easemyspace.in/subscription
 Redirect 301 /vacant_listings https://easemyspace.in/view-properties?looking_for=vacant
@@ -16,7 +10,7 @@ Redirect 301 /contact.php https://easemyspace.in/contact
 Redirect 301 /index https://easemyspace.in/
 Redirect 301 /feedback.html https://easemyspace.in/contact
 
-# Redirect all old profile_details?id=XX URLs to /view-properties
+# Redirect all old profile_details?id=XX URLs
 RewriteEngine On
 RewriteCond %{REQUEST_URI} ^/profile_details$ [NC]
 RewriteCond %{QUERY_STRING} id=[0-9]+
