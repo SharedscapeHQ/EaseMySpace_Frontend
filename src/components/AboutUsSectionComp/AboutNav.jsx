@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { FaUserCircle, FaHome, FaInfoCircle, FaBuilding, FaPhone, FaRegCreditCard } from "react-icons/fa";
 import brandLogo from "/navbar-assets/brand-logo.png";
 
+import Hamburger from "../NavbarComp/Hamburger";
+import ProfileDropdown from "../NavbarComp/ProfileDropdown";
+import DrawerMenu from "../NavbarComp/DrawerMenu";
+import NavbarRightActions from "../NavbarComp/NavbarRightActions";
+import { logoutUser } from "../../api/authApi";
+
 export default function AboutNav() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(() => {
     const cache = localStorage.getItem("user");
     return cache ? JSON.parse(cache) : null;
   });
-
   const [isVerified, setIsVerified] = useState(localStorage.getItem("otp_verified") === "true");
 
   const syncUser = useCallback(() => {
@@ -45,10 +52,11 @@ export default function AboutNav() {
     }
   };
 
-  const drawerV = {
-    hidden: { x: "-100%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.3, ease: "easeInOut" } },
-    exit: { x: "-100%", opacity: 0, transition: { duration: 0.2, ease: "easeInOut" } },
+  const handleLogout = async () => {
+    try { await logoutUser(); } catch {}
+    localStorage.clear();
+    window.dispatchEvent(new Event("auth-change"));
+    navigate("/");
   };
 
   useEffect(() => {
@@ -62,9 +70,7 @@ export default function AboutNav() {
       }
     }
     function handleScroll() {
-      if (window.innerWidth < 640) {
-        setProfileOpen(false);
-      }
+      if (window.innerWidth < 640) setProfileOpen(false);
     }
     document.addEventListener("click", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
@@ -75,8 +81,9 @@ export default function AboutNav() {
   }, [profileOpen]);
 
   return (
-    <header style={{ fontFamily: "para_font" }} >
-      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50" style={{ fontFamily: "para_font" }}>
+    <header style={{ fontFamily: "para_font" }}>
+      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50">
+        {/* Logo & Hamburger */}
         <div className="flex items-center gap-3">
           <button
             aria-label="Toggle menu"
@@ -97,198 +104,82 @@ export default function AboutNav() {
           </Link>
         </div>
 
-       <div  className="hidden sm:flex items-center gap-6 text-sm font-medium">
+        {/* Main Links */}
+        <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
           <a href="#our-story" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
-    Our Story
-  </a>
-  <a href="#our-team" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
-    Our Team
-  </a>
+            Our Story
+          </a>
+          <a href="#our-team" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
+            Our Team
+          </a>
+          <Link to="/careers" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
+            Careers
+          </Link>
+        </div>
 
-  <Link to="/careers" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
-    Careers
-  </Link>
-</div>
-
-
+        {/* Right Side Actions */}
         <div className="flex items-center gap-3 sm:gap-5 relative">
-         <div className="relative inline-block">
-  <Link
-      to="/add-properties"
-      className="px-2 py-1 text-[8px] sm:text-sm bg-indigo-100 text-indigo-700  lg:rounded-lg rounded-md shadow hover:bg-indigo-200 transition inline-block"
-      style={{ fontFamily: "para_font" }}
-    >
-      Add Property
-    </Link>
-    
-    <span className="absolute -top-2.5 -right-2 inline-block px-1.5 py-0.2 text-[7px] sm:text-xs text-green-700 bg-green-100 lg:rounded-md rounded-sm shadow">
-      FREE
-    </span>
-</div>
+          <NavbarRightActions />
 
+         
 
-          
-
-          <div
-            className="relative group profile-dropdown-wrapper"
-            onMouseEnter={() => window.innerWidth >= 640 && setProfileOpen(true)}
-            onMouseLeave={() => window.innerWidth >= 640 && setProfileOpen(false)}
-          >
-            <button
-              onClick={() => {
-                if (window.innerWidth < 640) setProfileOpen((prev) => !prev);
-              }}
-              className="flex items-center gap-1 text-zinc-700"
-            >
-              {user && (
-                <span className="hidden sm:inline capitalize text-sm font-medium">
-                  Hello, {user.firstName}
-                </span>
-              )}
-              <FaUserCircle className="text-2xl" />
-            </button>
-
-            <AnimatePresence>
-              {profileOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-50 border"
-                >
-                  <div className="px-4 py-2 text-blue-600 font-semibold text-sm border-b">
-                    {user ? "My Account" : "LOGIN / REGISTER"}
-                  </div>
-                  <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 font-medium space-y-2">
-                    {user || isVerified ? (
-                      <Link to={dashRoute()} onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                        Dashboard
-                      </Link>
-                    ) : (
-                      <Link to="/login" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                        Login
-                      </Link>
-                    )}
-                    <Link to="/view-properties" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                      View Listings
-                    </Link>
-                    {(user || isVerified) && (
-                      <Link to="/contact" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
-                        Contact Support
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          {/* Profile Dropdown */}
+          <ProfileDropdown
+            user={user}
+            isVerified={isVerified}
+            profileOpen={profileOpen}
+            setProfileOpen={setProfileOpen}
+            dashRoute={dashRoute}
+            handleLogout={handleLogout}
+          />
         </div>
       </nav>
 
-        <>
-         <div className="relative">
-        {/* Overlay */}
-        <div
-          className={`fixed inset-0 z-40 bg-black backdrop-blur-sm transition-opacity duration-300 ${
-            open ? "opacity-35 pointer-events-auto" : "opacity-0 pointer-events-none"
-          }`}
-          onClick={() => setOpen(false)}
-        />
-      
-        {/* Drawer */}
-        <aside
-          className={`fixed top-0 left-0 z-50 h-full w-[80vw] sm:w-[65vw] md:w-80 bg-white backdrop-blur-md shadow-2xl rounded-r-2xl px-6 py-6 flex flex-col transform transition-transform duration-300 ${
-            open ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-blue-600 text-2xl font-bold tracking-wide">Explore</h2>
-            <button
-              onClick={() => setOpen(false)}
-              className="text-zinc-700 text-2xl hover:rotate-90 transition-transform duration-300"
-              aria-label="Close drawer"
-            >
-              ✕
-            </button>
-          </div>
-      
-          {/* Menu Items */}
+      {/* Drawer Menu for Mobile */}
+      <DrawerMenu open={open} setOpen={setOpen}>
+        {/* Keep your existing drawer content inside */}
+        <div className="flex flex-col px-6 py-6">
+          <h2 className="text-blue-600 text-2xl font-bold tracking-wide mb-6">Explore</h2>
           <ul className="space-y-3 text-zinc-800 font-medium text-base">
-  <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">Main</p>
-  {[
-    ["Home", <FaHome />, "/"],                   // Home
-    ["About Us", <FaInfoCircle />, "/about"],    // About
-    ["Listings", <FaBuilding />, "/view-properties"], // Listings (building icon)
-    ["Contact", <FaPhone />, "/contact"],        // Contact
-  ].map(([label, icon, href]) => (
-    <li key={href}>
-      <Link
-        to={href}
-        onClick={() => setOpen(false)}
-        className="flex items-center gap-3 px-4 py-2 rounded-lg transition-all group hover:bg-blue-100"
-      >
-        <span className="text-lg text-blue-600 group-hover:scale-110 transition-transform duration-200">{icon}</span>
-        <span className="truncate group-hover:translate-x-1 transition-transform duration-200">{label}</span>
-      </Link>
-    </li>
-  ))}
-
-  <p className="text-xs text-zinc-400 uppercase tracking-wide mt-6 mb-1">Premium</p>
-  <li>
-    <Link
-      to="/subscription"
-      onClick={() => setOpen(false)}
-      className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow border border-yellow-400 group"
-    >
-      <span className="text-lg text-yellow-700 group-hover:scale-110 transition-transform duration-200">
-        <FaRegCreditCard />
-      </span>
-      <span className="truncate group-hover:translate-x-1 transition-transform duration-200">
-        EMS Subscription Plans
-      </span>
-    </Link>
-  </li>
-</ul>
-      
+            <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">Main</p>
+            {[
+              ["Home", <FaHome />, "/"],
+              ["About Us", <FaInfoCircle />, "/about"],
+              ["Listings", <FaBuilding />, "/view-properties"],
+              ["Contact", <FaPhone />, "/contact"],
+            ].map(([label, icon, href]) => (
+              <li key={href}>
+                <Link
+                  to={href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2 rounded-lg transition-all group hover:bg-blue-100"
+                >
+                  <span className="text-lg text-blue-600 group-hover:scale-110 transition-transform duration-200">{icon}</span>
+                  <span className="truncate group-hover:translate-x-1 transition-transform duration-200">{label}</span>
+                </Link>
+              </li>
+            ))}
+            <p className="text-xs text-zinc-400 uppercase tracking-wide mt-6 mb-1">Premium</p>
+            <li>
+              <Link
+                to="/subscription"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-100 text-yellow-900 shadow border border-yellow-400 group"
+              >
+                <span className="text-lg text-yellow-700 group-hover:scale-110 transition-transform duration-200">
+                  <FaRegCreditCard />
+                </span>
+                <span className="truncate group-hover:translate-x-1 transition-transform duration-200">
+                  EMS Subscription Plans
+                </span>
+              </Link>
+            </li>
+          </ul>
           <div className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200" style={{ fontFamily: "heading_font" }}>
             Making Urban Living Easy
           </div>
-        </aside>
-      </div>
-      
-        </>
+        </div>
+      </DrawerMenu>
     </header>
-  );
-}
-
-function Hamburger({ animatedOpen }) {
-  const topV = {
-    closed: { rotate: 0, translateY: 0 },
-    open: { rotate: 45, translateY: 8 },
-  };
-  const centerV = {
-    closed: { opacity: 1 },
-    open: { opacity: 0 },
-  };
-  const bottomV = {
-    closed: { rotate: 0, translateY: 0 },
-    open: { rotate: -45, translateY: -8 },
-  };
-
-  return (
-    <motion.svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="currentColor"
-      strokeLinecap="round"
-      className="absolute inset-0 m-auto"
-    >
-      <motion.line x1="3" x2="21" y1="6" y2="6" variants={topV} initial="closed" animate={animatedOpen ? "open" : "closed"} />
-      <motion.line x1="3" x2="21" y1="12" y2="12" variants={centerV} initial="closed" animate={animatedOpen ? "open" : "closed"} />
-      <motion.line x1="3" x2="21" y1="18" y2="18" variants={bottomV} initial="closed" animate={animatedOpen ? "open" : "closed"} />
-    </motion.svg>
   );
 }
