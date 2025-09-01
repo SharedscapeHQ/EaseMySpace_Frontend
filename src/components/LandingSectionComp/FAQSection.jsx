@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const faqs = [
   {
     question: "Is listing a property on EaseMySpace free?",
     answer:
-      "Yes! Listing your property is completely free with no hidden charges.",
-      button: {
+      "Yes! Listing your property is completely free with no hidden charges. Reach thousands of PG, flat, and flatmate seekers in Mumbai.",
+    button: {
       text: "Add Property",
       link: "/add-property",
     },
@@ -15,13 +16,13 @@ const faqs = [
   {
     question: "Can I contact renters or owners directly?",
     answer:
-      "Absolutely. Our in-app chat system allows secure and direct communication.",
+      "Absolutely. Our in-app chat system allows secure and direct communication with PG, flat, and flatmate seekers in Mumbai.",
   },
   {
     question: "How do I verify my property?",
     answer:
-      "After submission, our team reviews and verifies the listing within 24–48 hours.",
-      button: {
+      "After submission, our team reviews and verifies the listing within 24–48 hours, ensuring trusted and verified PGs and flats.",
+    button: {
       text: "Add Property",
       link: "/add-property",
     },
@@ -29,7 +30,7 @@ const faqs = [
   {
     question: "Is there any commission or service fee?",
     answer:
-      "No commission. Subscribe a plan fee for Starter, Premium or Ultimate plans covering property visits, video tours, relocation help, and priority listings.",
+      "No commission. Subscribe to Starter, Premium, or Ultimate plans covering property visits, video tours, relocation help, and priority listings for PGs and flats.",
     button: {
       text: "Explore Plans",
       link: "/subscription",
@@ -51,18 +52,38 @@ export default function FAQSection() {
       aria-label="Frequently Asked Questions about EaseMySpace"
       role="region"
     >
+      <Helmet>
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": ${JSON.stringify(
+              faqs.map((faq) => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.answer,
+                },
+              }))
+            )}
+          }
+        `}</script>
+      </Helmet>
+
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">
         <h2
-          style={{ fontFamily: "heading_font" }}
-          className="text-lg sm:text-3xl mb-5 text-left"
-        >
-          Got Questions? We’ve Got Answers.
-        </h2>
+  style={{ fontFamily: "heading_font" }}
+  className="text-lg sm:text-3xl mb-5 text-left"
+>
+  FAQs on PGs, Flats & Flatmates in Mumbai
+</h2>
 
-        <div className="space-y-1 divide-y divide-gray-200">
+
+        <dl className="space-y-1 divide-y divide-gray-200">
           {faqs.map((faq, idx) => (
             <div key={idx}>
-              <h3>
+              <dt>
                 <button
                   className="w-full flex justify-between items-center py-4 text-left"
                   onClick={() => toggle(idx)}
@@ -80,9 +101,9 @@ export default function FAQSection() {
                     <FiChevronDown />
                   </span>
                 </button>
-              </h3>
+              </dt>
 
-              <div
+              <dd
                 id={`faq-answer-${idx}`}
                 className={`text-sm text-zinc-600 transition-all duration-300 ease-in-out overflow-hidden ${
                   openIndex === idx ? "max-h-40 pb-4" : "max-h-0"
@@ -97,10 +118,10 @@ export default function FAQSection() {
                     {faq.button.text} {">"}
                   </Link>
                 )}
-              </div>
+              </dd>
             </div>
           ))}
-        </div>
+        </dl>
       </div>
     </section>
   );

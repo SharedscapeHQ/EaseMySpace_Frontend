@@ -86,7 +86,7 @@ function Banner() {
               "@type": "Organization",
               "name": "EaseMySpace",
               "url": "https://easemyspace.in",
-              "logo": "https://easemyspace.in/logo.png"
+              "logo": "https://easemyspace.in/navbar-assets/brand-logo.png"
             }
           `}
         </script>

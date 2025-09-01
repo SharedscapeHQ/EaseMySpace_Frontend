@@ -200,15 +200,114 @@ export default function ViewAllProperties() {
     <div className="w-full pb-5 bg-zinc-50  min-h-screen lg:py-10" style={{ fontFamily: "para_font" }}>
 
 {/* Helmet for SEO */}
-      <Helmet>
-        <title>Find Verified PGs, Flatmates & Vacant Flats in Andheri, Goregaon, Thane, Ghatkopar | EaseMySpace</title>
-        <meta
-          name="description"
-          content="Search verified PGs, shared accommodations, flatmates, and vacant flats in Mumbai areas like Andheri, Goregaon, Thane, and Ghatkopar. EaseMySpace makes finding rental spaces hassle-free and broker-free."
-        />
-        <meta name="keywords" content="PG in Andheri, PG in Goregaon, Flatmates in Mumbai, Shared Flats Mumbai, Vacant Rooms Thane, Flats in Ghatkopar, Mumbai Rentals, Verified PGs Mumbai" />
-        <link rel="canonical" href="https://easemyspace.in/view-properties" />
-      </Helmet>
+   <Helmet>
+  {/* Dynamic Title */}
+  <title>
+    {filters.looking_for === "pg"
+      ? `PGs in ${filters.location || "Mumbai"} | EaseMySpace`
+      : filters.looking_for === "flatmate"
+      ? `Flatmates in ${filters.location || "Mumbai"} | EaseMySpace`
+      : filters.looking_for === "vacant"
+      ? `Flats for Rent in ${filters.location || "Mumbai"} | EaseMySpace`
+      : `PGs, Flatmates & Flats in ${filters.location || "Mumbai"} | EaseMySpace`}
+  </title>
+
+  {/* Meta Description */}
+  <meta
+    name="description"
+    content={`Find verified ${
+      filters.looking_for || "rental"
+    } properties in ${filters.location || "Mumbai"} – PGs, shared flats, flatmates, and vacant rooms. Broker-free listings across Andheri, Goregaon, Ghatkopar & more.`}
+  />
+
+  {/* Keywords (secondary SEO support) */}
+  <meta
+    name="keywords"
+    content={`PG in ${filters.location || "Mumbai"}, Flatmate in ${filters.location || "Mumbai"}, Flats for rent in ${filters.location || "Mumbai"}, Rooms for rent ${filters.location || "Mumbai"}, Broker free rental Mumbai, Andheri PG, Goregaon flats, Ghatkopar PG`}
+  />
+
+  {/* Canonical */}
+  <link
+    rel="canonical"
+    href={`https://easemyspace.in/view-properties?looking_for=${filters.looking_for || "rental"}&location=${filters.location || "mumbai"}`}
+  />
+
+  {/* Open Graph for Social Sharing */}
+  <meta property="og:title" content={`Find ${filters.looking_for || "PGs, Flats & Flatmates"} in ${filters.location || "Mumbai"} | EaseMySpace`} />
+  <meta property="og:description" content="EaseMySpace offers verified PGs, flats, flatmates, and vacant rooms across Mumbai – broker-free rentals." />
+  <meta property="og:url" content={`https://easemyspace.in/view-properties?looking_for=${filters.looking_for || "rental"}&location=${filters.location || "mumbai"}`} />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://easemyspace.in/navbar-assets/brand-logo.png" />
+
+  {/* Twitter Cards */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={`EaseMySpace - ${filters.looking_for || "PGs, Flats & Flatmates"} in ${filters.location || "Mumbai"}`} />
+  <meta name="twitter:description" content="Verified PGs, flats, flatmates, and rooms for rent in Mumbai – Andheri, Goregaon, Ghatkopar, Thane, Kalyan, and more." />
+
+  {/* JSON-LD Schema */}
+  <script type="application/ld+json">{`
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": "EaseMySpace",
+      "url": "https://easemyspace.in",
+      "logo": "https://easemyspace.in/navbar-assets/brand-logo.png",
+      "description": "Find PGs, flatmates, and vacant flats in Mumbai – broker-free rentals across Andheri, Goregaon, Ghatkopar & more.",
+      "areaServed": [
+        "Andheri, Mumbai",
+        "Goregaon, Mumbai",
+        "Ghatkopar, Mumbai",
+        "Thane, Mumbai",
+        "Powai, Mumbai"
+      ],
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Accommodation",
+            "name": "PGs in ${filters.location || "Mumbai"}"
+          },
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Apartment",
+            "name": "Flatmates in ${filters.location || "Mumbai"}"
+          },
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Apartment",
+            "name": "Flats for Rent in ${filters.location || "Mumbai"}"
+          },
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Room",
+            "name": "Rooms for Rent in ${filters.location || "Mumbai"}"
+          },
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock"
+        }
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "support@easemyspace.in",
+        "availableLanguage": ["English", "Hindi"]
+      }
+    }
+  `}</script>
+</Helmet>
+
 
 
       <div className="w-full mx-auto px-1 flex gap-2">
@@ -225,15 +324,26 @@ export default function ViewAllProperties() {
         {/* Main Section */}
         <main className="flex-1 flex flex-col items-center w-full overflow-visible">
            <section className="w-full max-w-4xl mx-auto text-left mb-4 md:-mt-5 mt-2 lg:px-0 px-2">
-            <h1
-              style={{ fontFamily: "heading_font" }}
-              className="text-lg lg:text-3xl mb-0 text-black leading-tight"
-            >
-              {headingText}
-            </h1>
-            <p className="text-gray-600 text-xs">
-              Find your perfect space among verified properties
-            </p>
+           <h1
+  style={{ fontFamily: "heading_font" }}
+  className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+>
+  {filters.looking_for === "pg" && `Verified PGs in ${filters.location || "Mumbai"}`}
+  {filters.looking_for === "flatmate" && `Flatmates Wanted in ${filters.location || "Mumbai"}`}
+  {filters.looking_for === "vacant" && `Vacant Flats in ${filters.location || "Mumbai"}`}
+  {!filters.looking_for && "PGs, Flats & Flatmates Across Mumbai"}
+</h1>
+
+<p className="text-gray-600 text-xs">
+  {filters.looking_for === "pg"
+    ? `Book your ideal paying guest accommodation hassle-free`
+    : filters.looking_for === "flatmate"
+    ? `Connect with potential flatmates quickly and easily`
+    : filters.looking_for === "vacant"
+    ? `Find available flats ready to move in`
+    : `Explore PGs, flats, and flatmate options across Mumbai`}
+</p>
+
             <div className="inline lg:hidden text-sm font-medium">
               All Listings
             </div>
