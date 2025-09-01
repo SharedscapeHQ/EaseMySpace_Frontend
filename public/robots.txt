@@ -1,6 +1,6 @@
 
 
-Sitemap: https://easemyspace.in/sitemap.xml
+Sitemap: https://api.easemyspace.in/sitemap.xml
 
 # Static 301 redirects
 Redirect 301 /profiles https://easemyspace.in/view-properties
