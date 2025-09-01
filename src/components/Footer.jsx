@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   FaFacebookF,
   FaYoutube,
@@ -38,6 +39,10 @@ const icons = [
     color: "from-indigo-600 to-indigo-800 border-indigo-500/50",
     url: "https://www.linkedin.com/company/easemyspace",
   },
+  {
+    Icon: FaWhatsapp,
+    color: "from-green-400 to-green-600 border-green-500/50",
+    url: "https://wa.me/919004463371", },
 ];
 
 export default function Footer() {
