@@ -17,40 +17,52 @@ function Landing() {
   return (
     <>
       <Helmet>
-        {/* Main Page Title */}
-        <title>PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace</title>
+  {/* Favicon */}
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="64x64"
+    href="https://easemyspace.in/navbar-assets/brand_favicon.png?v=2"
+  />
 
-        {/* Meta Description */}
-        <meta
-          name="description"
-          content="Find PGs, shared flats, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu, Andheri West, and other areas. Connect with verified flatmates and list properties hassle-free with EaseMySpace."
-        />
+  {/* Main Page Title */}
+  <title>PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace</title>
 
-        {/* Meta Keywords */}
-        <meta
-          name="keywords"
-          content="PG in Mumbai, flatmate in Mumbai, flat for rent Mumbai, paying guest Mumbai, shared flats Mumbai, vacant flats Mumbai, rooms for rent Andheri, flats in Bandra, list property Mumbai"
-        />
+  {/* Meta Description */}
+  <meta
+    name="description"
+    content="Find PGs, shared flats, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu, Andheri West, and other areas. Connect with verified flatmates and list properties hassle-free with EaseMySpace."
+  />
 
-        {/* Open Graph / Social Sharing */}
-        <meta property="og:title" content="Find Your Next Home in Mumbai | EaseMySpace" />
-        <meta
-          property="og:description"
-          content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace."
-        />
-        <meta property="og:image" content="/heroImg/hero.png" />
-        <meta property="og:url" content="https://easemyspace.in" />
-        <meta property="og:type" content="website" />
+  {/* Meta Keywords */}
+  <meta
+    name="keywords"
+    content="PG in Mumbai, flatmate in Mumbai, flat for rent Mumbai, paying guest Mumbai, shared flats Mumbai, vacant flats Mumbai, rooms for rent Andheri, flats in Bandra, list property Mumbai"
+  />
 
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Find PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace" />
-        <meta
-          name="twitter:description"
-          content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace."
-        />
-        <meta name="twitter:image" content="/heroImg/hero.png" />
-      </Helmet>
+  {/* Open Graph / Social Sharing */}
+  <meta property="og:title" content="Find Your Next Home in Mumbai | EaseMySpace" />
+  <meta
+    property="og:description"
+    content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace."
+  />
+  <meta property="og:image" content="https://easemyspace.in/heroImg/hero.png" />
+  <meta property="og:url" content="https://easemyspace.in" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter Card */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content="Find PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace"
+  />
+  <meta
+    name="twitter:description"
+    content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace."
+  />
+  <meta name="twitter:image" content="https://easemyspace.in/heroImg/hero.png" />
+</Helmet>
+
 
       <div className="w-full -pt-10 lg:pb-0 pb-9">
         <HeroMobile />
