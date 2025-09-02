@@ -85,53 +85,92 @@ export default function HeroMobile({ properties }) {
     <>
 
     <section
-      className="lg:hidden w-full bg-white px-4 py-4 transition-all duration-400"
-      style={{ height: scrolled ? "74vh" : "100vh" }}
+  className="lg:hidden w-full bg-white px-4 py-4 transition-all duration-400"
+  style={{ height: scrolled ? "74vh" : "100vh" }}
+>
+  {/* Heading */}
+  <div className="w-full text-left" ref={headingRef}>
+    <h1
+      style={{ fontFamily: "heading_font" }}
+      className="text-3xl sm:text-4xl text-zinc-800 mb-8"
     >
-      {/* Heading */}
-      <div className="w-full text-left" ref={headingRef}>
-        <h1 style={{ fontFamily: "heading_font" }} className="text-3xl sm:text-4xl text-zinc-800 mb-8">
-          Find your next home with ease
-        </h1>
-      </div>
+      Find your next home with ease
+    </h1>
+    {/* 🔑 Hidden SEO-friendly description */}
+    <p className="sr-only">
+      EaseMySpace helps you find PGs, flatmates, and rental flats across India.
+      Browse shared accommodations, paying guest housing, and vacant apartments near you.
+    </p>
+  </div>
 
-      {/* Options */}
-      <div className="flex justify-between gap-3 mb-8">
-        {options.map((item, i) => (
-          <Link
-            key={item.value}
-            to={`/view-properties?looking_for=${item.value}`}
-            className="relative flex flex-col items-center justify-center p-4 rounded-xl shadow-md border border-zinc-50 bg-white w-1/3 transition-transform"
-            ref={(el) => (optionsRef.current[i] = el)}
-          >
-            <div className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center`}>
-              <img src={item.img} alt={item.title} className="w-14 h-14 object-contain" />
-            </div>
-            <span style={{ fontFamily: "heading_font" }} className="text-sm text-zinc-700 mt-2">{item.title}</span>
-            <span className="text-xs text-zinc-500 mt-1 text-center">{item.subtitle}</span>
-          </Link>
-        ))}
-      </div>
-
-      {/* Hero Image Section */}
-      <div className="relative w-full h-56 rounded-xl overflow-hidden" ref={heroRef}>
-        <img src={heroImg} alt="Hero" className="w-full h-[110%] object-cover " />
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]" ref={searchRef}>
-          <div className="relative">
-            <IoSearchOutline className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg" />
-            <input
-              type="text"
-              name="location"
-              value={filters.location}
-              onChange={handleFilterChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Search by location or property"
-              className="w-full bg-white rounded-full py-3 pl-12 pr-4 shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+  {/* Options */}
+  <div className="flex justify-between gap-3 mb-8">
+    {options.map((item, i) => (
+      <Link
+        key={item.value}
+        to={`/view-properties?looking_for=${item.value}`}
+        className="relative flex flex-col items-center justify-center p-4 rounded-xl shadow-md border border-zinc-50 bg-white w-1/3 transition-transform"
+        ref={(el) => (optionsRef.current[i] = el)}
+        aria-label={`Explore ${item.title} listings, shared flats, PG accommodations and rental properties`}
+      >
+        <div
+          className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center`}
+        >
+          <img
+            src={item.img}
+            alt={`Find ${item.title} properties, PGs, or shared accommodations`}
+            className="w-14 h-14 object-contain"
+          />
         </div>
+        <span
+          style={{ fontFamily: "heading_font" }}
+          className="text-sm text-zinc-700 mt-2"
+        >
+          {item.title}
+        </span>
+        <span className="text-xs text-zinc-500 mt-1 text-center">
+          {item.subtitle}
+        </span>
+      </Link>
+    ))}
+  </div>
+
+  {/* Hero Image Section */}
+  <div
+    className="relative w-full h-56 rounded-xl overflow-hidden"
+    ref={heroRef}
+  >
+    <img
+      src={heroImg}
+      alt="Explore PGs, flatmates, and rental flats with EaseMySpace"
+      className="w-full h-[110%] object-cover"
+    />
+    {/* 🔑 Hidden SEO-friendly description for the image */}
+    <p className="sr-only">
+      Hero image showing modern rental properties, PG accommodations, and shared flats.
+    </p>
+
+    <div
+      className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%]"
+      ref={searchRef}
+    >
+      <div className="relative">
+        <IoSearchOutline className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg" />
+        <input
+          type="text"
+          name="location"
+          value={filters.location}
+          onChange={handleFilterChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Search by location or property"
+          className="w-full bg-white rounded-full py-3 pl-12 pr-4 shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Search PGs, flats, and shared rentals by location or property type"
+        />
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
     </>
 
   );

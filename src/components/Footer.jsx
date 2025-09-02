@@ -47,7 +47,7 @@ const icons = [
 
 export default function Footer() {
   return (
-   <footer
+<footer
   style={{ fontFamily: "para_font" }}
   className="bg-white border-t border-zinc-200 py-10 overflow-x-hidden text-zinc-800"
   itemScope
@@ -59,15 +59,17 @@ export default function Footer() {
     <div className="flex flex-col justify-center lg:w-[80%] w-auto items-center gap-4">
       <img
         src={brandImg}
-        alt="EaseMySpace – Verified Flatmates & Rentals in Mumbai"
+        alt="EaseMySpace – Verified Flatmates, PGs, Rental Flats, and Shared Rooms in Mumbai"
         className="w-40 lg:mr-10"
         itemProp="logo"
       />
       <p className="text-sm leading-relaxed" itemProp="description">
-        EaseMySpace simplifies urban living by connecting people with verified flatmates and rental spaces in Mumbai. Hassle-free, seamless, and broker-free.
+        EaseMySpace connects users with verified flatmates, rental flats, shared accommodations, and PGs in Mumbai. Find your next home quickly, hassle-free.
       </p>
       <meta itemProp="name" content="EaseMySpace" />
       <meta itemProp="url" content="https://easemyspace.in" />
+      <meta itemProp="founder" content="EaseMySpace Team" />
+      <meta itemProp="address" content="WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400025" />
     </div>
 
     {/* Quick Links Section */}
@@ -76,10 +78,10 @@ export default function Footer() {
         <h3 className="text-base font-semibold mb-3">Quick Links</h3>
         <ul className="space-y-3">
           {[
-            { label: "Home", to: "/", icon: FaHome },
-            { label: "About Us", to: "/about", icon: FaInfoCircle },
-            { label: "Listings", to: "/view-properties", icon: FaThList },
-            { label: "Contact", to: "/contact", icon: FaPhone },
+            { label: "Home ", to: "/", icon: FaHome },
+            { label: "About Us ", to: "/about", icon: FaInfoCircle },
+            { label: "Listings ", to: "/view-properties", icon: FaThList },
+            { label: "Contact ", to: "/contact", icon: FaPhone },
           ].map(({ label, to, icon: Icon }) => (
             <li key={to}>
               <Link
@@ -87,7 +89,7 @@ export default function Footer() {
                 className="flex items-center gap-2 hover:text-blue-500 transition"
               >
                 <Icon className="text-blue-500 w-4 h-4" />
-                <span itemProp="makesOffer">{label}</span>
+                <span>{label}</span>
               </Link>
             </li>
           ))}
@@ -97,9 +99,9 @@ export default function Footer() {
         <h3 className="text-base font-semibold mb-3">Legal & Policies</h3>
         <ul className="space-y-3">
           {[
-            { label: "Cancellation & Refund", to: "/cancellation-refund", icon: FaUndoAlt },
+            { label: "Cancellation & Refund Policy", to: "/cancellation-refund", icon: FaUndoAlt },
             { label: "Terms & Conditions", to: "/terms-conditions", icon: FaFileContract },
-            { label: "Privacy Policy", to: "/privacy-policy", icon: FaUserShield },
+            { label: "Privacy Policy ", to: "/privacy-policy", icon: FaUserShield },
           ].map(({ label, to, icon: Icon }) => (
             <li key={to}>
               <Link
@@ -117,7 +119,6 @@ export default function Footer() {
 
     {/* Contact + Social Icons */}
     <div className="w-full flex flex-col items-center justify-center gap-6">
-      {/* Social Icons */}
       <div className="flex gap-4">
         {icons.map(({ Icon, color, url }, idx) => (
           <a
@@ -127,6 +128,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className={`w-10 h-10 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center shadow-lg border cursor-pointer transition hover:scale-110 hover:-translate-y-2`}
             itemProp="sameAs"
+            aria-label={`Follow EaseMySpace on ${url.split(".")[1]}`}
           >
             <Icon className="text-white text-xl" />
           </a>
@@ -150,21 +152,30 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-2 ">
-      <FaMapMarkerAlt className="text-blue-500 w-5 h-5 mt-1" />
-      <span>
-        WeWork, 1st Floor, 264–265,<br />
-        Dr Annie Besant Rd,<br />
-        Worli, Mumbai 400025
-      </span>
-    </div>
+          <FaMapMarkerAlt className="text-blue-500 w-5 h-5 mt-1" />
+          <span>
+            WeWork, 1st Floor, 264–265,<br />
+            Dr Annie Besant Rd,<br />
+            Worli, Mumbai 400025
+          </span>
+        </div>
       </div>
     </div>
+  </div>
+
+  {/* Hidden keyword-rich internal links (for SEO, not visible) */}
+  <div className="sr-only">
+    <Link to="/pgs">PG Listings Mumbai</Link>
+    <Link to="/flatmates">Flatmate Finder Mumbai</Link>
+    <Link to="/flats">Rental Flats in Mumbai</Link>
+    <Link to="/shared-rooms">Shared Rooms in Mumbai</Link>
   </div>
 
   <div className="mt-10 pt-4 flex justify-center items-center border-t text-center text-sm text-zinc-600">
     © {new Date().getFullYear()} EaseMySpace.in — All rights reserved.
   </div>
 </footer>
+
 
   );
 }
