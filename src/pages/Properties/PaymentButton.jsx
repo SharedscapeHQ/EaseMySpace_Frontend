@@ -19,9 +19,9 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     //   description: "Access 2 contacts for 7 days.",
     // },
     premium: {
-      label: "Premium",
-      amount: 1999,
-      description: "15 days validity with essential services.",
+      label: "Trial",
+      amount: 399,
+      description: "7 days validity with essential services.",
     },
     ultimate: {
       label: "Ultimate",
