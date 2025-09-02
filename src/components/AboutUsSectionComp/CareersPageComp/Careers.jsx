@@ -166,15 +166,30 @@ const handleSubmit = async (e) => {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="bg-blue-700 text-white py-16 px-6 text-center">
-        <h1 style={{ fontFamily: "heading_font" }} className="text-4xl font-bold mb-4">
-          Join Our Team
-        </h1>
-        <p className="max-w-3xl mx-auto text-lg">
-          Be part of a team that values innovation, growth, and collaboration.
-          Explore our current openings and find your next career opportunity.
-        </p>
-      </section>
+     <section
+  className="bg-blue-700 text-white py-16 px-6 text-center"
+  itemScope
+  itemType="https://schema.org/JobPosting"
+>
+  <h1
+    style={{ fontFamily: "heading_font" }}
+    className="text-4xl font-bold mb-4"
+    itemProp="title"
+  >
+    Join Our Team at EaseMySpace – Careers in Mumbai
+  </h1>
+  <p
+    className="max-w-3xl mx-auto text-lg"
+    itemProp="description"
+  >
+    Be part of EaseMySpace, an innovative startup in Mumbai transforming how people find PGs, flats, and flatmates. Explore exciting career opportunities in IT, development, operations, and marketing with hybrid work, remote work, or work-from-home options.
+  </p>
+  <meta itemProp="employmentType" content="Full-time" />
+  <meta itemProp="jobLocation" content="Mumbai, India" />
+  <meta itemProp="hiringOrganization" content="EaseMySpace" />
+  <meta itemProp="workHours" content="Hybrid, WFH, Full-time" />
+</section>
+
 
       {/* Open Positions */}
       <section className="py-12 px-6 lg:px-20">

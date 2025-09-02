@@ -36,6 +36,7 @@ import RequirementPage from "./pages/Demand/RequirementPage";
 import RequirementDashboard from "./components/DemandSide/RequirementDashboard";
 import PageWrapper from "./components/PageTranstion/PageWrapper";
 import AnalyticsTracker from "./components/Seo/AnalyticsTracker";
+import BlogPage from "./pages/BlogPage";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -91,6 +92,7 @@ function AnimatedRoutes() {
         <Route path="/privacy-policy" element={<PageWrapper><Layout><PolicyPrivacy /></Layout></PageWrapper>} />
         <Route path="/view-properties" element={<PageWrapper><Layout><ViewAllProperties /></Layout></PageWrapper>} />
         <Route path="/properties/:id" element={<PageWrapper><Layout><PropertyDetail /></Layout></PageWrapper>} />
+        <Route path="/blog/" element={<PageWrapper><Layout><BlogPage /></Layout></PageWrapper>} />
 
         {/* Protected Routes */}
         <Route path="/dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user"]}><UserDashboard /></ProtectedRoute></Layout></PageWrapper>} />

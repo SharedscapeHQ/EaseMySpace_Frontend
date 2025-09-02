@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaHome, FaInfoCircle, FaBuilding, FaPhone, FaRegCreditCard } from "react-icons/fa";
+import { FaHome, FaInfoCircle, FaBuilding, FaPhone, FaRegCreditCard, FaBlog  } from "react-icons/fa";
 
 export default function DrawerMenu({ open, setOpen }) {
   return (
@@ -21,6 +21,7 @@ export default function DrawerMenu({ open, setOpen }) {
             ["About Us", <FaInfoCircle />, "/about"],
             ["Listings", <FaBuilding />, "/view-properties"],
             ["Contact", <FaPhone />, "/contact"],
+            ["Blog", <FaBlog />, "/blog"],
           ].map(([label, icon, href]) => (
             <li key={href}>
               <Link to={href} onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-2 rounded-lg transition-all group hover:bg-blue-100">
