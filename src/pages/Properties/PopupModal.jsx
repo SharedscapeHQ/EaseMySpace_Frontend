@@ -47,10 +47,10 @@ const plans = [
       features: [
         { text: "Up to 1 Property Visits (In-person)", included: true },
         { text: "1 Property Owner Contact Unlocks", included: true },
-        { text: "Dedicated Relationship Manager", included: false },
-        { text: "Accompanied Property Visits (With EMS Executive)", included: false },
+        { text: "Dedicated Relationship Manager", included: true },
+        { text: "Accompanied Property Visits (With EMS Executive)", included: true },
         { text: "Up to 1 Video Tours Before Visit", included: true },
-        { text: "Relocation Assistance (On-call)", included: false },
+        { text: "Relocation Assistance (On-call)", included: true },
         { text: "Post-shifting Support - Standard", included: true },
         { text: "Match Recommendations - Basic", included: true },
       ],
