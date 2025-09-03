@@ -18,6 +18,7 @@ import PropertySkeleton from "./PropertySkeleton";
 import PropertyMap from "./PropertyMap";
 import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
+import LoginPromptModal from "./LoginPromptModal";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -67,15 +68,23 @@ function PropertyDetail() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [hasPaid, setHasPaid] = useState(false);
   const [showPlanPopup, setShowPlanPopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   // ---------------- Fetch Logged-In User ----------------
   useEffect(() => {
     async function fetchUser() {
       try {
         const user = await getCurrentUser();
-        setLoggedInUser(user);
+        if (!user || !user.id) {
+          setShowLoginPopup(true); // user not logged in
+          setLoggedInUser(null);
+        } else {
+          setLoggedInUser(user);
+        }
       } catch (err) {
         console.error("Failed to fetch current user:", err);
+        setShowLoginPopup(true);
+        setLoggedInUser(null);
       }
     }
     fetchUser();
@@ -103,31 +112,25 @@ function PropertyDetail() {
         setLoading(false);
       }
     }
-
     fetchProperty();
   }, [id]);
 
-// recently viewed and visit trigger 
+  // ---------------- Recently Viewed & Visit Trigger ----------------
+  useEffect(() => {
+    if (!property || !loggedInUser) return;
 
-useEffect(() => {
-  if (!property || !loggedInUser) return;
+    const viewedProps = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
 
-  const viewedProps = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+    if (!viewedProps.includes(property.id)) {
+      incrementPropertyView(property.id).catch(console.error);
+      sessionStorage.setItem(
+        "viewedProps",
+        JSON.stringify([...viewedProps, property.id])
+      );
+    }
 
-  // Increment property view only if not already counted in this session
-  if (!viewedProps.includes(property.id)) {
-    incrementPropertyView(property.id).catch(console.error);
-    sessionStorage.setItem(
-      "viewedProps",
-      JSON.stringify([...viewedProps, property.id])
-    );
-  }
-
-  // Always mark as viewed to update timestamp
-  markPropertyAsViewed(property.id).catch(console.error);
-}, [property, loggedInUser]);
-
-
+    markPropertyAsViewed(property.id).catch(console.error);
+  }, [property, loggedInUser]);
 
   // ---------------- Fetch Property Visit Count ----------------
   useEffect(() => {
@@ -258,6 +261,13 @@ useEffect(() => {
         {/* Related Properties */}
         <RelatedProperties currentProperty={property} />
       </main>
+
+      {showLoginPopup && (
+        <LoginPromptModal
+          onClose={() => setShowLoginPopup(false)}
+          onAction={() => window.location.href = "/login"}
+        />
+      )}
 
       <Footer />
     </>
