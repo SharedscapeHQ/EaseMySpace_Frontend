@@ -18,14 +18,14 @@ export default function PaymentButtonSubs({
   const [activeUserPhone, setActiveUserPhone] = useState("");
 
   const plans = {
-    standard: {
-      amount: 499,
-      description: "Standard Plan - 7 Days Access, 2 Contacts",
-    },
-    premium: {
-      amount: 399,
-      description: "Trial Plan - 7 Days Access, 1 Contact",
-    },
+    // standard: {
+    //   amount: 499,
+    //   description: "Standard Plan - 7 Days Access, 2 Contacts",
+    // },
+    trial: {
+  amount: 399,
+  description: "Trial Plan - 7 Days Access, 1 Contact",
+},
     ultimate: {
       amount: 3499,
       description: "Ultimate Plan - 30 Days Access, Unlimited Contacts",

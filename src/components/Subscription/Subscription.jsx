@@ -61,7 +61,7 @@ export default function SubscriptionPlans() {
 
   const plans = [
     {
-      type: "Trial",
+      type: "trial",
       title: "Trial Plan",
       description: "7 days validity with essential services",
       originalPrice: "₹599",
