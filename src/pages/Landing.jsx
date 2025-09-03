@@ -22,7 +22,7 @@ function Landing() {
     rel="icon"
     type="image/png"
     sizes="64x64"
-    href="https://easemyspace.in/navbar-assets/brand_favicon.png?v=2"
+    href="https://easemyspace.in/navbar-assets/brand_favicon_new.png?v=2"
   />
 
   {/* Main Page Title */}
