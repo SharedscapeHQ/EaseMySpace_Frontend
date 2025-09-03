@@ -222,14 +222,14 @@ export default function LeadsTable({ leads }) {
                           Follow-up done
                         </span>
                       </div>
-                      {userRole === "owner" && (
+                     
                         <button
                           onClick={() => handleClearFollowUp(lead.id)}
                           className="text-red-600 text-xs hover:underline mt-1 self-start"
                         >
                           Clear Follow-up
                         </button>
-                      )}
+                      
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1">

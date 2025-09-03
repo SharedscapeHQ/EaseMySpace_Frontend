@@ -184,7 +184,7 @@ export default function RequestsTable() {
                           Done
                         </span>
                       </div>
-                      {role === "owner" && (
+                      
                         <button
                           onClick={() => handleClearFollowUp(req.id)}
                           disabled={loadingIds[req.id]}
@@ -192,7 +192,7 @@ export default function RequestsTable() {
                         >
                           Clear
                         </button>
-                      )}
+                    
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1">

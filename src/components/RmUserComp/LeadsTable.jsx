@@ -188,18 +188,20 @@ export default function LeadsTable() {
                 <td className="px-5 py-3">{formatDate(lead.last_verified_at)}</td>
                 <td className="px-5 py-3">
                   {lead.follow_up_done ? (
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                        <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
-                        <span className="text-green-600 font-medium text-xs">Follow-up done</span>
-                      </div>
-                      {userRole === "owner" && (
-                        <button onClick={() => handleClearFollowUp(lead.id)} className="text-red-600 text-xs hover:underline mt-1 self-start">
-                          Clear Follow-up
-                        </button>
-                      )}
-                    </div>
-                  ) : (
+  <div className="flex flex-col gap-1">
+    <div className="flex items-center gap-2">
+      <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
+      <span className="text-green-600 font-medium text-xs">Follow-up done</span>
+    </div>
+
+    <button
+      onClick={() => handleClearFollowUp(lead.id)}
+      className="text-red-600 text-xs hover:underline mt-1 self-start"
+    >
+      Clear Follow-up
+    </button>
+  </div>
+) : (
                     <div className="flex flex-col gap-1">
                       <textarea
                         rows="2"
