@@ -41,9 +41,14 @@ export default function InvoiceModal({ isOpen, onClose, invoiceUrl }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleDownload}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition font-semibold"
+              disabled={!invoiceUrl}
+              className={`${
+                invoiceUrl
+                  ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-xl"
+                  : "bg-gray-300 cursor-not-allowed"
+              } text-white px-8 py-3 rounded-xl shadow-lg transition font-semibold`}
             >
-              Download Invoice
+              {invoiceUrl ? "Download Invoice" : "Invoice Not Ready"}
             </motion.button>
           </motion.div>
         </motion.div>

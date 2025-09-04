@@ -4,6 +4,7 @@ import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
 import { fetchUserContactStatus } from "../../api/userApi";
 import { Link } from "react-router-dom";
+import InvoiceModal from "../../components/Subscription/InvoiceModal";
 
 export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const [userData, setUserData] = useState({});
@@ -12,8 +13,12 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const [showPlanOptions, setShowPlanOptions] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
+  // Invoice modal state
+  const [invoiceUrl, setInvoiceUrl] = useState("");
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+
   const plans = {
-    premium: {
+    trial: {
       label: "Trial",
       amount: 399,
       description: "7 days validity with essential services.",
@@ -32,7 +37,8 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       try {
         const data = await getCurrentUser();
         setUserData(data);
-        const phone = data?.phone || localStorage.getItem("user_verified_mobile");
+        const phone =
+          data?.phone || localStorage.getItem("user_verified_mobile");
         if (phone) setActiveUserPhone(phone);
         if (data?.subscription_status === "paid") setHasPaid(true);
       } catch {
@@ -72,14 +78,19 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     setIsPaying(true);
 
     try {
-      const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      const loaded = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
       if (!loaded) {
         toast.error("❌ Razorpay SDK failed to load.");
         setIsPaying(false);
         return;
       }
 
-      const { orderId, currency } = await createOrder({ amount: amountWithGST, planName: planKey });
+      const { orderId, currency } = await createOrder({
+        amount: amountWithGST,
+        planName: planKey,
+      });
 
       let phone = userData.phone || userMobile || activeUserPhone;
       if (!phone) {
@@ -93,7 +104,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
-        amount: amountWithGST * 100, // Razorpay expects paise
+        amount: amountWithGST * 100,
         currency,
         name: "EaseMySpace",
         description: plan.description,
@@ -121,6 +132,10 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               localStorage.setItem("has_paid_lead", "true");
               localStorage.setItem("user_verified_mobile", phone);
               toast.success("✅ Payment successful!");
+
+              // Show invoice modal
+              setInvoiceUrl(result.data.invoice_url); // Use invoice URL from API
+              setShowInvoiceModal(true);
             } else {
               toast.error("⚠️ Payment verification failed!");
             }
@@ -194,24 +209,27 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               &times;
             </button>
 
-            <h2 className="text-xl font-bold mb-4 text-center">Choose Your Plan</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Choose Your Plan
+            </h2>
 
             <div className="space-y-4">
               {Object.entries(plans).map(([key, plan]) => (
                 <div
                   key={key}
                   className={`relative border-2 ${
-                    key === "premium" ? "border-yellow-400" : "border-red-500"
+                    key === "trial" ? "border-yellow-400" : "border-red-500"
                   } bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`}
                   onClick={() => proceedToPayment(key)}
                 >
                   <span
                     className={`absolute top-[-10px] right-[-10px] ${
-                      key === "premium" ? "bg-yellow-400" : "bg-red-500"
+                      key === "trial" ? "bg-yellow-400" : "bg-red-500"
                     } text-white text-xs px-2 py-1 rounded-full shadow`}
                   >
                     {plan.label}
                   </span>
+
                   <h3 className="text-lg font-semibold text-gray-800">
                     {plan.label} - ₹{plan.amount} + GST
                   </h3>
@@ -229,6 +247,13 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
           </div>
         </div>
       )}
+
+      {/* Invoice Modal */}
+      <InvoiceModal
+        isOpen={showInvoiceModal}
+        onClose={() => setShowInvoiceModal(false)}
+        invoiceUrl={invoiceUrl}
+      />
     </>
   );
 }

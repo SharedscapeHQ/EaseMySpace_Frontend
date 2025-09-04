@@ -29,7 +29,6 @@ export default function PaymentButtonSubs({
         const data = await getCurrentUser();
         setUserData(data);
         if (data?.subscription_status === "paid") setHasPaid(true);
-
         const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
         setActiveUserPhone(phone);
       } catch {
@@ -56,7 +55,7 @@ export default function PaymentButtonSubs({
       const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
       if (!loaded) return toast.error("❌ Razorpay SDK failed to load.") && setIsPaying(false);
 
-      const taxRate = 18; // GST %
+      const taxRate = 18;
       const amountWithGST = Math.round(plan.amount * (1 + taxRate / 100));
 
       const { orderId, currency } = await createOrder({ amount: amountWithGST, planName: planKey });
@@ -69,7 +68,7 @@ export default function PaymentButtonSubs({
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
-        amount: amountWithGST * 100, // Razorpay expects paise
+        amount: amountWithGST * 100,
         currency,
         name: "EaseMySpace",
         description: plan.description,
@@ -80,7 +79,7 @@ export default function PaymentButtonSubs({
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              amount: amountWithGST, // ✅ Send full amount including GST
+              amount: amountWithGST,
               user_id: userData.id || null,
               phone,
               plan_type: planKey,
@@ -92,8 +91,8 @@ export default function PaymentButtonSubs({
               localStorage.setItem("user_verified_mobile", phone);
               toast.success("Payment successful!");
 
-              // Backend download route for invoice
-              setInvoiceUrl(`https://api.easemyspace.in/api/payment/invoice/${result.data.payment.razorpay_payment_id}/download`);
+              // Show invoice modal
+              setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
             } else {
               toast.error("⚠️ Payment verification failed!");
@@ -124,7 +123,6 @@ export default function PaymentButtonSubs({
         setIsPaying(false);
         toast.error(`❌ Payment failed: ${response.error.description}`);
       });
-
       rzp.open();
     } catch (err) {
       console.error("❌ Razorpay setup error:", err);

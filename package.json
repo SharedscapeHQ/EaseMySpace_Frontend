@@ -25,6 +25,8 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.1",
     "gsap": "^3.13.0",
+    "jspdf": "^3.0.2",
+    "jspdf-autotable": "^5.0.2",
     "leaflet": "^1.9.4",
     "locomotive-scroll": "^4.1.4",
     "lucide-react": "^0.535.0",
