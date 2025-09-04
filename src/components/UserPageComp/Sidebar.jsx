@@ -17,14 +17,13 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
     { label: "My Properties", value: "MyProperties", icon: <FiHome /> },
     { label: "My Queries", value: "MyQueries", icon: <FiMessageSquare /> },
     { label: "My Plan", value: "MyPlan", icon: <FiCreditCard /> },
+    { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> },
     { label: "Unlocked Contacts", value: "UnlockedContacts", icon: <FiPhoneCall /> },
     { label: "Recently Viewed", value: "RecentlyViewed", icon: <FiClock /> },
   ];
 
-  // Conditionally add Dedicated RM if plan is ultimate
-  if (userPlan === "ultimate") {
-    tabs.splice(3, 0, { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> });
-  }
+  
+  
 
   // Add My Bookings after My Plan (or after Dedicated RM if ultimate)
   const bookingsIndex = userPlan === "ultimate" ? 4 : 3;

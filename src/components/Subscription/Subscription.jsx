@@ -1,63 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
+import toast from "react-hot-toast";
 import PaymentButtonSubs from "./PaymentButtonSbs";
 import Footer from "../Footer";
+import axios from "axios";
+import { getCurrentUser } from "../../api/authApi";
 
 // Icons
 const CheckIcon = () => (
-  <svg
-    className="w-4 h-4 text-green-500"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
+  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
   </svg>
 );
-
 const CrossIcon = () => (
-  <svg
-    className="w-4 h-4 text-red-400"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
+  <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
 export default function SubscriptionPlans() {
   const [hasPaid, setHasPaid] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isOtpVerified, setIsOtpVerified] = useState(true);
+  const [userData, setUserData] = useState({});
   const [userMobile, setUserMobile] = useState("");
   const [showOtpPopup, setShowOtpPopup] = useState(false);
-  const [otpPopupPurpose, setOtpPopupPurpose] = useState("");
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
-  const borderColors = {
-    yellow: "border-yellow-400",
-    red: "border-red-400",
-    indigo: "border-indigo-400",
-  };
+  // Fetch current user
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getCurrentUser();
+        setUserData(data);
+        if (data?.subscription_status === "paid") setHasPaid(true);
 
-  const bgColors = {
-    yellow: "from-yellow-50",
-    red: "from-red-50",
-    indigo: "from-indigo-50",
-  };
+        const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
+        setUserMobile(phone);
+      } catch {
+        const fallbackPhone = localStorage.getItem("user_verified_mobile");
+        if (fallbackPhone) setUserMobile(fallbackPhone);
+      }
+    })();
+  }, []);
 
-  const textColors = {
-    yellow: "text-yellow-500",
-    red: "text-red-500",
-    indigo: "text-indigo-500",
-  };
-
-  const badgeColors = {
-    yellow: "bg-yellow-500",
-    red: "bg-red-500",
-    indigo: "bg-indigo-500",
-  };
+  // Check subscription status if phone exists
+  useEffect(() => {
+    if (userMobile && !hasPaid) {
+      axios
+        .get(`https://api.easemyspace.in/api/payment/check-subscription?phone=${userMobile}`)
+        .then((res) => {
+          if (res.data.paid) setHasPaid(true);
+        })
+        .catch((err) => console.error("Subscription check failed:", err));
+    }
+  }, [userMobile, hasPaid]);
 
   const plans = [
     {
@@ -102,10 +98,29 @@ export default function SubscriptionPlans() {
     },
   ];
 
+  const borderColors = {
+    yellow: "border-yellow-400",
+    red: "border-red-400",
+    indigo: "border-indigo-400",
+  };
+  const bgColors = {
+    yellow: "from-yellow-50",
+    red: "from-red-50",
+    indigo: "from-indigo-50",
+  };
+  const textColors = {
+    yellow: "text-yellow-500",
+    red: "text-red-500",
+    indigo: "text-indigo-500",
+  };
+  const badgeColors = {
+    yellow: "bg-yellow-500",
+    red: "bg-red-500",
+    indigo: "bg-indigo-500",
+  };
+
   return (
     <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
-      
-      {/* Helmet for SEO */}
       <Helmet>
         <title>Subscription Plans Of EaseMySpace | Verified PGs, Flats & Flatmates in Mumbai</title>
         <meta
@@ -151,9 +166,7 @@ export default function SubscriptionPlans() {
 
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
               <div className="lg:w-1/3">
-                <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">
-                  {plan.title}
-                </h2>
+                <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{plan.title}</h2>
                 <p className="text-xs italic mb-4">{plan.description}</p>
                 <div className="mb-4">
                   <p className="line-through text-zinc-500 text-lg">{plan.originalPrice}</p>
@@ -175,12 +188,10 @@ export default function SubscriptionPlans() {
                 <div className="flex justify-center lg:justify-end">
                   <PaymentButtonSubs
                     hasPaid={hasPaid}
-                    isLoggedIn={isLoggedIn}
+                    setHasPaid={setHasPaid}
                     isOtpVerified={isOtpVerified}
                     userMobile={userMobile}
-                    setHasPaid={setHasPaid}
                     setShowOtpPopup={setShowOtpPopup}
-                    setOtpPopupPurpose={setOtpPopupPurpose}
                     planName={plan.type}
                   />
                 </div>
