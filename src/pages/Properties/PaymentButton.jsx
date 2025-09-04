@@ -13,11 +13,6 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const plans = {
-    // standard: {
-    //   label: "Standard",
-    //   amount: 499,
-    //   description: "Access 2 contacts for 7 days.",
-    // },
     premium: {
       label: "Trial",
       amount: 399,
@@ -29,6 +24,8 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       description: "45 days validity with all premium services",
     },
   };
+
+  const GST_RATE = 18; // GST %
 
   useEffect(() => {
     (async () => {
@@ -71,22 +68,22 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
   const loadRazorpay = async (planKey) => {
     const plan = plans[planKey];
-    const amount = plan.amount;
+    const amountWithGST = Math.round(plan.amount * (1 + GST_RATE / 100));
     setIsPaying(true);
 
     try {
       const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
       if (!loaded) {
-        toast.error("Razorpay SDK failed to load.");
+        toast.error("❌ Razorpay SDK failed to load.");
         setIsPaying(false);
         return;
       }
 
-      const { orderId, currency } = await createOrder({ amount, planName: planKey });
-      let phone = userData.phone || userMobile || activeUserPhone;
+      const { orderId, currency } = await createOrder({ amount: amountWithGST, planName: planKey });
 
+      let phone = userData.phone || userMobile || activeUserPhone;
       if (!phone) {
-        phone = prompt("Please enter your phone number:");
+        phone = prompt("📱 Please enter your phone number for payment:");
         if (!phone) {
           toast.error("Phone number is required.");
           setIsPaying(false);
@@ -96,15 +93,15 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
-        amount: amount * 100,
+        amount: amountWithGST * 100, // Razorpay expects paise
         currency,
         name: "EaseMySpace",
         description: plan.description,
         order_id: orderId,
         prefill: {
-          name: userData.firstName || "Guest",
+          name: userData.firstName || "Guest User",
           email: userData.email || "guest@easemyspace.com",
-          contact: phone,
+          contact: phone.startsWith("+91") ? phone : `+91${phone}`,
         },
         theme: { color: "#6366F1" },
         handler: async (response) => {
@@ -113,24 +110,22 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              amount,
+              amount: amountWithGST,
               user_id: userData.id || null,
               phone,
-              status: "paid",
               plan_type: planKey,
             });
 
             if (result.success) {
               setHasPaid(true);
-              if (!userData.id) {
-                localStorage.setItem("has_paid_lead", "true");
-                localStorage.setItem("user_verified_mobile", phone);
-              }
-              toast.success("Payment successful!");
+              localStorage.setItem("has_paid_lead", "true");
+              localStorage.setItem("user_verified_mobile", phone);
+              toast.success("✅ Payment successful!");
             } else {
-              toast.error("Payment verification failed!");
+              toast.error("⚠️ Payment verification failed!");
             }
-          } catch {
+          } catch (err) {
+            console.error("❌ Verification error:", err);
             toast.error("Something went wrong during verification.");
           } finally {
             setIsPaying(false);
@@ -147,10 +142,12 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", (response) => {
         setIsPaying(false);
-        toast.error(`Payment failed: ${response.error.description}`);
+        toast.error(`❌ Payment failed: ${response.error.description}`);
       });
+
       rzp.open();
-    } catch {
+    } catch (err) {
+      console.error("❌ Razorpay setup error:", err);
       toast.error("Something went wrong during payment setup.");
       setIsPaying(false);
     }
@@ -166,16 +163,10 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     if (!isPaying) setShowPlanOptions(true);
   };
 
-  useEffect(() => {
-    const handler = () => handlePayment();
-    document.addEventListener("initiate-payment", handler);
-    return () => document.removeEventListener("initiate-payment", handler);
-  }, []);
-
   return (
     <>
       <button
-        className={` w-1/2 py-2.5 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${
+        className={` w-1/2 py-2.5 px-2 text-md rounded-xl transition-all ${
           hasPaid
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-indigo-600 hover:bg-indigo-700 text-white"
@@ -210,34 +201,18 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                 <div
                   key={key}
                   className={`relative border-2 ${
-                    key === "standard"
-                      ? "border-indigo-400 from-indigo-50"
-                      : key === "premium"
-                      ? "border-yellow-400 from-yellow-50"
-                      : "border-red-500 from-purple-50"
+                    key === "premium" ? "border-yellow-400" : "border-red-500"
                   } bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`}
                   onClick={() => proceedToPayment(key)}
                 >
                   <span
                     className={`absolute top-[-10px] right-[-10px] ${
-                      key === "standard"
-                        ? "bg-indigo-500"
-                        : key === "premium"
-                        ? "bg-yellow-400"
-                        : "bg-red-500"
-                    } text-white text-xs  px-2 py-1 rounded-full shadow`}
+                      key === "premium" ? "bg-yellow-400" : "bg-red-500"
+                    } text-white text-xs px-2 py-1 rounded-full shadow`}
                   >
                     {plan.label}
                   </span>
-                  <h3
-                    className={`text-lg font-semibold ${
-                      key === "standard"
-                        ? "text-indigo-600"
-                        : key === "premium"
-                        ? "text-yellow-600"
-                        : "text-red-600"
-                    }`}
-                  >
+                  <h3 className="text-lg font-semibold text-gray-800">
                     {plan.label} - ₹{plan.amount} + GST
                   </h3>
                   <p className="text-sm text-gray-700">{plan.description}</p>
