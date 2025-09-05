@@ -61,7 +61,7 @@ export default function ConnectPopup({ name, setIsOpen }) {
               <form onSubmit={handleSubmit} className="space-y-3">
                 <input type="text" name="name" placeholder="*Enter your name" value={formData.name} onChange={handleChange} required className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                 <input type="tel" name="phone" placeholder="*Enter your mobile number" value={formData.phone} onChange={handleChange} maxLength={10} required className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                <input type="email" name="email" placeholder="*Enter your work email" value={formData.email} onChange={handleChange} required className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="email" name="email" placeholder="*Enter your email" value={formData.email} onChange={handleChange} required className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                 <button type="submit" disabled={loading} className="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-800 transition disabled:opacity-50">{loading ? "Submitting..." : "Request Callback"}</button>
               </form>
             </>

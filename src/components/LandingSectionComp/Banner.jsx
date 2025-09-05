@@ -216,8 +216,8 @@ function Banner() {
                     <input
                       type="email"
                       name="email"
-                      placeholder="*Enter your work email"
-                      aria-label="Enter your work email"
+                      placeholder="*Enter your email"
+                      aria-label="Enter your email"
                       value={formData.email}
                       onChange={handleChange}
                       required
