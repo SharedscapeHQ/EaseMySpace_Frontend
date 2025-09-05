@@ -27,7 +27,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     { label: "Users", value: "Users", icon: <FiUsers /> },
     { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
     { label: "CallBack Requests", value: "Requests", icon: <VscGitPullRequestGoToChanges /> },
-    { label: "Ultimate Subscribers", value: "UltimateSubscribers", icon: <LuCrown /> },
+    { label: "Subscribers", value: "UltimateSubscribers", icon: <LuCrown /> },
     { label: "Properties", value: "Properties", icon: <FiHome /> },
     { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
     { label: "Top Locations", value: "ManageLocations", icon: <FiMapPin /> },

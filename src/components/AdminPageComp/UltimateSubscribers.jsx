@@ -19,7 +19,7 @@ export default function UltimateSubscribers() {
       setUsers(
         data.map((user) => ({
           ...user,
-          name: capitalizeName(user.name),
+          name: capitalizeName(`${user.name}`),
           selectedRM: user.assigned_rm_id || "",
         }))
       );
@@ -77,39 +77,51 @@ export default function UltimateSubscribers() {
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">
-        Ultimate Subscribers
+        Subscribers List
       </h2>
 
       <div className="overflow-x-auto shadow-lg border border-gray-200 rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-indigo-50">
             <tr>
-              {["Name", "Email", "Phone", "Assign RM"].map((col) => (
-                <th
-                  key={col}
-                  className="px-6 py-3 text-left text-sm sm:text-base font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  {col}
-                </th>
-              ))}
+              <th className="px-6 py-3 text-left text-sm sm:text-base font-semibold text-gray-700 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-sm sm:text-base font-semibold text-gray-700 uppercase tracking-wider">
+                Contact
+              </th>
+              <th className="px-6 py-3 text-left text-sm sm:text-base font-semibold text-gray-700 uppercase tracking-wider">
+                Assign RM
+              </th>
             </tr>
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-200">
+            {users.length === 0 && (
+              <tr>
+                <td colSpan={3} className="text-center py-6 text-gray-500">
+                  No ultimate subscribers found.
+                </td>
+              </tr>
+            )}
+
             {users.map((user) => (
               <tr
                 key={user.id}
                 className="hover:bg-gray-50 transition duration-150"
               >
+                {/* Name */}
                 <td className="px-6 py-4 whitespace-nowrap text-gray-900 font-medium text-sm sm:text-base">
                   {user.name}
                 </td>
-                <td className="px-6 py-4 text-gray-700 text-sm sm:text-base whitespace-nowrap">
-                  {user.email || <span className="italic text-gray-400">N/A</span>}
+
+                {/* Contact */}
+                <td className="px-6 py-4 text-gray-700 text-sm sm:text-base whitespace-pre-line">
+                  {user.email || "N/A"}{"\n"}
+                  {user.phone || "N/A"}
                 </td>
-                <td className="px-6 py-4 text-gray-700 text-sm sm:text-base whitespace-nowrap">
-                  {user.phone || <span className="italic text-gray-400">N/A</span>}
-                </td>
+
+                {/* Assign RM */}
                 <td className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
                   <select
                     className="border border-gray-300 rounded px-3 py-2 text-gray-700 text-sm sm:text-base w-full sm:w-auto focus:ring-2 focus:ring-indigo-400 transition"
@@ -127,7 +139,7 @@ export default function UltimateSubscribers() {
                     <option value="">Select RM</option>
                     {rms.map((rm) => (
                       <option key={rm.id} value={rm.id}>
-                        {capitalizeName(rm.name)} ({rm.email})
+                        {rm.email}
                       </option>
                     ))}
                   </select>
@@ -148,12 +160,6 @@ export default function UltimateSubscribers() {
             ))}
           </tbody>
         </table>
-
-        {users.length === 0 && (
-          <p className="text-gray-500 text-center py-6">
-            No ultimate subscribers found.
-          </p>
-        )}
       </div>
     </div>
   );

@@ -24,6 +24,8 @@ export const assignRMToUser = async (userId, rmId) => {
 
 export const getUltimateUsers = async () => {
   const res = await rmAxios.get("/ultimate-user");
+  console.log(res.data);
+  
   return res.data;
 };
 
