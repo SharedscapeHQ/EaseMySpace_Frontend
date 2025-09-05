@@ -50,8 +50,8 @@ const teamMembers = [
   description:
     "An experienced sales executive at EaseMySpace, specializing in understanding client needs, presenting tailored space solutions, and building long-term customer relationships to drive business growth.",
   imageSrc: DharmendraImg,
-  // linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
-  email: "dharmendra.vishwakrma@easemyspace.in",
+  linkedin: "https://www.linkedin.com/in/dharmendra-kumar-mishra-8ab557234",
+  email: "dharmendra.mishra@easemyspace.in",
 },
 
 ];
