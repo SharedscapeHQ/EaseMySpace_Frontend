@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SalesPerson from "/TeamImg/Dharmendra.jpg";
+import SalesPerson from "/TeamImg/Dharmendra.png";
 // import { saveRequest } from "../../api/requestApi";
 import ConnectPopup from "./ConnectPopup";
 

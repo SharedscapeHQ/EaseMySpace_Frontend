@@ -4,6 +4,7 @@ import RakeshImg from "/TeamImg/Rakesh.png";
 import YogitaImg from "/TeamImg/Yogita.png";
 import TaniyaImg from "/TeamImg/Taniya.png";
 import ArvindImg from "/TeamImg/Arvind.png";
+import DharmendraImg from "/TeamImg/Dharmendra.png";
 import { motion } from "framer-motion";
 
 const teamMembers = [
@@ -43,6 +44,16 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
     email: "arvind.vishwakrma@easemyspace.in",
   },
+  {
+  name: "Dharmendra Mishra",
+  role: "Sales Executive",
+  description:
+    "An experienced sales executive at EaseMySpace, specializing in understanding client needs, presenting tailored space solutions, and building long-term customer relationships to drive business growth.",
+  imageSrc: DharmendraImg,
+  // linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
+  email: "dharmendra.vishwakrma@easemyspace.in",
+},
+
 ];
 
 export default function OurTeam() {
@@ -80,7 +91,7 @@ export default function OurTeam() {
     </p>
   </motion.div>
 
-  <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4">
+  <div className="flex flex-wrap justify-center lg:justify-center items-center gap-4">
     {teamMembers.map((member, index) => (
       <article
         key={index}

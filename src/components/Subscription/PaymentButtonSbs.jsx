@@ -147,38 +147,74 @@ export default function PaymentButtonSubs({
     loadRazorpay(planKey);
   };
 
-  return (
-    <>
-      <button
-        style={{ fontFamily: "para_font" }}
-        className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
-          hasPaid
-            ? "bg-green-600 text-white cursor-default"
-            : "bg-indigo-600 hover:bg-indigo-700 text-white"
-        } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
-        disabled={hasPaid || isPaying}
-        onClick={handlePayment}
-      >
-        {isPaying ? "Processing..." : hasPaid ? "Subscribed" : "Subscribe"}
-      </button>
+return (
+  <>
+    {/* FULL-SCREEN PAYMENT LOADER */}
+    {isPaying && (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+          <svg
+            className="animate-spin h-12 w-12 text-indigo-600 mb-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            ></path>
+          </svg>
+          <p className="text-indigo-600 font-semibold text-lg">
+            Processing your payment...
+          </p>
+          <p className="text-sm text-gray-600 mt-2">
+            Please do not refresh or close the page
+          </p>
+        </div>
+      </div>
+    )}
 
-      {showOtpPopup && (
-        <OtpPopup
-          onVerified={() => {
-            setIsOtpVerified(true);
-            setShowOtpPopup(false);
-            toast.success("You can now proceed with payment.");
-          }}
-          onClose={() => setShowOtpPopup(false)}
-          otpPurpose="Subscribe"
-        />
-      )}
+    {/* PAYMENT BUTTON */}
+    <button
+      style={{ fontFamily: "para_font" }}
+      className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
+        hasPaid
+          ? "bg-green-600 text-white cursor-default"
+          : "bg-indigo-600 hover:bg-indigo-700 text-white"
+      } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
+      disabled={hasPaid || isPaying}
+      onClick={handlePayment}
+    >
+      {isPaying ? "Processing..." : hasPaid ? "Subscribed" : "Subscribe"}
+    </button>
 
-      <InvoiceModal
-        isOpen={showInvoiceModal}
-        onClose={() => setShowInvoiceModal(false)}
-        invoiceUrl={invoiceUrl}
+    {showOtpPopup && (
+      <OtpPopup
+        onVerified={() => {
+          setIsOtpVerified(true);
+          setShowOtpPopup(false);
+          toast.success("You can now proceed with payment.");
+        }}
+        onClose={() => setShowOtpPopup(false)}
+        otpPurpose="Subscribe"
       />
-    </>
-  );
+    )}
+
+    <InvoiceModal
+      isOpen={showInvoiceModal}
+      onClose={() => setShowInvoiceModal(false)}
+      invoiceUrl={invoiceUrl}
+    />
+  </>
+);
+
 }

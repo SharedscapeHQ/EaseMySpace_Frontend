@@ -32,7 +32,7 @@ export default function AboutHighlights() {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="bg-white py-24 px-6 md:px-16"
+      className="bg-white py-24 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
       itemScope
       itemType="https://schema.org/AboutPage"
     >
