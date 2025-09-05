@@ -33,7 +33,21 @@ export default function MyQueries() {
      
 
       {queries.length === 0 ? (
-        <p className="text-gray-500 italic text-left">No queries submitted yet.</p>
+       <div className="flex flex-col items-center justify-center py-10 space-y-4">
+
+  {/* Heading */}
+  <h3 className="text-xl font-semibold text-gray-700">
+    No Queries Submitted
+  </h3>
+
+  {/* Subtext */}
+  <p className="text-gray-500 italic text-center max-w-xs">
+    You haven’t submitted any queries yet.
+  </p>
+
+ 
+</div>
+
       ) : (
         <ul className="space-y-6">
           {queries.map((q) => (
