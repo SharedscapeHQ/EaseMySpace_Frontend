@@ -180,6 +180,41 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
   return (
     <>
+
+{isPaying && (
+  <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+      <svg
+        className="animate-spin h-12 w-12 text-indigo-600 mb-4"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+      </svg>
+      <p className="text-indigo-600 font-semibold text-lg">
+        Processing your payment...
+      </p>
+      <p className="text-sm text-gray-600 mt-2">
+        Please do not refresh or close the page
+      </p>
+    </div>
+  </div>
+)}
+
+
       <button
         className={` w-1/2 py-2.5 px-2 text-md rounded-xl transition-all ${
           hasPaid
