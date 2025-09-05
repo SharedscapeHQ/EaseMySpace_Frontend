@@ -3,13 +3,14 @@ import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
 import InvoiceModal from "./InvoiceModal";
+import OtpPopup from "../../pages/Properties/OtpPopup";
 
 export default function PaymentButtonSubs({
   hasPaid,
   setHasPaid,
   planName,
   isOtpVerified,
-  setShowOtpPopup,
+  setIsOtpVerified,
   userMobile,
 }) {
   const [userData, setUserData] = useState({});
@@ -17,10 +18,11 @@ export default function PaymentButtonSubs({
   const [activeUserPhone, setActiveUserPhone] = useState(userMobile || "");
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
 
   const plans = {
     trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
-    ultimate: { amount: 3499, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
+    ultimate: { amount: 8, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
   };
 
   useEffect(() => {
@@ -31,11 +33,12 @@ export default function PaymentButtonSubs({
         if (data?.subscription_status === "paid") setHasPaid(true);
         const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
         setActiveUserPhone(phone);
+        if (data) setIsOtpVerified(true); // if user exists, consider OTP verified
       } catch {
         setActiveUserPhone(localStorage.getItem("user_verified_mobile") || "");
       }
     })();
-  }, [setHasPaid]);
+  }, [setHasPaid, setIsOtpVerified]);
 
   const loadScript = src =>
     new Promise(resolve => {
@@ -91,7 +94,6 @@ export default function PaymentButtonSubs({
               localStorage.setItem("user_verified_mobile", phone);
               toast.success("Payment successful!");
 
-              // Show invoice modal
               setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
             } else {
@@ -137,7 +139,10 @@ export default function PaymentButtonSubs({
     const planKey = ["trial", "ultimate"].includes(planName?.toLowerCase()) ? planName.toLowerCase() : null;
     if (!planKey) return toast.error("❌ Invalid or missing plan name.");
 
-    if (!userData?.id && !isOtpVerified && setShowOtpPopup) return setShowOtpPopup(true);
+    if (!userData?.id && !isOtpVerified) {
+      // User not logged in, show OTP popup
+      return setShowOtpPopup(true);
+    }
 
     loadRazorpay(planKey);
   };
@@ -156,6 +161,18 @@ export default function PaymentButtonSubs({
       >
         {isPaying ? "Processing..." : hasPaid ? "Subscribed" : "Subscribe"}
       </button>
+
+      {showOtpPopup && (
+        <OtpPopup
+          onVerified={() => {
+            setIsOtpVerified(true);
+            setShowOtpPopup(false);
+            toast.success("You can now proceed with payment.");
+          }}
+          onClose={() => setShowOtpPopup(false)}
+          otpPurpose="Subscribe"
+        />
+      )}
 
       <InvoiceModal
         isOpen={showInvoiceModal}
