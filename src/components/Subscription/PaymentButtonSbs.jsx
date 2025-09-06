@@ -21,7 +21,7 @@ export default function PaymentButtonSubs({
   const [showOtpPopup, setShowOtpPopup] = useState(false);
 
   const plans = {
-    trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
+    trial: { amount: 8, description: "Trial Plan - 7 Days Access, 1 Contact" },
     ultimate: { amount: 3499, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
   };
 

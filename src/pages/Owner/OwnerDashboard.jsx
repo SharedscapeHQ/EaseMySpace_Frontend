@@ -29,6 +29,7 @@ import OldProperties from "../../components/AdminPageComp/OldProperties";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 import RequirementReq from "../../components/AdminPageComp/RequirementReq";
 import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
+import RMAssignments from "../../components/OwnerPageComp/RMAssignments";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -304,6 +305,11 @@ export default function OwnerDashboard() {
                       </section>
                     )}
 
+                    {activeTab === "RMAssignments" && (
+                      <section>
+                        <RMAssignments />
+                      </section>
+                    )}
 
                      {activeTab === "SendSMS" && (
                                 <section> 

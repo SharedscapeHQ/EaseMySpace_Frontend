@@ -37,6 +37,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
       ? [
           { label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> },
           { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
+          { label: "RM Assignments", value: "RMAssignments", icon: <FiUserPlus /> },
         ]
       : []),
     { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },

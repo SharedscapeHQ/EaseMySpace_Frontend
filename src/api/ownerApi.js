@@ -34,6 +34,10 @@ export const getAllDeletedPropertiesById = (id) => {
   return axios.get(`${BASE_URL}/properties/deleted/${id}`, config);
 };
 
+export const getRMAssignments = () => {
+  return axios.get(`${BASE_URL}/rm-assignments`, config);
+};
+
 export const clearFollowUp = (payload) =>
   axios.post("https://api.easemyspace.in/api/leads/clear-followup", payload, {
     withCredentials: true,
