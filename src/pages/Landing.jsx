@@ -12,6 +12,7 @@ import OurQuality from "../components/LandingSectionComp/OurQuality";
 import Banner from "../components/LandingSectionComp/Banner";
 import ExploreSection from "../components/LandingSectionComp/ExploreSection";
 import BottomNav from "../components/LandingSectionComp/BottomNav";
+import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
 
 function Landing() {
   return (
@@ -75,6 +76,7 @@ function Landing() {
         <FeatureSection />
         <ExploreSection />
         <FAQSection />
+        <TestimonialSection/>
         <BottomNav />
         <Footer />
       </div>
