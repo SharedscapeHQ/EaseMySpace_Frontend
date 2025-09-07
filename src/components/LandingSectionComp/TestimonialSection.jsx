@@ -1,83 +1,155 @@
-import React from "react";
-import { FaStar } from "react-icons/fa";
+import React, { useState, useRef } from "react";
+import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import test1 from "/testimonial/test.png";
+
+const testimonials = [
+  {
+    img: test1,
+    name: "Arvind Vishwakarma",
+    review:
+      "As a Full Stack Developer at EaseMySpace, I really enjoy being part of a team that’s passionate about creating seamless solutions and helping people find their perfect space. Highly recommend checking us out!",
+    rating: 5,
+  },
+  {
+    img: test1,
+    name: "Jayant Bhatter",
+    review:
+      "Great service!! Loved the team members who helped me to find my match!",
+    rating: 5,
+  },
+  {
+    img: test1,
+    name: "Rajshree Bihani",
+    review: "Great flat options available, really like it!",
+    rating: 5,
+  },
+  {
+    img: test1,
+    name: "Vikas Lahoti",
+    review: "Amazing assistance!",
+    rating: 5,
+  },
+  {
+    img: test1,
+    name: "Naveen Patil",
+    review:
+      "Really User friendly Website, Great Service by the Team, Hoping to keep the rappo same In future. Thank you for Your Kind Support When Needed the Most 😊",
+    rating: 5,
+  },
+  {
+    img: test1,
+    name: "Hitesh Kukreja",
+    review:
+      "Great and genuine website to help in finding shared flats for living. Much helpful",
+    rating: 5,
+  },
+];
 
 const TestimonialSection = () => {
-  const testimonials = [
-    {
-      name: "John Doe",
-      title: "Real Estate Agent",
-      review:
-        "EaseMySpace made it so easy for me to find the perfect rental space for my clients. The platform is intuitive, and the listings are always top-notch. Highly recommend!",
-      rating: 5,
-      img: "https://randomuser.me/api/portraits/men/1.jpg",
-    },
-    {
-      name: "Sarah Smith",
-      title: "Business Owner",
-      review:
-        "As a business owner, finding office space has always been a challenge. EaseMySpace simplified the entire process. The customer service was fantastic, and I found the perfect place.",
-      rating: 4,
-      img: "https://randomuser.me/api/portraits/women/2.jpg",
-    },
-    {
-      name: "Mark Johnson",
-      title: "Freelancer",
-      review:
-        "I was able to find a cozy space for my freelance work in just a few clicks. The platform is user-friendly and offers detailed information. The whole experience was stress-free.",
-      rating: 5,
-      img: "https://randomuser.me/api/portraits/men/3.jpg",
-    },
-  ];
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const carouselRef = useRef(null);
+
+  const toggleExpand = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
+  const scroll = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = 320; // card width + gap
+      carouselRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
-    <section className="bg-white py-20 px-6 md:px-12 lg:px-20">
-      <div className="text-center mb-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+    <section
+      style={{ fontFamily: "para_font" }}
+      className="w-full py-10 bg-white"
+      aria-label="Customer testimonials"
+    >
+      <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-2xl sm:text-3xl mb-8 font-bold text-left"
+        >
           Hear From Our Happy Clients
         </h2>
-        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-          Real feedback from real users who found their perfect spaces through EaseMySpace.
-        </p>
-      </div>
 
-      {/* Testimonials Grid */}
-      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 justify-center items-stretch">
-        {testimonials.map((testimonial, index) => (
-          <div
-            key={index}
-            className="bg-gray-50 border border-gray-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center"
-          >
-            {/* User Image */}
-            <div className="w-24 h-24 rounded-full overflow-hidden mb-4 ring-2 ring-indigo-100">
-              <img
-                src={testimonial.img}
-                alt={testimonial.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
+        {/* Left & Right Arrows */}
+        <button
+          onClick={() => scroll("left")}
+          aria-label="Scroll left"
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 p-2 rounded-full shadow-md z-10"
+        >
+          <FaChevronLeft />
+        </button>
+        <button
+          onClick={() => scroll("right")}
+          aria-label="Scroll right"
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 p-2 rounded-full shadow-md z-10"
+        >
+          <FaChevronRight />
+        </button>
 
-            {/* Name + Title */}
-            <h3 className="text-lg font-semibold text-gray-800">{testimonial.name}</h3>
-            <p className="text-sm text-gray-500 mb-3">{testimonial.title}</p>
+        {/* Carousel */}
+        <div
+          ref={carouselRef}
+          className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
+        >
+          {testimonials.map((testimonial, index) => {
+            const isExpanded = expandedIndex === index;
+            const shouldTruncate = testimonial.review.length > 150;
+            const reviewText =
+              isExpanded || !shouldTruncate
+                ? testimonial.review
+                : testimonial.review.slice(0, 150) + "...";
 
-            {/* Star Rating */}
-            <div className="flex justify-center mb-4">
-              {Array.from({ length: 5 }, (_, i) => (
-                <FaStar
-                  key={i}
-                  className={`h-4 w-4 ${
-                    i < testimonial.rating ? "text-yellow-400" : "text-gray-300"
-                  }`}
+            return (
+              <article
+                key={index}
+                className="flex-shrink-0 w-80 bg-white dark:bg-neutral-900 p-6 rounded-md shadow-md cursor-pointer transition-all duration-500"
+              >
+                <img
+                  src={testimonial.img}
+                  alt={testimonial.name}
+                  className="w-14 h-14 rounded-full object-cover mb-3 mx-auto"
                 />
-              ))}
-            </div>
 
-            {/* Review */}
-            <p className="text-sm text-gray-600 italic leading-relaxed">
-              “{testimonial.review}”
-            </p>
-          </div>
-        ))}
+                <h3 className="font-bold text-lg text-zinc-900 mb-2 text-center">
+                  {testimonial.name}
+                </h3>
+
+                <div className="flex justify-center mb-3">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <FaStar
+                      key={i}
+                      className={`h-5 w-5 ${
+                        i < testimonial.rating
+                          ? "text-yellow-400"
+                          : "text-yellow-200"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-sm text-center text-zinc-800 leading-relaxed">
+                  {reviewText}{" "}
+                  {shouldTruncate && (
+                    <button
+                      onClick={() => toggleExpand(index)}
+                      className="text-blue-600 hover:underline ml-1"
+                      aria-label="Read more"
+                    >
+                      {isExpanded ? "Read less" : "Read more"}
+                    </button>
+                  )}
+                </p>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
