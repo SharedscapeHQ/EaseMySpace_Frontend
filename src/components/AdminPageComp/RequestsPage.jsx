@@ -127,14 +127,20 @@ export default function RequestsTable() {
   <div className="relative">
     <FaCalendarAlt className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
     <input
-      type="date"
+      type={filterDate ? "date" : "text"}
+      placeholder="mm/dd/yyyy"
       value={filterDate}
       max={localToday}
+      onFocus={(e) => (e.target.type = "date")}
+      onBlur={(e) => {
+        if (!filterDate) e.target.type = "text";
+      }}
       onChange={(e) => setFilterDate(e.target.value)}
       className="w-full pl-8 border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
     />
   </div>
 </div>
+
 
   <button
     onClick={exportToExcel}
