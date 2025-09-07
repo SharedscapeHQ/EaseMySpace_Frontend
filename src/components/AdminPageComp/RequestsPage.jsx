@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { FiDownload } from "react-icons/fi";
+import { FaCalendarAlt } from "react-icons/fa";
 
 // Helper: format date
 const formatDate = (dateStr) => {
@@ -121,13 +122,20 @@ export default function RequestsTable() {
     <div className="border rounded-xl shadow-md bg-white">
       {/* Header Bar - Filter & Export */}
       <div className="flex items-center justify-between gap-3 p-4">
-  <input
-    type="date"
-    value={filterDate}
-    max={localToday}
-    onChange={(e) => setFilterDate(e.target.value)}
-    className="border rounded-lg px-3 py-1 text-sm"
-  />
+  <div className="flex flex-col w-full sm:w-auto">
+  <label className="text-xs font-medium text-gray-600">Date Filter</label>
+  <div className="relative">
+    <FaCalendarAlt className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+    <input
+      type="date"
+      value={filterDate}
+      max={localToday}
+      onChange={(e) => setFilterDate(e.target.value)}
+      className="w-full pl-8 border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
+    />
+  </div>
+</div>
+
   <button
     onClick={exportToExcel}
     className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"

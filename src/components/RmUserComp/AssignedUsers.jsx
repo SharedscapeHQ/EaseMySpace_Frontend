@@ -12,6 +12,7 @@ import {
   FiArrowRightCircle,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { FaCalendarAlt } from "react-icons/fa";
 
 export default function AssignedUsers() {
   const [users, setUsers] = useState([]);
@@ -230,26 +231,36 @@ return (
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row sm:items-end gap-3 w-full sm:w-auto">
-        <div className="flex gap-2 w-full sm:w-auto">
-          <div className="flex flex-col w-full">
-            <label className="text-xs font-medium text-gray-600">Start</label>
-            <input
-              type="date"
-              value={startFilter}
-              onChange={(e) => setStartFilter(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
-            />
-          </div>
-          <div className="flex flex-col w-full">
-            <label className="text-xs font-medium text-gray-600">End</label>
-            <input
-              type="date"
-              value={endFilter}
-              onChange={(e) => setEndFilter(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
-            />
-          </div>
-        </div>
+       <div className="flex gap-2 w-full sm:w-auto">
+  {/* Start Date */}
+  <div className="flex flex-col w-full">
+    <label className="text-xs font-medium text-gray-600">Start</label>
+    <div className="relative">
+      <FaCalendarAlt className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+      <input
+        type="date"
+        value={startFilter}
+        onChange={(e) => setStartFilter(e.target.value)}
+        className="w-full pl-8 border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+  </div>
+
+  {/* End Date */}
+  <div className="flex flex-col w-full">
+    <label className="text-xs font-medium text-gray-600">End</label>
+    <div className="relative">
+      <FaCalendarAlt className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+      <input
+        type="date"
+        value={endFilter}
+        onChange={(e) => setEndFilter(e.target.value)}
+        className="w-full pl-8 border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+  </div>
+</div>
+
         <button
           onClick={() => {
             setStartFilter("");
