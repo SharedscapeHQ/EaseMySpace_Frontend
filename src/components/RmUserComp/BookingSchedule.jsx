@@ -47,11 +47,14 @@ export default function BookingSchedule() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-indigo-700">All Bookings</h1>
         <input
-          type="date"
-          value={filterDate}
-          onChange={(e) => setFilterDate(e.target.value)}
-          className="border px-3 py-1 rounded shadow-sm"
-        />
+  type="text"
+  onFocus={(e) => (e.target.type = "date")}
+  onBlur={(e) => (e.target.type = "text")}
+  placeholder="mm/dd/yyyy"
+  value={filterDate}
+  onChange={(e) => setFilterDate(e.target.value)}
+  className="border px-3 py-1 rounded shadow-sm"
+/>
       </div>
 
       {loading ? (
