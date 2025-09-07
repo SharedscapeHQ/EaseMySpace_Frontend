@@ -124,7 +124,7 @@ const TestimonialSection = () => {
           style={{ fontFamily: "heading_font" }}
           className="text-xl sm:text-3xl mb-8 font-bold text-left"
         >
-          Goolge Reviews of our customers
+          Google Reviews of our customers
         </h2>
 
        
