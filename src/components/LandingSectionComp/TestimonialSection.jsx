@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import arvind_vishwakarma from "/testimonial/arvind_vishwakarma.png";
 import aditya_borse from "/testimonial/aditya_borse.png";
 import navin_patil from "/testimonial/navin_patil.png";
 
-// Helper to generate random background color
 const getRandomBg = () => {
   const colors = [
     "bg-red-500",
@@ -19,21 +18,21 @@ const getRandomBg = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const testimonials = [
+const initialTestimonials = [
   {
-  img: aditya_borse,
-  name: "Aditya Borse",
-  review: "I had an excellent experience with Mumbai Paying Guest. The rooms were clean and well-maintained, providing a great stay for me. Additionally, the accommodations were budget-friendly, making it a great choice for those looking for affordable lodging. Overall, I was very satisfied with my stay at Mumbai Paying Guest.",
-  rating: 5
-},
-{
-  img: navin_patil,
-  name: "Naveen Patil",
-  review:
-    "Really User friendly Website, Great Service by the Team, Hoping to keep the rappo same In future. Thank you for Your Kind Support When Needed the Most 😊",
-  rating: 5,
-},
-
+    img: aditya_borse,
+    name: "Aditya Borse",
+    review:
+      "I had an excellent experience with Mumbai Paying Guest. The rooms were clean and well-maintained, providing a great stay for me. Additionally, the accommodations were budget-friendly, making it a great choice for those looking for affordable lodging. Overall, I was very satisfied with my stay at Mumbai Paying Guest.",
+    rating: 5,
+  },
+  {
+    img: navin_patil,
+    name: "Naveen Patil",
+    review:
+      "Really User friendly Website, Great Service by the Team, Hoping to keep the rappo same In future. Thank you for Your Kind Support When Needed the Most 😊",
+    rating: 5,
+  },
   {
     img: null,
     name: "Jayant Bhatter",
@@ -41,14 +40,13 @@ const testimonials = [
       "Great service!! Loved the team members who helped me to find my match!",
     rating: 5,
   },
-    {
+  {
     img: arvind_vishwakarma,
     name: "Arvind Vishwakarma",
     review:
       "As a Full Stack Developer at EaseMySpace, I really enjoy being part of a team that's passionate about creating seamless solutions and helping people find their perfect space. Highly recommend checking us out!",
     rating: 5,
   },
-
   {
     img: null,
     name: "Rajshree Bihani",
@@ -70,23 +68,50 @@ const testimonials = [
   },
 ];
 
+const shuffleArray = (array) => {
+  let shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 const TestimonialSection = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [testimonials, setTestimonials] = useState(initialTestimonials);
+  const [paused, setPaused] = useState(false); // 👈 pause state
   const carouselRef = useRef(null);
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  const scroll = (direction) => {
-    if (carouselRef.current) {
-      const scrollAmount = 320; // card width + gap
-      carouselRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+  useEffect(() => {
+    let animationFrame;
+    let lastTime = performance.now();
+    const speed = 40; 
+
+    const smoothScroll = (time) => {
+      if (!paused && carouselRef.current) { 
+        const { scrollLeft, clientWidth, scrollWidth } = carouselRef.current;
+        const deltaTime = (time - lastTime) / 1000;
+        lastTime = time;
+
+        const distance = speed * deltaTime;
+        carouselRef.current.scrollLeft += distance;
+
+        if (scrollLeft + clientWidth >= scrollWidth - 1) {
+          setTestimonials((prev) => shuffleArray(prev));
+          carouselRef.current.scrollTo({ left: 0, behavior: "auto" });
+        }
+      }
+      animationFrame = requestAnimationFrame(smoothScroll);
+    };
+
+    animationFrame = requestAnimationFrame(smoothScroll);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [paused]);
 
   return (
     <section
@@ -97,31 +122,17 @@ const TestimonialSection = () => {
       <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
         <h2
           style={{ fontFamily: "heading_font" }}
-          className="text-2xl sm:text-3xl mb-8 font-bold text-left"
+          className="text-xl sm:text-3xl mb-8 font-bold text-left"
         >
-          Hear From Our Happy Clients
+          Goolge Reviews of our customers
         </h2>
 
-        {/* Left & Right Arrows */}
-        <button
-          onClick={() => scroll("left")}
-          aria-label="Scroll left"
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 p-2 rounded-full shadow-md z-10"
-        >
-          <FaChevronLeft />
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          aria-label="Scroll right"
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 p-2 rounded-full shadow-md z-10"
-        >
-          <FaChevronRight />
-        </button>
-
-        {/* Carousel */}
+       
         <div
           ref={carouselRef}
-          className="flex gap-6 overflow-x-auto  scrollbar-hide scroll-smooth"
+          className="flex gap-6 overflow-x-auto scrollbar-hide"
+          onMouseEnter={() => setPaused(true)}   // 👈 pause on hover
+          onMouseLeave={() => setPaused(false)}  // 👈 resume on leave
         >
           {testimonials.map((testimonial, index) => {
             const isExpanded = expandedIndex === index;
