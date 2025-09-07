@@ -80,7 +80,7 @@ const shuffleArray = (array) => {
 const TestimonialSection = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [testimonials, setTestimonials] = useState(initialTestimonials);
-  const [paused, setPaused] = useState(false); // 👈 pause state
+  const [paused, setPaused] = useState(false); 
   const carouselRef = useRef(null);
 
   const toggleExpand = (index) => {
@@ -131,8 +131,8 @@ const TestimonialSection = () => {
         <div
           ref={carouselRef}
           className="flex gap-6 overflow-x-auto scrollbar-hide"
-          onMouseEnter={() => setPaused(true)}   // 👈 pause on hover
-          onMouseLeave={() => setPaused(false)}  // 👈 resume on leave
+          onMouseEnter={() => setPaused(true)}   
+          onMouseLeave={() => setPaused(false)}  
         >
           {testimonials.map((testimonial, index) => {
             const isExpanded = expandedIndex === index;

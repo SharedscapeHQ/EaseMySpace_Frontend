@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FiCalendar, FiUserCheck, FiLogOut, FiMenu, FiX, FiUserPlus } from "react-icons/fi";
-import { logoutUser } from "../../api/authApi";
+import {
+  FiCalendar,
+  FiUsers,
+  FiBookOpen,
+  FiUserPlus,
+  FiLogOut,
+  FiPhoneCall,
+} from "react-icons/fi";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
-
+import { logoutUser } from "../../api/authApi";
 
 export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
   const tabs = [
-    { label: "All Booking", value: "BookingSchedule", icon: <FiCalendar /> },
-    { label: "Assigned Users", value: "RMUsers", icon: <FiUserCheck /> }, 
-    { label: "My Bookings", value: "AssignedUsersBooking", icon: <FiUserCheck /> },
-        { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
-        { label: "CallBack Requests", value: "Requests", icon: <VscGitPullRequestGoToChanges /> },
-    
+    { label: "All Booking", value: "BookingSchedule", icon: <FiCalendar /> }, // calendar = schedule
+    { label: "Assigned Users", value: "RMUsers", icon: <FiUsers /> }, // people icon = users
+    { label: "My Bookings", value: "AssignedUsersBooking", icon: <FiBookOpen /> }, // book icon = records
+    { label: "Leads", value: "Leads", icon: <FiUserPlus /> }, // user-plus = new leads
+    { label: "CallBack Requests", value: "Requests", icon: <FiPhoneCall /> }, // phone call = callbacks
   ];
 
-  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleTabClick = (value) => {
-    setActiveTab(value);
-    setIsOpen(false);
-  };
+  const handleTabClick = (value) => setActiveTab(value);
 
   const handleLogout = async () => {
     try {
@@ -35,76 +36,57 @@ export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
 
   return (
     <>
-      {/* Mobile Header */}
-      <div
-        style={{ fontFamily: "para_font" }}
-        className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-50"
-      >
-        <h2 className="text-xl font-bold text-indigo-700">RM Panel</h2>
-        <div className="flex items-center gap-3">
+      {/* Mobile Tabs (Horizontal Scroll like User Dashboard) */}
+      <div className="lg:hidden fixed top-20 left-0 right-0 z-30 bg-zinc-100 border-b border-gray-200 shadow-md">
+        <div className="flex overflow-x-auto scrollbar-hide no-scrollbar">
+          {tabs.map(({ label, value, icon }) => (
+            <button
+              key={value}
+              onClick={() => handleTabClick(value)}
+              className={`flex items-center gap-2 px-5 py-3 flex-shrink-0 border-b-2 transition-colors ${
+                activeTab === value
+                  ? "border-indigo-600 text-indigo-700 font-semibold"
+                  : "border-transparent text-gray-700"
+              }`}
+            >
+              <span className="text-lg">{icon}</span>
+              <span className="whitespace-nowrap text-sm">{label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Sidebar (same style as User Dashboard) */}
+      <aside className="hidden lg:flex fixed top-20 left-0 h-[calc(100vh-4rem)] w-64 bg-white shadow-md border-r flex-col">
+        {/* Header with Logout */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-indigo-700">RM Panel</h2>
           <button
             onClick={handleLogout}
             className="text-red-600 hover:text-red-700 transition"
           >
             <FiLogOut className="text-xl" />
           </button>
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-2xl text-gray-700"
-          >
-            {isOpen ? <FiX /> : <FiMenu />}
-          </button>
-        </div>
-      </div>
-
-      {/* Sidebar */}
-      <aside
-        style={{ fontFamily: "para_font" }}
-        className={`${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } fixed top-0 left-0 z-40 w-64 bg-gradient-to-b from-white via-gray-50 to-gray-100 shadow-lg border-r min-h-screen transform transition-transform duration-300 ease-in-out
-        lg:fixed lg:top-20 lg:h-[calc(100vh-5rem)] flex flex-col`}
-      >
-        {/* Desktop Header */}
-        <div className="p-6 border-b hidden lg:flex items-center justify-between">
-          <h2 style={{ fontFamily: "heading_font" }} className="text-xl text-indigo-700 ">
-            RM Panel
-          </h2>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-red-600 hover:text-red-700 transition px-3 py-1 rounded-md border border-red-200"
-          >
-            <FiLogOut className="text-lg" />
-          </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-3 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        <nav className="flex-1 px-6 py-4 space-y-2 overflow-y-auto">
           {tabs.map(({ label, value, icon }) => (
             <button
               key={value}
               onClick={() => handleTabClick(value)}
-              className={`flex items-center gap-3 w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${
+              className={`flex items-center gap-2 w-full text-left px-4 py-2 rounded transition ${
                 activeTab === value
-                  ? "bg-indigo-100 text-indigo-700 shadow-inner"
-                  : "hover:bg-indigo-50 hover:text-indigo-700 text-gray-700"
+                  ? "bg-indigo-100 text-indigo-700 font-semibold"
+                  : "hover:bg-gray-100 text-gray-700"
               }`}
-              style={activeTab === value ? { fontFamily: "heading_font" } : {}}
             >
               <span className="text-lg">{icon}</span>
-              <span className="truncate">{label}</span>
+              <span>{label}</span>
             </button>
           ))}
         </nav>
       </aside>
-
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden"
-        />
-      )}
     </>
   );
 }

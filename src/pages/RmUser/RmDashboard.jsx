@@ -16,7 +16,7 @@ export default function RMDashboard() {
       <RMDashboardSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Main Content */}
-      <main className="flex-1 ml-0 lg:ml-64 bg-gray-50 min-h-screen">
+      <main className="flex-1 ml-0 lg:ml-64 mt-12 lg:mt-0 bg-gray-50 min-h-screen">
         {activeTab === "BookingSchedule" && <BookingSchedule />}
         {activeTab === "AssignedUsersBooking" && <AssignedUserBooking />}
         {activeTab === "RMUsers" && <AssignedUsers />}
