@@ -30,7 +30,6 @@ export default function AssignedUsers() {
       try {
         const data = await getAssignedUsers(rmId);
 
-        // Capitalize name
         const mapped = data.map((user) => ({
           ...user,
           name: user.name ? capitalizeName(user.name) : "N/A",
@@ -57,21 +56,21 @@ export default function AssignedUsers() {
       .join(" ");
 
   const filteredUsers = users.filter((u) => {
-  if (!u.subscription) return false; // only consider users with subscription
+    if (!u.subscription) return false;
 
-  const startDate = new Date(u.subscription.start_date).toLocaleDateString("en-CA"); // yyyy-mm-dd
-  const endDate = new Date(u.subscription.end_date).toLocaleDateString("en-CA");
+    const startDate = new Date(u.subscription.start_date).toLocaleDateString("en-CA");
+    const endDate = new Date(u.subscription.end_date).toLocaleDateString("en-CA");
 
-  const startCheck = startFilter
-    ? startDate === new Date(startFilter).toLocaleDateString("en-CA")
-    : true;
+    const startCheck = startFilter
+      ? startDate === new Date(startFilter).toLocaleDateString("en-CA")
+      : true;
 
-  const endCheck = endFilter
-    ? endDate === new Date(endFilter).toLocaleDateString("en-CA")
-    : true;
+    const endCheck = endFilter
+      ? endDate === new Date(endFilter).toLocaleDateString("en-CA")
+      : true;
 
-  return startCheck && endCheck;
-});
+    return startCheck && endCheck;
+  });
 
   if (loading)
     return (
@@ -97,13 +96,13 @@ export default function AssignedUsers() {
       <div className="p-4 sm:p-6 max-w-7xl mx-auto">
         <button
           onClick={() => setSelectedUser(null)}
-          className="mb-4 px-4 py-2 bg-blue-600 hover:bg-gray-300 rounded text-sm font-medium hover:text-blue-700 text-zinc-50 transition-all duration-200"
+          className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm font-medium text-white transition-all duration-200"
         >
           ← Back to Subscribers
         </button>
 
         <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
-          {/* Left Column: Plan Details */}
+          {/* Left Column */}
           <div className="lg:w-2/3 px-6 py-6 space-y-4">
             <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-lg shadow-sm">
               <FiZap className="text-indigo-500 text-xl" />
@@ -116,7 +115,7 @@ export default function AssignedUsers() {
             </div>
 
             {/* Contacts */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg shadow-sm">
                 <FiCheckCircle className="text-green-500 text-xl" />
                 <div>
@@ -138,7 +137,7 @@ export default function AssignedUsers() {
             </div>
 
             {/* Bookings */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg shadow-sm">
                 <FiBriefcase className="text-purple-500 text-xl" />
                 <div>
@@ -221,18 +220,19 @@ export default function AssignedUsers() {
   }
 
   // === List view ===
-  return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-0">
-          Assigned Users
-        </h2>
+// === List view ===
+return (
+  <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <h2 className="text-xl sm:text-3xl font-bold text-gray-800">
+        Assigned Users
+      </h2>
 
-        <div className="flex gap-4 items-end">
-          <div>
-            <label className="block text-xs font-medium text-gray-600">
-              Start Date
-            </label>
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row sm:items-end gap-3 w-full sm:w-auto">
+        <div className="flex gap-2 w-full sm:w-auto">
+          <div className="flex flex-col w-full">
+            <label className="text-xs font-medium text-gray-600">Start</label>
             <input
               type="date"
               value={startFilter}
@@ -240,11 +240,8 @@ export default function AssignedUsers() {
               className="border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
             />
           </div>
-
-          <div>
-            <label className="block text-xs font-medium text-gray-600">
-              End Date
-            </label>
+          <div className="flex flex-col w-full">
+            <label className="text-xs font-medium text-gray-600">End</label>
             <input
               type="date"
               value={endFilter}
@@ -252,88 +249,121 @@ export default function AssignedUsers() {
               className="border border-gray-300 rounded px-2 py-1 text-gray-700 text-xs focus:ring-2 focus:ring-indigo-400"
             />
           </div>
+        </div>
+        <button
+          onClick={() => {
+            setStartFilter("");
+            setEndFilter("");
+          }}
+          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 lg:w-auto w-1/3 rounded text-xs font-medium text-gray-700 h-fit mt-4 sm:mt-0"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
 
-          <button
-            onClick={() => {
-              setStartFilter("");
-              setEndFilter("");
-            }}
-            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-xs font-medium text-gray-700"
+    {/* Mobile Cards */}
+    <div className="grid gap-4 sm:hidden">
+      {filteredUsers.length === 0 ? (
+        <p className="text-center text-gray-500 py-6">No users found.</p>
+      ) : (
+        filteredUsers.map((user) => (
+          <div
+            key={user.id}
+            onClick={() => setSelectedUser(user)}
+            className="border rounded-lg shadow-sm p-4 bg-white cursor-pointer hover:shadow-md transition"
           >
-            Clear Filters
-          </button>
+            <h3 className="font-semibold text-indigo-600">{user.name}</h3>
+            <p className="text-sm text-gray-500 mb-2">
+              {user.subscription?.plan_name || "No Plan"}
+            </p>
+            <p className="text-sm text-gray-700">{user.email || "N/A"}</p>
+            <p className="text-sm text-gray-700">{user.phone || "N/A"}</p>
+            <div className="flex justify-between text-xs text-gray-600 mt-2">
+              <span>
+                Start:{" "}
+                {user.subscription?.start_date
+                  ? new Date(user.subscription.start_date).toLocaleDateString()
+                  : "N/A"}
+              </span>
+              <span>
+                End:{" "}
+                {user.subscription?.end_date
+                  ? new Date(user.subscription.end_date).toLocaleDateString()
+                  : "N/A"}
+              </span>
+            </div>
+            <p className="text-xs text-gray-600 mt-1">
+              Gender: {user.gender || "N/A"}
+            </p>
+          </div>
+        ))
+      )}
+    </div>
+
+    {/* Desktop Table */}
+    <div className="hidden sm:block border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+      <div className="max-h-[500px] overflow-y-auto">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
+            <thead className="bg-blue-700 text-white sticky top-0 z-10">
+              <tr>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                  Email / Phone
+                </th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                  Start
+                </th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                  End
+                </th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                  Gender
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredUsers.map((user) => (
+                <tr
+                  key={user.id}
+                  className="hover:bg-gray-50 transition cursor-pointer"
+                  onClick={() => setSelectedUser(user)}
+                >
+                  <td className="px-4 py-2 text-indigo-600 font-medium">
+                    <div>{user.name}</div>
+                    <div className="text-gray-500 text-xs">
+                      {user.subscription?.plan_name || "No Plan"}
+                    </div>
+                  </td>
+                  <td className="px-4 py-2 text-gray-700 whitespace-pre-line">
+                    {user.email || "N/A"}
+                    {"\n"}
+                    {user.phone || "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-gray-700">
+                    {user.subscription?.start_date
+                      ? new Date(user.subscription.start_date).toLocaleDateString()
+                      : "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-gray-700">
+                    {user.subscription?.end_date
+                      ? new Date(user.subscription.end_date).toLocaleDateString()
+                      : "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-gray-700">
+                    {user.gender || "N/A"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-
-     <div className="border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-  <div className="max-h-[500px] overflow-y-auto">
-    <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
-      <thead className="bg-blue-700 text-white sticky top-0 z-10">
-        <tr>
-          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
-            Name
-          </th>
-          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
-            Email / Phone
-          </th>
-          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
-            Start
-          </th>
-          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
-            End
-          </th>
-          <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
-            Gender
-          </th>
-        </tr>
-      </thead>
-
-      <tbody className="bg-white divide-y divide-gray-200">
-        {filteredUsers.length === 0 && (
-          <tr>
-            <td colSpan={5} className="text-center py-6 text-gray-500">
-              No users found.
-            </td>
-          </tr>
-        )}
-
-        {filteredUsers.map((user) => (
-          <tr
-            key={user.id}
-            className="hover:bg-gray-50 transition cursor-pointer"
-            onClick={() => setSelectedUser(user)}
-          >
-            <td className="px-4 py-2 text-indigo-600 font-medium">
-              <div>{user.name}</div>
-              <div className="text-gray-500 text-xs">
-                {user.subscription?.plan_name || "No Plan"}
-              </div>
-            </td>
-            <td className="px-4 py-2 text-gray-700 whitespace-pre-line">
-              {user.email || "N/A"}
-              {"\n"}
-              {user.phone || "N/A"}
-            </td>
-            <td className="px-4 py-2 text-gray-700">
-              {user.subscription?.start_date
-                ? new Date(user.subscription.start_date).toLocaleDateString()
-                : "N/A"}
-            </td>
-            <td className="px-4 py-2 text-gray-700">
-              {user.subscription?.end_date
-                ? new Date(user.subscription.end_date).toLocaleDateString()
-                : "N/A"}
-            </td>
-            <td className="px-4 py-2 text-gray-700">
-              {user.gender || "N/A"}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
     </div>
-  );
+  </div>
+);
+
 }

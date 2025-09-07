@@ -12,16 +12,13 @@ export default function BookingSchedule() {
     const fetchBookings = async () => {
       try {
         const res = await getAllBookings();
-        console.log(res.data);
         const data = Array.isArray(res)
-
           ? res
           : Array.isArray(res?.data)
           ? res.data
           : Array.isArray(res?.rows)
           ? res.rows
           : [];
-
         setBookings(data);
         setFilteredBookings(data);
       } catch (err) {
@@ -66,82 +63,147 @@ export default function BookingSchedule() {
           <p className="text-gray-500">📅 No bookings available.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200 rounded-lg shadow-sm bg-white">
-            <thead className="bg-indigo-600 text-white">
-              <tr>
-                <th className="px-4 py-2 text-left">User</th>
-                <th className="px-4 py-2 text-left">
-                  <div className="flex items-center gap-2">
-                    <FaHome /> Property
-                  </div>
-                </th>
-                <th className="px-4 py-2 text-left">
-                  <div className="flex items-center gap-2">
-                    <FaCalendarAlt /> Date
-                  </div>
-                </th>
-                <th className="px-4 py-2 text-left">
-                  <div className="flex items-center gap-2">
-                    <FaClock /> Time
-                  </div>
-                </th>
-                <th className="px-4 py-2 text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredBookings.map((booking, index) => {
-                const date = booking.booking_date
-                  ? new Date(booking.booking_date).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })
-                  : "-";
+        <>
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="min-w-full border border-gray-200 rounded-lg shadow-sm bg-white">
+              <thead className="bg-indigo-600 text-white">
+                <tr>
+                  <th className="px-4 py-2 text-left">User</th>
+                  <th className="px-4 py-2 text-left">
+                    <div className="flex items-center gap-2">
+                      <FaHome /> Property
+                    </div>
+                  </th>
+                  <th className="px-4 py-2 text-left">
+                    <div className="flex items-center gap-2">
+                      <FaCalendarAlt /> Date
+                    </div>
+                  </th>
+                  <th className="px-4 py-2 text-left">
+                    <div className="flex items-center gap-2">
+                      <FaClock /> Time
+                    </div>
+                  </th>
+                  <th className="px-4 py-2 text-left">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredBookings.map((booking, index) => {
+                  const date = booking.booking_date
+                    ? new Date(booking.booking_date).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    : "-";
+
+                  const time = booking.booking_time
+                    ? (() => {
+                        const [hour, min] = booking.booking_time.split(":");
+                        let h = parseInt(hour, 10);
+                        const ampm = h >= 12 ? "PM" : "AM";
+                        if (h > 12) h -= 12;
+                        if (h === 0) h = 12;
+                        return `${h}:${min} ${ampm}`;
+                      })()
+                    : "-";
+
+                  return (
+                    <tr
+                      key={booking.booking_id || index}
+                      className="border-b hover:bg-gray-50 transition"
+                    >
+                      <td className="px-4 py-3">
+                        <div className="font-semibold">
+                          {booking.firstName} {booking.lastName}
+                        </div>
+                        <div className="text-sm text-gray-600">{booking.email}</div>
+                        <div className="text-sm text-gray-600">{booking.phone}</div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="font-medium">{booking.property_title}</div>
+                        <div className="text-sm text-gray-600">
+                          {booking.property_location}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">{date}</td>
+                      <td className="px-4 py-3">{time}</td>
+                      <td className="px-4 py-3">
+                        <a
+                          href={`/properties/${booking.property_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          View Details
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="space-y-4 md:hidden">
+            {filteredBookings.map((booking, index) => {
+              const date = booking.booking_date
+                ? new Date(booking.booking_date).toLocaleDateString("en-IN", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })
+                : "-";
 
               const time = booking.booking_time
-  ? (() => {
-      const [hour, min] = booking.booking_time.split(":");
-      let h = parseInt(hour, 10);
-      const ampm = h >= 12 ? "PM" : "AM";
-      if (h > 12) h -= 12;
-      if (h === 0) h = 12;
-      return `${h}:${min} ${ampm}`;
-    })()
-  : "-";
+                ? (() => {
+                    const [hour, min] = booking.booking_time.split(":");
+                    let h = parseInt(hour, 10);
+                    const ampm = h >= 12 ? "PM" : "AM";
+                    if (h > 12) h -= 12;
+                    if (h === 0) h = 12;
+                    return `${h}:${min} ${ampm}`;
+                  })()
+                : "-";
 
-                return (
-                  <tr
-                    key={booking.booking_id || index}
-                    className="border-b hover:bg-gray-50 transition"
+              return (
+                <div
+                  key={booking.booking_id || index}
+                  className="border rounded-lg shadow-sm bg-white p-4"
+                >
+                  <div className="font-semibold text-indigo-700">
+                    {booking.firstName} {booking.lastName}
+                  </div>
+                  <div className="text-sm text-gray-600">{booking.email}</div>
+                  <div className="text-sm text-gray-600 mb-2">{booking.phone}</div>
+
+                  <div className="font-medium">{booking.property_title}</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    {booking.property_location}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <FaCalendarAlt /> {date}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <FaClock /> {time}
+                  </div>
+
+                  <a
+                    href={`/properties/${booking.property_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-block px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                   >
-                    <td className="px-4 py-3">
-                      <div className="font-semibold">{booking.firstName} {booking.lastName}</div>
-                      <div className="text-sm text-gray-600">{booking.email}</div>
-                      <div className="text-sm text-gray-600">{booking.phone}</div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="font-medium">{booking.property_title}</div>
-                      <div className="text-sm text-gray-600">{booking.property_location}</div>
-                    </td>
-                    <td className="px-4 py-3">{date}</td>
-                    <td className="px-4 py-3">{time}</td>
-                    <td className="px-4 py-3">
-                      <a
-                        href={`/properties/${booking.property_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-                      >
-                        View Details
-                      </a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    View Details
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

@@ -140,33 +140,36 @@ export default function LeadsTable() {
   if (loading) return <div className="text-center py-8">Loading leads...</div>;
 
   return (
-    <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center">
-          <label className="text-sm mr-2 text-gray-700 font-medium">Filter:</label>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="border rounded-md px-3 py-1 text-sm"
-          >
-            <option value="all">All</option>
-            <option value="done">Follow-up Done</option>
-            <option value="pending">Not Followed-up</option>
-          </select>
-        </div>
+   <div className="overflow-x-auto border rounded-xl shadow-md bg-white">
+  <div className="flex items-center justify-between p-4 flex-wrap gap-2">
+    <div className="flex items-center">
+      <label className="text-sm mr-2 text-gray-700 font-medium">Filter:</label>
+      <select
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        className="border rounded-md px-3 py-1 text-sm"
+      >
+        <option value="all">All</option>
+        <option value="done">Follow-up Done</option>
+        <option value="pending">Not Followed-up</option>
+      </select>
+    </div>
 
-        <button
-          onClick={exportToExcel}
-          className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
-        >
-          <FiDownload size={16} />
-          Export
-        </button>
-      </div>
+    <button
+      onClick={exportToExcel}
+      className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
+    >
+      <FiDownload size={16} />
+      Export
+    </button>
+  </div>
 
-      {filteredLeads.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">No leads found.</div>
-      ) : (
+  {filteredLeads.length === 0 ? (
+    <div className="text-center py-8 text-gray-500">No leads found.</div>
+  ) : (
+    <>
+      {/* --- Desktop / Tablet Table --- */}
+      <div className="hidden sm:block overflow-x-auto">
         <table className="min-w-full text-sm text-gray-800">
           <thead className="bg-indigo-50 text-gray-700 text-sm">
             <tr>
@@ -188,20 +191,19 @@ export default function LeadsTable() {
                 <td className="px-5 py-3">{formatDate(lead.last_verified_at)}</td>
                 <td className="px-5 py-3">
                   {lead.follow_up_done ? (
-  <div className="flex flex-col gap-1">
-    <div className="flex items-center gap-2">
-      <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
-      <span className="text-green-600 font-medium text-xs">Follow-up done</span>
-    </div>
-
-    <button
-      onClick={() => handleClearFollowUp(lead.id)}
-      className="text-red-600 text-xs hover:underline mt-1 self-start"
-    >
-      Clear Follow-up
-    </button>
-  </div>
-) : (
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
+                        <span className="text-green-600 font-medium text-xs">Follow-up done</span>
+                      </div>
+                      <button
+                        onClick={() => handleClearFollowUp(lead.id)}
+                        className="text-red-600 text-xs hover:underline mt-1 self-start"
+                      >
+                        Clear Follow-up
+                      </button>
+                    </div>
+                  ) : (
                     <div className="flex flex-col gap-1">
                       <textarea
                         rows="2"
@@ -220,12 +222,65 @@ export default function LeadsTable() {
                   )}
                 </td>
                 <td className="px-5 py-3">{lead.followed_by || "—"}</td>
-                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">{lead.remark || "—"}</td>
+                <td className="px-5 py-3 whitespace-pre-wrap break-words max-w-sm">
+                  {lead.remark || "—"}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
-    </div>
+      </div>
+
+      {/* --- Mobile Card View --- */}
+      <div className="sm:hidden flex flex-col divide-y">
+        {filteredLeads.map((lead) => (
+          <div key={lead.id} className="p-4 space-y-2">
+            <p className={`font-semibold ${isFlaggedPhone(lead.phone) ? "text-red-600" : "text-gray-800"}`}>
+              📞 {lead.phone}
+            </p>
+            <p className="text-xs text-gray-600">First Seen: {formatDate(lead.first_seen)}</p>
+            <p className="text-xs text-gray-600">Last Verified: {formatDate(lead.last_verified_at)}</p>
+            <p className="text-xs text-gray-600">Followed By: {lead.followed_by || "—"}</p>
+            <p className="text-xs text-gray-600">Remark: {lead.remark || "—"}</p>
+
+            <div>
+              {lead.follow_up_done ? (
+                <div className="flex flex-col gap-1 mt-2">
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" checked disabled className="accent-green-600 w-4 h-4" />
+                    <span className="text-green-600 font-medium text-xs">Follow-up done</span>
+                  </div>
+                  <button
+                    onClick={() => handleClearFollowUp(lead.id)}
+                    className="text-red-600 text-xs hover:underline mt-1 self-start"
+                  >
+                    Clear Follow-up
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-1 mt-2">
+                  <textarea
+                    rows="2"
+                    className="border rounded-md px-2 py-1 text-xs focus:outline-indigo-500 resize-none"
+                    placeholder="Enter remark"
+                    value={remarks[lead.id] || ""}
+                    onChange={(e) => handleRemarkChange(lead.id, e.target.value)}
+                  />
+                  <button
+                    onClick={() => handleFollowUp(lead.id)}
+                    className="bg-indigo-600 text-white px-3 py-1 rounded text-xs hover:bg-indigo-700 transition"
+                  >
+                    Mark Follow-up
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  )}
+</div>
+
   );
 }
