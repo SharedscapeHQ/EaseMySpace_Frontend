@@ -66,6 +66,13 @@ const initialTestimonials = [
       "Great and genuine website to help in finding shared flats for living. Much helpful",
     rating: 5,
   },
+  {
+    img: null,
+    name: "Ankit Songire",
+    review:
+      "Found a nice place with friendly roommates, and the whole process was super easy and quick. Great experience overall!",
+    rating: 5,
+  },
 ];
 
 const shuffleArray = (array) => {
