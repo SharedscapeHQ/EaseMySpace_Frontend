@@ -6,6 +6,7 @@ import sharedImg from "/landing-assets/sharedImg.png";
 import vacantImg from "/landing-assets/vacantImg.png";
 import Hero_vid from "/heroImg/Hero_vid.webm";
 import Poster from "/heroImg/Poster.jpg";
+import FunnyQuotes from "./FunnyQuotes";
 
 export default function HeroDesktop() {
   const videoRef = useRef(null);
@@ -215,6 +216,9 @@ export default function HeroDesktop() {
         furnished rental flats near you.
       </p>
     </div>
+  </div>
+   <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-full px-4">
+    <FunnyQuotes />
   </div>
 </section>
 

@@ -13,6 +13,8 @@ import Banner from "../components/LandingSectionComp/Banner";
 import ExploreSection from "../components/LandingSectionComp/ExploreSection";
 import BottomNav from "../components/LandingSectionComp/BottomNav";
 import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
+import CustomerVidReview from "../components/LandingSectionComp/CustomerVidReview";
+import LandingPopup from "../components/LandingSectionComp/LandingPopup";
 
 function Landing() {
   return (
@@ -64,7 +66,7 @@ function Landing() {
   <meta name="twitter:image" content="https://easemyspace.in/heroImg/hero.png" />
 </Helmet>
 
-
+ <LandingPopup />
       <div className="w-full -pt-10 lg:pb-0 pb-9">
         <HeroMobile />
         <HeroDesktop />
@@ -77,6 +79,7 @@ function Landing() {
         <ExploreSection />
         <FAQSection />
         <TestimonialSection/>
+        <CustomerVidReview/>
         <BottomNav />
         <Footer />
       </div>
