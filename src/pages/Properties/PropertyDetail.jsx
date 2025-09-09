@@ -19,7 +19,7 @@ import PropertyMap from "./PropertyMap";
 import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 import LoginPromptModal from "./LoginPromptModal";
-import ChatBox from "./ChatBox";
+// import ChatBox from "./ChatBox";
 
 function PropertyDetail() {
   const { id } = useParams();
