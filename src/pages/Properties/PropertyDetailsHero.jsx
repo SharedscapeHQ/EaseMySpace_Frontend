@@ -13,6 +13,9 @@ function PropertyHeaderSection({
 
   const user = JSON.parse(localStorage.getItem('user'));
 
+  const isOwner = user?.owner_code && property?.owner_code && user.owner_code === property.owner_code;
+
+
   return (
     <div className="flex  bg-white rounded-xl border p-6 flex-col lg:flex-row  justify-center items-stretch gap-5 w-full">
       {/* Main Image + Mobile Thumbnails */}
@@ -135,10 +138,10 @@ function PropertyHeaderSection({
 </div>
 
 
-      {/* Info Card handles all contact/unlock logic */}
       <InfoCard
         property={property}
         user={user}
+        isOwner={isOwner}
         hasPaid={hasPaid}
         setHasPaid={setHasPaid}
         setShowPlanPopup={setShowPlanPopup}

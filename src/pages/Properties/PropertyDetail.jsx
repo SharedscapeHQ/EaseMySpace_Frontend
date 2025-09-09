@@ -19,6 +19,7 @@ import PropertyMap from "./PropertyMap";
 import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 import LoginPromptModal from "./LoginPromptModal";
+import ChatBox from "./ChatBox";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -250,6 +251,11 @@ function PropertyDetail() {
               {property.description}
             </p>
           </div>
+
+           {/* <div>
+      <h1>Chat with Property Owner</h1>
+      <ChatBox userId={loggedInUser.id} recipientId={property.id} />
+    </div> */}
 
           {/* Amenities */}
           <PropertyAmenities amenities={property.amenities} property={property} />
