@@ -79,7 +79,7 @@ function Landing() {
         <ExploreSection />
         <FAQSection />
         <TestimonialSection/>
-        <CustomerVidReview/>
+        {/* <CustomerVidReview/> */}
         <BottomNav />
         <Footer />
       </div>
