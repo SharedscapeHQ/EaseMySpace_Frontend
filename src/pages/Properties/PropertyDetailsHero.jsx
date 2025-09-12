@@ -17,7 +17,7 @@ function PropertyHeaderSection({
 
 
   return (
-    <div className="flex  bg-white rounded-xl border p-6 flex-col lg:flex-row  justify-center items-stretch gap-5 w-full">
+    <div className="flex relative  bg-white rounded-xl border p-6 flex-col lg:flex-row  justify-center items-stretch gap-5 w-full">
       {/* Main Image + Mobile Thumbnails */}
       <div className="w-full lg:w-[32rem] ">
         <div
@@ -148,6 +148,7 @@ function PropertyHeaderSection({
         userMobile={userMobile}
       />
     </div>
+    
   );
 }
 

@@ -1,13 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { FiEye, FiCheckCircle } from "react-icons/fi";
-import { markPropertyAsViewed } from "../../api/userApi";
-import { incrementPropertyView } from "../../api/propertiesApi";
-
-import {
-  getPropertyById,
-  getPropertyVisitCount,
-} from "../../api/propertiesApi";
+import { markPropertyAsViewed, getUnlockedLeads } from "../../api/userApi";
+import { incrementPropertyView, getPropertyById, getPropertyVisitCount } from "../../api/propertiesApi";
 import { getCurrentUser } from "../../api/authApi";
 
 import PropertyAmenities from "./PropertyAmenities";
@@ -19,19 +14,13 @@ import PropertyMap from "./PropertyMap";
 import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 import LoginPromptModal from "./LoginPromptModal";
-// import ChatBox from "./ChatBox";
 
 function PropertyDetail() {
   const { id } = useParams();
   const location = useLocation();
 
-  // ---------------- Utility Functions ----------------
   const stripQuotes = (v) =>
-    v == null
-      ? ""
-      : String(v)
-          .replace(/^"+|"+$/g, "")
-          .trim();
+    v == null ? "" : String(v).replace(/^"+|"+$/g, "").trim();
 
   const parseImages = (raw) => {
     if (!raw) return [];
@@ -59,7 +48,6 @@ function PropertyDetail() {
     return `${possessive} listed home`;
   };
 
-  // ---------------- Component State ----------------
   const init = location.state?.property ? enrich(location.state.property) : null;
 
   const [property, setProperty] = useState(init);
@@ -70,14 +58,14 @@ function PropertyDetail() {
   const [hasPaid, setHasPaid] = useState(false);
   const [showPlanPopup, setShowPlanPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [unlockedPropertyIds, setUnlockedPropertyIds] = useState([]);
 
-  // ---------------- Fetch Logged-In User ----------------
   useEffect(() => {
     async function fetchUser() {
       try {
         const user = await getCurrentUser();
         if (!user || !user.id) {
-          setShowLoginPopup(true); // user not logged in
+          setShowLoginPopup(true);
           setLoggedInUser(null);
         } else {
           setLoggedInUser(user);
@@ -91,16 +79,13 @@ function PropertyDetail() {
     fetchUser();
   }, []);
 
-  // ---------------- Set Paid Access ----------------
   useEffect(() => {
     const isPrivileged = ["admin", "owner"].includes(loggedInUser?.role);
     const isSubscribed = loggedInUser?.subscription_status === "paid";
     const leadPaid = localStorage.getItem("has_paid_lead") === "true";
-
     setHasPaid(isPrivileged || isSubscribed || leadPaid);
   }, [loggedInUser]);
 
-  // ---------------- Fetch Property by ID ----------------
   useEffect(() => {
     setLoading(true);
     async function fetchProperty() {
@@ -116,12 +101,22 @@ function PropertyDetail() {
     fetchProperty();
   }, [id]);
 
-  // ---------------- Recently Viewed & Visit Trigger ----------------
+  useEffect(() => {
+    if (!loggedInUser) return;
+    async function fetchUnlocked() {
+      try {
+        const leads = await getUnlockedLeads();
+        setUnlockedPropertyIds(leads);
+      } catch (err) {
+        console.error("Failed to fetch unlocked properties", err);
+      }
+    }
+    fetchUnlocked();
+  }, [loggedInUser]);
+
   useEffect(() => {
     if (!property || !loggedInUser) return;
-
     const viewedProps = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
-
     if (!viewedProps.includes(property.id)) {
       incrementPropertyView(property.id).catch(console.error);
       sessionStorage.setItem(
@@ -129,11 +124,9 @@ function PropertyDetail() {
         JSON.stringify([...viewedProps, property.id])
       );
     }
-
     markPropertyAsViewed(property.id).catch(console.error);
   }, [property, loggedInUser]);
 
-  // ---------------- Fetch Property Visit Count ----------------
   useEffect(() => {
     if (!id) return;
     getPropertyVisitCount(id)
@@ -144,7 +137,6 @@ function PropertyDetail() {
       });
   }, [id]);
 
-  // ---------------- Lightbox Handlers ----------------
   const stepLightbox = useCallback(
     (dir) => {
       if (!property) return;
@@ -160,12 +152,19 @@ function PropertyDetail() {
       if (lightboxIdx !== null && e.key === "ArrowLeft") stepLightbox(-1);
       if (lightboxIdx !== null && e.key === "ArrowRight") stepLightbox(1);
     };
-
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxIdx, stepLightbox]);
 
-  // ---------------- Render ----------------
+  useMemo(() => {
+    return (
+      loggedInUser?.role === "admin" ||
+      loggedInUser?.role === "owner" ||
+      loggedInUser?.owner_code === property?.owner_code ||
+      unlockedPropertyIds.some((pid) => String(pid) === String(property?.id))
+    );
+  }, [loggedInUser, unlockedPropertyIds, property?.id]);
+
   if (loading || !property) return <PropertySkeleton />;
 
   return (
@@ -189,8 +188,6 @@ function PropertyDetail() {
 
       <main style={{ fontFamily: "para_font" }} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
         <div className="flex flex-col p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
-
-          {/* Title & Status */}
           <div className="flex items-center gap-2 flex-wrap">
             <div className="text-base lg:text-xl font-semibold text-gray-800">
               {generateTitle(property.title)}
@@ -207,7 +204,6 @@ function PropertyDetail() {
             )}
           </div>
 
-          {/* Property Header Section */}
           <PropertyHeaderSection
             property={property}
             lightboxIdx={lightboxIdx}
@@ -219,7 +215,6 @@ function PropertyDetail() {
             setShowPlanPopup={setShowPlanPopup}
           />
 
-          {/* Essential Details */}
           <div className="mt-6 border border-gray-300 p-6 rounded-lg bg-white">
             <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-4">
               Essential Details
@@ -234,7 +229,10 @@ function PropertyDetail() {
                 { label: "Occupancy", value: property.occupancy || "N/A" },
                 { label: "Gender", value: property.gender || "N/A" },
               ].map((item, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-center text-center px-2 py-3 bg-white rounded-md lg:shadow-none lg:border-l border-b lg:border-b-0">
+                <div
+                  key={idx}
+                  className="flex flex-col items-center justify-center text-center px-2 py-3 bg-white rounded-md lg:shadow-none lg:border-l border-b lg:border-b-0"
+                >
                   <span className="text-xs lg:text-base text-gray-600 font-medium">{item.label}</span>
                   <span className="text-xs lg:text-base text-gray-900 font-semibold">{item.value}</span>
                 </div>
@@ -242,7 +240,6 @@ function PropertyDetail() {
             </div>
           </div>
 
-          {/* Description */}
           <div className="bg-white rounded-xl border p-6">
             <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">
               Property Description
@@ -252,26 +249,17 @@ function PropertyDetail() {
             </p>
           </div>
 
-           {/* <div>
-      <h1>Chat with Property Owner</h1>
-      <ChatBox userId={loggedInUser.id} recipientId={property.id} />
-    </div> */}
-
-          {/* Amenities */}
           <PropertyAmenities amenities={property.amenities} property={property} />
-
-          {/* Map */}
           <PropertyMap address={property.location} title={property.title} />
         </div>
 
-        {/* Related Properties */}
         <RelatedProperties currentProperty={property} />
       </main>
 
       {showLoginPopup && (
         <LoginPromptModal
           onClose={() => setShowLoginPopup(false)}
-          onAction={() => window.location.href = "/login"}
+          onAction={() => (window.location.href = "/login")}
         />
       )}
 

@@ -16,6 +16,9 @@ import {
 } from "../../api/userApi";
 import toast from "react-hot-toast";
 
+import { FaComments, FaTimes } from "react-icons/fa";
+import ChatBox from "../Properties/ChatBox";
+
 export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlanPopup, userMobile }) {
   const [unlockedPropertyIds, setUnlockedPropertyIds] = useState([]);
   const [contactStatus, setContactStatus] = useState({ remaining: 0 });
@@ -24,15 +27,15 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [existingBookingDateTime, setExistingBookingDateTime] = useState(null);
   const [selectedBookingDateTime, setSelectedBookingDateTime] = useState(null);
+  const [showChat, setShowChat] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userRole = user?.role;
-
   const isOwner = user?.owner_code && property?.owner_code && user.owner_code === property.owner_code;
 
   const isUnlocked = useMemo(() => {
     return (
-      isOwner || 
+      isOwner ||
       userRole === "admin" ||
       userRole === "owner" ||
       userRole === "RM" ||
@@ -73,40 +76,39 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
     fetchAll();
   }, [hasPaid, property?.id]);
 
-const displayPhone = () => {
-  if (userRole === "admin" || userRole === "owner" || isOwner) {
-    return (
-      <span className="flex items-center gap-2">
-        <FaPhoneAlt className="text-indigo-600" />
-        {property.owner_phone || "Unavailable"}
-      </span>
-    );
-  }
-  if (isUnlocked) {
-    if (!property.phone_visible)
+  const displayPhone = () => {
+    if (userRole === "admin" || userRole === "owner" || isOwner) {
       return (
-        <span className="flex items-center gap-2 text-red-500">
+        <span className="flex items-center gap-2">
           <FaPhoneAlt className="text-indigo-600" />
-          Hidden by owner
+          {property.owner_phone || "Unavailable"}
         </span>
       );
+    }
+    if (isUnlocked) {
+      if (!property.phone_visible)
+        return (
+          <span className="flex items-center gap-2 text-red-500">
+            <FaPhoneAlt className="text-indigo-600" />
+            Hidden by owner
+          </span>
+        );
+      return (
+        <span className="flex items-center gap-2">
+          <FaPhoneAlt className="text-indigo-600" />
+          {property.owner_phone || "Unavailable"}
+        </span>
+      );
+    }
     return (
-      <span className="flex items-center gap-2">
-        <FaPhoneAlt className="text-indigo-600" />
-        {property.owner_phone || "Unavailable"}
-      </span>
+      <div>
+        <span className="flex items-center gap-2">
+          <FaPhoneAlt className="text-indigo-600" />+91xxxxxxx
+        </span>
+        <span className="text-gray-500 text-sm ">Subscribe to unlock</span>
+      </div>
     );
-  }
-  return (
-    <div>
-      <span className="flex items-center gap-2">
-        <FaPhoneAlt className="text-indigo-600" />+91xxxxxxx
-      </span>
-      <span className="text-gray-500 text-sm ">Subscribe to unlock</span>
-    </div>
-  );
-};
-
+  };
 
   const handleUnlock = async () => {
     setIsUnlocking(true);
@@ -152,7 +154,6 @@ const displayPhone = () => {
       // REFRESH booking info after booking
       const updatedBookingInfo = await fetchBookingLimitInfo();
       setBookingStatus(updatedBookingInfo);
-
     } catch (err) {
       toast.error(err?.response?.data?.msg || "Failed to save booking.");
     }
@@ -162,6 +163,46 @@ const displayPhone = () => {
 
   return (
     <div className="flex justify-between flex-col w-full lg:w-[23rem]" style={{ fontFamily: "para_font" }}>
+      {user && property?.owner_code && user.owner_code !== property.owner_code && (
+        <div className="absolute -top-6 -right-4 flex flex-col items-end gap-2">
+          <div className="flex items-center gap-2">
+            <span className="bg-white text-gray-700 text-sm px-2 py-1 rounded-lg shadow">
+              Chat with Owner
+            </span>
+            <button
+              onClick={() => setShowChat(!showChat)}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+            >
+              {showChat ? (
+                <FaTimes
+                  size={20}
+                  className="transform rotate-90 transition-transform duration-300"
+                />
+              ) : (
+                <FaComments
+                  size={20}
+                  className="transform rotate-0 transition-transform duration-300"
+                />
+              )}
+            </button>
+          </div>
+
+          {showChat && (
+            <div className="mt-2 w-[22rem] z-30 transition-all duration-300">
+              {/* Remove key, handle refresh inside ChatBox */}
+              <ChatBox
+                userId={user.id}
+                recipientName={property.title}
+                recipientOwnerCode={property.owner_code}
+                propertyId={property.id}
+                disabled={!isUnlocked}
+                onLockedAction={() => setShowPlanPopup(true)}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Contact Card */}
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full">
         <h2 className="text-lg text-gray-900 flex items-center gap-2 mb-3" style={{ fontFamily: "heading_font" }}>
@@ -184,78 +225,73 @@ const displayPhone = () => {
       </div>
 
       {/* Booking Card */}
-      {/* Booking Card */}
-<div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
-  <h2
-    className="text-lg flex items-center gap-2 mb-3"
-    style={{ fontFamily: "heading_font" }}
-  >
-    {!existingBookingDateTime && <FaCalendarAlt className="text-indigo-600" />} Booking Schedule
-  </h2>
+      <div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
+        <h2 className="text-lg flex items-center gap-2 mb-3" style={{ fontFamily: "heading_font" }}>
+          {!existingBookingDateTime && <FaCalendarAlt className="text-indigo-600" />} Booking Schedule
+        </h2>
 
-  {isOwner ? (
-    <p className="text-sm text-gray-500 italic text-center">
-      This is your property. Booking is disabled.
-    </p>
-  ) : (
-    <>
-      <p className="text-sm text-gray-500 mb-2">
-        Bookings remaining: {remainingBookings}
-      </p>
+        {isOwner ? (
+          <p className="text-sm text-gray-500 italic text-center">
+            This is your property. Booking is disabled.
+          </p>
+        ) : (
+          <>
+            <p className="text-sm text-gray-500 mb-2">
+              Bookings remaining: {remainingBookings}
+            </p>
 
-      <div className="flex justify-between items-center gap-3">
-        <div className="flex items-center gap-2 w-full">
-          {hasPaid ? (
-            existingBookingDateTime ? (
-              <span className="text-green-600 font-medium flex items-center gap-1">
-                ✅{" "}
-                {existingBookingDateTime.toLocaleString("en-IN", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-              </span>
-            ) : (
-              <DatePicker
-                selected={selectedBookingDateTime}
-                onChange={setSelectedBookingDateTime}
-                showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={30}
-                dateFormat="dd MMM yyyy, h:mm aa"
-                minDate={new Date()}
-                className="border rounded-md px-2 py-1 text-sm w-full"
-                placeholderText="Select date & time"
-              />
-            )
-          ) : (
-            <span className="text-gray-500 text-sm">
-              Subscribe to enable booking
-            </span>
-          )}
-        </div>
+            <div className="flex justify-between items-center gap-3">
+              <div className="flex items-center gap-2 w-full">
+                {hasPaid ? (
+                  existingBookingDateTime ? (
+                    <span className="text-green-600 font-medium flex items-center gap-1">
+                      ✅{" "}
+                      {existingBookingDateTime.toLocaleString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </span>
+                  ) : (
+                    <DatePicker
+                      selected={selectedBookingDateTime}
+                      onChange={setSelectedBookingDateTime}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      timeIntervals={30}
+                      dateFormat="dd MMM yyyy, h:mm aa"
+                      minDate={new Date()}
+                      className="border rounded-md px-2 py-1 text-sm w-full"
+                      placeholderText="Select date & time"
+                    />
+                  )
+                ) : (
+                  <span className="text-gray-500 text-sm">
+                    Subscribe to enable booking
+                  </span>
+                )}
+              </div>
 
-        {hasPaid && !existingBookingDateTime && (
-          <button
-            className={`bg-indigo-600 px-2 hover:bg-indigo-700 text-white text-sm py-1 rounded-md ${
-              !selectedBookingDateTime || remainingBookings <= 0
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }`}
-            onClick={handleBookingSave}
-            disabled={!selectedBookingDateTime || remainingBookings <= 0}
-          >
-            Schedule
-          </button>
+              {hasPaid && !existingBookingDateTime && (
+                <button
+                  className={`bg-indigo-600 px-2 hover:bg-indigo-700 text-white text-sm py-1 rounded-md ${
+                    !selectedBookingDateTime || remainingBookings <= 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                  onClick={handleBookingSave}
+                  disabled={!selectedBookingDateTime || remainingBookings <= 0}
+                >
+                  Schedule
+                </button>
+              )}
+            </div>
+          </>
         )}
       </div>
-    </>
-  )}
-</div>
-
 
       {/* Active Plan Card */}
       {hasPaid && user?.activePlan && (
