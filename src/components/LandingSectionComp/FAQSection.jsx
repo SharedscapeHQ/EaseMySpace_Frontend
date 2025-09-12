@@ -30,7 +30,7 @@ const faqs = [
   {
     question: "Is there any commission or service fee?",
     answer:
-      "No commission. Subscribe to Starter, Premium, or Ultimate plans covering property visits, video tours, relocation help, and priority listings for PGs and flats.",
+      "No commission. Subscribe to Trial or Ultimate plans covering property visits, video tours, relocation help, and priority listings for PGs and flats.",
     button: {
       text: "Explore Plans",
       link: "/subscription",

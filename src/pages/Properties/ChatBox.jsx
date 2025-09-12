@@ -55,7 +55,6 @@ export default function ChatBox({ recipientOwnerCode, recipientName, propertyId,
 
     // Listen for online users
     socket.on("user_status", ({ userId, online }) => {
-      console.log("user_status event:", { userId, online });
       setOnlineUsers(prev => {
         if (online) {
           if (!prev.includes(userId)) return [...prev, userId];
@@ -113,7 +112,7 @@ export default function ChatBox({ recipientOwnerCode, recipientName, propertyId,
   };
 
   return (
-    <div className="flex absolute flex-col w-full max-w-md h-[70vh] sm:h-[350px] border rounded shadow bg-white">
+    <div className="flex absolute flex-col w-full max-w-xs h-[70vh] sm:h-[350px] border rounded shadow bg-white z-30">
       {/* Header */}
       <div className="flex items-center justify-between p-3 bg-blue-600 text-white rounded-t">
         <span className="font-medium">Chat with {recipientName}</span>

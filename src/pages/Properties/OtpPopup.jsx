@@ -61,7 +61,6 @@ function OtpPopup({ onVerified, onClose, otpPurpose }) {
       },
       { withCredentials: true }
     );
-    console.log("OTP verify response:", res.data);
 
     if (res.data.verified === true) {
       localStorage.setItem("otp_verified", "true");

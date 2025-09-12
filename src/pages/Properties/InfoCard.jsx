@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { FaPhoneAlt, FaUserCircle, FaCalendarAlt } from "react-icons/fa";
+import { FaPhoneAlt, FaUserCircle, FaCalendarAlt, FaComments, FaWhatsapp } from "react-icons/fa";
 import { SiGooglepay, SiPaytm } from "react-icons/si";
 import { RiInformation2Line } from "react-icons/ri";
-import { MdOutlineCardMembership } from "react-icons/md";
+import { MdOutlineCardMembership, MdHelpOutline } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PaymentButton from "./PaymentButton";
@@ -15,11 +15,15 @@ import {
   getMyBookings,
 } from "../../api/userApi";
 import toast from "react-hot-toast";
-
-import { FaComments, FaTimes } from "react-icons/fa";
 import ChatBox from "../Properties/ChatBox";
 
-export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlanPopup, userMobile }) {
+export default function ContactCard({
+  property,
+  hasPaid,
+  setHasPaid,
+  setShowPlanPopup,
+  userMobile,
+}) {
   const [unlockedPropertyIds, setUnlockedPropertyIds] = useState([]);
   const [contactStatus, setContactStatus] = useState({ remaining: 0 });
   const [bookingStatus, setBookingStatus] = useState({ remaining: 0 });
@@ -28,10 +32,16 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
   const [existingBookingDateTime, setExistingBookingDateTime] = useState(null);
   const [selectedBookingDateTime, setSelectedBookingDateTime] = useState(null);
   const [showChat, setShowChat] = useState(false);
+  const [showCallPopup, setShowCallPopup] = useState(false);
+  const [showHelpPopup, setShowHelpPopup] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null); // track action (call/chat)
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userRole = user?.role;
-  const isOwner = user?.owner_code && property?.owner_code && user.owner_code === property.owner_code;
+  const isOwner =
+    user?.owner_code &&
+    property?.owner_code &&
+    user.owner_code === property.owner_code;
 
   const isUnlocked = useMemo(() => {
     return (
@@ -45,10 +55,8 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
 
   const contactLimitReached = contactStatus.remaining <= 0;
 
-  // Fetch all relevant info on mount
   useEffect(() => {
     if (!property || !hasPaid) return;
-
     const fetchAll = async () => {
       try {
         const [leads, contact, bookingsData, bookingInfo] = await Promise.all([
@@ -62,7 +70,9 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
         setContactStatus(contact);
         setBookingStatus(bookingInfo);
 
-        const booking = (bookingsData || []).find(b => String(b.property_id) === String(property.id));
+        const booking = (bookingsData || []).find(
+          (b) => String(b.property_id) === String(property.id)
+        );
         if (booking && booking.booking_date && booking.booking_time) {
           const datePart = booking.booking_date.split("T")[0];
           const dt = new Date(`${datePart}T${booking.booking_time}`);
@@ -72,43 +82,8 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
         console.error("Error fetching data:", err);
       }
     };
-
     fetchAll();
   }, [hasPaid, property?.id]);
-
-  const displayPhone = () => {
-    if (userRole === "admin" || userRole === "owner" || isOwner) {
-      return (
-        <span className="flex items-center gap-2">
-          <FaPhoneAlt className="text-indigo-600" />
-          {property.owner_phone || "Unavailable"}
-        </span>
-      );
-    }
-    if (isUnlocked) {
-      if (!property.phone_visible)
-        return (
-          <span className="flex items-center gap-2 text-red-500">
-            <FaPhoneAlt className="text-indigo-600" />
-            Hidden by owner
-          </span>
-        );
-      return (
-        <span className="flex items-center gap-2">
-          <FaPhoneAlt className="text-indigo-600" />
-          {property.owner_phone || "Unavailable"}
-        </span>
-      );
-    }
-    return (
-      <div>
-        <span className="flex items-center gap-2">
-          <FaPhoneAlt className="text-indigo-600" />+91xxxxxxx
-        </span>
-        <span className="text-gray-500 text-sm ">Subscribe to unlock</span>
-      </div>
-    );
-  };
 
   const handleUnlock = async () => {
     setIsUnlocking(true);
@@ -117,18 +92,28 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
       if (res.msg === "Contact unlocked successfully") {
         const status = await fetchUserContactStatus();
         setContactStatus(status);
-        setUnlockedPropertyIds(prev => [...prev, property.id]);
+        setUnlockedPropertyIds((prev) => [...prev, property.id]);
         toast.success("Contact unlocked!");
+
+        // Continue with the intended action
+        if (pendingAction === "call") setShowCallPopup(true);
+        if (pendingAction === "chat") setShowChat(true);
       } else {
         toast.error("Unexpected response from server");
       }
     } catch (err) {
       const msg = err?.response?.data?.msg;
       if (msg === "Contact already unlocked") {
-        const [status, leads] = await Promise.all([fetchUserContactStatus(), getUnlockedLeads()]);
+        const [status, leads] = await Promise.all([
+          fetchUserContactStatus(),
+          getUnlockedLeads(),
+        ]);
         setContactStatus(status);
         setUnlockedPropertyIds(leads);
         toast.success("Contact already unlocked.");
+
+        if (pendingAction === "call") setShowCallPopup(true);
+        if (pendingAction === "chat") setShowChat(true);
       } else {
         toast.error("Unlock limit reached. Please upgrade.");
         setShowPlanPopup(true);
@@ -136,11 +121,13 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
     } finally {
       setIsUnlocking(false);
       setShowConfirmPopup(false);
+      setPendingAction(null);
     }
   };
 
   const handleBookingSave = async () => {
-    if (!selectedBookingDateTime) return toast.error("Please select date & time");
+    if (!selectedBookingDateTime)
+      return toast.error("Please select date & time");
 
     try {
       const dateStr = selectedBookingDateTime.toISOString().split("T")[0];
@@ -151,7 +138,6 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
       setExistingBookingDateTime(selectedBookingDateTime);
       setSelectedBookingDateTime(null);
 
-      // REFRESH booking info after booking
       const updatedBookingInfo = await fetchBookingLimitInfo();
       setBookingStatus(updatedBookingInfo);
     } catch (err) {
@@ -162,72 +148,157 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
   const remainingBookings = bookingStatus?.remaining ?? 0;
 
   return (
-    <div className="flex justify-between flex-col w-full lg:w-[23rem]" style={{ fontFamily: "para_font" }}>
-      {user && property?.owner_code && user.owner_code !== property.owner_code && (
-        <div className="absolute -top-6 -right-4 flex flex-col items-end gap-2">
-          <div className="flex items-center gap-2">
-            <span className="bg-white text-gray-700 text-sm px-2 py-1 rounded-lg shadow">
-              Chat with Owner
-            </span>
-            <button
-              onClick={() => setShowChat(!showChat)}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg transition-all duration-300"
-            >
-              {showChat ? (
-                <FaTimes
-                  size={20}
-                  className="transform rotate-90 transition-transform duration-300"
-                />
-              ) : (
-                <FaComments
-                  size={20}
-                  className="transform rotate-0 transition-transform duration-300"
-                />
-              )}
-            </button>
-          </div>
-
-          {showChat && (
-            <div className="mt-2 w-[22rem] z-30 transition-all duration-300">
-              {/* Remove key, handle refresh inside ChatBox */}
-              <ChatBox
-                userId={user.id}
-                recipientName={property.title}
-                recipientOwnerCode={property.owner_code}
-                propertyId={property.id}
-                disabled={!isUnlocked}
-                onLockedAction={() => setShowPlanPopup(true)}
-              />
-            </div>
-          )}
-        </div>
-      )}
-
+    <div
+      className="flex justify-between flex-col w-full lg:w-[23rem]"
+      style={{ fontFamily: "para_font" }}
+    >
       {/* Contact Card */}
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full">
-        <h2 className="text-lg text-gray-900 flex items-center gap-2 mb-3" style={{ fontFamily: "heading_font" }}>
-          <FaUserCircle className="text-indigo-600 text-2xl" /> Owner's Contact
+        <h2
+          className="text-lg text-gray-900 flex items-center gap-2 mb-4"
+          style={{ fontFamily: "heading_font" }}
+        >
+          <FaUserCircle className="text-indigo-600 text-2xl" />
+          {(!user || !hasPaid) && "Subscribe to Call / Chat"}
+          {user && hasPaid && !isUnlocked && "Unlock to Call / Chat"}
+          {isUnlocked && "Owner's Contact"}
         </h2>
-        {isUnlocked ? displayPhone() : user && hasPaid ? (
-          <div className="flex justify-between items-center gap-3">
-            <span className="font-medium flex items-center gap-2"><FaPhoneAlt className="text-indigo-600" />+91xxxxxxx</span>
-            {contactLimitReached ? (
-              <div className="px-4 py-2 text-center bg-yellow-500 text-white text-sm rounded-lg">Upgrade Plan</div>
-            ) : (
+
+        <div className="flex gap-5 ml-0 items-start">
+          {/* CALL BUTTON */}
+          <button
+            onClick={() => {
+              if (!user || !hasPaid) {
+                setShowPlanPopup(true);
+              } else if (!isUnlocked) {
+                setPendingAction("call");
+                setShowConfirmPopup(true);
+              } else {
+                setShowCallPopup(true);
+              }
+            }}
+            disabled={isUnlocking}
+            className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg shadow bg-green-600 hover:bg-green-700 text-white transition-all duration-300"
+          >
+            <FaPhoneAlt className="text-xl" />
+            Call
+          </button>
+
+          {/* CHAT BUTTON */}
+          <button
+            onClick={() => {
+              if (!user || !hasPaid) {
+                setShowPlanPopup(true);
+              } else if (!isUnlocked) {
+                setPendingAction("chat");
+                setShowConfirmPopup(true);
+              } else {
+                setShowChat(!showChat);
+              }
+            }}
+            className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg shadow bg-indigo-600 hover:bg-indigo-700 text-white transition-all duration-300"
+          >
+            <FaComments className="text-xl" />
+            Chat
+          </button>
+
+          {/* HELP BUTTON */}
+          <button
+            onClick={() => setShowHelpPopup(true)}
+            className="flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-lg shadow bg-yellow-500 hover:bg-yellow-600 text-white transition-all duration-300"
+          >
+            <MdHelpOutline className="text-xl" />
+            Help
+          </button>
+        </div>
+
+        {/* CALL POPUP */}
+        {showCallPopup && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-xl p-6 shadow-xl w-[20rem] text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Call Owner
+              </h3>
+              <p className="text-xl font-bold text-indigo-600 mb-6">
+                +91 {property?.owner_phone || "Unavailable"}
+              </p>
               <button
-                onClick={() => setShowConfirmPopup(true)}
-                disabled={isUnlocking}
-                className={`px-4 py-2 text-white text-sm rounded-lg ${isUnlocking ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"}`}
-              >{isUnlocking ? "Unlocking..." : "Unlock Contact"}</button>
-            )}
+                onClick={() => setShowCallPopup(false)}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        ) : displayPhone()}
+        )}
+
+        {/* HELP POPUP */}
+        {showHelpPopup && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="relative bg-white rounded-xl p-6 shadow-xl w-[20rem] text-center">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowHelpPopup(false)}
+                className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Help & Support
+              </h3>
+              <p className="text-md font-medium text-gray-700 mb-6">
+                +91 90044 63371
+              </p>
+
+              <div className="flex justify-center gap-6">
+                <a
+                  href="tel:+919004463371"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-green-600 hover:bg-green-700 text-white text-2xl"
+                >
+                  <FaPhoneAlt />
+                </a>
+
+                <a
+                  href={`https://wa.me/919004463371?text=${encodeURIComponent(
+                    "I want help regarding our service. My contact number is +91 90044 63371."
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-green-500 hover:bg-green-600 text-white text-2xl"
+                >
+                  <FaWhatsapp />
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CHAT BOX */}
+        {showChat && isUnlocked && (
+          <div className="mt-4 w-full">
+            <ChatBox
+              userId={user.id}
+              recipientName={property.title}
+              recipientOwnerCode={property.owner_code}
+              propertyId={property.id}
+              disabled={!isUnlocked}
+              onLockedAction={() => setShowPlanPopup(true)}
+            />
+          </div>
+        )}
       </div>
 
       {/* Booking Card */}
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
-        <h2 className="text-lg flex items-center gap-2 mb-3" style={{ fontFamily: "heading_font" }}>
-          {!existingBookingDateTime && <FaCalendarAlt className="text-indigo-600" />} Booking Schedule
+        <h2
+          className="text-lg flex items-center gap-2 mb-3"
+          style={{ fontFamily: "heading_font" }}
+        >
+          {!existingBookingDateTime && (
+            <FaCalendarAlt className="text-indigo-600" />
+          )}{" "}
+          Booking Schedule
         </h2>
 
         {isOwner ? (
@@ -283,7 +354,9 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
                       : ""
                   }`}
                   onClick={handleBookingSave}
-                  disabled={!selectedBookingDateTime || remainingBookings <= 0}
+                  disabled={
+                    !selectedBookingDateTime || remainingBookings <= 0
+                  }
                 >
                   Schedule
                 </button>
@@ -296,10 +369,16 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
       {/* Active Plan Card */}
       {hasPaid && user?.activePlan && (
         <div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
-          <h2 className="text-lg flex items-center gap-2 mb-3" style={{ fontFamily: "heading_font" }}>
+          <h2
+            className="text-lg flex items-center gap-2 mb-3"
+            style={{ fontFamily: "heading_font" }}
+          >
             <MdOutlineCardMembership className="text-indigo-600" /> Active Plan
           </h2>
-          <p className="text-gray-800 font-medium">Plan Name: <span className="text-indigo-600">{user.activePlan.name}</span></p>
+          <p className="text-gray-800 font-medium">
+            Plan Name:{" "}
+            <span className="text-indigo-600">{user.activePlan.name}</span>
+          </p>
           <p className="text-green-600 font-semibold mt-1">Status: Active</p>
         </div>
       )}
@@ -310,13 +389,22 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
           One-time Service Fee
           <div className="flex justify-center items-center ml-2">
             <RiInformation2Line className="text-blue-600 text-base hover:text-blue-800" />
-            <button onClick={() => setShowPlanPopup(true)} className="text-blue-600 text-sm hover:text-blue-800">What’s included?</button>
+            <button
+              onClick={() => setShowPlanPopup(true)}
+              className="text-blue-600 text-sm hover:text-blue-800"
+            >
+              What’s included?
+            </button>
           </div>
         </div>
         <div className="flex items-center justify-center gap-5">
           <SiGooglepay className="text-3xl text-indigo-600" />
           <SiPaytm className="text-3xl text-blue-600" />
-          <PaymentButton hasPaid={hasPaid} userMobile={userMobile} setHasPaid={setHasPaid} />
+          <PaymentButton
+            hasPaid={hasPaid}
+            userMobile={userMobile}
+            setHasPaid={setHasPaid}
+          />
         </div>
       </div>
 
@@ -326,12 +414,28 @@ export default function ContactCard({ property, hasPaid, setHasPaid, setShowPlan
           <div className="bg-white rounded-xl p-6 w-80 text-center shadow-lg">
             <h2 className="text-lg mb-3 text-gray-800">Confirm Unlock</h2>
             <p className="text-sm text-gray-700 mb-4">
-              This will use <strong>1 unlock</strong> from your plan.<br />
+              This will use <strong>1 unlock</strong> from your plan.
+              <br />
               You have <strong>{contactStatus.remaining}</strong> remaining.
             </p>
             <div className="flex gap-3 justify-center">
-              <button onClick={() => setShowConfirmPopup(false)} className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-2 rounded-md">Cancel</button>
-              <button onClick={handleUnlock} disabled={isUnlocking} className={`text-sm px-4 py-2 rounded-md text-white ${isUnlocking ? "bg-indigo-400" : "bg-indigo-600 hover:bg-indigo-700"}`}>{isUnlocking ? "Unlocking..." : "Confirm"}</button>
+              <button
+                onClick={() => setShowConfirmPopup(false)}
+                className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUnlock}
+                disabled={isUnlocking}
+                className={`text-sm px-4 py-2 rounded-md text-white ${
+                  isUnlocking
+                    ? "bg-indigo-400"
+                    : "bg-indigo-600 hover:bg-indigo-700"
+                }`}
+              >
+                {isUnlocking ? "Unlocking..." : "Confirm"}
+              </button>
             </div>
           </div>
         </div>
