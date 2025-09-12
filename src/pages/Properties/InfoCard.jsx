@@ -3,6 +3,8 @@ import { FaPhoneAlt, FaUserCircle, FaCalendarAlt, FaComments, FaWhatsapp } from 
 import { SiGooglepay, SiPaytm } from "react-icons/si";
 import { RiInformation2Line } from "react-icons/ri";
 import { MdOutlineCardMembership, MdHelpOutline } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PaymentButton from "./PaymentButton";
@@ -164,7 +166,7 @@ export default function ContactCard({
           {isUnlocked && "Owner's Contact"}
         </h2>
 
-      <div className="flex gap-5 ml-0 items-start w-full">
+      <div className="flex gap-5 ml-0 items-start w-full ">
   {/* CALL BUTTON */}
   <button
     onClick={() => {
@@ -192,26 +194,35 @@ export default function ContactCard({
 
   {/* CHAT BUTTON */}
   <button
-    onClick={() => {
-      if (!user || !hasPaid) {
-        setShowPlanPopup(true);
-      } else if (!isUnlocked) {
-        setPendingAction("chat");
-        setShowConfirmPopup(true);
-      } else {
-        setShowChat(!showChat);
-      }
-    }}
-    className="flex-1 flex items-center justify-center gap-2 
+  onClick={() => {
+    if (!user || !hasPaid) {
+      setShowPlanPopup(true);
+    } else if (!isUnlocked) {
+      setPendingAction("chat");
+      setShowConfirmPopup(true);
+    } else {
+      setShowChat(!showChat);
+    }
+  }}
+  className="flex-1 flex items-center justify-center gap-2 
                py-2 sm:py-3 px-2 sm:px-4 
-               text-xs sm:text-sm md:text-base font-medium 
-               rounded-lg shadow 
-               bg-indigo-600 hover:bg-indigo-700 
-               text-white transition-all duration-300"
-  >
-    <FaComments className="text-base sm:text-lg md:text-xl" />
-    Chat
-  </button>
+             text-xs sm:text-sm md:text-base font-medium 
+             rounded-lg shadow 
+             bg-indigo-600 hover:bg-indigo-700 
+             text-white transition-all duration-300"
+>
+  {showChat ? (
+    <>
+      <IoClose className="text-base sm:text-lg md:text-xl" />
+      Close
+    </>
+  ) : (
+    <>
+      <FaComments className="text-base sm:text-lg md:text-xl" />
+      Chat
+    </>
+  )}
+</button>
 
   {/* HELP BUTTON */}
   <button
@@ -293,7 +304,7 @@ export default function ContactCard({
 
         {/* CHAT BOX */}
         {showChat && isUnlocked && (
-          <div className="mt-4 w-full">
+          <div className="mt-2 w-full">
             <ChatBox
               userId={user.id}
               recipientName={property.title}
