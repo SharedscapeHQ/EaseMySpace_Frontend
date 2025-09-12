@@ -6,6 +6,10 @@ import {
 import { getCurrentUser } from "../../api/authApi";
 import { FiCheckCircle } from "react-icons/fi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { IoCall } from "react-icons/io5";
+
+
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -178,7 +182,7 @@ export default function NewlyListedProperties() {
             style={{ fontFamily: "heading_font" }}
             className="text-[16px] lg:text-3xl text-left text-black"
           >
-            Exclusive Featured Properties
+           Top Sharing Rooms
           </h2>
 
           <Link
@@ -197,72 +201,87 @@ export default function NewlyListedProperties() {
             role="list"
           >
             {newlyListed.map((p) => (
-            <Link
-  to={`/properties/${p.id}`}
-  key={p.id}
-  onClick={(e) => handlePropertyCardClick(e, p)}
-  className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden relative transition-all duration-300"
->
-  {/* Background Fill Overlay */}
-  <div className="hidden lg:block absolute inset-x-0 bottom-0 bg-blue-500 h-0 group-hover:h-full transition-all duration-300 ease-in-out z-0 rounded-2xl"></div>
+        <Link
+                  to={`/properties/${p.id}`}
+                  key={p.id}
+                  onClick={(e) => handlePropertyCardClick(e, p)}
+                  className="min-w-[300px] max-w-[300px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden shadow-md"
+                >
+                  {/* Image Section */}
+                  <div className="relative w-full h-44 ">
+                    {p.images?.length > 0 ? (
+                      <img
+                        src={p.images[0]}
+                        alt={p.title || "Property image"}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 italic">
+                        No Image
+                      </div>
+                    )}
+                
+                    {p.verified && (
+                      <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
+                        Verified
+                      </span>
+                    )}
+                  </div>
+                
+                  {/* Details Section */}
+                  <div className="p-4 flex flex-col gap-3">
+                    {/* Owner Info */}
+                    <p className="text-zinc-800">Owner's Contact</p>
+                   <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center text-2xl justify-center text-blue-600 font-semibold">
+                      {p.title?.charAt(0) || "U"}
+                    </div>
+                    <span className="font-medium text-sm text-gray-700">{p.title}</span>
+                  </div>
+                
+                  <div className="flex gap-4 text-blue-500">
+                    <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
+                    <IoCall className="text-2xl cursor-pointer" />
+                  </div>
+                </div>
+                
+                    {/* Book Now Button */}
+                    <button style={{fontFamily:"heading_font"}} className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-md mt-2">
+                      Book Now
+                    </button>
+                
+                    {/* Rent Info */}
+                    <div className="text-center">
+                      <p className="font-bold text-black text-base">
+                       ₹ {Number(p.price).toLocaleString()}/month
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        {p.bhk_type} in {p.location}
+                      </p>
+                    </div>
+                
+                    {/* Payment */}
+                    <div className="flex items-center justify-center text-xs text-gray-500 mt-1 gap-2">
+                  <span>Pay with</span>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      alt="Google Pay"
+                      className="h-4 object-contain"
+                    />
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png"
+                      alt="Paytm"
+                      className="h-4 object-contain"
+                    />
+                  </div>
+                </div>
+                
+                  </div>
+                </Link>
 
 
-  {/* Image with Verified badge */}
-  {p.images?.length > 0 ? (
-    <div className="relative h-48 w-full p-3 pt-3 pb-0 z-10">
-      <div className="h-full w-full overflow-hidden rounded-xl">
-        {(() => {
-          const url = p.images?.[0];
-          if (!url) return null;
-
-          const isImage = /\.(jpe?g|png|webp)$/i.test(url);
-          const isVideo = /\.(mp4|mov|webm)$/i.test(url);
-
-          return isImage ? (
-            <img
-              src={url}
-              alt={p.title || `Property image`}
-              className="h-full group-hover:scale-105 w-full object-cover group-hover:brightness-110 transition-transform duration-300"
-              loading="lazy"
-            />
-          ) : isVideo ? (
-            <video
-              src={url}
-              controls
-              className="h-full w-full object-cover"
-            />
-          ) : null;
-        })()}
-      </div>
-
-      {p.verified && (
-        <span className="absolute top-4 left-4 bg-green-500 text-white text-[10px] px-2 py-1 rounded-lg flex items-center gap-1 shadow-md z-10">
-          <FiCheckCircle className="text-[12px]" />
-          Verified
-        </span>
-      )}
-    </div>
-  ) : (
-    <div className="h-48 w-full bg-gray-100 flex items-center justify-center text-gray-400 italic rounded-t-2xl z-10">
-      No Media
-    </div>
-  )}
-
-  {/* Card Body */}
-  <div className="p-4 flex flex-col gap-1 z-10 relative">
-    <h3 style={{ fontFamily: "heading_font" }} className="font-semibold text-md truncate max-w-[160px] lg:group-hover:text-white transition-colors duration-300">
-      {p.bhk_type}
-    </h3>
-
-    <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 font-bold text-xs lg:text-base whitespace-nowrap lg:group-hover:text-white transition-colors duration-300">
-      ₹ {Number(p.price).toLocaleString()}/mo
-    </p>
-
-    <p className="text-gray-600 text-xs lg:group-hover:text-white transition-colors duration-300">
-      {p.location}
-    </p>
-  </div>
-</Link>
 
 
             ))}

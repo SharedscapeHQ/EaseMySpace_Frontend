@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUnlockedProperties } from "../../api/userApi";
-import { FiClock, FiCheckCircle } from "react-icons/fi";
-
+import { FiClock } from "react-icons/fi";
+import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
 
 export default function UnlockedCards() {
   const [unlocked, setUnlocked] = useState([]);
@@ -9,7 +9,10 @@ export default function UnlockedCards() {
 
   useEffect(() => {
     getUnlockedProperties()
-      .then((data) => {console.log(data);setUnlocked(data)})
+      .then((data) => {
+        console.log(data);
+        setUnlocked(data);
+      })
       .catch((err) =>
         console.error("❌ Failed to fetch unlocked contacts:", err)
       )
@@ -17,7 +20,7 @@ export default function UnlockedCards() {
   }, []);
 
   const getImageUrl = (property) => {
-    const baseUrl = "https://your-backend-url.com/"; // Replace with your actual backend URL
+    const baseUrl = "https://your-backend-url.com/";
 
     let imagePath = "";
     if (Array.isArray(property.image) && property.image.length > 0) {
@@ -35,9 +38,13 @@ export default function UnlockedCards() {
       : baseUrl + imagePath.replace(/^\/+/, "");
   };
 
-  if (loading) return <div className="text-center text-gray-700 font-medium py-6">
-        <FiClock className="inline mr-2 animate-spin" /> Loading Unlocked Contacts
+  if (loading)
+    return (
+      <div className="text-center text-gray-700 font-medium py-6">
+        <FiClock className="inline mr-2 animate-spin" /> Loading Unlocked
+        Contacts
       </div>
+    );
 
   if (unlocked.length === 0)
     return (
@@ -47,60 +54,91 @@ export default function UnlockedCards() {
     );
 
   return (
-   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {unlocked.map((p) => (
-    <div
-      key={p._id}
-      onClick={() => window.open(`/properties/${p.id}`, "_blank")} // ✅ open in new tab
-      className="group min-w-[270px] lg:max-w-[300px] bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden relative transition-all duration-300 cursor-pointer"
-    >
-      {/* Hover Blue Overlay */}
-      <div className="hidden lg:block absolute inset-x-0 bottom-0 bg-blue-500 h-0 group-hover:h-full transition-all duration-300 ease-in-out z-0 rounded-2xl"></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {unlocked.map((p) => (
+        <div
+          key={p._id}
+          onClick={() => window.open(`/properties/${p.id}`, "_blank")}
+          className="min-w-[300px] max-w-[300px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden shadow-md cursor-pointer hover:shadow-lg"
+        >
+          {/* Image Section */}
+          <div className="relative w-full h-44">
+            <img
+              src={getImageUrl(p)}
+              alt={p.title || "Property Image"}
+              className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://via.placeholder.com/300x160?text=No+Image";
+              }}
+            />
 
-      
+            {/* Top-left badge */}
+            {p.looking_for && (
+              <span className="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded-full shadow-md">
+                {p.looking_for}
+              </span>
+            )}
+          </div>
 
-      {/* Image */}
-      <div className="relative h-48 w-full p-3 pt-3 pb-0 z-10">
-        <div className="h-full w-full overflow-hidden rounded-xl">
-          <img
-            src={getImageUrl(p)}
-            alt={p.title || "Property Image"}
-            className="h-full w-full object-cover group-hover:scale-105 group-hover:brightness-110 transition-transform duration-300"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src =
-                "https://via.placeholder.com/300x160?text=No+Image";
-            }}
-          />
+          {/* Details Section */}
+          <div className="p-4 flex flex-col gap-3">
+            {/* Owner Info */}
+            <p className="text-zinc-800 text-sm">Owner's Contact</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-lg">
+                  {p.title?.charAt(0) || "U"}
+                </div>
+                <span className="font-medium text-sm text-gray-700">
+                  {p.title}
+                </span>
+              </div>
+
+              <div className="flex gap-4 text-blue-500">
+                <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
+                <IoCall className="text-2xl cursor-pointer" />
+              </div>
+            </div>
+
+            {/* Book Now Button */}
+            <button
+              style={{ fontFamily: "heading_font" }}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-md mt-2"
+            >
+              Book Now
+            </button>
+
+            {/* Rent Info */}
+            <div className="text-center">
+              <p className="font-bold text-black text-base">
+                ₹ {Number(p.price || 0).toLocaleString()}/month
+              </p>
+              <p className="text-gray-600 text-sm">
+                {p.bhk_type} in {p.location || "Unknown location"}
+              </p>
+            </div>
+
+            {/* Payment Options */}
+              <div className="flex items-center justify-center text-xs text-gray-500 mt-1 gap-2">
+            <span>Pay with</span>
+            <div className="flex items-center gap-2">
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="Google Pay"
+                className="h-4 object-contain"
+              />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png"
+                alt="Paytm"
+                className="h-4 object-contain"
+              />
+            </div>
+          </div>
+          </div>
         </div>
-
-        {/* Top-left badge */}
-      {p.looking_for && (
-        <span className="absolute top-3 left-3 bg-black text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm z-10">
-          {p.looking_for}
-        </span>
-      )}
-      </div>
-
-      {/* Content */}
-      <div className="p-4 flex flex-col gap-1 z-10 relative">
-        <h3 className="font-semibold text-md truncate max-w-[160px] lg:group-hover:text-white transition-colors duration-300">
-          {p.title || "Untitled Property"}
-        </h3>
-
-        <p className="text-gray-600 text-xs lg:group-hover:text-white transition-colors duration-300 flex items-center gap-1">
-          📍 {p.location || "Unknown location"}
-        </p>
-
-        <p className="text-zinc-800 font-bold text-xs lg:text-base whitespace-nowrap lg:group-hover:text-white transition-colors duration-300 flex items-center gap-1">
-          💰 ₹{Number(p.price || 0).toLocaleString()}
-        </p>
-      </div>
+      ))}
     </div>
-  ))}
-</div>
-
-
-
   );
 }
