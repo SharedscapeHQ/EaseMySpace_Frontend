@@ -261,7 +261,7 @@ export default function ContactCard({
 
                 <a
                   href={`https://wa.me/919004463371?text=${encodeURIComponent(
-                    "I want help regarding our service. My contact number is +91 90044 63371."
+                    "I want help regarding"
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
