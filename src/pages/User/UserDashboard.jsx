@@ -19,8 +19,8 @@ import { FiClock } from "react-icons/fi";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import DedicatedRM from "../../components/UserPageComp/DedicatedRM";
 import MyBookings from "../../components/UserPageComp/MyBookings";
-import ReferAndEarn from "../../components/UserPageComp/ReferAndEarn";
-import MyWallet from "../../components/UserPageComp/MyWallet";
+// import ReferAndEarn from "../../components/UserPageComp/ReferAndEarn";
+// import MyWallet from "../../components/UserPageComp/MyWallet";
 import UserChat from "../../components/UserPageComp/UserChat";
 
 const TAB_TITLES = {
@@ -225,8 +225,8 @@ export default function UserDashboard() {
         )}
 
         {activeTab === "MyQueries" && <MyQueries />}
-        {activeTab === "ReferEarn" && <ReferAndEarn />}
-        {activeTab === "MyWallet" && <MyWallet />}
+        {/* {activeTab === "ReferEarn" && <ReferAndEarn />} */}
+        {/* {activeTab === "MyWallet" && <MyWallet />} */}
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
         {activeTab === "MyBookings" && <MyBookings />}
