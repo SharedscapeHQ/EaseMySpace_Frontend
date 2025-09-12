@@ -19,6 +19,9 @@ import { FiClock } from "react-icons/fi";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import DedicatedRM from "../../components/UserPageComp/DedicatedRM";
 import MyBookings from "../../components/UserPageComp/MyBookings";
+import ReferAndEarn from "../../components/UserPageComp/ReferAndEarn";
+import MyWallet from "../../components/UserPageComp/MyWallet";
+import UserChat from "../../components/UserPageComp/UserChat";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -28,6 +31,8 @@ const TAB_TITLES = {
   UnlockedContacts: "Unlocked Contacts",
   RecentlyViewed: "Recently Viewed",
   MyBookings: "Your Bookings",
+  ReferEarn: "Invite Friends, Earn Rewards!",
+  MyWallet: "Referral Wallet",
 };
 
 function LoadingMessage({ message }) {
@@ -220,9 +225,12 @@ export default function UserDashboard() {
         )}
 
         {activeTab === "MyQueries" && <MyQueries />}
+        {activeTab === "ReferEarn" && <ReferAndEarn />}
+        {activeTab === "MyWallet" && <MyWallet />}
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
         {activeTab === "MyBookings" && <MyBookings />}
+        {activeTab === "Chat" && <UserChat />}
         {activeTab === "DedicatedRM" && user && <DedicatedRM userId={user.id} />}
 
         <RaiseQueryModal
