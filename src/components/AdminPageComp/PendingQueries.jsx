@@ -18,18 +18,25 @@ export default function AllQueries() {
     fetchQueries();
   }, []);
 
-  const handleResolve = async (id) => {
-    try {
-      await resolveEditQuery(id);
-      setQueries((prev) =>
-        prev.map((query) =>
-          query.id === id ? { ...query, resolved: true } : query
-        )
-      );
-    } catch (error) {
-      alert("Failed to mark as resolved.");
-    }
-  };
+const handleResolve = async (id) => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const ownerCode = user?.owner_code;
+
+    const res = await resolveEditQuery(id, ownerCode);
+    const updatedQuery = res.data.updatedQuery; // ✅ get from backend
+
+    setQueries((prev) =>
+      prev.map((query) =>
+        query.id === id ? { ...query, ...updatedQuery } : query
+      )
+    );
+  } catch (error) {
+    alert("Failed to mark as resolved.");
+  }
+};
+
+
 
   const filteredQueries =
     filter === "all"
@@ -87,26 +94,57 @@ export default function AllQueries() {
               className="bg-white p-4 rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition flex flex-col sm:flex-row justify-between"
             >
               {/* Left Info Section */}
-             <div className="flex-1 space-y-3">
+          <div className="flex-1 space-y-3">
+  {/* User Name */}
   <div>
     <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Name</p>
     <p className="text-sm font-medium text-gray-900">
       {query.user_first_name} {query.user_last_name}
     </p>
   </div>
+
+  {/* Submitted On */}
   <div>
     <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Submitted On</p>
     <p className="text-sm text-gray-900">
       {new Date(query.created_at).toLocaleString()}
     </p>
   </div>
+
+  {/* Message */}
   <div>
     <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Message</p>
     <p className="text-sm text-gray-900 break-words whitespace-normal">
       {query.message}
     </p>
   </div>
+
+{/* Resolved Info */}
+{query.resolved && (
+  <div className="grid grid-cols-2 gap-4">
+    <div>
+      <p className="text-xs font-bold text-green-600 uppercase tracking-wide">
+        Resolved By
+      </p>
+      <p className="text-sm text-gray-900">
+        {query.resolver_first_name} {query.resolver_last_name}
+      </p>
+    </div>
+    {query.resolved_on && (
+      <div>
+        <p className="text-xs font-bold text-green-600 uppercase tracking-wide">
+          Resolved On
+        </p>
+        <p className="text-sm text-gray-900">
+          {new Date(query.resolved_on).toLocaleString()}
+        </p>
+      </div>
+    )}
+  </div>
+)}
+
 </div>
+
 
 
               {/* Right Action Section */}

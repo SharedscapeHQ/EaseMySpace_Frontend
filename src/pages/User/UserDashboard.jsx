@@ -7,6 +7,8 @@ import {
   getUserSubscription,
 } from "../../api/userApi";
 
+import { toast } from "react-hot-toast";
+
 import Sidebar from "../../components/UserPageComp/Sidebar";
 import PropertyCard from "../../components/UserPageComp/PropertyCard";
 import RaiseQueryModal from "../../components/UserPageComp/RaiseQueryModal";
@@ -128,13 +130,14 @@ export default function UserDashboard() {
   }, []);
 
   const handleQuerySubmit = async (propertyId, message) => {
-    try {
-      await submitQuery(propertyId, message);
-      alert("Query submitted successfully.");
-      setSelectedProperty(null);
-    } catch {
-      alert("Failed to submit query.");
-    }
+   try {
+  await submitQuery(propertyId, message);
+  toast.success("Query submitted successfully.");
+  setSelectedProperty(null);
+} catch {
+  toast.error("Failed to submit query.");
+}
+
   };
 
   const handleLogout = async () => {
@@ -225,8 +228,8 @@ export default function UserDashboard() {
         )}
 
         {activeTab === "MyQueries" && <MyQueries />}
-        {/* {activeTab === "ReferEarn" && <ReferAndEarn />} */}
-        {/* {activeTab === "MyWallet" && <MyWallet />} */}
+        {/* {activeTab === "ReferEarn" && <ReferAndEarn />}
+        {activeTab === "MyWallet" && <MyWallet />} */}
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
         {activeTab === "MyBookings" && <MyBookings />}

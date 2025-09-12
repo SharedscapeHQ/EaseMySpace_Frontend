@@ -84,8 +84,10 @@ export const fetchPendingQueries = () => {
   return adminAxios.get("/edit-queries");
 };
 
-export const resolveEditQuery = (id) => {
-  return adminAxios.patch(`/edit-queries/${id}/resolve`);
+export const resolveEditQuery = (id, ownerCode) => {
+  return adminAxios.patch(`/edit-queries/${id}/resolve`, {
+    owner_code: ownerCode,
+  });
 };
 
 // 🔹 GET all locations (admin/owner access)
