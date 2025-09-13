@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { registerUser } from "../api/authApi";
 
 function Register() {
+  const [searchParams] = useSearchParams();
+  const referralFromUrl = searchParams.get("ref") || "";
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -12,24 +15,53 @@ function Register() {
     phone: "",
     gender: "male",
     password: "",
+    referralCode: referralFromUrl, // ✅ pre-fill referral from URL
   });
 
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Prevent spaces for firstName and lastName
+    if ((name === "firstName" || name === "lastName") && value.includes(" ")) {
+      return;
+    }
+
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleChangePhn = (e) => {
+    const { value } = e.target;
+
+    // Allow only digits and max 10
+    if (/^\d*$/.test(value) && value.length <= 10) {
+      setForm({ ...form, phone: value });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailOK = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
-    const phoneOK = /^\d{10}$/.test(form.phone);
 
+    if (!form.firstName || !form.lastName) {
+      toast.error("First Name and Last Name cannot be empty");
+      return;
+    }
+
+    const emailOK = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
     if (!emailOK) {
       toast.error("Enter a valid email");
       return;
     }
+
+    const phone = form.phone;
+    const phoneOK =
+      /^\d{10}$/.test(phone) &&
+      !/^(\d)\1{9}$/.test(phone) && // repetitive
+      phone !== "1234567890"; // fake
+
     if (!phoneOK) {
-      toast.error("Phone must be 10 digits");
+      toast.error("Enter a valid 10-digit phone number");
       return;
     }
 
@@ -43,17 +75,6 @@ function Register() {
         id: toastId,
       });
       console.error("❌ Registration failed:", err);
-    }
-  };
-
-  const handleChangePhn = (e) => {
-    const { name, value } = e.target;
-    if (name === "phone") {
-      if (/^\d*$/.test(value)) {
-        setForm({ ...form, [name]: value });
-      }
-    } else {
-      setForm({ ...form, [name]: value });
     }
   };
 
@@ -124,8 +145,16 @@ function Register() {
           type="tel"
           placeholder="Phone Number"
           inputMode="numeric"
-          pattern="[0-9]*"
         />
+
+        {/* <input
+          name="referralCode"
+          value={form.referralCode}
+          onChange={handleChange}
+          className={inputClasses}
+          type="text"
+          placeholder="Referral Code (Optional)"
+        /> */}
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <label className="font-semibold text-gray-700 whitespace-nowrap">
