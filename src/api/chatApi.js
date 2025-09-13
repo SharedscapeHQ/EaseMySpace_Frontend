@@ -9,10 +9,8 @@ const api = axios.create({
 export const resolveUserByOwnerCode = async (ownerCode) => {
   try {
     const res = await api.get(`/resolve/${ownerCode}`); // match backend route
-    console.log("🔹 resolveUserByOwnerCode response:", res.data);
     return res.data;
   } catch (err) {
-    console.error("❌ Error in resolveUserByOwnerCode:", err.response || err);
     throw err;
   }
 };
@@ -20,7 +18,6 @@ export const resolveUserByOwnerCode = async (ownerCode) => {
 export const getChatHistory = async (user1, user2, propertyId = null) => {
   try {
     const res = await api.get(`/history/${user1}/${user2}/${propertyId ?? "null"}`);
-    console.log("🔹 getChatHistory response:", res.data);
     return res;
   } catch (err) {
     console.error("❌ Error in getChatHistory:", err.response || err);

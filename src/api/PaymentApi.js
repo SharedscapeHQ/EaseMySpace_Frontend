@@ -22,9 +22,7 @@ export const createOrder = async ({amount, planName}) => {
 // 2. Verify Razorpay Payment
 export const verifyPayment = async (paymentData) => {
   try {
-    console.log("🔁 Verifying payment with data:", paymentData);
     const res = await axios.post(`${BASE_URL}/verify`, paymentData, { timeout: 60000 });
-    console.log("✅ Payment verified successfully:", res.data);
     return res.data;
   } catch (err) {
     console.error("❌ Failed to verify payment:", err.message);

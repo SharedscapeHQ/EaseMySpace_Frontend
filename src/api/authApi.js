@@ -28,6 +28,13 @@ export const verifyPasswordReset = (payload) =>
   apiClient.post("/auth/forgot-password/verify", payload);
 
 export const getCurrentUser = async () => {
-  const res = await apiClient.get("/auth/me");
-  return res.data;
+  try {
+    const res = await apiClient.get("/auth/me");
+    return res.data; 
+  } catch (err) {
+    if (err.response?.status === 401) {
+      return null; 
+    }
+    throw err;
+  }
 };
