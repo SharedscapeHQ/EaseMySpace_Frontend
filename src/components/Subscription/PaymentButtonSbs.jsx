@@ -210,7 +210,6 @@ export default function PaymentButtonSubs({
           onVerified={() => {
             setIsOtpVerified(true);
             setShowOtpPopup(false);
-            toast.success("You can now proceed with payment.");
           }}
           onClose={() => setShowOtpPopup(false)}
           otpPurpose="Subscribe"
