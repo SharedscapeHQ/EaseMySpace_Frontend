@@ -17,68 +17,76 @@ function PropertyHeaderSection({
 
 
   return (
-    <div className="flex relative  bg-white rounded-xl border p-6 flex-col lg:flex-row  justify-center items-stretch gap-5 w-full">
+    <div className="flex relative  lg:bg-white rounded-xl lg:border lg:p-6 flex-col lg:flex-row  justify-center items-stretch gap-5 w-full">
       {/* Main Image + Mobile Thumbnails */}
-      <div className="w-full lg:w-[32rem] ">
-        <div
-          className="w-full h-80 sm:h-[26rem] rounded-lg overflow-hidden cursor-pointer"
-          onClick={() => setLightboxIdx(0)}
-        >
-          <img
-            src={property.cover}
-            alt="main"
-            className="w-full h-full object-cover"
-            
-          />
-        </div>
+     <div className="w-full lg:w-[32rem] ">
+  {/* Main Image */}
+  <div
+    className="w-full h-80 sm:h-[26rem] rounded-lg overflow-hidden cursor-pointer"
+    onClick={() => setLightboxIdx(0)}
+  >
+    <img
+      src={property.cover}
+      alt="main"
+      className="w-full h-full object-cover"
+    />
+  </div>
 
-       {/* Mobile Thumbnails */}
-<div className="flex lg:hidden gap-3 mt-3">
-  {[
-    ...property.images.slice(1, 3), // next 2 images after main
-    property.video ? "video" : null, // add video slot if exists
-  ]
-    .filter(Boolean)
-    .slice(0, 3)
-    .map((item, idx) => {
-      if (item === "video") {
-        return (
-          <div
-            key="video"
-            className="h-24 w-1/3 relative rounded-lg overflow-hidden cursor-pointer"
-            onClick={() => setLightboxIdx(property.images.length)}
-          >
-            <video
-              src={property.video}
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40 text-white flex items-center justify-center text-xs sm:text-sm">
-              📹 Video
-            </div>
-          </div>
-        );
-      }
+  {/* Mobile Thumbnails */}
+  <div className="flex lg:hidden gap-3 mt-3">
+    {property.images.slice(1, 3).map((item, idx) => (
+      <div
+        key={idx}
+        className="h-24 w-1/3 rounded-lg overflow-hidden cursor-pointer"
+        onClick={() => setLightboxIdx(idx + 1)} // +1 because main is index 0
+      >
+        <img
+          src={item}
+          alt={`thumb-${idx + 1}`}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    ))}
 
-      return (
-        <div
-          key={idx}
-          className="h-24 w-1/3 rounded-lg overflow-hidden cursor-pointer"
-          onClick={() => setLightboxIdx(idx + 1)} // +1 because main image is index 0
-        >
-          <img
-            src={item}
-            alt={`thumb-${idx + 1}`}
-            className="w-full h-full object-cover"
-          />
+    {/* Show video if available */}
+    {property.video && property.images.length <= 3 && (
+      <div
+        key="video"
+        className="h-24 w-1/3 relative rounded-lg overflow-hidden cursor-pointer"
+        onClick={() => setLightboxIdx(property.images.length)} // after last image
+      >
+        <video
+          src={property.video}
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 text-white flex items-center justify-center text-xs sm:text-sm">
+          📹 Video
         </div>
-      );
-    })}
+      </div>
+    )}
+
+    {/* "+N" if more images exist */}
+    {property.images.length > 3 && (
+      <div
+        className="h-24 w-1/3 relative rounded-lg overflow-hidden cursor-pointer bg-gray-200"
+        onClick={() => setLightboxIdx(3)} // open lightbox at 4th image
+      >
+        <img
+          src={property.images[3]} // preview the 4th image as background
+          alt="more"
+          className="w-full h-full object-cover brightness-50"
+        />
+        <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
+          +{property.images.length - 3}
+        </div>
+      </div>
+    )}
+  </div>
 </div>
 
-      </div>
 
      {/* Desktop Thumbnails */}
 <div className="hidden lg:flex flex-col justify-between gap-2 w-full lg:w-[16rem]">
