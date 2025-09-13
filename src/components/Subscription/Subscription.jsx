@@ -23,7 +23,6 @@ export default function SubscriptionPlans() {
   const [hasPaid, setHasPaid] = useState(false);
   const [userData, setUserData] = useState({});
   const [userMobile, setUserMobile] = useState("");
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   // Fetch current user
@@ -190,8 +189,8 @@ export default function SubscriptionPlans() {
                     hasPaid={hasPaid}
                     setHasPaid={setHasPaid}
                     isOtpVerified={isOtpVerified}
+                    setIsOtpVerified={setIsOtpVerified}
                     userMobile={userMobile}
-                    setShowOtpPopup={setShowOtpPopup}
                     planName={plan.type}
                   />
                 </div>
