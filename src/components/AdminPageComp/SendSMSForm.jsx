@@ -23,7 +23,6 @@ export default function SendSMSForm() {
     setLoading(true);
     try {
       const res = await sendSMS(recipient, message);
-      console.log("SMS sent:", res.data);
       toast.success("SMS sent successfully!");
       setRecipient("");
       setMessage("");

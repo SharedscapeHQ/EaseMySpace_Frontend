@@ -35,6 +35,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     { label: "Posted Requirement", value: "PostRequirement", icon: <FiClipboard  /> },
     ...(role === "Owner"
       ? [
+          { label: "Visit Track", value: "VisitTrack", icon: <FiMapPin /> },
           { label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> },
           { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
           { label: "RM Assignments", value: "RMAssignments", icon: <FiUserPlus /> },
