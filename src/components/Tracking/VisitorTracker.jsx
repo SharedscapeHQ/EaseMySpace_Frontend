@@ -2,11 +2,9 @@ import { useEffect } from "react";
 
 export default function VisitorTracker() {
   useEffect(() => {
-    // Check if we already have a visitor ID
+    // Get or create visitor ID
     let visitorId = localStorage.getItem("visitor_id");
-
     if (!visitorId) {
-      // Generate a new UUID for first-time visitors
       visitorId = crypto.randomUUID();
       localStorage.setItem("visitor_id", visitorId);
     }
@@ -16,7 +14,10 @@ export default function VisitorTracker() {
       fetch("https://api.easemyspace.in/api/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ visitor_id: visitorId, ...extraData }),
+        body: JSON.stringify({
+          visitor_id: visitorId,
+          ...extraData, // merges latitude/longitude + is_precise
+        }),
       }).catch((err) => console.error("Tracking failed:", err));
     };
 
@@ -25,19 +26,19 @@ export default function VisitorTracker() {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const { latitude, longitude } = pos.coords;
-          // Send with GPS coords
-          sendTrack({ latitude, longitude });
+          // ✅ Precise location allowed
+          sendTrack({ latitude, longitude, is_precise: true });
         },
         (err) => {
           console.warn("Geolocation denied, fallback to IP:", err);
-          // Fallback: send without coords (server will resolve via IP)
-          sendTrack({ repeat: true });
+          // ✅ Fallback: IP-based location only
+          sendTrack({ is_precise: false });
         },
         { enableHighAccuracy: true, timeout: 5000 }
       );
     } else {
-      // No geolocation support → fallback to IP
-      sendTrack({ repeat: true });
+      // ✅ No geolocation support → fallback
+      sendTrack({ is_precise: false });
     }
   }, []);
 
