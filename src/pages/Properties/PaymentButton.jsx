@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
 import { fetchUserContactStatus } from "../../api/userApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InvoiceModal from "../../components/Subscription/InvoiceModal";
 
 export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
@@ -16,6 +16,10 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   // Invoice modal state
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+
+  // Login popup state
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const navigate = useNavigate();
 
   const plans = {
     trial: {
@@ -169,6 +173,12 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   };
 
   const proceedToPayment = (planKey) => {
+    // 🚨 Force login before payment
+    if (!userData?.id) {
+      setShowPlanOptions(false);
+      return setShowLoginPopup(true);
+    }
+
     setSelectedPlan(planKey);
     setShowPlanOptions(false);
     loadRazorpay(planKey);
@@ -180,41 +190,41 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
   return (
     <>
+      {/* Loader */}
+      {isPaying && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <svg
+              className="animate-spin h-12 w-12 text-indigo-600 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+            <p className="text-indigo-600 font-semibold text-lg">
+              Processing your payment...
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              Please do not refresh or close the page
+            </p>
+          </div>
+        </div>
+      )}
 
-{isPaying && (
-  <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
-    <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-      <svg
-        className="animate-spin h-12 w-12 text-indigo-600 mb-4"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v8H4z"
-        ></path>
-      </svg>
-      <p className="text-indigo-600 font-semibold text-lg">
-        Processing your payment...
-      </p>
-      <p className="text-sm text-gray-600 mt-2">
-        Please do not refresh or close the page
-      </p>
-    </div>
-  </div>
-)}
-
-
+      {/* Main Button */}
       <button
         className={` w-1/2 py-2.5 px-2 text-md rounded-xl transition-all ${
           hasPaid
@@ -227,6 +237,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         {isPaying ? "Processing..." : hasPaid ? "Upgrade" : "Subscribe"}
       </button>
 
+      {/* Plan Options */}
       {showPlanOptions && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -279,6 +290,33 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                 More Details
               </Link>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Login Required Popup */}
+      {showLoginPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowLoginPopup(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              ✕
+            </button>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Login Required
+            </h2>
+            <p className="text-sm text-gray-600 mb-6 text-center">
+              Please login to continue with payment.
+            </p>
+            <button
+              onClick={() => navigate("/login")}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
+            >
+              Go to Login
+            </button>
           </div>
         </div>
       )}

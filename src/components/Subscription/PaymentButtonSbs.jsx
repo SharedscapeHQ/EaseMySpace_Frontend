@@ -3,14 +3,12 @@ import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
 import InvoiceModal from "./InvoiceModal";
-import OtpPopup from "../../pages/Properties/OtpPopup";
+import { useNavigate } from "react-router-dom";
 
 export default function PaymentButtonSubs({
   hasPaid,
   setHasPaid,
   planName,
-  isOtpVerified,
-  setIsOtpVerified,
   userMobile,
 }) {
   const [userData, setUserData] = useState({});
@@ -18,7 +16,9 @@ export default function PaymentButtonSubs({
   const [activeUserPhone, setActiveUserPhone] = useState(userMobile || "");
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+  const navigate = useNavigate();
 
   const plans = {
     trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
@@ -33,12 +33,11 @@ export default function PaymentButtonSubs({
         if (data?.subscription_status === "paid") setHasPaid(true);
         const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
         setActiveUserPhone(phone);
-        if (data) setIsOtpVerified(true); // if user exists, consider OTP verified
       } catch {
         setActiveUserPhone(localStorage.getItem("user_verified_mobile") || "");
       }
     })();
-  }, [setHasPaid, setIsOtpVerified]);
+  }, [setHasPaid]);
 
   const loadScript = (src) =>
     new Promise((resolve) => {
@@ -147,9 +146,9 @@ export default function PaymentButtonSubs({
       : null;
     if (!planKey) return toast.error("❌ Invalid or missing plan name.");
 
-    if (!userData?.id && !isOtpVerified) {
-      // User not logged in and OTP not verified
-      return setShowOtpPopup(true);
+    // 🚨 Force login before payment
+    if (!userData?.id) {
+      return setShowLoginPopup(true);
     }
 
     loadRazorpay(planKey);
@@ -205,15 +204,31 @@ export default function PaymentButtonSubs({
         {isPaying ? "Processing..." : hasPaid ? "Subscribed" : "Subscribe"}
       </button>
 
-      {showOtpPopup && (
-        <OtpPopup
-          onVerified={() => {
-            setIsOtpVerified(true);
-            setShowOtpPopup(false);
-          }}
-          onClose={() => setShowOtpPopup(false)}
-          otpPurpose="Subscribe"
-        />
+      {/* LOGIN REQUIRED POPUP */}
+      {showLoginPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowLoginPopup(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              ✕
+            </button>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Login Required
+            </h2>
+            <p className="text-sm text-gray-600 mb-6 text-center">
+              Please login to continue with payment.
+            </p>
+            <button
+              onClick={() => navigate("/login")}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
+            >
+              Go to Login
+            </button>
+          </div>
+        </div>
       )}
 
       <InvoiceModal
