@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { CheckCircle } from "lucide-react"; // ✅ for modern check icons
 import SalesPerson from "/TeamImg/Dharmendra.png";
 import ConnectPopup from "./ConnectPopup";
 
 export default function SalesPersonCard({ className = "" }) {
   const name = "Dharmendra Mishra";
   const phone = "+91 8090200513";
-  const role = "EMS consultant";
+  const role = "EMS Consultant";
   const bullets = [
     "Helps you discover the best listings",
     "Matches you with verified flatmates",
@@ -31,21 +32,21 @@ export default function SalesPersonCard({ className = "" }) {
   return (
     <div
       style={{ fontFamily: "para_font" }}
-      className={`bg-white shadow-md rounded-lg p-6 flex flex-col gap-6 ${className}`}
+      className={`bg-white shadow-lg rounded-2xl p-8 flex flex-col gap-8 ${className}`}
     >
-      {/* Full-width heading */}
+      {/* Heading */}
       <h2
         style={{ fontFamily: "heading_font" }}
-        className="text-lg font-bold text-gray-900"
+        className="text-2xl font-extrabold text-gray-900 text-center lg:text-left"
       >
         Meet Our Expert
       </h2>
 
-      {/* Content grid */}
-      <div className="flex flex-col lg:flex-row gap-8">
+      {/* Grid */}
+      <div className="flex flex-col lg:flex-row gap-10 items-center lg:items-start">
         {/* Left side */}
-        <div className="flex flex-col items-start w-full lg:w-1/3">
-          <div className="w-44 h-52 border border-blue-500 rounded-md overflow-hidden mb-3">
+        <div className="flex flex-col items-center lg:items-start w-full lg:w-1/3">
+          <div className="lg:w-48 w-60 h-60 border-2 border-zinc-300 rounded-xl overflow-hidden shadow-md mb-4">
             <img
               src={SalesPerson}
               alt={name}
@@ -53,32 +54,43 @@ export default function SalesPersonCard({ className = "" }) {
             />
           </div>
 
-          <h3 className="font-bold text-gray-900 text-base">{name}</h3>
-          <p className="text-gray-500 text-sm">
+          <h3 className="font-bold text-gray-900 text-lg text-center lg:text-left">
+            {name}
+          </h3>
+          <p className="text-gray-500 text-base text-center lg:text-left">
             {showRealPhone ? phone : maskPhone(phone)}
           </p>
-          <p className="text-gray-800 text-sm font-semibold">{role}</p>
+          <p className="text-blue-600 text-base font-semibold text-center lg:text-left">
+            {role}
+          </p>
         </div>
 
         {/* Right side */}
         <div className="flex-1 flex flex-col justify-between">
-          <h4 className="font-bold text-gray-900 mb-2">
-            Find Your Best Listings with Expert Guidance
-          </h4>
+          <div>
+            <h4 className="font-bold text-xl text-gray-900 mb-5">
+              Find Your Best Listings with Expert Guidance
+            </h4>
 
-          <ul className="list-disc list-outside pl-5 text-gray-700 text-sm space-y-1 mb-4">
-  {bullets.map((b, idx) => (
-    <li key={idx}>{b}</li>
-  ))}
-</ul>
+            <ul className="space-y-3">
+              {bullets.map((b, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-gray-700 text-base">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  {b}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-
-          <button
-            onClick={() => setIsOpen(true)}
-            className="w-40 py-2 -mt-10 -mr-10 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition"
-          >
-            Connect with us
-          </button>
+          {/* CTA Button aligned bottom */}
+          <div className="mt-8">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="w-full sm:w-56 py-3 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-xl lg:ml-7 shadow-md transition"
+            >
+              Connect with us
+            </button>
+          </div>
         </div>
       </div>
 

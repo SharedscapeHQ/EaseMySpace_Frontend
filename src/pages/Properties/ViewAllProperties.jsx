@@ -397,7 +397,7 @@ export default function ViewAllProperties() {
 
 
       {/* Listings */}
-  <section className="w-full max-w-7xl mx-auto space-y-8 lg:px-0 px-3">
+<section className="w-full max-w-7xl mx-auto space-y-8 lg:px-0 px-3">
   {loading ? (
     <PropertyCardSkeleton />
   ) : paginatedProperties.length === 0 ? (
@@ -405,25 +405,10 @@ export default function ViewAllProperties() {
       No properties match your filters.
     </p>
   ) : (
-   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  {paginatedProperties.map((p, index) => (
-    <React.Fragment key={p.id}>
-      {/* First 4 properties → first row */}
-      {index < 4 && (
-        <PropertyCard
-          p={p}
-          setShowOtpPopup={setShowOtpPopup}
-          setIsOtpVerified={setIsOtpVerified}
-          setSelectedPropertyId={setSelectedPropertyId}
-          isOtpVerified={isOtpVerified}
-          isLoggedIn={isLoggedIn}
-        />
-      )}
-
-      {/* Second row with salesperson card centered (for 6+ properties) */}
-      {index === 4 && paginatedProperties.length > 6 && (
-        <>
-          {/* Left card */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {paginatedProperties.map((p, index) => (
+        <React.Fragment key={p.id}>
+          {/* Default property card */}
           <PropertyCard
             p={p}
             setShowOtpPopup={setShowOtpPopup}
@@ -433,48 +418,33 @@ export default function ViewAllProperties() {
             isLoggedIn={isLoggedIn}
           />
 
-          {/* SalesPerson card spanning 2 cols */}
-          <div className="lg:col-span-2 flex">
-            <SalesPersonCard className="w-full h-full" />
-          </div>
-        </>
-      )}
+          {/* 📱 On mobile: insert SalesPersonCard after 3rd property */}
+          {index === 2 && (
+            <div className="block lg:hidden">
+              <SalesPersonCard className="w-full h-full" />
+            </div>
+          )}
 
-      {/* Right card in 2nd row */}
-      {index === 5 && paginatedProperties.length > 6 && (
-        <PropertyCard
-          p={p}
-          setShowOtpPopup={setShowOtpPopup}
-          setIsOtpVerified={setIsOtpVerified}
-          setSelectedPropertyId={setSelectedPropertyId}
-          isOtpVerified={isOtpVerified}
-          isLoggedIn={isLoggedIn}
-        />
-      )}
+          {/* 💻 On desktop: special layout with salesperson card centered */}
+          {index === 4 && paginatedProperties.length > 6 && (
+            <>
+              {/* SalesPerson card spanning 2 cols */}
+              <div className="hidden lg:flex lg:col-span-2">
+                <SalesPersonCard className="w-full h-full" />
+              </div>
+            </>
+          )}
 
-      {/* Continue normally after 6th index */}
-      {index > 5 && (
-        <PropertyCard
-          p={p}
-          setShowOtpPopup={setShowOtpPopup}
-          setIsOtpVerified={setIsOtpVerified}
-          setSelectedPropertyId={setSelectedPropertyId}
-          isOtpVerified={isOtpVerified}
-          isLoggedIn={isLoggedIn}
-        />
-      )}
-
-      {/* Edge case → if only 2–3 properties, still show SalesPersonCard */}
-      {paginatedProperties.length <= 3 &&
-        index === paginatedProperties.length - 1 && (
-          <div className="lg:col-span-2 flex">
-            <SalesPersonCard className="w-full h-full" />
-          </div>
-        )}
-    </React.Fragment>
-  ))}
-</div>
-
+          {/* Edge case → if only 2–3 properties total, still show card */}
+          {paginatedProperties.length <= 3 &&
+            index === paginatedProperties.length - 1 && (
+              <div className="lg:col-span-2 flex">
+                <SalesPersonCard className="w-full h-full" />
+              </div>
+            )}
+        </React.Fragment>
+      ))}
+    </div>
   )}
 
   {/* Post Requirements Box */}
@@ -495,6 +465,7 @@ export default function ViewAllProperties() {
     </Link>
   </div>
 </section>
+
 
 
 
