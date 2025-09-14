@@ -16,6 +16,7 @@ import PropertyCardSkeleton from "../../components/ViewAllPropertiesSectionComp/
 
 import { GoSortAsc } from "react-icons/go";
 import { GoSortDesc } from "react-icons/go";
+import Footer from "../../components/Footer.jsx";
 
 // --- helpers ---
 const parseImages = (raw) =>
@@ -206,6 +207,7 @@ export default function ViewAllProperties() {
   }, [filters, sort, properties]);
 
   return (
+    <>
     <div
       className="w-full pb-5 bg-zinc-100 min-h-screen lg:py-5 py-3 "
       style={{ fontFamily: "para_font" }}
@@ -499,5 +501,8 @@ export default function ViewAllProperties() {
         />
       )}
     </div>
+    <Footer />
+    </>
+    
   );
 }
