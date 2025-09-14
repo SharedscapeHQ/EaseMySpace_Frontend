@@ -37,6 +37,7 @@ import RequirementDashboard from "./components/DemandSide/RequirementDashboard";
 import PageWrapper from "./components/PageTranstion/PageWrapper";
 import AnalyticsTracker from "./components/Seo/AnalyticsTracker";
 import BlogPage from "./pages/BlogPage";
+import VisitorTracker from "./components/Tracking/VisitorTracker";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -119,6 +120,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+            <VisitorTracker />
       <ScrollToTop />
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       <TidioWidget />

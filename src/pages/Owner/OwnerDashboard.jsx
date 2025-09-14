@@ -30,6 +30,7 @@ import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 import RequirementReq from "../../components/AdminPageComp/RequirementReq";
 import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 import RMAssignments from "../../components/OwnerPageComp/RMAssignments";
+import VisitorsTable from "../../components/OwnerPageComp/VisitorsTable";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -454,6 +455,11 @@ export default function OwnerDashboard() {
           {activeTab === "UltimateSubscribers" && (
             <section>
               <UltimateSubscribers />
+            </section>
+          )}
+          {activeTab === "VisitTrack" && (
+            <section>
+              <VisitorsTable />
             </section>
           )}
 
