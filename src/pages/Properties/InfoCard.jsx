@@ -168,34 +168,41 @@ export default function ContactCard({
 
       <div className="flex gap-5 ml-0 items-start w-full ">
   {/* CALL BUTTON */}
-  <button
-    onClick={() => {
-      if (!user || !hasPaid) {
-        setShowPlanPopup(true);
-      } else if (!isUnlocked) {
-        setPendingAction("call");
-        setShowConfirmPopup(true);
-      } else {
-        setShowCallPopup(true);
-      }
-    }}
-    disabled={isUnlocking}
-    className="flex-1 flex items-center justify-center gap-2 
-               py-2 sm:py-3 px-2 sm:px-4 
-               text-xs sm:text-sm md:text-base font-medium 
-               rounded-lg shadow 
-               bg-green-600 hover:bg-green-700 
-               disabled:opacity-50 text-white 
-               transition-all duration-300"
-  >
-    <FaPhoneAlt className="text-base sm:text-lg md:text-xl" />
-    Call
-  </button>
+ <button
+  onClick={() => {
+    if (isOwner) {
+      // Owner sees their own contact directly
+      setShowCallPopup(true);
+    } else if (!user || !hasPaid) {
+      setShowPlanPopup(true);
+    } else if (!isUnlocked) {
+      setPendingAction("call");
+      setShowConfirmPopup(true);
+    } else {
+      setShowCallPopup(true);
+    }
+  }}
+  disabled={isUnlocking}
+  className="flex-1 flex items-center justify-center gap-2 
+             py-2 sm:py-3 px-2 sm:px-4 
+             text-xs sm:text-sm md:text-base font-medium 
+             rounded-lg shadow 
+             bg-green-600 hover:bg-green-700 
+             disabled:opacity-50 text-white 
+             transition-all duration-300"
+>
+  <FaPhoneAlt className="text-base sm:text-lg md:text-xl" />
+  Call
+</button>
+
 
   {/* CHAT BUTTON */}
   <button
   onClick={() => {
-    if (!user || !hasPaid) {
+    if (isOwner) {
+      // Owner should go to dashboard chat tab
+      window.location.href = "/dashboard?tab=Chat";
+    } else if (!user || !hasPaid) {
       setShowPlanPopup(true);
     } else if (!isUnlocked) {
       setPendingAction("chat");
@@ -205,7 +212,7 @@ export default function ContactCard({
     }
   }}
   className="flex-1 flex items-center justify-center gap-2 
-               py-2 sm:py-3 px-2 sm:px-4 
+             py-2 sm:py-3 px-2 sm:px-4 
              text-xs sm:text-sm md:text-base font-medium 
              rounded-lg shadow 
              bg-indigo-600 hover:bg-indigo-700 
