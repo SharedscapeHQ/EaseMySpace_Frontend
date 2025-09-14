@@ -1,102 +1,138 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FiCheckCircle } from "react-icons/fi";
-import Stat from "./Stat";
-import Feature from "./Feature";
+import { useNavigate } from "react-router-dom";
+import { FiMapPin } from "react-icons/fi";
+import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
 
-const PropertyCard = ({ p, setShowOtpPopup, setSelectedPropertyId, isOtpVerified, isLoggedIn }) => {
+const PropertyCard = ({ p }) => {
   const navigate = useNavigate();
+
   const thumbs = p.images.filter((img) => img !== p.cover).slice(0, 3);
   const extra = p.images.length - 1 - thumbs.length;
 
-  const handleViewDetailsClick = (event) => {
-    if (!isLoggedIn && !isOtpVerified) {
-      event.preventDefault();
-      setSelectedPropertyId(p.id);
-      setShowOtpPopup(true);
-      return;
-    }
+  const handleClick = () => {
     navigate(`/properties/${p.id}`, { state: { property: p } });
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto relative z-10">
-      <Link
-        to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
-        state={isLoggedIn || isOtpVerified ? { property: p } : null}
-        onClick={(e) => handleViewDetailsClick(e, p)}
-        className="bg-white rounded-lg shadow-sm hover:shadow-md transition border border-gray-300 w-full overflow-x-hidden flex flex-col md:flex-row p-4 gap-4"
-      >
-        {/* Main Image */}
-        <div className="w-full md:w-64 flex-shrink-0">
-          {p.cover ? (
-            <img src={p.cover} alt={p.title} loading="lazy" className="w-full h-48 object-cover rounded-lg" />
-          ) : (
-            <div className="w-full h-48 bg-gray-100 flex items-center justify-center italic text-gray-400 rounded-lg">No Image</div>
-          )}
+   <div
+  onClick={handleClick}
+  className="w-full max-w-sm bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition flex flex-col"
+>
+  {/* Main Image */}
+  <div className="relative w-full h-40">
+    {p.cover ? (
+      <img
+        src={p.cover}
+        alt={p.title}
+        className="w-full h-full object-cover"
+      />
+    ) : (
+      <div className="w-full h-full bg-gray-100 flex items-center justify-center italic text-gray-400">
+        No Image
+      </div>
+    )}
+    {p.verified && (
+      <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
+        Verified
+      </span>
+    )}
+  </div>
 
-          {/* Thumbnails */}
-          <div className="flex gap-2 mt-2">
-            {thumbs.map((t, i) => (
-              <div key={i} className="relative h-20 w-1/3">
-                <img src={t} alt="" loading="lazy" className="h-full w-full object-cover rounded-lg" />
-                {i === thumbs.length - 1 && extra > 0 && (
-                  <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs rounded-lg">+{extra}</span>
-                )}
-              </div>
-            ))}
-            {Array.from({ length: 3 - thumbs.length }).map((_, i) => (
-              <div key={i} className="h-20 w-1/3 bg-gray-50 border border-dashed border-gray-200 rounded-lg" />
-            ))}
-          </div>
-        </div>
+  {/* Thumbnails */}
+  <div className="flex gap-2 p-3">
+    {thumbs.map((t, i) => (
+      <div key={i} className="relative h-16 flex-1">
+        <img
+          src={t}
+          alt=""
+          className="h-full w-full object-cover rounded-lg"
+        />
+        {i === thumbs.length - 1 && extra > 0 && (
+          <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm rounded-lg">
+            +{extra}
+          </span>
+        )}
+      </div>
+    ))}
+    {Array.from({ length: 3 - thumbs.length }).map((_, i) => (
+      <div
+        key={i}
+        className="h-16 flex-1 bg-gray-100 border border-dashed border-gray-300 rounded-lg"
+      />
+    ))}
+  </div>
 
-        {/* Property Info */}
-        <div className="flex flex-col justify-start flex-1 gap-3">
-          <div className="flex items-start justify-between flex-wrap gap-y-1">
-            <div>
-              <h2 className="text-lg flex items-center gap-1 text-gray-800 leading-snug">
-                {p.looking_for === "pg" ? `${p.title || "Untitled Property"}'s PG` : p.title || "Untitled Property"}{" "}
-                {p.verified && (
-                  <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-                    <FiCheckCircle className="text-[10px]" />
-                    Verified
-                  </span>
-                )}
-              </h2>
-              <p className="text-sm text-gray-500 truncate">📍 {p.location}</p>
-            </div>
-            <Link
-              to={isLoggedIn || isOtpVerified ? `/properties/${p.id}` : "#"}
-              state={isLoggedIn || isOtpVerified ? { property: p } : null}
-              onClick={(e) => handleViewDetailsClick(e, p)}
-              className="text-indigo-600 text-sm font-medium border border-indigo-600 px-4 py-1.5 rounded-full hover:bg-indigo-50 transition whitespace-nowrap"
-            >
-              View Details
-            </Link>
-          </div>
+  
 
-          {p.looking_for && (
-            <span className="inline-block bg-indigo-50 text-indigo-600 text-xs font-medium px-2 py-[2px] rounded-full w-max">
-              {p.looking_for === "flatmate" ? "Flatmate" : p.looking_for === "pg" ? "Paying Guest" : "Vacant Flat"}
-            </span>
-          )}
-
-          <div className="grid grid-cols-3 text-center text-xs">
-            <Stat label="Rent" value={`₹ ${p.price?.toLocaleString() || "N/A"}`} />
-            <Stat label="Deposit" value={`₹ ${p.deposit?.toLocaleString() || "-"}`} />
-            <Stat label="Built‑up" value={`${p.sqft || "-"} sqft`} />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <Feature icon="🛋️" label="Occupancy" value={p.occupancy || "-"} />
-            <Feature icon="🏠" label="BHK Type" value={p.bhk_type || "-"} />
-            <Feature icon="📍" label="Distance" value={p.distance_from_station || "-"} />
-            <Feature icon="🔑" label="Available" value={p.flat_status || "-"} />
-          </div>
-        </div>
-      </Link>
+  {/* Location + Looking For */}
+  <div className="flex justify-between items-center px-4">
+    <div className="flex items-center text-gray-600 text-sm gap-1">
+      <FiMapPin className="text-gray-500" />
+      {p.location ? p.location.split(" ").slice(-2).join(" ") : "Unknown"}
     </div>
+    {p.looking_for && (
+      <span className="bg-blue-100 text-blue-600 text-xs font-medium px-3 py-1 rounded-full">
+        {p.looking_for === "flatmate"
+          ? "Flatmate"
+          : p.looking_for === "pg"
+          ? "PG"
+          : "Vacant Flat"}
+      </span>
+    )}
+  </div>
+
+  {/* Rent | Deposit | BHK */}
+  <div className="flex items-stretch text-sm font-medium text-gray-700 py-2">
+    <div className="flex-1 text-center py-3">
+      <div className="text-gray-900">
+        ₹{p.price?.toLocaleString() || "N/A"}
+      </div>
+      <div className="text-xs text-gray-500">Rent</div>
+    </div>
+
+    <div className="w-[2px] bg-gray-300 mx-2"></div>
+
+    <div className="flex-1 text-center py-3">
+      <div className="text-gray-900">
+        ₹{p.deposit?.toLocaleString() || "-"}
+      </div>
+      <div className="text-xs text-gray-500">Deposit</div>
+    </div>
+
+    <div className="w-[2px] bg-gray-300 mx-2"></div>
+
+    <div className="flex-1 text-center py-3">
+      <div className="text-gray-900">{p.bhk_type || "-"}</div>
+      <div className="text-xs text-gray-500">BHK</div>
+    </div>
+  </div>
+
+  {/* Profile + Actions */}
+  <div className="flex items-center justify-between px-4 py-3">
+    <div className="flex items-center gap-2">
+      <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-lg">
+        {p.title?.charAt(0) || "U"}
+      </div>
+      <span className="font-medium text-sm text-gray-700">
+        {p.title || "Owner"}
+      </span>
+    </div>
+
+    <div className="flex items-center gap-4 text-blue-600 text-xl">
+      <IoChatboxEllipsesOutline className="cursor-pointer" />
+      <IoCall className="cursor-pointer" />
+    </div>
+  </div>
+  <div className="px-3 mb-3">
+    <button
+      onClick={handleClick}
+      className="w-full bg-blue-600 text-white  py-2.5 rounded-lg hover:bg-blue-700 transition"
+    >
+      Book Visit Now
+    </button>
+  </div>
+</div>
+
   );
 };
 
