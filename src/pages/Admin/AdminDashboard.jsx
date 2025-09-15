@@ -107,24 +107,27 @@ export default function AdminDashboard() {
     })();
   }, []);
 
-  const fetchUsers = async () => {
-    try {
-      setLoadingUsers(true);
-      const { data } = await getAllUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error("Error fetching users", err);
-    } finally {
-      setLoadingUsers(false);
-    }
-  };
+ const fetchUsers = async () => {
+  try {
+    setLoadingUsers(true);
+    const { data } = await getAllUsers();
+
+    const sortedUsers = [...data].sort((a, b) => b.id - a.id);
+
+    setUsers(sortedUsers);
+  } catch (err) {
+    console.error("Error fetching users", err);
+  } finally {
+    setLoadingUsers(false);
+  }
+};
+
 
   const fetchProperties = async () => {
     try {
       setLoadingProps(true);
       const { data } = await getAllProperties();
       setProperties(Array.isArray(data) ? data : []);
-      //  console.log("Verified value:", data.map(p => p.verified));
     } catch {
       toast.error("Error loading properties");
     } finally {
@@ -274,99 +277,79 @@ export default function AdminDashboard() {
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
           {activeTab === "Users" && (
-            <section className="mt-6">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-                Users
-              </h2>
+  <section className="mt-6">
+    <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+      Users
+    </h2>
 
-              {loadingUsers ? (
-                <p className="text-gray-500">Loading users...</p>
-              ) : (
-                <div className="overflow-x-auto shadow border border-gray-200 rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 text-left">
-                    <thead className="bg-indigo-50">
-                      <tr>
-                        <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
-                          Name
-                        </th>
-                        <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
-                          Contact
-                        </th>
-                        <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
-                          Subscription
-                        </th>
-                      </tr>
-                    </thead>
+    {loadingUsers ? (
+      <p className="text-gray-500">Loading users...</p>
+    ) : (
+      <div className="overflow-x-auto shadow border border-gray-200 rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200 text-left">
+          <thead className="bg-indigo-50">
+            <tr>
+              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+                Contact
+              </th>
+              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+                Gender
+              </th>
+            </tr>
+          </thead>
 
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {users.map((u) => {
-                        const status = u.subscription_status
-                          ?.trim()
-                          .toLowerCase();
-                        const expiry = u.subscription_expiry;
-                        const formattedExpiry =
-                          expiry && !isNaN(new Date(expiry))
-                            ? new Date(expiry).toLocaleDateString()
-                            : "-";
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map((u) => (
+              <tr
+                key={u.id}
+                className="hover:bg-gray-50 transition duration-150"
+              >
+                {/* Name */}
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  {u.firstName} {u.lastName}
+                </td>
 
-                        return (
-                          <tr
-                            key={u.id}
-                            className="hover:bg-gray-50 transition duration-150"
-                          >
-                            {/* Name */}
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                              {u.firstName} {u.lastName}
-                            </td>
+                {/* Contact */}
+                <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
+                  <div>
+                    {u.email || (
+                      <span className="italic text-gray-400">N/A</span>
+                    )}
+                  </div>
+                  <div className="mt-1">
+                    {u.phone || (
+                      <span className="italic text-gray-400">N/A</span>
+                    )}
+                  </div>
+                </td>
 
-                            {/* Contact */}
-                            <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
-                              <div>
-                                {u.email || (
-                                  <span className="italic text-gray-400">
-                                    N/A
-                                  </span>
-                                )}
-                              </div>
-                              <div className="mt-1">
-                                {u.phone || (
-                                  <span className="italic text-gray-400">
-                                    N/A
-                                  </span>
-                                )}
-                              </div>
-                            </td>
+                {/* ✅ Gender */}
+                <td className="px-6 py-4 text-sm whitespace-nowrap">
+                  {u.gender ? (
+                    <span
+                      className={`inline-flex px-3 py-1 rounded-full text-sm font-medium capitalize ${
+                        u.gender.toLowerCase() === "male"
+                         
+                      }`}
+                    >
+                      {u.gender}
+                    </span>
+                  ) : (
+                    <span className="italic text-gray-400">N/A</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+)}
 
-                            {/* Subscription */}
-                            <td className="px-6 py-4 text-sm whitespace-nowrap">
-                              <div>
-                                {status === "paid" ? (
-                                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium text-sm inline-block">
-                                    Paid
-                                  </span>
-                                ) : status === "unpaid" ? (
-                                  <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium text-sm inline-block">
-                                    Unpaid
-                                  </span>
-                                ) : (
-                                  <span className="text-gray-400 italic text-sm">
-                                    N/A
-                                  </span>
-                                )}
-                              </div>
-                              <div className="mt-1 text-gray-500">
-                                {formattedExpiry}
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </section>
-          )}
 
           {activeTab === "Leads" && (
             <section>
