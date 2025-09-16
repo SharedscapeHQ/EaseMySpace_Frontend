@@ -45,15 +45,16 @@ export default function ContactCard({
     property?.owner_code &&
     user.owner_code === property.owner_code;
 
-  const isUnlocked = useMemo(() => {
-    return (
-      isOwner ||
-      userRole === "admin" ||
-      userRole === "owner" ||
-      userRole === "RM" ||
-      unlockedPropertyIds.some((id) => String(id) === String(property?.id))
-    );
-  }, [userRole, unlockedPropertyIds, property?.id]);
+ const isUnlocked = useMemo(() => {
+  const role = (userRole || "").toLowerCase();
+  return (
+    isOwner ||
+    role === "admin" ||
+    role === "owner" ||
+    role === "rm" ||
+    unlockedPropertyIds.some((id) => String(id) === String(property?.id))
+  );
+}, [userRole, unlockedPropertyIds, property?.id]);
 
   const contactLimitReached = contactStatus.remaining <= 0;
 
@@ -170,7 +171,7 @@ export default function ContactCard({
   {/* CALL BUTTON */}
  <button
   onClick={() => {
-    if (isOwner) {
+    if (isOwner || ["admin", "owner", "rm"].includes((userRole || "").toLowerCase())) {
       // Owner sees their own contact directly
       setShowCallPopup(true);
     } else if (!user || !hasPaid) {
