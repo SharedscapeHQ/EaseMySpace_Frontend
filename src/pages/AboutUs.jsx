@@ -6,11 +6,13 @@ import Footer from '../components/Footer';
 import OurTeam from '../components/AboutUsSectionComp/OurTeam';
 import AboutStory from '../components/AboutUsSectionComp/AboutStory';
 import AboutNav from '../components/AboutUsSectionComp/AboutNav';
+import LifeAtEaseMySpace from '../components/AboutUsSectionComp/LifeAtEaseMySpace';
 
 function AboutUs() {
   const navItems = [
     { label: 'Our Story', href: '#our-story', type: 'anchor' },
     { label: 'Our Team', href: '#our-team', type: 'anchor' },
+    { label: 'Life at EMS', href: '/life-at-ems', type: 'link' },
     { label: 'Careers', href: '/careers', type: 'link' },
   ];
 
@@ -99,6 +101,9 @@ function AboutUs() {
 
         <section id="our-team">
           <OurTeam />
+        </section>
+        <section id="lifeatems">
+          <LifeAtEaseMySpace />
         </section>
 
         <Footer />
