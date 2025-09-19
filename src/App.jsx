@@ -38,6 +38,7 @@ import PageWrapper from "./components/PageTranstion/PageWrapper";
 import AnalyticsTracker from "./components/Seo/AnalyticsTracker";
 import BlogPage from "./pages/BlogPage";
 import VisitorTracker from "./components/Tracking/VisitorTracker";
+import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEaseMySpace";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -86,6 +87,7 @@ function AnimatedRoutes() {
         <Route path="/about" element={<PageWrapper><Layout><AboutUs /></Layout></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Layout><ContactPage /></Layout></PageWrapper>} />
         <Route path="/careers" element={<PageWrapper><Layout><Careers /></Layout></PageWrapper>} />
+        <Route path="/life-at-ems" element={<PageWrapper><Layout><LifeAtEaseMySpace /></Layout></PageWrapper>} />
         <Route path="/jobs/:id" element={<PageWrapper><Layout><JobDetail /></Layout></PageWrapper>} />
         <Route path="/subscription" element={<PageWrapper><Layout><SubscriptionPlans /></Layout></PageWrapper>} />
         <Route path="/cancellation-refund" element={<PageWrapper><Layout><CancellationRefundPolicy /></Layout></PageWrapper>} />
