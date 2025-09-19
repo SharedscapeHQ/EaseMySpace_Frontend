@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Arvind_vid from "/life_at_ems/Arvind.mov";
 import Taniya_vid from "/life_at_ems/Taniya.mov";
 import Rakesh_vid from "/life_at_ems/Rakesh.mp4";
@@ -47,6 +47,32 @@ const videos = [
 
 export default function LifeAtEaseMySpace() {
   const videoRefs = useRef({});
+
+  useEffect(() => {
+    const handlePlay = (id) => {
+      Object.keys(videoRefs.current).forEach((key) => {
+        if (parseInt(key) !== id) {
+          videoRefs.current[key].pause();
+        }
+      });
+    };
+
+    // attach event listeners
+    Object.entries(videoRefs.current).forEach(([id, video]) => {
+      if (video) {
+        video.addEventListener("play", () => handlePlay(parseInt(id)));
+      }
+    });
+
+    // cleanup
+    return () => {
+      Object.entries(videoRefs.current).forEach(([id, video]) => {
+        if (video) {
+          video.removeEventListener("play", () => handlePlay(parseInt(id)));
+        }
+      });
+    };
+  }, []);
 
   return (
     <>
