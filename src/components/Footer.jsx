@@ -14,8 +14,8 @@ import {
   FaFileContract,
   FaUserShield,
   FaMapMarkerAlt,
-  FaEnvelope,
-  FaBriefcase
+  FaBriefcase,
+  FaUsers
 } from "react-icons/fa";
 import brandImg from "/navbar-assets/brand-logo.png";
 
@@ -83,7 +83,8 @@ export default function Footer() {
             { label: "About Us ", to: "/about", icon: FaInfoCircle },
             { label: "Listings ", to: "/view-properties", icon: FaThList },
             { label: "Contact ", to: "/contact", icon: FaPhone },
-            { label: "Careers", to: "/careers", icon: FaBriefcase }
+            { label: "Careers", to: "/careers", icon: FaBriefcase },
+            { label: "Life at EMS", to: "/life-at-ems", icon: FaUsers }
           ].map(({ label, to, icon: Icon }) => (
             <li key={to}>
               <Link
