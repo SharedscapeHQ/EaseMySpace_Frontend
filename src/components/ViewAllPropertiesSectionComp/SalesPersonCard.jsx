@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CheckCircle } from "lucide-react"; // ✅ for modern check icons
+import { CheckCircle } from "lucide-react";
 import SalesPerson from "/TeamImg/Dharmendra.png";
 import ConnectPopup from "./ConnectPopup";
 
@@ -19,7 +19,9 @@ export default function SalesPersonCard({ className = "" }) {
   const [showRealPhone, setShowRealPhone] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("showRealPhone") === "true") setShowRealPhone(true);
+    if (localStorage.getItem("showRealPhone") === "true") {
+      setShowRealPhone(true);
+    }
   }, []);
 
   const maskPhone = (num) => {
@@ -30,71 +32,69 @@ export default function SalesPersonCard({ className = "" }) {
   };
 
   return (
-    <div
-      style={{ fontFamily: "para_font" }}
-      className={`bg-white shadow-lg rounded-2xl p-8 flex flex-col gap-8 ${className}`}
-    >
-      {/* Heading */}
+    <>
+     <div
+  className={`w-full max-w-sm bg-white rounded-2xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition transform hover:-translate-y-1 ${className}`}
+  style={{ fontFamily: "para_font" }}
+>
+  {/* Top Banner with Image + Info side by side */}
+  <div className="relative w-full h-40 bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center px-6">
+    {/* Image */}
+    <div className="w-24 h-24 rounded-full border-3 border-white shadow-md overflow-hidden flex-shrink-0">
+      <img
+        src={SalesPerson}
+        alt={name}
+        className="w-full h-full object-cover scale-110"
+      />
+    </div>
+
+    {/* Info on the right */}
+    <div className="ml-4 text-white text-left">
       <h2
         style={{ fontFamily: "heading_font" }}
-        className="text-2xl font-extrabold text-gray-900 text-center lg:text-left"
+        className="text-lg font-semibold"
       >
-        Meet Our Expert
+        {name}
       </h2>
-
-      {/* Grid */}
-      <div className="flex flex-col lg:flex-row gap-10 items-center lg:items-start">
-        {/* Left side */}
-        <div className="flex flex-col items-center lg:items-start w-full lg:w-1/3">
-          <div className="lg:w-48 w-60 h-60 border-2 border-zinc-300 rounded-xl overflow-hidden shadow-md mb-4">
-            <img
-              src={SalesPerson}
-              alt={name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <h3 className="font-bold text-gray-900 text-lg text-center lg:text-left">
-            {name}
-          </h3>
-          <p className="text-gray-500 text-base text-center lg:text-left">
-            {showRealPhone ? phone : maskPhone(phone)}
-          </p>
-          <p className="text-blue-600 text-base font-semibold text-center lg:text-left">
-            {role}
-          </p>
-        </div>
-
-        {/* Right side */}
-        <div className="flex-1 flex flex-col justify-between">
-          <div>
-            <h4 className="font-bold text-xl text-gray-900 mb-5">
-              Find Your Best Listings with Expert Guidance
-            </h4>
-
-            <ul className="space-y-3">
-              {bullets.map((b, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-gray-700 text-base">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  {b}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* CTA Button aligned bottom */}
-          <div className="mt-8">
-            <button
-              onClick={() => setIsOpen(true)}
-              className="w-full sm:w-56 py-3 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-xl lg:ml-7 shadow-md transition"
-            >
-              Connect with us
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {isOpen && <ConnectPopup name={name} setIsOpen={setIsOpen} />}
+      <p className="text-xs">{showRealPhone ? phone : maskPhone(phone)}</p>
+      <p className="text-sm font-medium">{role}</p>
     </div>
+  </div>
+
+  {/* Info + Bullets */}
+  <div className="p-5 flex flex-col flex-1 mt-6">
+
+    {/* Bullets with flex-1 (pushes button down) */}
+    <div className="flex-1 text-left">
+      <ul className="space-y-2">
+        {bullets.map((b, idx) => (
+          <li
+            key={idx}
+            className="flex items-start gap-2 text-gray-700 text-xs leading-snug"
+          >
+            <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0 mt-0.5" />
+            {b}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  {/* CTA Section pinned bottom */}
+  <div className="px-5 pb-5">
+    <button
+      onClick={() => setIsOpen(true)}
+      className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition shadow-md text-sm font-medium"
+    >
+      Connect with Us
+    </button>
+  </div>
+</div>
+
+
+
+      {/* Popup */}
+      {isOpen && <ConnectPopup name={name} setIsOpen={setIsOpen} />}
+    </>
   );
 }

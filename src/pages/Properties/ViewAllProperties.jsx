@@ -103,7 +103,7 @@ export default function ViewAllProperties() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 14;
+  const itemsPerPage = 15;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
   const paginatedProperties = useMemo(() => {
@@ -408,44 +408,43 @@ export default function ViewAllProperties() {
     </p>
   ) : (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {paginatedProperties.map((p, index) => (
-        <React.Fragment key={p.id}>
-          {/* Default property card */}
-          <PropertyCard
-            p={p}
-            setShowOtpPopup={setShowOtpPopup}
-            setIsOtpVerified={setIsOtpVerified}
-            setSelectedPropertyId={setSelectedPropertyId}
-            isOtpVerified={isOtpVerified}
-            isLoggedIn={isLoggedIn}
-          />
+     {paginatedProperties.map((p, index) => (
+  <React.Fragment key={p.id}>
+    {/* Default Property Card */}
+    <PropertyCard
+      p={p}
+      setShowOtpPopup={setShowOtpPopup}
+      setIsOtpVerified={setIsOtpVerified}
+      setSelectedPropertyId={setSelectedPropertyId}
+      isOtpVerified={isOtpVerified}
+      isLoggedIn={isLoggedIn}
+    />
 
-          {/* 📱 On mobile: insert SalesPersonCard after 3rd property */}
-          {index === 2 && (
-            <div className="block lg:hidden">
-              <SalesPersonCard className="w-full h-full" />
-            </div>
-          )}
+    {/* SalesPersonCard Placement */}
+    {/* Desktop → after 5th property */}
+    {index === 4 && (
+      <div className="hidden lg:block w-full h-full">
+        <SalesPersonCard className="w-full h-full" />
+      </div>
+    )}
 
-          {/* 💻 On desktop: special layout with salesperson card centered */}
-          {index === 4 && paginatedProperties.length > 6 && (
-            <>
-              {/* SalesPerson card spanning 2 cols */}
-              <div className="hidden lg:flex lg:col-span-2">
-                <SalesPersonCard className="w-full h-full" />
-              </div>
-            </>
-          )}
+    {/* Mobile → after 3rd property */}
+    {index === 2 && (
+      <div className="block lg:hidden w-full h-full">
+        <SalesPersonCard className="w-full h-full" />
+      </div>
+    )}
+  </React.Fragment>
+))}
 
-          {/* Edge case → if only 2–3 properties total, still show card */}
-          {paginatedProperties.length <= 3 &&
-            index === paginatedProperties.length - 1 && (
-              <div className="lg:col-span-2 flex">
-                <SalesPersonCard className="w-full h-full" />
-              </div>
-            )}
-        </React.Fragment>
-      ))}
+
+{/* Mobile fallback → if less than 5 properties, show card at the end */}
+{paginatedProperties.length < 5 && (
+  <div className="block lg:hidden w-full h-full">
+    <SalesPersonCard className="w-full h-full" />
+  </div>
+)}
+
     </div>
   )}
 
