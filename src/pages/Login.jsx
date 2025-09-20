@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation  } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 import {
   loginUser,
@@ -148,17 +149,12 @@ const redirectPath = new URLSearchParams(location.search).get("redirect") || "/"
                   className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 h-10"
                 />
                 <button
-                  type="button"
-                  onClick={() => setShowPassword((p) => !p)}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 p-1 rounded hover:bg-blue-100 text-gray-600 hover:text-blue-600 transition"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-8-11-8a19.85 19.85 0 013.23-4.61" /><path d="M1 1l22 22" /><path d="M9.53 9.53a3 3 0 014.24 4.24" /></svg>
-                  )}
-                </button>
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+  >
+    {showPassword ? <FiEye size={20}/>  : <FiEyeOff size={20} /> }
+  </button>
               </div>
             </div>
 

@@ -24,6 +24,7 @@ export default function SubscriptionPlans() {
   const [userData, setUserData] = useState({});
   const [userMobile, setUserMobile] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null); // For mobile bottom sheet
 
   // Fetch current user
   useEffect(() => {
@@ -148,22 +149,58 @@ export default function SubscriptionPlans() {
         </p>
       </section>
 
-      <section className="mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:mb-12 lg:grid-cols-2 gap-6">
+      {/* Plans Section */}
+      <section className="mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {plans.map((plan, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-6 rounded-3xl shadow-lg hover:scale-[1.02] transition-all`}
+            className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
           >
+            {/* Badge */}
             <span
-              className={`absolute -top-4 left-1/2 -translate-x-1/2 ${badgeColors[plan.color]} text-white text-xs px-3 py-1 rounded-full shadow uppercase tracking-wider`}
+              className={`absolute -top-3 left-1/2 -translate-x-1/2 ${badgeColors[plan.color]} text-white text-xs px-2 py-1 rounded-full shadow uppercase tracking-wider`}
             >
               {plan.type.charAt(0).toUpperCase() + plan.type.slice(1)}
             </span>
 
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
+            {/* Mobile Summary Card */}
+            <div className="flex flex-col gap-2 lg:hidden">
+              <h2 style={{ fontFamily: "heading_font" }} className="text-lg font-semibold">{plan.title}</h2>
+              <p className="text-sm text-zinc-700">{plan.price} <span className="text-xs">{plan.gst}</span></p>
+              <p className="text-green-500 text-xs">{plan.savings}</p>
+
+              {/* Quick Summary */}
+              <div className="flex justify-between mt-2 text-xs text-zinc-600">
+  <span>
+    Owner Contacts: {
+      plan.features
+        .filter(f => f.text.toLowerCase().includes("contact"))
+        .reduce((sum, f) => sum + (parseInt(f.text.match(/\d+/)?.[0] || "0")), 0)
+    }
+  </span>
+  <span>
+    Bookings: {
+      plan.features
+        .filter(f => f.text.toLowerCase().includes("property visits"))
+        .reduce((sum, f) => sum + (parseInt(f.text.match(/\d+/)?.[0] || "0")), 0)
+    }
+  </span>
+</div>
+
+
+              <button
+                className={`mt-2 w-full py-2 rounded-lg text-white ${badgeColors[plan.color]}`}
+                onClick={() => setSelectedPlan(plan)}
+              >
+                More Details
+              </button>
+            </div>
+
+            {/* Desktop Full Layout */}
+            <div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
               <div className="lg:w-1/3">
                 <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{plan.title}</h2>
                 <p className="text-xs italic mb-4">{plan.description}</p>
@@ -175,7 +212,6 @@ export default function SubscriptionPlans() {
                   <p className="text-green-500 font-semibold text-sm">{plan.savings}</p>
                 </div>
               </div>
-
               <div className="lg:w-2/3">
                 <ul className="space-y-3 text-sm mb-6">
                   {plan.features.map((feat, i) => (
@@ -199,6 +235,55 @@ export default function SubscriptionPlans() {
           </motion.div>
         ))}
       </section>
+
+      {/* Mobile Bottom Sheet Popup */}
+     {selectedPlan && (
+  <motion.div
+    className="fixed inset-0 bg-black/50 z-50 flex justify-center items-end"
+    onClick={() => setSelectedPlan(null)}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
+    <motion.div
+      className="bg-white w-full max-w-md rounded-t-3xl p-6 shadow-lg"
+      onClick={(e) => e.stopPropagation()}
+      initial={{ y: "100%" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100%" }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+    >
+      <button
+        className="text-right w-full mb-4 text-gray-500 font-bold"
+        onClick={() => setSelectedPlan(null)}
+      >
+        Close
+      </button>
+      <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-2">{selectedPlan.title}</h2>
+      <p className="text-sm italic mb-4">{selectedPlan.description}</p>
+      <p className="text-2xl font-bold text-zinc-900 mb-2">{selectedPlan.price} <span className="text-xs">{selectedPlan.gst}</span></p>
+      <p className="text-green-500 text-sm mb-4">{selectedPlan.savings}</p>
+
+      <ul className="space-y-2 text-sm mb-4">
+        {selectedPlan.features.map((feat, i) => (
+          <li key={i} className="flex items-start gap-2">
+            {feat.included ? <CheckIcon /> : <CrossIcon />} {feat.text}
+          </li>
+        ))}
+      </ul>
+
+      <PaymentButtonSubs
+        hasPaid={hasPaid}
+        setHasPaid={setHasPaid}
+        isOtpVerified={isOtpVerified}
+        setIsOtpVerified={setIsOtpVerified}
+        userMobile={userMobile}
+        planName={selectedPlan.type}
+      />
+    </motion.div>
+  </motion.div>
+)}
+
 
       <Footer />
     </div>

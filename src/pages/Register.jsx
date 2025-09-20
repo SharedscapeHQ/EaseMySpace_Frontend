@@ -3,10 +3,12 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { registerUser } from "../api/authApi";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Register() {
   const [searchParams] = useSearchParams();
   const referralFromUrl = searchParams.get("ref") || "";
+  const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -185,15 +187,24 @@ function Register() {
           </div>
         </div>
 
-        <input
-          name="password"
-          value={form.password}
-          required
-          onChange={handleChange}
-          className={inputClasses}
-          type="password"
-          placeholder="Password"
-        />
+        <div className="relative w-full">
+  <input
+    name="password"
+    value={form.password}
+    required
+    onChange={handleChange}
+    className={`${inputClasses} pr-12`} // Add padding for icon
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+  >
+    {showPassword ? <FiEye size={20}/>  : <FiEyeOff size={20} /> }
+  </button>
+</div>
 
         <button
           type="submit"
