@@ -4,6 +4,7 @@ import { SiGooglepay, SiPaytm } from "react-icons/si";
 import { RiInformation2Line } from "react-icons/ri";
 import { MdOutlineCardMembership, MdHelpOutline } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import { FaCheckCircle } from "react-icons/fa";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -349,54 +350,58 @@ export default function ContactCard({
 
             <div className="flex justify-between items-center gap-3">
               <div className="flex items-center gap-2 w-full">
-                {hasPaid ? (
-                  existingBookingDateTime ? (
-                    <span className="text-green-600 font-medium flex items-center gap-1">
-                      ✅{" "}
-                      {existingBookingDateTime.toLocaleString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                    </span>
-                  ) : (
-                    <DatePicker
-                      selected={selectedBookingDateTime}
-                      onChange={setSelectedBookingDateTime}
-                      showTimeSelect
-                      timeFormat="HH:mm"
-                      timeIntervals={30}
-                      dateFormat="dd MMM yyyy, h:mm aa"
-                      minDate={new Date()}
-                      className="border rounded-md px-2 py-1 text-sm w-full"
-                      placeholderText="Select date & time"
-                    />
-                  )
-                ) : (
-                  <span className="text-gray-500 text-sm">
-                    Subscribe to enable booking
-                  </span>
-                )}
+              {!hasPaid ? (
+  <span className="text-gray-500 text-sm">
+    Subscribe to enable booking
+  </span>
+) : !isUnlocked ? (
+  <span className="text-gray-500 text-sm">
+    Unlock contact to enable booking
+  </span>
+) : existingBookingDateTime ? (
+ <div className="flex items-center gap-2 bg-green-50 border border-green-200 px-3 py-2 rounded-lg shadow-sm">
+  <FaCheckCircle className="text-green-600 text-lg" />
+  <span className="text-sm font-medium text-gray-800">
+    {existingBookingDateTime.toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })}
+  </span>
+</div>
+) : (
+  <DatePicker
+    selected={selectedBookingDateTime}
+    onChange={setSelectedBookingDateTime}
+    showTimeSelect
+    timeFormat="HH:mm"
+    timeIntervals={30}
+    dateFormat="dd MMM yyyy, h:mm aa"
+    minDate={new Date()}
+    className="border rounded-md px-2 py-1 text-sm w-full"
+    placeholderText="Select date & time"
+  />
+)}
+
               </div>
 
-              {hasPaid && !existingBookingDateTime && (
-                <button
-                  className={`bg-indigo-600 px-2 hover:bg-indigo-700 text-white text-sm py-1 rounded-md ${
-                    !selectedBookingDateTime || remainingBookings <= 0
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                  onClick={handleBookingSave}
-                  disabled={
-                    !selectedBookingDateTime || remainingBookings <= 0
-                  }
-                >
-                  Schedule
-                </button>
-              )}
+             {hasPaid && isUnlocked && !existingBookingDateTime && (
+  <button
+    className={`bg-indigo-600 px-2 hover:bg-indigo-700 text-white text-sm py-1 rounded-md ${
+      !selectedBookingDateTime || remainingBookings <= 0
+        ? "opacity-50 cursor-not-allowed"
+        : ""
+    }`}
+    onClick={handleBookingSave}
+    disabled={!selectedBookingDateTime || remainingBookings <= 0}
+  >
+    Schedule
+  </button>
+)}
+
             </div>
           </>
         )}

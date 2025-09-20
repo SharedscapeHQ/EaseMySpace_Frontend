@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FiUsers,
   FiHome,
   FiStar,
   FiLogOut,
-  FiMenu,
-  FiX,
   FiMapPin,
   FiTrash2,
   FiMessageCircle,
@@ -22,20 +20,16 @@ import { LuCrown } from "react-icons/lu";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import { FaCommentSms } from "react-icons/fa6";
 
-export default function Sidebar({
-  activeTab,
-  setActiveTab,
-  handleLogout,
-  pendingCount,
-  role,
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [openSections, setOpenSections] = useState({}); // track expanded/collapsed state
+export default function Sidebar({ activeTab, setActiveTab, handleLogout, pendingCount, role }) {
+  const [openSections, setOpenSections] = useState({}); // mobile dropdown state
 
   const toggleSection = (title) => {
     setOpenSections((prev) => ({
-      ...prev,
-      [title]: !prev[title],
+      ...Object.keys(prev).reduce((acc, key) => {
+        acc[key] = false; // close all others
+        return acc;
+      }, {}),
+      [title]: !prev[title], // toggle current
     }));
   };
 
@@ -46,16 +40,8 @@ export default function Sidebar({
       items: [
         { label: "Users", value: "Users", icon: <FiUsers /> },
         { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
-        {
-          label: "CallBack Requests",
-          value: "Requests",
-          icon: <VscGitPullRequestGoToChanges />,
-        },
-        {
-          label: "Subscribers",
-          value: "UltimateSubscribers",
-          icon: <LuCrown />,
-        },
+        { label: "CallBack Requests", value: "Requests", icon: <VscGitPullRequestGoToChanges /> },
+        { label: "Subscribers", value: "UltimateSubscribers", icon: <LuCrown /> },
       ],
     },
     {
@@ -66,23 +52,11 @@ export default function Sidebar({
         { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
         { label: "Top Locations", value: "ManageLocations", icon: <FiMapPin /> },
         { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },
-        {
-          label: "Posted Requirement",
-          value: "PostRequirement",
-          icon: <FiClipboard />,
-        },
+        { label: "Posted Requirement", value: "PostRequirement", icon: <FiClipboard /> },
         ...(role === "Owner"
           ? [
-              {
-                label: "Visit Track",
-                value: "VisitTrack",
-                icon: <FiEye />,
-              },
-              {
-                label: "Deleted Properties",
-                value: "DeletedProperties",
-                icon: <FiTrash2 />,
-              },
+              { label: "Visit Track", value: "VisitTrack", icon: <FiEye /> },
+              { label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> },
             ]
           : []),
       ],
@@ -94,16 +68,8 @@ export default function Sidebar({
         ...(role === "Owner"
           ? [
               { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
-              {
-                label: "RM Assignments",
-                value: "RMAssignments",
-                icon: <FiUsers />,
-              },
-              {
-                label: "Withdrawal Requests",
-                value: "Withdrawals",
-                icon: <FiDownload />,
-              },
+              { label: "RM Assignments", value: "RMAssignments", icon: <FiUsers /> },
+              { label: "Withdrawal Requests", value: "Withdrawals", icon: <FiDownload /> },
             ]
           : []),
       ],
@@ -112,12 +78,7 @@ export default function Sidebar({
       title: "Communication",
       icon: <FaCommentSms className="text-gray-400" />,
       items: [
-        {
-          label: "Pending Queries",
-          value: "PendingQueries",
-          icon: <FiMessageCircle />,
-          badge: pendingCount,
-        },
+        { label: "Pending Queries", value: "PendingQueries", icon: <FiMessageCircle />, badge: pendingCount },
         { label: "Send SMS", value: "SendSMS", icon: <FaCommentSms /> },
         { label: "Marketing", value: "Marketing", icon: <FiStar /> },
       ],
@@ -126,39 +87,68 @@ export default function Sidebar({
 
   const handleTabClick = (value) => {
     setActiveTab(value);
-    setIsOpen(false); // close on mobile
+    setOpenSections({}); // close dropdown after click
   };
+
+  // Close mobile dropdowns on scroll
+  useEffect(() => {
+    const handleScroll = () => setOpenSections({});
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      {/* Mobile Header */}
-      <div className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-40">
-        <h2 className="text-xl font-bold text-indigo-700">{role} Panel</h2>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleLogout}
-            className="text-red-600 hover:text-red-700 transition"
-          >
-            <FiLogOut className="text-xl" />
-          </button>
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-2xl text-gray-700"
-          >
-            {isOpen ? <FiX /> : <FiMenu />}
-          </button>
+      {/* Mobile Horizontal Menu */}
+      <div className="lg:hidden sticky top-0 z-50 bg-white shadow-md">
+        <div className="flex overflow-x-auto relative">
+         {sections
+  .filter(({ items }) => items.length > 0) // Only show sections that have items
+  .map(({ title, icon, items }) => (
+    <div key={title} className="relative flex-shrink-0">
+      <button
+        onClick={() => toggleSection(title)}
+        className={`flex flex-col items-center px-4 py-2 text-sm font-semibold whitespace-nowrap ${
+          openSections[title] ? "text-indigo-700" : "text-gray-600"
+        }`}
+      >
+        <span className="text-lg">{icon}</span>
+        <span>{title}</span>
+      </button>
+
+      {/* Dropdown items rendered absolutely on page */}
+      <div
+        className={`fixed top-32 left-0 w-full bg-white shadow-lg z-50 border-t transition-all duration-300 ease-in-out
+          ${openSections[title] ? "max-h-64 opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}
+      >
+        <div className="overflow-y-auto">
+          {items.map(({ label, value, icon, badge }) => (
+            <button
+              key={value}
+              onClick={() => handleTabClick(value)}
+              className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 w-full text-left border-b"
+            >
+              <span className="text-lg">{icon}</span>
+              <span>{label}</span>
+              {badge > 0 && (
+                <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  {badge}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+))}
+
         </div>
       </div>
 
-      {/* Sidebar */}
-      <aside
-        className={`${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } fixed top-0 lg:top-20 left-0 z-50 lg:z-30 w-64 bg-white shadow-lg border-r h-full transform transition-transform duration-300 ease-in-out
-        lg:h-[calc(100vh-5rem)] flex flex-col`}
-      >
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex fixed top-20 left-0 z-30 w-64 bg-white shadow-lg border-r h-[calc(100vh-5rem)] flex-col">
         {/* Desktop Header */}
-        <div className="p-6 border-b hidden lg:flex items-center justify-between flex-shrink-0">
+        <div className="p-6 border-b flex items-center justify-between flex-shrink-0">
           <h2 className="text-xl font-bold text-indigo-700">{role} Panel</h2>
           <button
             onClick={handleLogout}
@@ -168,28 +158,24 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* Desktop Navigation */}
         <nav className="flex-1 px-4 py-3 space-y-4 overflow-y-auto scrollbar-hide">
           {sections.map(({ title, icon, items }) =>
             items.length > 0 ? (
               <div key={title} className="border-b pb-2">
-                {/* Section Header */}
                 <button
-                  onClick={() => toggleSection(title)}
+                  onClick={() =>
+                    setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }))
+                  }
                   className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wide hover:text-indigo-600 transition"
                 >
                   <div className="flex items-center gap-2">
                     {icon}
                     <span>{title}</span>
                   </div>
-                  {openSections[title] ? (
-                    <FiChevronDown />
-                  ) : (
-                    <FiChevronRight />
-                  )}
+                  {openSections[title] ? <FiChevronDown /> : <FiChevronRight />}
                 </button>
 
-                {/* Section Items with Smooth Animation */}
                 <div
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${
                     openSections[title] ? "max-h-96 opacity-100 mt-1" : "max-h-0 opacity-0"
@@ -222,14 +208,6 @@ export default function Sidebar({
           )}
         </nav>
       </aside>
-
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden"
-        />
-      )}
     </>
   );
 }

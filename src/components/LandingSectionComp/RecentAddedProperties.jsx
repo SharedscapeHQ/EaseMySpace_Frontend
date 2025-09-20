@@ -5,6 +5,8 @@ import { getCurrentUser } from "../../api/authApi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { IoCall } from "react-icons/io5";
+import { FiMapPin } from "react-icons/fi";
+
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -146,7 +148,7 @@ const handlePropertyCardClick = (e, property) => {
             className="min-w-[300px] max-w-[300px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden shadow-md"
           >
             {/* Image Section */}
-            <div className="relative w-full h-44 ">
+            <div className="relative w-full h-44">
               {p.images?.length > 0 ? (
                 <img
                   src={p.images[0]}
@@ -158,7 +160,6 @@ const handlePropertyCardClick = (e, property) => {
                   No Image
                 </div>
               )}
-          
               {p.verified && (
                 <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
                   Verified
@@ -167,55 +168,78 @@ const handlePropertyCardClick = (e, property) => {
             </div>
           
             {/* Details Section */}
-            <div className="p-4 flex flex-col gap-3">
-              {/* Owner Info */}
-              <p className="text-zinc-800">Owner's Contact</p>
-             <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center text-2xl justify-center text-blue-600 font-semibold">
-                      {p.title?.charAt(0) || "U"}
-                    </div>
-              <span className="font-medium text-sm text-gray-700">{p.title}</span>
-            </div>
-          
-            <div className="flex gap-4 text-blue-500">
-              <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
-              <IoCall className="text-2xl cursor-pointer" />
-            </div>
-          </div>
-          
-              {/* Book Now Button */}
-              <button style={{fontFamily:"heading_font"}} className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-md mt-2">
-                Book Now
-              </button>
-          
-              {/* Rent Info */}
-              <div className="text-center">
-                <p className="font-bold text-black text-base">
-                 ₹ {Number(p.price).toLocaleString()}/month
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {p.bhk_type} in {p.location}
-                </p>
+            <div className="p-4 flex flex-col gap-4">
+              {/* Location + Looking For */}
+              <div className="flex justify-between items-center">
+                <div className="flex items-center text-gray-600 text-sm gap-1">
+                  <FiMapPin className="text-gray-500" />
+                  {p.location ? p.location.split(" ").slice(-2).join(" ") : "Unknown"}
+                </div>
+                <span
+                  className={`text-xs font-medium px-3 py-1 rounded-full ${
+                    p.looking_for
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100 text-gray-500"
+                  }`}
+                >
+                  {p.looking_for
+                    ? p.looking_for === "flatmate"
+                      ? "Flatmate"
+                      : p.looking_for === "pg"
+                      ? "PG"
+                      : "Vacant Flat"
+                    : "N/A"}
+                </span>
               </div>
           
-              {/* Payment */}
-              <div className="flex items-center justify-center text-xs text-gray-500 mt-1 gap-2">
-            <span>Pay with</span>
-            <div className="flex items-center gap-2">
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                alt="Google Pay"
-                className="h-4 object-contain"
-              />
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png"
-                alt="Paytm"
-                className="h-4 object-contain"
-              />
-            </div>
-          </div>
+              {/* Rent | Deposit | BHK */}
+              <div className="flex  border-gray-200 text-sm text-gray-700 py-2">
+                {/** Rent */}
+                <div className="flex-1 text-center py-2">
+                  <div className="text-gray-900 font-semibold">
+                    ₹{p.price?.toLocaleString() || "N/A"}
+                  </div>
+                  <div className="text-xs text-gray-500">Rent</div>
+                </div>
+                <div className="w-[1px] bg-gray-300"></div>
           
+                {/** Deposit */}
+                <div className="flex-1 text-center py-2">
+                  <div className="text-gray-900 font-semibold">
+                    {p.deposit ? `₹${Number(p.deposit).toLocaleString()}` : "-"}
+                  </div>
+                  <div className="text-xs text-gray-500">Deposit</div>
+                </div>
+                <div className="w-[1px] bg-gray-300"></div>
+          
+                {/** BHK */}
+                <div className="flex-1 text-center py-2">
+                  <div className="text-gray-900 font-semibold">{p.bhk_type || "-"}</div>
+                  <div className="text-xs text-gray-500">BHK</div>
+                </div>
+              </div>
+          
+              {/* Title + Actions */}
+              <div className="flex justify-between items-center mt-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-xl">
+                    {p.title?.charAt(0) || "U"}
+                  </div>
+                  <span className="font-medium text-sm text-gray-700">{p.title}</span>
+                </div>
+                <div className="flex gap-3 text-blue-500">
+                  <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
+                  <IoCall className="text-2xl cursor-pointer" />
+                </div>
+              </div>
+          
+              {/* Book Now Button */}
+              <button
+                style={{ fontFamily: "heading_font" }}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-md mt-2"
+              >
+                Book Visit Now
+              </button>
             </div>
           </Link>
 

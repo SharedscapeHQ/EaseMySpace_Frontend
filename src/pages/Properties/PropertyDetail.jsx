@@ -197,11 +197,11 @@ function PropertyDetail() {
                 <FiCheckCircle className="text-xs" /> Verified
               </span>
             )}
-            {visitCount > 0 && (
+            {/* {visitCount > 0 && (
               <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
                 <FiEye className="text-gray-500" /> {visitCount} Visits
               </span>
-            )}
+            )} */}
           </div>
 
           <PropertyHeaderSection
