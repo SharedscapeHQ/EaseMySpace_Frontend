@@ -54,7 +54,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
           notes: data.notes || "",
         });
       } catch (err) {
-        console.log("ℹ️ No existing requirement found, user will create new.");
+        console.log(" No existing requirement found, user will create new.");
       }
     })();
   }, [initialData]);

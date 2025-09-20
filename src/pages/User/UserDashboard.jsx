@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // ⬅ added useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   getUserProperties,
   submitQuery,
@@ -21,8 +21,8 @@ import { FiClock } from "react-icons/fi";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import DedicatedRM from "../../components/UserPageComp/DedicatedRM";
 import MyBookings from "../../components/UserPageComp/MyBookings";
-// import ReferAndEarn from "../../components/UserPageComp/ReferAndEarn";
-// import MyWallet from "../../components/UserPageComp/MyWallet";
+import ReferAndEarn from "../../components/UserPageComp/ReferAndEarn";
+import MyWallet from "../../components/UserPageComp/MyWallet";
 import UserChat from "../../components/UserPageComp/UserChat";
 
 const TAB_TITLES = {
@@ -53,7 +53,6 @@ export default function UserDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 👉 initialize tab from URL param (default to MyProperties)
   const getInitialTab = () => {
     const params = new URLSearchParams(location.search);
     return params.get("tab") || "MyProperties";
@@ -228,8 +227,8 @@ export default function UserDashboard() {
         )}
 
         {activeTab === "MyQueries" && <MyQueries />}
-        {/* {activeTab === "ReferEarn" && <ReferAndEarn />}
-        {activeTab === "MyWallet" && <MyWallet />} */}
+        {activeTab === "ReferEarn" && <ReferAndEarn />}
+        {activeTab === "MyWallet" && <MyWallet />}
         {activeTab === "MyPlan" && <MyPlanDetails />}
         {activeTab === "UnlockedContacts" && <UnlockedCards />}
         {activeTab === "MyBookings" && <MyBookings />}

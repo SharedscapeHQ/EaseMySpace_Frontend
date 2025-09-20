@@ -19,7 +19,6 @@ export default function MyPlanDetails() {
   useEffect(() => {
   getUserSubscription()
     .then((data) => {
-      console.log("✅ Subscription API response:", data);
       setPlan(data);
     })
     .catch((err) => console.error("❌ Failed to fetch plan:", err))

@@ -147,14 +147,14 @@ function Register() {
           inputMode="numeric"
         />
 
-        {/* <input
+        <input
           name="referralCode"
           value={form.referralCode}
           onChange={handleChange}
           className={inputClasses}
           type="text"
           placeholder="Referral Code (Optional)"
-        /> */}
+        />
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <label className="font-semibold text-gray-700 whitespace-nowrap">

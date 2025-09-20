@@ -6,7 +6,6 @@ export default function TidioWidget() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("[Tidio Debug] Reloading Tidio script for route:", location.pathname);
 
     // 1️⃣ Remove old Tidio script + iframe
     document.querySelectorAll('script[src*="tidio.co"]').forEach((s) => s.remove());

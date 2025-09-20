@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 function LocationFetcher({ onLocationFetched, onLocationDenied }) {
   useEffect(() => {
     if (!("geolocation" in navigator)) {
-      console.log("Geolocation not supported");
       if (onLocationDenied) onLocationDenied();
       return;
     }

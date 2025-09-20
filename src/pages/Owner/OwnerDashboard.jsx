@@ -31,6 +31,8 @@ import RequirementReq from "../../components/AdminPageComp/RequirementReq";
 import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 import RMAssignments from "../../components/OwnerPageComp/RMAssignments";
 import VisitorsTable from "../../components/OwnerPageComp/VisitorsTable";
+import Marketing from "../../components/AdminPageComp/Marketing";
+import WithdrawalRequests from "../../components/OwnerPageComp/WithdrawalRequests";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -470,6 +472,10 @@ export default function OwnerDashboard() {
                         <OldProperties />
                       </section>
                     )}
+
+                              {activeTab === "Marketing" && <Marketing />}
+                              {activeTab === "Withdrawals" && <WithdrawalRequests />}
+                    
 
           <EditModal
             editForm={editForm}

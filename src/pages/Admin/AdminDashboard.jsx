@@ -28,6 +28,7 @@ import OldProperties from "../../components/AdminPageComp/OldProperties";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 import RequirementReq from "../../components/AdminPageComp/RequirementReq";
 import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
+import Marketing from "../../components/AdminPageComp/Marketing";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -493,6 +494,8 @@ export default function AdminDashboard() {
               <OldProperties />
             </section>
           )}
+
+          {activeTab === "Marketing" && <Marketing />}
 
           <EditModal
             editForm={editForm}

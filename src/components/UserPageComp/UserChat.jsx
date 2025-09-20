@@ -12,19 +12,19 @@ export default function OwnerChats() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = Number(user?.id);
   const ownerCode = user?.owner_code;
-  const [onlineUsers, setOnlineUsers] = useState({}); 
+  const [onlineUsers, setOnlineUsers] = useState({});
 
-   useEffect(() => {
-  const handleUserStatus = ({ userId, online }) => {
-  setOnlineUsers(prev => ({ ...prev, [Number(userId)]: online }));
-};
+  useEffect(() => {
+    const handleUserStatus = ({ userId, online }) => {
+      setOnlineUsers((prev) => ({ ...prev, [Number(userId)]: online }));
+    };
 
-  socket.on("user_status", handleUserStatus);
+    socket.on("user_status", handleUserStatus);
 
-  return () => {
-    socket.off("user_status", handleUserStatus);
-  };
-}, []);
+    return () => {
+      socket.off("user_status", handleUserStatus);
+    };
+  }, []);
 
   useEffect(() => {
     if (!userId || !ownerCode) {
@@ -66,15 +66,12 @@ export default function OwnerChats() {
       if (!socket.connected) {
         socket.connect();
         socket.emit("user_online", userId);
-        console.log("✅ Socket connected & user_online emitted:", userId);
       }
     }
 
     initChats();
 
     const handleReceive = (msg) => {
-      console.log("📩 handleReceive got message:", msg);
-
       const otherId =
         msg.sender_id === userId ? msg.receiver_id : msg.sender_id;
 
@@ -109,10 +106,9 @@ export default function OwnerChats() {
         50
       );
     };
-   
 
     const handleSent = (msg) => {
-      console.log("✅ handleSent confirmed message:", msg);
+      "✅ handleSent confirmed message:", msg;
 
       const otherId =
         msg.sender_id === userId ? msg.receiver_id : msg.sender_id;
@@ -153,60 +149,59 @@ export default function OwnerChats() {
     socket.off("message_sent").on("message_sent", handleSent);
 
     return () => {
-     socket.off("receive_message", handleReceive);
-  socket.off("message_sent", handleSent);
+      socket.off("receive_message", handleReceive);
+      socket.off("message_sent", handleSent);
     };
   }, [userId, ownerCode]);
 
   const handleReplyChange = (otherId, value) =>
     setReplyInputs((prev) => ({ ...prev, [otherId]: value }));
 
-const sendReply = (otherId) => {
-  const text = replyInputs[otherId]?.trim();
-  if (!text) return;
+  const sendReply = (otherId) => {
+    const text = replyInputs[otherId]?.trim();
+    if (!text) return;
 
-  const conversation = conversations[otherId];
-  const propertyId = conversation?.[0]?.property_id || null;
+    const conversation = conversations[otherId];
+    const propertyId = conversation?.[0]?.property_id || null;
 
-  const tempId = Date.now();
+    const tempId = Date.now();
 
-  const otherUser = conversation.find(msg => Number(msg.sender_id) !== userId) || {};
-  const recipientOwnerCode = otherUser.sender_owner_code || otherUser.receiver_owner_code;
+    const otherUser =
+      conversation.find((msg) => Number(msg.sender_id) !== userId) || {};
+    const recipientOwnerCode =
+      otherUser.sender_owner_code || otherUser.receiver_owner_code;
 
-  const payload = {
-    sender_id: userId,
-    recipientOwnerCode,
-    message: text,
-    propertyId,
-    tempId,
+    const payload = {
+      sender_id: userId,
+      recipientOwnerCode,
+      message: text,
+      propertyId,
+      tempId,
+    };
+
+
+    socket.emit("send_message", payload);
+
+    setConversations((prev) => {
+      const updated = { ...prev };
+      if (!updated[otherId]) updated[otherId] = [];
+
+      if (!updated[otherId].some((m) => m.tempId === tempId)) {
+        updated[otherId].push({
+          ...payload,
+          created_at: new Date(),
+        });
+      }
+
+      return updated;
+    });
+
+    setReplyInputs((prev) => ({ ...prev, [otherId]: "" }));
+    setTimeout(
+      () => scrollRefs.current[otherId]?.scrollIntoView({ behavior: "smooth" }),
+      50
+    );
   };
-
-  console.log("🚀 Sending message:", payload);
-
-  socket.emit("send_message", payload);
-
-  setConversations((prev) => {
-    const updated = { ...prev };
-    if (!updated[otherId]) updated[otherId] = [];
-
-    if (!updated[otherId].some((m) => m.tempId === tempId)) {
-      updated[otherId].push({
-        ...payload,
-        created_at: new Date(),
-      });
-    }
-
-    return updated;
-  });
-
-  setReplyInputs((prev) => ({ ...prev, [otherId]: "" }));
-  setTimeout(
-    () => scrollRefs.current[otherId]?.scrollIntoView({ behavior: "smooth" }),
-    50
-  );
-};
-
-
 
   return (
     <div className="p-4">
@@ -220,7 +215,7 @@ const sendReply = (otherId) => {
           const conv = conversations[otherId];
           const otherUser =
             conv.find((msg) => Number(msg.sender_id) !== userId) || {};
-            
+
           const senderName = otherUser.sender_first_name
             ? `${otherUser.sender_first_name} ${
                 otherUser.sender_last_name || ""
@@ -230,15 +225,15 @@ const sendReply = (otherId) => {
           return (
             <div key={otherId} className="mb-6 border rounded p-2 bg-gray-100">
               <h3 className="font-semibold mb-2">
-  Chat with {senderName}{" "}
-  <span
-    className={`ml-2 text-xs font-medium ${
-      onlineUsers[otherId] ? "text-green-600" : "text-gray-400"
-    }`}
-  >
-    {onlineUsers[otherId] ? "Online" : "Offline"}
-  </span>
-</h3>
+                Chat with {senderName}{" "}
+                <span
+                  className={`ml-2 text-xs font-medium ${
+                    onlineUsers[otherId] ? "text-green-600" : "text-gray-400"
+                  }`}
+                >
+                  {onlineUsers[otherId] ? "Online" : "Offline"}
+                </span>
+              </h3>
 
               <div className="space-y-2 max-h-80 overflow-y-auto flex flex-col">
                 {conv.map((msg, idx) => {
@@ -257,10 +252,10 @@ const sendReply = (otherId) => {
                       }
                     >
                       <p className="text-sm">{msg.message}</p>
-                    <p className="text-xs text-gray-500 mt-1">
- {msg.created_at &&
-    new Date(msg.created_at).toISOString().slice(11, 16)}
-</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {msg.created_at &&
+                          new Date(msg.created_at).toISOString().slice(11, 16)}
+                      </p>
                     </div>
                   );
                 })}

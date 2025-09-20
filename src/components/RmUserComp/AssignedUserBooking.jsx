@@ -8,7 +8,6 @@ export default function AssignedUsers() {
   const rmId = rm?.id;
 
   useEffect(() => {
-    console.log("RM ID received in component:", rmId);
 
     if (!rmId) {
       console.warn("RM ID is missing. Cannot fetch assigned users.");
@@ -18,7 +17,6 @@ export default function AssignedUsers() {
     async function fetchUsers() {
       try {
         const data = await getAssignedUserBooking(rmId);
-        console.log("Fetched assigned users:", data);
         setUsers(data);
       } catch (err) {
         console.error("Error fetching assigned users:", err);

@@ -148,6 +148,16 @@ export const getMyRequirement = async () => {
   }
 };
 
+export const getReferralTransactions = async () => {
+  try {
+    const res = await axiosInstance.get("/referral-transactions");
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error fetching referral transactions:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
 
 
 export default axiosInstance;

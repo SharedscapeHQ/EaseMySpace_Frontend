@@ -18,13 +18,13 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
   // Define tabs
   const tabs = [
     { label: "My Properties", value: "MyProperties", icon: <FiHome /> },
-    // { label: "Refer & Earn", value: "ReferEarn", icon: <FiGift /> },
+    { label: "Refer & Earn", value: "ReferEarn", icon: <FiGift /> },
+    { label: "My Wallet", value: "MyWallet", icon: <TfiWallet /> },
     { label: "My Plan", value: "MyPlan", icon: <FiCreditCard /> },
     { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> },
     { label: "Unlocked Contacts", value: "UnlockedContacts", icon: <FiPhoneCall /> },
     { label: "Recently Viewed", value: "RecentlyViewed", icon: <FiClock /> },
     { label: "My Queries", value: "MyQueries", icon: <FiMessageSquare /> },
-    // { label: "My Wallet", value: "MyWallet", icon: <TfiWallet /> },
     {label:"chat", value:"Chat", icon:<FiMessageSquare/>}
   ];
 

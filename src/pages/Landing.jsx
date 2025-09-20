@@ -15,6 +15,7 @@ import BottomNav from "../components/LandingSectionComp/BottomNav";
 import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
 import CustomerVidReview from "../components/LandingSectionComp/CustomerVidReview";
 import LandingPopup from "../components/LandingSectionComp/LandingPopup";
+import FunnyQuotes from "../components/LandingSectionComp/FunnyQuotes";
 
 function Landing() {
   return (
@@ -70,6 +71,7 @@ function Landing() {
       <div className="w-full -pt-10 lg:pb-0 pb-9">
         <HeroMobile />
         <HeroDesktop />
+        <FunnyQuotes/>
         <NewlyListedProperties />
         <RecentAddedProperties />
         <Banner />

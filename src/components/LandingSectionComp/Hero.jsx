@@ -26,8 +26,6 @@ export default function Hero() {
       const video = videoRef.current;
       if (video && video.paused) {
         video.play().catch((err) => {
-          // Safari may still block it, so you could handle fallback here
-          console.log("Autoplay blocked:", err);
         });
       }
     };
