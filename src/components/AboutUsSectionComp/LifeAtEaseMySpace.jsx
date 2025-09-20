@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import Arvind_vid from "/life_at_ems/Arvind.mov";
-import Taniya_vid from "/life_at_ems/Taniya.mov";
+import Arvind_vid from "/life_at_ems/Arvind.mp4";
+import Taniya_vid from "/life_at_ems/Taniya.mp4";
 import Rakesh_vid from "/life_at_ems/Rakesh.mp4";
 import Yogita_vid from "/life_at_ems/Yogita.mp4";
 import Arvind_thumbnail from "/life_at_ems/thumbnails/Arvind.jpg";
