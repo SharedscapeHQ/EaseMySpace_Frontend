@@ -169,6 +169,7 @@ export default function SubscriptionPlans() {
             {/* Mobile Summary Card */}
             <div className="flex flex-col gap-2 lg:hidden">
               <h2 style={{ fontFamily: "heading_font" }} className="text-lg font-semibold">{plan.title}</h2>
+              <p className="line-through text-zinc-500 text-base">{plan.originalPrice}</p>
               <p className="text-sm text-zinc-700">{plan.price} <span className="text-xs">{plan.gst}</span></p>
               <p className="text-green-500 text-xs">{plan.savings}</p>
 
