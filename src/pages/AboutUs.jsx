@@ -102,9 +102,6 @@ function AboutUs() {
         <section id="our-team">
           <OurTeam />
         </section>
-        <section id="lifeatems">
-          <LifeAtEaseMySpace />
-        </section>
 
         <Footer />
       </div>
