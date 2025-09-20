@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { sendWhatsAppMessages, sendSmsMessages } from "../../api/marketingApi";
 
-// ✅ Hardcoded screenshot URL
 import messagePreview from "/marketing/refer_earn.jpg";
 
 export default function Marketing() {

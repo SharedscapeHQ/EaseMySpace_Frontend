@@ -34,6 +34,8 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const mainRef = useRef(null);
 
+const [modalUser, setModalUser] = useState(null);
+
   const [leads, setLeads] = useState([]);
   const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -277,11 +279,9 @@ export default function AdminDashboard() {
 
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
-          {activeTab === "Users" && (
+      {activeTab === "Users" && (
   <section className="mt-6">
-    <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-      Users
-    </h2>
+    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Users</h2>
 
     {loadingUsers ? (
       <p className="text-gray-500">Loading users...</p>
@@ -296,18 +296,16 @@ export default function AdminDashboard() {
               <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
                 Contact
               </th>
+             
               <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
-                Gender
+                Referred By
               </th>
             </tr>
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-200">
             {users.map((u) => (
-              <tr
-                key={u.id}
-                className="hover:bg-gray-50 transition duration-150"
-              >
+              <tr key={u.id} className="hover:bg-gray-50 transition duration-150">
                 {/* Name */}
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   {u.firstName} {u.lastName}
@@ -316,30 +314,38 @@ export default function AdminDashboard() {
                 {/* Contact */}
                 <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
                   <div>
-                    {u.email || (
-                      <span className="italic text-gray-400">N/A</span>
-                    )}
+                    {u.email || <span className="italic text-gray-400">N/A</span>}
                   </div>
                   <div className="mt-1">
-                    {u.phone || (
-                      <span className="italic text-gray-400">N/A</span>
-                    )}
+                    {u.phone || <span className="italic text-gray-400">N/A</span>}
                   </div>
                 </td>
 
-                {/* ✅ Gender */}
+
+                {/* Referred By */}
                 <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  {u.gender ? (
-                    <span
-                      className={`inline-flex px-3 py-1 rounded-full text-sm font-medium capitalize ${
-                        u.gender.toLowerCase() === "male"
-                         
-                      }`}
+                  {u.referred_by_name && u.referred_by_name !== "N/A" ? (
+                    <button
+                      onClick={() => {
+                        const refUser = users.find(user => user.id === u.referred_by);
+                        if (refUser) setModalUser(refUser);
+                        else {
+                          setModalUser({
+                            firstName: u.referred_by_name,
+                            lastName: "",
+                            email: "N/A",
+                            phone: "N/A",
+                            role: "N/A",
+                            referred_by_name: "N/A",
+                          });
+                        }
+                      }}
+                      className="text-indigo-600 hover:underline"
                     >
-                      {u.gender}
-                    </span>
+                      {u.referred_by_name}
+                    </button>
                   ) : (
-                    <span className="italic text-gray-400">N/A</span>
+                    <span className="italic text-gray-400">Self Signup</span>
                   )}
                 </td>
               </tr>
@@ -348,8 +354,29 @@ export default function AdminDashboard() {
         </table>
       </div>
     )}
+
+    {/* Referrer Modal */}
+    {modalUser && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
+          <h3 className="text-lg font-semibold mb-4">Referrer Details</h3>
+          <p><strong>Name:</strong> {modalUser.firstName} {modalUser.lastName}</p>
+          <p><strong>Email:</strong> {modalUser.email}</p>
+          <p><strong>Phone:</strong> {modalUser.phone}</p>
+          <p><strong>Role:</strong> {modalUser.role}</p>
+          <p><strong>Referred By:</strong> {modalUser.referred_by_name || "Self Signup"}</p>
+          <button
+            onClick={() => setModalUser(null)}
+            className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded-md"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
   </section>
 )}
+
 
 
           {activeTab === "Leads" && (
