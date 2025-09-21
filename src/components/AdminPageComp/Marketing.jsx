@@ -96,7 +96,7 @@ export default function Marketing() {
             </button>
 
             {/* WhatsApp Logs */}
-          <div className="mt-4 border rounded-md p-2 bg-gray-50">
+        <div className="mt-4 border rounded-md p-2 bg-gray-50">
   <h4 className="font-semibold text-gray-700 mb-2">Message history</h4>
   
   {logs.length === 0 ? (
@@ -105,7 +105,8 @@ export default function Marketing() {
     <ul className="text-sm text-gray-800 space-y-1 max-h-40 overflow-y-auto">
       {logs.map((log, idx) => (
         <li key={idx} className="flex justify-between px-2 py-1 border-b last:border-b-0">
-          <span>{log.number}</span>
+          {/* Show only last 10 digits */}
+          <span>{log.number.slice(-10)}</span>
           <span
             className={`font-medium ${
               log.status === "sent"
@@ -122,6 +123,7 @@ export default function Marketing() {
     </ul>
   )}
 </div>
+
 
           </div>
 
