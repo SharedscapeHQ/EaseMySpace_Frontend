@@ -15,6 +15,11 @@ export const sendWhatsAppMessages = async (numbers) => {
   return res.data;
 };
 
+export const fetchWhatsAppLogs = async () => {
+  const res = await marketingAxios.get("/whtsp/log");
+  return res.data; // array of logs
+};
+
 
 // 🔹 Send SMS campaign
 export const sendSmsMessages = async (numbers) => {
