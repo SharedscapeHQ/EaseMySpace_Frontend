@@ -34,13 +34,13 @@ function TopLocation() {
 
   return (
     <section
-      className="w-full py-5 bg-blue-100 relative lg:rounded-none rounded-3xl"
+      className="w-full py-5 bg-blue-100 dark:bg-zinc-800 dark:text-white relative lg:rounded-none rounded-3xl"
       aria-label="Top locations to find PGs, flats, and flatmates"
     >
       <div className="max-w-7xl mx-auto lg:px-10 px-3 relative z-10">
         <h2
           style={{ fontFamily: "heading_font" }}
-          className="text-lg lg:text-3xl text-black leading-tight lg:text-left"
+          className="text-lg lg:text-3xl text-black dark:text-white leading-tight lg:text-left"
         >
           Explore Top Locations
         </h2>
@@ -55,7 +55,7 @@ function TopLocation() {
               ? Array.from({ length: 5 }).map((_, i) => (
                   <div
                     key={i}
-                    className="w-40 h-52 bg-gray-700 rounded-2xl flex-shrink-0"
+                    className="w-40 h-52 bg-zinc-700 rounded-2xl flex-shrink-0"
                   />
                 ))
               : locations.map((loc, i) => (
@@ -64,7 +64,7 @@ function TopLocation() {
                     onClick={() => handleLocationClick(loc.name)}
                     className="relative w-40 h-52 flex-shrink-0 cursor-pointer rounded-2xl bg-zinc-100 overflow-hidden shadow-lg"
                   >
-                    <div className="w-full h-40 bg-gradient-to-br from-gray-100 via-blue-400 to-blue-700 flex items-center justify-center">
+                    <div className="w-full h-40 bg-gradient-to-br from-zinc-100 via-blue-400 to-blue-700 flex items-center justify-center">
                       <img
                         src={loc.image}
                         alt={`View properties in ${loc.name}`}
@@ -120,7 +120,7 @@ function TopLocation() {
                 ? Array.from({ length: 4 }).map((_, i) => (
                     <div
                       key={i}
-                      className="w-full h-72 bg-gray-700 animate-pulse rounded-2xl"
+                      className="w-full h-72 bg-zinc-700 animate-pulse rounded-2xl"
                     />
                   ))
                 : locations.slice(0, 4).map((loc, i) => (
@@ -128,7 +128,7 @@ function TopLocation() {
                       key={i}
                       onClick={() => handleLocationClick(loc.name)}
                       whileHover={{ scale: 1.02 }}
-                      className="relative group cursor-pointer rounded-2xl bg-gradient-to-br from-gray-100 via-blue-400 to-blue-700 overflow-hidden"
+                      className="relative group cursor-pointer rounded-2xl bg-gradient-to-br from-zinc-100 via-blue-400 to-blue-700 overflow-hidden"
                       aria-label={`Explore properties in ${loc.name}`}
                     >
                       <div className="w-full h-48 bg-blue-300 flex items-center justify-center">

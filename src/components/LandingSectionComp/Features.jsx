@@ -32,7 +32,7 @@ const FeatureSection = () => {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="w-full py-10 bg-white"
+      className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
       aria-label="Key features and advantages of EaseMySpace"
       role="region"
     >
@@ -49,7 +49,7 @@ const FeatureSection = () => {
             <div
               key={index}
               className={`flex items-center sm:items-center flex-row sm:flex-col text-left sm:text-center px-4 py-6
-                border-b border-gray-200 sm:border-b-0
+                border-b border-zinc-200 sm:border-b-0
                 sm:border-r ${index % 4 === 3 ? "sm:border-r-0" : ""}`}
             >
               <div
@@ -59,10 +59,10 @@ const FeatureSection = () => {
                 {feature.icon}
               </div>
               <div>
-                <h3 className="font-bold text-zinc-900 text-base sm:text-lg mb-1">
+                <h3 className="font-bold text-zinc-900 dark:text-white text-base sm:text-lg mb-1">
                   {feature.title}
                 </h3>
-                <p className="text-xs text-zinc-800 lg:leading-relaxed leading-none">
+                <p className="text-xs text-zinc-800 dark:text-zinc-200 lg:leading-relaxed leading-none">
                   {feature.description}
                 </p>
               </div>

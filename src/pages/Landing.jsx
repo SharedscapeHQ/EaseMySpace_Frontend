@@ -68,7 +68,7 @@ function Landing() {
 </Helmet>
 
  <LandingPopup />
-      <div className="w-full -pt-10 lg:pb-0 pb-9">
+      <div className="w-full -pt-10 lg:pb-0 pb-9 dark:bg-zinc-900">
         <HeroMobile />
         <HeroDesktop />
         <FunnyQuotes/>

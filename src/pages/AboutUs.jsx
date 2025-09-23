@@ -63,45 +63,50 @@ function AboutUs() {
         }
       `}</style>
 
-      <AboutNav />
+    <div className="bg-white dark:bg-zinc-900 min-h-screen text-gray-900 dark:text-gray-100">
+  <AboutNav />
 
-      {/* Mobile Scrollable Sub Navigation */}
-      <div className="fixed top-[75px] left-0 w-full bg-white pt-2 shadow-md z-40 border-b md:hidden overflow-x-auto no-scrollbar">
-        <div className="flex space-x-4 justify-center px-4 py-2">
-          {navItems.map((item, idx) =>
-            item.type === 'anchor' ? (
-              <a
-                key={idx}
-                href={item.href}
-                className="flex-shrink-0 px-3 py-1 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 border"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <a
-                key={idx}
-                href={item.href}
-                className="flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 border"
-              >
-                {item.label}
-              </a>
-            )
-          )}
-        </div>
-      </div>
+  {/* Mobile Scrollable Sub Navigation */}
+  <div className="fixed top-[75px] left-0 w-full bg-white dark:bg-zinc-900 pt-2 shadow-md z-40 border-b md:hidden overflow-x-auto no-scrollbar">
+    <div className="flex space-x-4 justify-center px-4 py-2">
+      {navItems.map((item, idx) =>
+        item.type === 'anchor' ? (
+          <a
+            key={idx}
+            href={item.href}
+            className="flex-shrink-0 px-3 py-1 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-blue-600 border"
+          >
+            {item.label}
+          </a>
+        ) : (
+          <a
+            key={idx}
+            href={item.href}
+            className="flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-blue-600 border"
+          >
+            {item.label}
+          </a>
+        )
+      )}
+    </div>
+  </div>
 
-      <div className="pt-14 md:pt-8">
-        <AboutUsHero />
+  <div className="pt-14 lg:pt-0">
+    <AboutUsHero />
 
-        <section id="our-story">
-          <AboutStory />
-        </section>
+    <section id="our-story">
+      <AboutStory />
+    </section>
 
-        <AboutHighlights />
+    <AboutHighlights />
 
-        <section id="our-team">
-          <OurTeam />
-        </section>
+    <section id="our-team">
+      <OurTeam />
+    </section>
+
+
+</div>
+
 
         <Footer />
       </div>

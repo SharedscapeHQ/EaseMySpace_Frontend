@@ -7,6 +7,7 @@ export default function RecentTransactions({ transactions }) {
     purchase: "Subscription Purchase",
     property_approval: "Property Approval Reward",
     withdrawal: "Withdrawal",
+    contact_unlock: "Contact Unlock",
   };
 
   return (
@@ -25,10 +26,11 @@ export default function RecentTransactions({ transactions }) {
         <ul className="divide-y divide-gray-100">
           {transactions.slice(0, 5).map((txn) => {
             const displayType = typeLabels[txn.type] || txn.type;
-            const isCredit = txn.direction === "credit";
-            const sign = isCredit ? "+" : "-";
-            const color = isCredit ? "text-green-600" : "text-red-600";
-            const icon = isCredit ? <FaArrowUp /> : <FaArrowDown />;
+            const isDebit = String(txn.amount).startsWith("-"); // check if negative
+            const sign = isDebit ? "-" : "+";
+            const color = isDebit ? "text-red-600" : "text-green-600";
+            const icon = isDebit ? <FaArrowDown /> : <FaArrowUp />;
+            const amount = Math.abs(txn.amount);
 
             return (
               <li
@@ -44,7 +46,7 @@ export default function RecentTransactions({ transactions }) {
                   </p>
                 </div>
                 <span className={`font-semibold ${color}`}>
-                  {sign}₹{txn.amount}
+                  {sign}₹{amount}
                 </span>
               </li>
             );

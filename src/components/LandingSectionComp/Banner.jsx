@@ -110,47 +110,48 @@ function Banner() {
 
       {/* Banner Section */}
       <div
-        style={{ fontFamily: "para_font" }}
-        className="flex justify-between items-center bg-blue-200 gap-6 px-3 lg:px-10 border-2 rounded-2xl py-5 lg:max-w-7xl mx-auto overflow-hidden relative"
+  style={{ fontFamily: "para_font" }}
+  className="flex justify-between items-center bg-blue-200 dark:bg-zinc-600 gap-6 px-3 lg:px-10 border-2 border-transparent dark:border-zinc-700 rounded-2xl py-5 lg:max-w-7xl mx-auto overflow-hidden relative transition-colors duration-300"
+>
+  <img
+    src={leftImg}
+    alt="Search flatmates in Mumbai"
+    className="hidden absolute -left-10 md:block w-80 object-contain opacity-80 dark:opacity-60"
+  />
+
+  <div className="flex flex-col items-center text-center gap-4 flex-1 z-10">
+    <h1 className="text-lg md:text-xl font-medium text-zinc-900 dark:text-white">
+      Looking for a flatmate or have a room to rent in Mumbai?
+    </h1>
+    <h2 className="text-sm text-zinc-700 dark:text-zinc-300 max-w-md mx-auto">
+      Talk to our experts for complete guidance and get the best verified options tailored to your needs
+    </h2>
+
+    <div className="flex items-center justify-center gap-5">
+      <button
+        onClick={() => setIsOpen(true)}
+        aria-label="Talk to an expert"
+        className="bg-blue-800 dark:bg-blue-600 text-white px-6 py-3 rounded-lg lg:text-base text-xs shadow hover:bg-blue-900 dark:hover:bg-blue-700 transition"
       >
-        <img
-          src={leftImg}
-          alt="Search flatmates in Mumbai"
-          className="hidden absolute -left-10 md:block w-80 object-contain"
-        />
+        Talk to an expert
+      </button>
+      <Link
+        to="/add-properties"
+        className="bg-green-600 dark:bg-green-500 text-white px-6 py-3 rounded-lg lg:text-base text-xs shadow hover:bg-green-700 dark:hover:bg-green-600 transition"
+        aria-label="List Property"
+      >
+        List Property
+      </Link>
+    </div>
+  </div>
 
-        <div className="flex flex-col items-center text-center gap-4 flex-1 z-10">
-          <h1 className="text-lg md:text-xl font-medium">
-            Looking for a flatmate or have a room to rent in Mumbai?
-          </h1>
-          <h2 className="text-sm text-gray-700 max-w-md mx-auto">
-            Talk to our experts for complete guidance and get the best verified options tailored to your needs
-          </h2>
+  <img
+    src={rightImg}
+    alt="Room rental assistance in Mumbai"
+    className="hidden absolute -right-7 md:block w-80 object-contain opacity-80 dark:opacity-60"
+  />
+</div>
 
-          <div className="flex items-center justify-center gap-5">
-            <button
-              onClick={() => setIsOpen(true)}
-              aria-label="Talk to an expert"
-              className="bg-blue-800 text-white px-6 py-3 rounded-lg lg:text-base text-xs shadow hover:bg-blue-900 transition"
-            >
-              Talk to an expert
-            </button>
-            <Link
-              to="/add-properties"
-              className="bg-green-600 text-white px-6 py-3 rounded-lg lg:text-base text-xs shadow hover:bg-green-700 transition"
-              aria-label="List Property"
-            >
-              List Property
-            </Link>
-          </div>
-        </div>
-
-        <img
-          src={rightImg}
-          alt="Room rental assistance in Mumbai"
-          className="hidden absolute -right-7 md:block w-80 object-contain"
-        />
-      </div>
 
       {/* Popup Modal */}
       {isOpen && (
@@ -158,23 +159,23 @@ function Banner() {
           <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl relative overflow-hidden flex flex-col md:flex-row">
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
+              className="absolute top-3 right-3 text-zinc-500 hover:text-black text-lg"
               aria-label="Close popup"
             >
               ✕
             </button>
 
-            <div className="bg-blue-50 p-6 md:w-1/2 border-r border-gray-200 flex flex-col justify-center text-center md:text-left">
-              <h3 className="text-gray-800 font-semibold text-lg mb-4">
+            <div className="bg-blue-50 p-6 md:w-1/2 border-r border-zinc-200 flex flex-col justify-center text-center md:text-left">
+              <h3 className="text-zinc-800 font-semibold text-lg mb-4">
                 Why Choose EaseMySpace? ✨
               </h3>
-              <ul className="space-y-2 text-sm text-gray-600 text-left mx-auto md:mx-0 w-fit">
+              <ul className="space-y-2 text-sm text-zinc-600 text-left mx-auto md:mx-0 w-fit">
                 <li>✅ Zero Brokerage – Direct Connect with Owners</li>
                 <li>✅ Largest Network of Flatmates & Vacant Rooms</li>
                 <li>✅ Verified & Active Listings Only</li>
                 <li>✅ Personalized Assistance by EMS Experts</li>
               </ul>
-              <div className="mt-6 text-sm text-gray-500 text-center md:text-left">
+              <div className="mt-6 text-sm text-zinc-500 text-center md:text-left">
                 🌟 India’s Fastest Growing Urban Living Platform 🌟
               </div>
             </div>
@@ -182,10 +183,10 @@ function Banner() {
             <div className="p-6 md:w-1/2 flex flex-col justify-center items-center text-center">
               {!submitted ? (
                 <>
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                  <h2 className="text-xl font-semibold text-zinc-800 mb-2">
                     How can we help you?
                   </h2>
-                  <p className="text-sm text-gray-600 mb-4">
+                  <p className="text-sm text-zinc-600 mb-4">
                     Speak with a space solution expert.
                   </p>
                   <form onSubmit={handleSubmit} className="space-y-3 w-full max-w-sm">
@@ -235,7 +236,7 @@ function Banner() {
               ) : (
                 <div className="text-center text-green-600 font-medium text-lg">
                   ✅ We’ve received your request!
-                  <p className="text-gray-600 text-sm mt-2">
+                  <p className="text-zinc-600 text-sm mt-2">
                     Our team will contact you shortly.
                   </p>
                 </div>

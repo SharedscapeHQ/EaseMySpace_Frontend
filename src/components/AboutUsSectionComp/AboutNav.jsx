@@ -82,12 +82,12 @@ export default function AboutNav() {
 
   return (
     <header style={{ fontFamily: "para_font" }}>
-      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white shadow-sm z-50">
+      <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white dark:bg-zinc-500 shadow-sm z-50">
         {/* Logo & Hamburger */}
         <div className="flex items-center gap-3">
           <button
             aria-label="Toggle menu"
-            className="w-6 h-6 sm:w-10 sm:h-10 mt-3 lg:mt-0 relative text-zinc-700"
+            className="w-6 h-6 sm:w-10 sm:h-10 mt-3 lg:mt-0 relative text-zinc-700 dark:text-white"
             onClick={() => setOpen((p) => !p)}
           >
             <Hamburger animatedOpen={open} />
@@ -105,17 +105,17 @@ export default function AboutNav() {
         </div>
 
         {/* Main Links */}
-        <div className="hidden sm:flex items-center gap-6 text-sm font-medium">
-          <a href="#our-story" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
+        <div className="hidden sm:flex items-center gap-6 text-sm font-medium ">
+          <a href="#our-story" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
             Our Story
           </a>
-          <a href="#our-team" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
+          <a href="#our-team" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
             Our Team
           </a>
-          <Link to="/life-at-ems" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
+          <Link to="/life-at-ems" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
             Life at EaseMySpace
           </Link>
-          <Link to="/careers" className="text-zinc-700 hover:text-blue-600 transition-colors duration-200">
+          <Link to="/careers" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
             Careers
           </Link>
         </div>

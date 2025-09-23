@@ -35,7 +35,7 @@ function OurQuality() {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="w-full py-12"
+      className="w-full py-12 dark:text-white"
       aria-label="EMS Features for Flatmates, PGs, and Vacant Flats"
       role="region"
     >
@@ -75,14 +75,15 @@ function OurQuality() {
               </div>
 
               {/* Title & Description */}
-              <div className="px-2 w-full">
-                <h3 className="font-bold text-zinc-900 text-base sm:text-lg lg:min-h-[60px]">
-                  {feature.title}
-                </h3>
-                <p className="text-xs text-zinc-800 lg:leading-relaxed leading-1 tracking-wider mt-2">
-                  {feature.description}
-                </p>
-              </div>
+             <div className="px-2 w-full">
+  <h3 className="font-bold text-zinc-900 dark:text-white text-base sm:text-lg lg:min-h-[60px]">
+    {feature.title}
+  </h3>
+  <p className="text-xs text-zinc-800 dark:text-gray-300 lg:leading-relaxed leading-1 tracking-wider mt-2">
+    {feature.description}
+  </p>
+</div>
+
 
               {/* Structured Data */}
               <script type="application/ld+json">{`

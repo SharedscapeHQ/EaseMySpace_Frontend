@@ -78,13 +78,13 @@ export default function OurTeam() {
   >
     <h2
       style={{ fontFamily: "heading_font" }}
-      className="text-lg lg:text-3xl mb-0 text-black leading-tight"
+      className="text-lg lg:text-3xl mb-0 dark:text-white text-black leading-tight"
       itemProp="employee"
     >
       Meet our Team
     </h2>
     <p
-      className="font-bold mb-4 heading-font text-gray-500 tracking-wider text-shadow"
+      className="font-bold mb-4 heading-font text-gray-500 dark:text-zinc-400 tracking-wider text-shadow"
       itemProp="description"
     >
       Passionate. Proactive. Expert.

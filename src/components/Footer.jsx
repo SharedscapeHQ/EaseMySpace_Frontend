@@ -50,7 +50,7 @@ export default function Footer() {
   return (
 <footer
   style={{ fontFamily: "para_font" }}
-  className="bg-white border-t border-zinc-200 py-10 overflow-x-hidden text-zinc-800"
+  className="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 py-10 overflow-x-hidden text-zinc-800 dark:text-gray-300"
   itemScope
   itemType="https://schema.org/Organization"
 >
@@ -64,7 +64,7 @@ export default function Footer() {
         className="w-40 lg:mr-10"
         itemProp="logo"
       />
-      <p className="text-sm leading-relaxed" itemProp="description">
+      <p className="text-sm leading-relaxed text-zinc-700 dark:text-gray-400" itemProp="description">
         EaseMySpace connects users with verified flatmates, rental flats, shared accommodations, and PGs in Mumbai. Find your next home quickly, hassle-free.
       </p>
       <meta itemProp="name" content="EaseMySpace" />
@@ -76,7 +76,7 @@ export default function Footer() {
     {/* Quick Links Section */}
     <nav className="grid grid-cols-2 gap-6 text-sm font-medium" aria-label="Footer Navigation">
       <div>
-        <h3 className="text-base font-semibold mb-3">Quick Links</h3>
+        <h3 className="text-base font-semibold mb-3 text-zinc-900 dark:text-white">Quick Links</h3>
         <ul className="space-y-3">
           {[
             { label: "Home ", to: "/", icon: FaHome },
@@ -89,9 +89,9 @@ export default function Footer() {
             <li key={to}>
               <Link
                 to={to}
-                className="flex items-center gap-2 hover:text-blue-500 transition"
+                className="flex items-center gap-2 hover:text-blue-500 dark:hover:text-blue-400 transition"
               >
-                <Icon className="text-blue-500 w-4 h-4" />
+                <Icon className="text-blue-500 dark:text-blue-400 w-4 h-4" />
                 <span>{label}</span>
               </Link>
             </li>
@@ -99,7 +99,7 @@ export default function Footer() {
         </ul>
       </div>
       <div>
-        <h3 className="text-base font-semibold mb-3">Legal & Policies</h3>
+        <h3 className="text-base font-semibold mb-3 text-zinc-900 dark:text-white">Legal & Policies</h3>
         <ul className="space-y-3">
           {[
             { label: "Cancellation & Refund Policy", to: "/cancellation-refund", icon: FaUndoAlt },
@@ -109,9 +109,9 @@ export default function Footer() {
             <li key={to}>
               <Link
                 to={to}
-                className="flex items-center gap-2 hover:text-blue-500 transition"
+                className="flex items-center gap-2 hover:text-blue-500 dark:hover:text-blue-400 transition"
               >
-                <Icon className="text-blue-500 w-4 h-4" />
+                <Icon className="text-blue-500 dark:text-blue-400 w-4 h-4" />
                 <span>{label}</span>
               </Link>
             </li>
@@ -129,7 +129,7 @@ export default function Footer() {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-10 h-10 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center shadow-lg border cursor-pointer transition hover:scale-110 hover:-translate-y-2`}
+            className={`w-10 h-10 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center shadow-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer transition hover:scale-110 hover:-translate-y-2`}
             itemProp="sameAs"
             aria-label={`Follow EaseMySpace on ${url.split(".")[1]}`}
           >
@@ -139,7 +139,7 @@ export default function Footer() {
       </div>
 
       {/* Contact Info */}
-      <div className="text-sm space-y-4 ml-32 max-w-xs w-full" itemProp="contactPoint" itemScope itemType="https://schema.org/ContactPoint">
+      <div className="text-sm space-y-4 ml-32 max-w-xs w-full text-zinc-700 dark:text-gray-400" itemProp="contactPoint" itemScope itemType="https://schema.org/ContactPoint">
         <div className="flex items-center gap-2">
           <span className="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse" />
           <a href="mailto:support@easemyspace.in" className="hover:underline" itemProp="email">
@@ -148,14 +148,14 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-2">
-          <FaPhone className="text-blue-500 w-4 h-4 mt-1" />
+          <FaPhone className="text-blue-500 dark:text-blue-400 w-4 h-4 mt-1" />
           <a href="tel:+919004463371" className="hover:underline" itemProp="telephone">
             +91 9004463371
           </a>
         </div>
 
         <div className="flex items-center gap-2 ">
-          <FaMapMarkerAlt className="text-blue-500 w-5 h-5 mt-1" />
+          <FaMapMarkerAlt className="text-blue-500 dark:text-blue-400 w-5 h-5 mt-1" />
           <span>
             WeWork, 1st Floor, 264–265,<br />
             Dr Annie Besant Rd,<br />
@@ -174,10 +174,11 @@ export default function Footer() {
     <Link to="/shared-rooms">Shared Rooms in Mumbai</Link>
   </div>
 
-  <div className="mt-10 pt-4 flex justify-center items-center border-t text-center text-sm text-zinc-600">
+  <div className="mt-10 pt-4 flex justify-center items-center border-t border-zinc-200 dark:border-zinc-700 text-center text-sm text-zinc-600 dark:text-gray-400">
     © {new Date().getFullYear()} EaseMySpace.in — All rights reserved.
   </div>
 </footer>
+
 
 
   );

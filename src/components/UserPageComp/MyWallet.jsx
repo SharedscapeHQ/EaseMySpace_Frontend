@@ -31,9 +31,6 @@ export default function Wallet() {
       if (res.data.success) {
         const { balance, transactions, pendingWithdrawals } = res.data.data;
 
-        console.log("💰 Wallet Balance:", balance);
-        console.log("📜 Transactions:", transactions);
-        console.log("⏳ Pending Withdrawals:", pendingWithdrawals);
 
         setBalance(balance);
         setTransactions(transactions);

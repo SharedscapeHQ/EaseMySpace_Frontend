@@ -123,7 +123,7 @@ const TestimonialSection = () => {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="w-full py-10 bg-white"
+      className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
       aria-label="Customer testimonials"
     >
       <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
@@ -152,7 +152,7 @@ const TestimonialSection = () => {
             return (
               <article
                 key={index}
-                className="flex-shrink-0 w-80 border-zinc-200 border my-2 bg-blue-100 dark:bg-neutral-900 p-6 rounded-md shadow-md cursor-pointer transition-all duration-500"
+                className="flex-shrink-0 w-80 border-zinc-200 border my-2 bg-blue-100 dark:bg-neutral-900  p-6 rounded-md shadow-md cursor-pointer transition-all duration-500"
               >
                 {testimonial.img ? (
                   <img
@@ -168,7 +168,7 @@ const TestimonialSection = () => {
                   </div>
                 )}
 
-                <h3 className="font-bold text-lg text-zinc-900 mb-2 text-center">
+                <h3 className="font-bold text-lg text-zinc-900 dark:text-white mb-2 text-center">
                   {testimonial.name}
                 </h3>
 
@@ -185,7 +185,7 @@ const TestimonialSection = () => {
                   ))}
                 </div>
 
-                <p className="text-sm text-center text-zinc-800 leading-relaxed">
+                <p className="text-sm text-center text-zinc-800 dark:text-white leading-relaxed">
                   {reviewText}{" "}
                   {shouldTruncate && (
                     <button

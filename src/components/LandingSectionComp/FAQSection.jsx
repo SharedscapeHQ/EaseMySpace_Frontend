@@ -48,7 +48,7 @@ export default function FAQSection() {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="w-full py-10 bg-white"
+      className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
       aria-label="Frequently Asked Questions about EaseMySpace"
       role="region"
     >
@@ -80,7 +80,7 @@ export default function FAQSection() {
 </h2>
 
 
-        <dl className="space-y-1 divide-y divide-gray-200">
+        <dl className="space-y-1 divide-y divide-zinc-200">
           {faqs.map((faq, idx) => (
             <div key={idx}>
               <dt>
@@ -90,7 +90,7 @@ export default function FAQSection() {
                   aria-expanded={openIndex === idx}
                   aria-controls={`faq-answer-${idx}`}
                 >
-                  <span className="text-sm lg:text-lg font-medium text-zinc-900">
+                  <span className="text-sm lg:text-lg font-medium text-zinc-900 dark:text-white">
                     {faq.question}
                   </span>
                   <span
@@ -105,7 +105,7 @@ export default function FAQSection() {
 
               <dd
                 id={`faq-answer-${idx}`}
-                className={`text-sm text-zinc-600 transition-all duration-300 ease-in-out overflow-hidden ${
+                className={`text-sm text-zinc-600 dark:text-zinc-200 transition-all duration-300 ease-in-out overflow-hidden ${
                   openIndex === idx ? "max-h-40 pb-4" : "max-h-0"
                 }`}
               >
