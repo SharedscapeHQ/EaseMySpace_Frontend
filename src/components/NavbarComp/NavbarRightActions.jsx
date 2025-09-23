@@ -10,7 +10,6 @@ export default function NavbarRightActions() {
 
       <DarkModeSwitch  />
 </div> */}
-
       {/* Desktop EMS / FlipUI */}
       <div className="hidden lg:inline-block group border-2 pt-2 border-blue-500 hover:border-zinc-300  hover:bg-blue-600 transition-all duration-200 pl-3 rounded-full">
         <Link to="demand-form">
