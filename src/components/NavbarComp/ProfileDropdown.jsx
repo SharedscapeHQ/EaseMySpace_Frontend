@@ -14,7 +14,7 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
         className="flex items-center gap-1 text-zinc-700"
       >
         {user && (
-          <span className="hidden sm:inline capitalize text-sm font-medium">
+          <span className="hidden sm:inline dark:text-white capitalize text-sm font-medium">
             Hello, {user.firstName}
           </span>
         )}
@@ -42,12 +42,12 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-50 border"
+            className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 rounded-xl shadow-xl z-50 border"
           >
             <div className="px-4 py-2 text-blue-600 font-semibold text-sm border-b">
               {user ? "My Account" : "LOGIN / REGISTER"}
             </div>
-            <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 font-medium space-y-2">
+            <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 dark:text-white font-medium space-y-2">
               {(user || isVerified) ? (
                 <Link to={dashRoute()} onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
                   Dashboard
