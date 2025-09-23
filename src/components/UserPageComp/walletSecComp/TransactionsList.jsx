@@ -47,7 +47,7 @@ export default function RecentTransactions({ transactions }) {
                 </div>
                 <span className={`font-semibold ${color}`}>
                   {sign}₹{amount}
-                </span>
+                </span> 
               </li>
             );
           })}
