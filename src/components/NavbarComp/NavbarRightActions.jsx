@@ -6,10 +6,11 @@ export default function NavbarRightActions() {
     <div className="relative inline-flex items-center space-x-3">
       {/* Dark Mode Switch */}
 
-{/* <div className="lg:block hidden">
+<div className="lg:block hidden">
 
       <DarkModeSwitch  />
-</div> */}
+</div>
+
       {/* Desktop EMS / FlipUI */}
       
       <div className="hidden lg:inline-block group border-2 pt-2 border-blue-500 hover:border-zinc-300  hover:bg-blue-600 transition-all duration-200 pl-3 rounded-full">

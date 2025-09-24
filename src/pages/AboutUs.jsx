@@ -7,6 +7,7 @@ import OurTeam from '../components/AboutUsSectionComp/OurTeam';
 import AboutStory from '../components/AboutUsSectionComp/AboutStory';
 import AboutNav from '../components/AboutUsSectionComp/AboutNav';
 import LifeAtEaseMySpace from '../components/AboutUsSectionComp/LifeAtEaseMySpace';
+import MsgFromFounder from '../components/AboutUsSectionComp/MsgFromFounder';
 
 function AboutUs() {
   const navItems = [
@@ -96,7 +97,10 @@ function AboutUs() {
 
     <section id="our-story">
       <AboutStory />
+      <MsgFromFounder />
     </section>
+
+
 
     <AboutHighlights />
 

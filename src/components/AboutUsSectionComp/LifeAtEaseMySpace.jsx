@@ -11,14 +11,14 @@ import "./About.css";
 import Footer from "../Footer";
 
 const videos = [
-  {
-    id: 1,
-    src: Rakesh_vid,
-    title: "Rakesh Goswami",
-    desc: "As the Founder of EaseMySpace, Rakesh envisions a workplace where ambition meets collaboration. His journey reflects the determination to build a culture of growth, innovation, and inclusivity. Through his leadership, he inspires the team to push boundaries and transform ideas into meaningful impact.",
-    poster: Rakesh_thumbnail,
-    bg: "bg-blue-50", // Founder → Light Blue
-  },
+  // {
+  //   id: 1,
+  //   src: Rakesh_vid,
+  //   title: "Rakesh Goswami",
+  //   desc: "As the Founder of EaseMySpace, Rakesh envisions a workplace where ambition meets collaboration. His journey reflects the determination to build a culture of growth, innovation, and inclusivity. Through his leadership, he inspires the team to push boundaries and transform ideas into meaningful impact.",
+  //   poster: Rakesh_thumbnail,
+  //   bg: "bg-blue-50", // Founder → Light Blue
+  // },
   {
     id: 2,
     src: Yogita_vid,
