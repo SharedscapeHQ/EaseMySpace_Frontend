@@ -66,7 +66,7 @@ function AboutStory() {
             Rakesh Goswami
           </span>{" "}
           a young Chartered Accountant and passionate entrepreneur, EaseMySpace
-          was born out of a simple idea: to make city living easier.
+          was born out of a simple idea: to make urban living easier.
         </span>
 
         <span className="block mb-4">

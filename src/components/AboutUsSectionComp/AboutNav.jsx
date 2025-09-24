@@ -109,6 +109,9 @@ export default function AboutNav() {
           <a href="#our-story" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
             Our Story
           </a>
+          <a href="#message-from-founder" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
+            Message From Founder
+          </a>
           <a href="#our-team" className="text-zinc-700 dark:text-white hover:text-blue-600 transition-colors duration-200">
             Our Team
           </a>

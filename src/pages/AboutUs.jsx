@@ -97,6 +97,9 @@ function AboutUs() {
 
     <section id="our-story">
       <AboutStory />
+    </section>
+
+    <section id="message-from-founder">
       <MsgFromFounder />
     </section>
 

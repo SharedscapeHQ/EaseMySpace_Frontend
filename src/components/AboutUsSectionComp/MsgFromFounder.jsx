@@ -25,7 +25,7 @@ export default function MsgFromFounder() {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="lg:px-10 px-3 max-w-7xl mx-auto py-12"
+      className="lg:px-10 px-3 max-w-7xl mx-auto pt-3"
     >
       {/* Heading */}
       <div className="mb-6 text-left">
