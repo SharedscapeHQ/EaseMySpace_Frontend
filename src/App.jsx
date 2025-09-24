@@ -94,10 +94,10 @@ function AnimatedRoutes() {
         <Route path="/terms-conditions" element={<PageWrapper><Layout><TermsAndConditions /></Layout></PageWrapper>} />
         <Route path="/privacy-policy" element={<PageWrapper><Layout><PolicyPrivacy /></Layout></PageWrapper>} />
         <Route path="/view-properties" element={<PageWrapper><Layout><ViewAllProperties /></Layout></PageWrapper>} />
-        <Route path="/properties/:id" element={<PageWrapper><Layout><PropertyDetail /></Layout></PageWrapper>} />
         <Route path="/blog/" element={<PageWrapper><Layout><BlogPage /></Layout></PageWrapper>} />
 
         {/* Protected Routes */}
+        <Route path="/properties/:id" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user","owner","admin", "rm", "hr"]} ><PropertyDetail /></ProtectedRoute></Layout></PageWrapper>} />
         <Route path="/dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user"]}><UserDashboard /></ProtectedRoute></Layout></PageWrapper>} />
         <Route path="/demand-form" element={<PageWrapper><ProtectedRoute allowedRoles={["user","owner","admin"]} showContentBehindPopup={true}><RequirementPage /></ProtectedRoute></PageWrapper>} />
         <Route path="/requirement-dashboard" element={<PageWrapper><ProtectedRoute allowedRoles={["user","owner","admin"]}><RequirementDashboard /></ProtectedRoute></PageWrapper>} />
