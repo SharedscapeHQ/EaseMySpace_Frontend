@@ -12,6 +12,7 @@ import MsgFromFounder from '../components/AboutUsSectionComp/MsgFromFounder';
 function AboutUs() {
   const navItems = [
     { label: 'Our Story', href: '#our-story', type: 'anchor' },
+    { label: 'Founder’s Message', href: '#message-from-founder', type: 'anchor' },
     { label: 'Our Team', href: '#our-team', type: 'anchor' },
     { label: 'Life at EMS', href: '/life-at-ems', type: 'link' },
     { label: 'Careers', href: '/careers', type: 'link' },
