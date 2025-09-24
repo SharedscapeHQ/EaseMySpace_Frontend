@@ -70,7 +70,7 @@ function AboutUs() {
 
   {/* Mobile Scrollable Sub Navigation */}
   <div className="fixed top-[75px] left-0 w-full bg-white dark:bg-zinc-900 pt-2 shadow-md z-40 border-b md:hidden overflow-x-auto no-scrollbar">
-    <div className="flex space-x-4 justify-center px-4 py-2">
+    <div className="flex space-x-4 justify-start px-4 py-2">
       {navItems.map((item, idx) =>
         item.type === 'anchor' ? (
           <a
