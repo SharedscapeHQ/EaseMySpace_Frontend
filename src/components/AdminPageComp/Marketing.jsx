@@ -3,28 +3,19 @@ import { sendWhatsAppMessages, fetchWhatsAppLogs } from "../../api/marketingApi"
 import messagePreview from "/marketing/refer_earn.jpg";
 
 export default function Marketing() {
-  const [numbers, setNumbers] = useState("");
-  const [response, setResponse] = useState(null);
-  const [loadingWhatsApp, setLoadingWhatsApp] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [numbers, setNumbers] = useState([]);
+  const [invalidNumbers, setInvalidNumbers] = useState([]);
   const [logs, setLogs] = useState([]);
-
+  const [loadingWhatsApp, setLoadingWhatsApp] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
-  // Format input numbers
-  const formatNumbers = (raw) => {
-    return raw
-      .split(",")
-      .map((num) => num.trim())
-      .filter((num) => num !== "")
-      .map((num) => (/^\d{10}$/.test(num) ? `+91${num}` : num));
-  };
-
-  // Fetch logs from backend
+  // Fetch logs
   const getLogs = async () => {
     try {
       const res = await fetchWhatsAppLogs();
-      setLogs(res.slice(0, 10)); // only latest 10
+      setLogs(res.slice(0, 10));
     } catch (err) {
       console.error("Failed to fetch logs:", err);
     }
@@ -34,34 +25,71 @@ export default function Marketing() {
     getLogs();
   }, []);
 
-  // Handle WhatsApp send
+  // Handle typing numbers
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (value.includes(",")) {
+      const parts = value.split(",").map((p) => p.trim());
+      const newValid = [];
+      const newInvalid = [];
+
+      parts.forEach((num) => {
+        if (/^\d{10}$/.test(num)) {
+          const formatted = `+91${num}`;
+          if (!numbers.includes(formatted)) newValid.push(formatted);
+        } else if (num) {
+          newInvalid.push(num);
+        }
+      });
+
+      setNumbers((prev) => [...prev, ...newValid]);
+      setInvalidNumbers((prev) => [...prev, ...newInvalid]);
+      setInputValue("");
+    } else {
+      setInputValue(value);
+    }
+  };
+
+  const removeNumber = (num) => {
+    setNumbers(numbers.filter((n) => n !== num));
+  };
+
+  // Send WhatsApp
   const handleSendWhatsApp = async () => {
-    const numberArray = formatNumbers(numbers);
-    if (numberArray.length === 0) return alert("Please enter at least one valid number.");
+    if (numbers.length === 0) return alert("Please add at least one valid number.");
 
     try {
       setLoadingWhatsApp(true);
-      setResponse(null);
 
-      const res = await sendWhatsAppMessages(numberArray);
-      setResponse(res);
+      const res = await sendWhatsAppMessages(numbers);
 
-      const sentNumbers = res.results.filter((r) => r.status === "sent").map((r) => r.number).join(", ");
-      const skippedNumbers = res.results.filter((r) => r.status === "skipped").map((r) => r.number).join(", ");
-      const failedNumbers = res.results.filter((r) => r.status === "failed").map((r) => r.number).join(", ");
+      const sentNumbers = res.results
+        .filter((r) => r.status === "sent")
+        .map((r) => r.number)
+        .join(", ");
+      const skippedNumbers = res.results
+        .filter((r) => r.status === "skipped")
+        .map((r) => r.number)
+        .join(", ");
+      const failedNumbers = res.results
+        .filter((r) => r.status === "failed")
+        .map((r) => r.number)
+        .join(", ");
 
       let popupText = "";
       if (sentNumbers) popupText += `✅ Sent: ${sentNumbers}\n`;
       if (skippedNumbers) popupText += `⏭ Skipped: ${skippedNumbers}\n`;
       if (failedNumbers) popupText += `❌ Failed: ${failedNumbers}`;
+      if (invalidNumbers.length > 0)
+        popupText += `\n⚠️ Invalid input skipped: ${invalidNumbers.join(", ")}`;
 
       setPopupMessage(popupText.trim());
       setShowPopup(true);
-      setNumbers("");
-      getLogs(); // refresh logs after sending
+      setNumbers([]);
+      setInvalidNumbers([]);
+      getLogs();
     } catch (err) {
       console.error("❌ WhatsApp send error:", err);
-      setResponse({ error: err.response?.data || err.message });
       setPopupMessage("Failed to send WhatsApp message.");
       setShowPopup(true);
     } finally {
@@ -73,20 +101,68 @@ export default function Marketing() {
     <div className="p-6 space-y-8">
       <h2 className="text-2xl font-bold text-indigo-700">📢 Marketing Panel</h2>
 
-      {/* WhatsApp Section */}
       <div className="bg-white rounded-xl shadow-md p-6 border">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Send WhatsApp</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-6">Send WhatsApp</h3>
 
-        <div className="flex space-x-4">
-          {/* Left column: Input + Button */}
-          <div className="w-1/2 flex flex-col space-y-4">
-            <textarea
-              className="w-full border rounded-md p-3"
-              rows="3"
-              placeholder="9876543210, 9123456789"
-              value={numbers}
-              onChange={(e) => setNumbers(e.target.value)}
-            />
+        <div className="flex flex-col md:flex-row md:space-x-6">
+          {/* Left column */}
+          <div className="md:w-1/2 flex flex-col space-y-4">
+            <div className="flex flex-wrap gap-2 mb-2">
+              {numbers.map((num) => (
+                <span
+                  key={num}
+                  className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {num.slice(-10)}
+                  <button
+                    onClick={() => removeNumber(num)}
+                    className="ml-2 font-bold hover:text-red-600"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+
+           <input
+  type="text"
+  placeholder="Type a 10-digit number and press comma"
+  value={inputValue}
+  onChange={(e) => {
+    // Keep only digits
+    const digitsOnly = e.target.value.replace(/\D/g, "");
+    // If comma typed or 10 digits reached, create block
+    if (digitsOnly.length >= 10 || e.target.value.includes(",")) {
+      const parts = digitsOnly.split(",").map((p) => p.trim());
+      const newValid = [];
+      const newInvalid = [];
+
+      parts.forEach((num) => {
+        if (/^\d{10}$/.test(num)) {
+          const formatted = `+91${num}`;
+          if (!numbers.includes(formatted)) newValid.push(formatted);
+        } else if (num) {
+          newInvalid.push(num);
+        }
+      });
+
+      setNumbers((prev) => [...prev, ...newValid]);
+      setInvalidNumbers((prev) => [...prev, ...newInvalid]);
+      setInputValue(""); // reset input
+    } else {
+      setInputValue(digitsOnly);
+    }
+  }}
+  className="w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+/>
+
+
+            {invalidNumbers.length > 0 && (
+              <div className="text-sm text-red-600 bg-red-50 p-2 rounded-md">
+                ⚠️ Invalid input skipped: {invalidNumbers.join(", ")}
+              </div>
+            )}
+
             <button
               onClick={handleSendWhatsApp}
               disabled={loadingWhatsApp}
@@ -95,40 +171,39 @@ export default function Marketing() {
               {loadingWhatsApp ? "Sending..." : "Send WhatsApp"}
             </button>
 
-            {/* WhatsApp Logs */}
-        <div className="mt-4 border rounded-md p-2 bg-gray-50">
-  <h4 className="font-semibold text-gray-700 mb-2">Message history</h4>
-  
-  {logs.length === 0 ? (
-    <p className="text-gray-500 text-sm">No logs yet.</p>
-  ) : (
-    <ul className="text-sm text-gray-800 space-y-1 max-h-40 overflow-y-auto">
-      {logs.map((log, idx) => (
-        <li key={idx} className="flex justify-between px-2 py-1 border-b last:border-b-0">
-          {/* Show only last 10 digits */}
-          <span>{log.number.slice(-10)}</span>
-          <span
-            className={`font-medium ${
-              log.status === "sent"
-                ? "text-green-600"
-                : log.status === "skipped"
-                ? "text-yellow-600"
-                : "text-red-600"
-            }`}
-          >
-            {log.status}
-          </span>
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-
-
+            {/* Logs */}
+            <div className="mt-4 border rounded-md p-2 bg-gray-50">
+              <h4 className="font-semibold text-gray-700 mb-2">Message History</h4>
+              {logs.length === 0 ? (
+                <p className="text-gray-500 text-sm">No logs yet.</p>
+              ) : (
+                <ul className="text-sm text-gray-800 space-y-1 max-h-44 overflow-y-auto">
+                  {logs.map((log, idx) => (
+                    <li
+                      key={idx}
+                      className="flex justify-between px-2 py-1 border-b last:border-b-0 items-center"
+                    >
+                      <span className="font-mono">{log.number.slice(-10)}</span>
+                      <span
+                        className={`font-medium ${
+                          log.status === "sent"
+                            ? "text-green-600"
+                            : log.status === "skipped"
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {log.status}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
-          {/* Right column: Image preview */}
-          <div className="w-1/2 flex flex-col items-center">
+          {/* Right column */}
+          <div className="md:w-1/2 flex flex-col items-center mt-6 md:mt-0">
             <img
               src={messagePreview}
               alt="Message Preview"
@@ -139,41 +214,22 @@ export default function Marketing() {
             </span>
           </div>
         </div>
+
+        {/* Popup */}
+        {showPopup && (
+          <div className="fixed top-20 right-5 bg-indigo-600 text-white p-4 rounded-md shadow-lg flex flex-col space-y-1 z-50">
+            {popupMessage.split("\n").map((line, idx) => (
+              <span key={idx}>{line}</span>
+            ))}
+            <button
+              onClick={() => setShowPopup(false)}
+              className="bg-white text-indigo-600 rounded-full w-6 h-6 flex items-center justify-center font-bold self-end mt-1 hover:bg-gray-200"
+            >
+              ×
+            </button>
+          </div>
+        )}
       </div>
-
-      {/* Popup Notification */}
-      {showPopup && (
-        <div className="fixed top-20 right-5 bg-indigo-600 text-white p-4 rounded-md shadow-lg flex flex-col space-y-1">
-          {popupMessage.split("\n").map((line, idx) => (
-            <span key={idx}>{line}</span>
-          ))}
-          <button
-            onClick={() => setShowPopup(false)}
-            className="bg-white text-indigo-600 rounded-full w-6 h-6 flex items-center justify-center font-bold self-end mt-1"
-          >
-            ×
-          </button>
-        </div>
-      )}
-
-      {/* SMS Section */}
-       {/* <div className="bg-white rounded-xl shadow-md p-6 space-y-4 border">
-        <h3 className="text-lg font-semibold text-gray-800">Send SMS</h3>
-        <textarea
-          className="w-full border rounded-md p-3"
-          rows="3"
-          placeholder="9876543210, 9123456789"
-          value={smsNumbers}
-          onChange={(e) => setSmsNumbers(e.target.value)}
-        />
-        <button
-          onClick={handleSendSms}
-          disabled={loadingSms}
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          {loadingSms ? "Sending..." : "Send SMS"}
-        </button>
-      </div> */}
     </div>
   );
 }
