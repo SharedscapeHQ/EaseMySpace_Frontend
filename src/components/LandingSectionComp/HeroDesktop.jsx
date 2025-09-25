@@ -159,54 +159,39 @@ export default function HeroDesktop() {
           </div>
 
           {/* Buttons */}
-       <div
-  style={{ fontFamily: "para_font" }}
-  className="text-center flex gap-4 justify-center flex-wrap"
->
-  {/* View All */}
-  <Link
-    ref={buttonRef}
-    to="/view-properties"
-    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-transparent bg-blue-600 px-6 py-2 text-white transition-colors duration-300 dark:text-white"
-    aria-label="View all PG, flatmate and rental flat listings on EaseMySpace"
-  >
-    <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
-      View All Properties
-    </span>
-    <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-300 ease-out group-hover:w-full" />
-  </Link>
+          <div
+            style={{ fontFamily: "para_font" }}
+            className="text-center flex gap-4 justify-center"
+          >
+            {/* View All */}
+            <Link
+              ref={buttonRef}
+              to="/view-properties"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-transparent bg-blue-600 px-6 py-2 text-white transition-colors duration-300 dark:text-white"
+              aria-label="View all PG, flatmate and rental flat listings on EaseMySpace"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
+                View All Properties
+              </span>
+              <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-300 ease-out group-hover:w-full" />
+            </Link>
 
-  {/* Add Property */}
-  <Link
-    ref={flipButtonRef}
-    to="/add-properties"
-    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-blue-600 bg-white px-6 py-2 text-blue-600 transition-colors duration-300 dark:bg-zinc-800 dark:border-blue-400 dark:text-blue-400"
-    aria-label="Add your PG, shared flat or rental property listing for free"
-  >
-    <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
-      Add Property{" "}
-      <span className="text-green-700 dark:text-green-400 group-hover:text-green-300">
-        Free
-      </span>
-    </span>
-    <span className="absolute left-0 top-0 h-full w-0 bg-blue-600 transition-all duration-300 ease-in-out group-hover:w-full" />
-  </Link>
-
-  {/* Maid Services */}
-  <a
-    href="https://maid.easemyspace.in"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-green-600 bg-white px-6 py-2 text-green-600 transition-colors duration-300 dark:bg-zinc-800 dark:border-green-400 dark:text-green-400"
-    aria-label="Explore maid services on EaseMySpace"
-  >
-    <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
-      Maid Services
-    </span>
-    <span className="absolute left-0 top-0 h-full w-0 bg-green-600 transition-all duration-300 ease-in-out group-hover:w-full" />
-  </a>
-</div>
-
+            {/* Add Property */}
+            <Link
+              ref={flipButtonRef}
+              to="/add-properties"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-blue-600 bg-white px-6 py-2 text-blue-600 transition-colors duration-300 dark:bg-zinc-800 dark:border-blue-400 dark:text-blue-400"
+              aria-label="Add your PG, shared flat or rental property listing for free"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
+                Add Property{" "}
+                <span className="text-green-700 dark:text-green-400 group-hover:text-green-300">
+                  Free
+                </span>
+              </span>
+              <span className="absolute left-0 top-0 h-full w-0 bg-blue-600 transition-all duration-300 ease-in-out group-hover:w-full" />
+            </Link>
+          </div>
         </div>
 
         {/* Right Video */}
