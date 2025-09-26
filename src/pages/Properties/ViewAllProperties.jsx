@@ -439,7 +439,7 @@ export default function ViewAllProperties() {
 
 
 {/* Mobile fallback → if less than 5 properties, show card at the end */}
-{paginatedProperties.length < 5 && (
+{paginatedProperties.length < 5 && paginatedProperties.length <= 2 &&  (
   <div className="block lg:hidden w-full h-full">
     <SalesPersonCard className="w-full h-full" />
   </div>
