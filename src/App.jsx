@@ -226,7 +226,7 @@ function AnimatedRoutes() {
         />
 
         {/* Maid service */}
-        <Route
+        {/* <Route
           path="/maid-services"
           element={
             <PageWrapper>
@@ -235,7 +235,7 @@ function AnimatedRoutes() {
               </Layout>
             </PageWrapper>
           }
-        />
+        /> */}
         <Route
           path="/profile/:id"
           element={
