@@ -40,8 +40,8 @@ import BlogPage from "./pages/BlogPage";
 import VisitorTracker from "./components/Tracking/VisitorTracker";
 import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtEaseMySpace";
 
-import Maid_Landing from "./pages/Maid_Service/Maid_Landing";
-import ProfileDetail from "./components/Maid_service_comp/ProfileDetails/ProfileDetails";
+// import Maid_Landing from "./pages/Maid_Service/Maid_Landing";
+// import ProfileDetail from "./components/Maid_service_comp/ProfileDetails/ProfileDetails";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
