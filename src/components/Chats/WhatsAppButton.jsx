@@ -4,23 +4,12 @@ import { FaWhatsapp } from "react-icons/fa";
 
 export default function WhatsAppButton() {
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
 
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
 
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
 
-    return () => {
-      window.removeEventListener("resize", checkScreenSize);
-    };
-  }, []);
-
-  if (location.pathname !== "/" || !isMobile) return null;
+  // if (location.pathname !== "/" || !isMobile) return null;
 
   const phoneNumber = "919004463371";
   const message = "Hello! I would like to know more.";

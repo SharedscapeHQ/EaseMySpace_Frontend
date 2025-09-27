@@ -21,7 +21,7 @@ import CancellationRefundPolicy from "./components/FooterSectionComp/Cancellatio
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import NotFound from "./pages/NotFound";
-import TidioWidget from "./components/Chats/TidioWidget";
+// import TidioWidget from "./components/Chats/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 import SubscriptionPlans from "./components/Subscription/Subscription";
 import UserPropertyDetails from "./components/UserPageComp/UserPropertyDetails";
@@ -430,7 +430,7 @@ export default function App() {
       <VisitorTracker />
       <ScrollToTop />
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
-      <TidioWidget />
+      {/* <TidioWidget /> */}
       <WhatsAppButton />
       <AnimatedRoutes />
       <AnalyticsTracker />
