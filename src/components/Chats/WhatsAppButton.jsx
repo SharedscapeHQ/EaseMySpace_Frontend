@@ -11,7 +11,7 @@ export default function WhatsAppButton() {
 
   // if (location.pathname !== "/" || !isMobile) return null;
 
-  const phoneNumber = "919004463371";
+  const phoneNumber = "917718007509";
   const message = "Hello! I would like to know more.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
     message
