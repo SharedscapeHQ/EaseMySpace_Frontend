@@ -236,7 +236,7 @@ function AnimatedRoutes() {
             </PageWrapper>
           }
         /> */}
-        <Route
+        {/* <Route
           path="/profile/:id"
           element={
             <PageWrapper>
@@ -245,7 +245,7 @@ function AnimatedRoutes() {
               </Layout>
             </PageWrapper>
           }
-        />
+        /> */}
 
         {/* Protected Routes */}
         <Route
