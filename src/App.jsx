@@ -38,7 +38,10 @@ import PageWrapper from "./components/PageTranstion/PageWrapper";
 import AnalyticsTracker from "./components/Seo/AnalyticsTracker";
 import BlogPage from "./pages/BlogPage";
 import VisitorTracker from "./components/Tracking/VisitorTracker";
-import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEaseMySpace";
+import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtEaseMySpace";
+
+import Maid_Landing from "./pages/Maid_Service/Maid_Landing";
+import ProfileDetail from "./components/Maid_service_comp/ProfileDetails/ProfileDetails";
 
 /* ───── ScrollToTop – jump instantly to top on route change ───── */
 function ScrollToTop() {
@@ -76,43 +79,345 @@ function AnimatedRoutes() {
   const location = useLocation();
 
   return (
-   
-
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* Public Routes */}
-        <Route path="/" element={<PageWrapper><Layout><Landing /></Layout></PageWrapper>} />
-        <Route path="/login" element={<PageWrapper><Layout><Login /></Layout></PageWrapper>} />
-        <Route path="/register" element={<PageWrapper><Layout><Register /></Layout></PageWrapper>} />
-        <Route path="/about" element={<PageWrapper><Layout><AboutUs /></Layout></PageWrapper>} />
-        <Route path="/contact" element={<PageWrapper><Layout><ContactPage /></Layout></PageWrapper>} />
-        <Route path="/careers" element={<PageWrapper><Layout><Careers /></Layout></PageWrapper>} />
-        <Route path="/life-at-ems" element={<PageWrapper><Layout><LifeAtEaseMySpace /></Layout></PageWrapper>} />
-        <Route path="/jobs/:id" element={<PageWrapper><Layout><JobDetail /></Layout></PageWrapper>} />
-        <Route path="/subscription" element={<PageWrapper><Layout><SubscriptionPlans /></Layout></PageWrapper>} />
-        <Route path="/cancellation-refund" element={<PageWrapper><Layout><CancellationRefundPolicy /></Layout></PageWrapper>} />
-        <Route path="/terms-conditions" element={<PageWrapper><Layout><TermsAndConditions /></Layout></PageWrapper>} />
-        <Route path="/privacy-policy" element={<PageWrapper><Layout><PolicyPrivacy /></Layout></PageWrapper>} />
-        <Route path="/view-properties" element={<PageWrapper><Layout><ViewAllProperties /></Layout></PageWrapper>} />
-        <Route path="/blog/" element={<PageWrapper><Layout><BlogPage /></Layout></PageWrapper>} />
+
+        {/* Flatmate | pgs | Vacant  */}
+        <Route
+          path="/"
+          element={
+            <PageWrapper>
+              <Layout>
+                <Landing />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PageWrapper>
+              <Layout>
+                <Login />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PageWrapper>
+              <Layout>
+                <Register />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <PageWrapper>
+              <Layout>
+                <AboutUs />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ContactPage />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/careers"
+          element={
+            <PageWrapper>
+              <Layout>
+                <Careers />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/life-at-ems"
+          element={
+            <PageWrapper>
+              <Layout>
+                <LifeAtEaseMySpace />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/jobs/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <JobDetail />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/subscription"
+          element={
+            <PageWrapper>
+              <Layout>
+                <SubscriptionPlans />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/cancellation-refund"
+          element={
+            <PageWrapper>
+              <Layout>
+                <CancellationRefundPolicy />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/terms-conditions"
+          element={
+            <PageWrapper>
+              <Layout>
+                <TermsAndConditions />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/privacy-policy"
+          element={
+            <PageWrapper>
+              <Layout>
+                <PolicyPrivacy />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/view-properties"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ViewAllProperties />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/blog/"
+          element={
+            <PageWrapper>
+              <Layout>
+                <BlogPage />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+
+        {/* Maid service */}
+        <Route
+          path="/maid-services"
+          element={
+            <PageWrapper>
+              <Layout>
+                <Maid_Landing />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/profile/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProfileDetail />
+              </Layout>
+            </PageWrapper>
+          }
+        />
 
         {/* Protected Routes */}
-        <Route path="/properties/:id" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user","owner","admin", "rm", "hr"]} ><PropertyDetail /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user"]}><UserDashboard /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/demand-form" element={<PageWrapper><ProtectedRoute allowedRoles={["user","owner","admin"]} showContentBehindPopup={true}><RequirementPage /></ProtectedRoute></PageWrapper>} />
-        <Route path="/requirement-dashboard" element={<PageWrapper><ProtectedRoute allowedRoles={["user","owner","admin"]}><RequirementDashboard /></ProtectedRoute></PageWrapper>} />
-        <Route path="/rm-dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["rm"]}><RMDashboard /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/hr-dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["hr"]}><HRMDashboard /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/lead-dashboard" element={<PageWrapper><Layout><ProtectedLeadUserRoute><LeadUserDashboard phone={verifiedPhone} /></ProtectedLeadUserRoute></Layout></PageWrapper>} />
-        <Route path="/dashboard/my-properties/:id" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user"]}><UserPropertyDetails /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/add-properties" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["user","admin","owner"]} showContentBehindPopup={true}><AddProperty /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/admin-dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/admin/property/:id" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["admin"]}><AdminPropertyDetails /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/owner-dashboard" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["owner"]}><OwnerDashboard /></ProtectedRoute></Layout></PageWrapper>} />
-        <Route path="/owner-dashboard/deleted-property-details/:id" element={<PageWrapper><Layout><ProtectedRoute allowedRoles={["owner"]}><DeletedPropertyDetails /></ProtectedRoute></Layout></PageWrapper>} />
+        <Route
+          path="/properties/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute
+                  allowedRoles={["user", "owner", "admin", "rm", "hr"]}
+                >
+                  <PropertyDetail />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/demand-form"
+          element={
+            <PageWrapper>
+              <ProtectedRoute
+                allowedRoles={["user", "owner", "admin"]}
+                showContentBehindPopup={true}
+              >
+                <RequirementPage />
+              </ProtectedRoute>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/requirement-dashboard"
+          element={
+            <PageWrapper>
+              <ProtectedRoute allowedRoles={["user", "owner", "admin"]}>
+                <RequirementDashboard />
+              </ProtectedRoute>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/rm-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["rm"]}>
+                  <RMDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/hr-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["hr"]}>
+                  <HRMDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/lead-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedLeadUserRoute>
+                  <LeadUserDashboard phone={verifiedPhone} />
+                </ProtectedLeadUserRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/dashboard/my-properties/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserPropertyDetails />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/add-properties"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute
+                  allowedRoles={["user", "admin", "owner"]}
+                  showContentBehindPopup={true}
+                >
+                  <AddProperty />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/admin/property/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminPropertyDetails />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/owner-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["owner"]}>
+                  <OwnerDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/owner-dashboard/deleted-property-details/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["owner"]}>
+                  <DeletedPropertyDetails />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
 
         {/* 404 page */}
-        <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
+        <Route
+          path="*"
+          element={
+            <PageWrapper>
+              <NotFound />
+            </PageWrapper>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
@@ -122,7 +427,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-            <VisitorTracker />
+      <VisitorTracker />
       <ScrollToTop />
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       <TidioWidget />
