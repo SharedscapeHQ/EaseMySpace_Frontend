@@ -1,14 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import Arvind_vid from "/life_at_ems/Arvind.mp4";
 import Taniya_vid from "/life_at_ems/Taniya.mp4";
-import Rakesh_vid from "/life_at_ems/Rakesh.mp4";
+// import Rakesh_vid from "/life_at_ems/Rakesh.mp4";
 import Yogita_vid from "/life_at_ems/Yogita.mp4";
 import Arvind_thumbnail from "/life_at_ems/thumbnails/Arvind.jpg";
 import Taniya_thumbnail from "/life_at_ems/thumbnails/Taniya.jpg";
-import Rakesh_thumbnail from "/life_at_ems/thumbnails/Rakesh.jpg";
+// import Rakesh_thumbnail from "/life_at_ems/thumbnails/Rakesh.jpg";
 import Yogita_thumbnail from "/life_at_ems/thumbnails/Yogita.jpg";
-import "./About.css";
-import Footer from "../Footer";
+import "../About.css";
+import Footer from "../../Footer";
+import LifeAtEMSHero from "./LifeAtEMSHero";
 
 const videos = [
   // {
@@ -76,6 +77,7 @@ export default function LifeAtEaseMySpace() {
 
   return (
     <>
+    <LifeAtEMSHero />
       <section
         style={{ fontFamily: "para_font" }}
         className="lg:px-10 px-3 max-w-7xl mx-auto py-10"
@@ -101,9 +103,9 @@ export default function LifeAtEaseMySpace() {
           {videos.map((video, index) => (
             <div
               key={video.id}
-              className={`flex flex-col lg:flex-row items-center gap-8 rounded-2xl p-6 ${video.bg} ${
-                index % 2 !== 0 ? "lg:flex-row-reverse" : ""
-              }`}
+              className={`flex flex-col lg:flex-row items-center gap-8 rounded-2xl p-6 ${
+                video.bg
+              } ${index % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}
             >
               {/* Video */}
               <div className="relative w-full lg:w-1/2 flex justify-center">
