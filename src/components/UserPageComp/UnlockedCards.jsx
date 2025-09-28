@@ -10,7 +10,6 @@ export default function UnlockedCards() {
   useEffect(() => {
     getUnlockedProperties()
       .then((data) => {
-        console.log(data);
         setUnlocked(data);
       })
       .catch((err) =>

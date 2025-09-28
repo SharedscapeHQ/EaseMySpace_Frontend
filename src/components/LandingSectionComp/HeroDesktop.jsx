@@ -19,7 +19,7 @@ export default function HeroDesktop() {
     const playVideo = () => {
       const video = videoRef.current;
       if (video && video.paused) {
-        video.play().catch((err) => console.log("Autoplay blocked:", err));
+        video.play().catch((err) => console.log("Autoplay blocked:"));
       }
     };
     playVideo();

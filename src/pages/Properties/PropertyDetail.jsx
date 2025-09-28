@@ -15,6 +15,7 @@ import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 import LoginPromptModal from "./LoginPromptModal";
 import EssentialDetails from "./EssentialDetails";
+import SavePropertyButton from "./SavePropertyButton";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -189,21 +190,27 @@ function PropertyDetail() {
 
       <main style={{ fontFamily: "para_font" }} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
         <div className="flex flex-col p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="text-base lg:text-xl font-semibold text-gray-800">
-              {generateTitle(property.title)}
-            </div>
-            {property.verified && (
-              <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-                <FiCheckCircle className="text-xs" /> Verified
-              </span>
-            )}
-            {/* {visitCount > 0 && (
-              <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
-                <FiEye className="text-gray-500" /> {visitCount} Visits
-              </span>
-            )} */}
-          </div>
+          <div className="flex items-center justify-between flex-wrap">
+  {/* Left side */}
+  <div className="flex items-center gap-2 flex-wrap">
+    <div className="text-base lg:text-xl font-semibold text-gray-800">
+      {generateTitle(property.title)}
+    </div>
+    {property.verified && (
+      <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
+        <FiCheckCircle className="text-xs" /> Verified
+      </span>
+    )}
+    {/* {visitCount > 0 && (
+      <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
+        <FiEye className="text-gray-500" /> {visitCount} Visits
+      </span>
+    )} */}
+  </div>
+
+  {/* Right side */}
+  <SavePropertyButton propertyId={property.id} />
+</div>
 
           <PropertyHeaderSection
             property={property}

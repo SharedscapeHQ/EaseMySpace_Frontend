@@ -11,13 +11,8 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const [isPaying, setIsPaying] = useState(false);
   const [activeUserPhone, setActiveUserPhone] = useState("");
   const [showPlanOptions, setShowPlanOptions] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null);
-
-  // Invoice modal state
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
-
-  // Login popup state
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const navigate = useNavigate();
 
@@ -34,17 +29,17 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     },
   };
 
-  const GST_RATE = 18; // GST %
+  const GST_RATE = 18;
 
+  // Fetch current user if logged in
   useEffect(() => {
     (async () => {
       try {
         const data = await getCurrentUser();
-        setUserData(data);
-        const phone =
-          data?.phone || localStorage.getItem("user_verified_mobile");
-        if (phone) setActiveUserPhone(phone);
         if (data?.subscription_status === "paid") setHasPaid(true);
+        setUserData(data || {});
+        const phone = data?.phone || localStorage.getItem("user_verified_mobile");
+        if (phone) setActiveUserPhone(phone);
       } catch {
         const phone = localStorage.getItem("user_verified_mobile");
         if (phone) setActiveUserPhone(phone);
@@ -52,20 +47,18 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     })();
   }, [setHasPaid]);
 
+  // Fetch plan status for logged in users
   useEffect(() => {
-    if (activeUserPhone && !hasPaid) {
-      fetchUserContactStatus()
-        .then((res) => {
-          if (res.hasPlan) {
-            setHasPaid(true);
-            if (!userData.id) {
-              localStorage.setItem("has_paid_lead", "true");
-            }
-          }
-        })
-        .catch(() => {});
-    }
-  }, [activeUserPhone, hasPaid, setHasPaid, userData.id]);
+    if (!activeUserPhone || hasPaid) return;
+    fetchUserContactStatus()
+      .then((res) => {
+        if (res.hasPlan) {
+          setHasPaid(true);
+          if (!userData?.id) localStorage.setItem("has_paid_lead", "true");
+        }
+      })
+      .catch(() => {});
+  }, [activeUserPhone, hasPaid, setHasPaid, userData?.id]);
 
   const loadScript = (src) =>
     new Promise((resolve) => {
@@ -78,33 +71,20 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
   const loadRazorpay = async (planKey) => {
     const plan = plans[planKey];
-    const amountWithGST = Math.round(plan.amount * (1 + GST_RATE / 100));
+    if (!plan) return toast.error("❌ Invalid plan selected.");
+
     setIsPaying(true);
+    const amountWithGST = Math.round(plan.amount * (1 + GST_RATE / 100));
 
     try {
-      const loaded = await loadScript(
-        "https://checkout.razorpay.com/v1/checkout.js"
-      );
-      if (!loaded) {
-        toast.error("❌ Razorpay SDK failed to load.");
-        setIsPaying(false);
-        return;
-      }
+      const loaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      if (!loaded) return toast.error("❌ Razorpay SDK failed to load."), setIsPaying(false);
 
-      const { orderId, currency } = await createOrder({
-        amount: amountWithGST,
-        planName: planKey,
-      });
+      const { orderId, currency } = await createOrder({ amount: amountWithGST, planName: planKey });
 
       let phone = userData.phone || userMobile || activeUserPhone;
-      if (!phone) {
-        phone = prompt("📱 Please enter your phone number for payment:");
-        if (!phone) {
-          toast.error("Phone number is required.");
-          setIsPaying(false);
-          return;
-        }
-      }
+      if (!phone) phone = prompt("📱 Please enter your phone number for payment:");
+      if (!phone) return toast.error("Phone number is required."), setIsPaying(false);
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
@@ -126,25 +106,22 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount: amountWithGST,
-              user_id: userData.id || null,
+              user_id: userData?.id || null,
               phone,
               plan_type: planKey,
             });
-
             if (result.success) {
               setHasPaid(true);
               localStorage.setItem("has_paid_lead", "true");
               localStorage.setItem("user_verified_mobile", phone);
               toast.success("✅ Payment successful!");
-
-              // Show invoice modal
-              setInvoiceUrl(result.data.invoice_url); // Use invoice URL from API
+              setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
             } else {
               toast.error("⚠️ Payment verification failed!");
             }
           } catch (err) {
-            console.error("❌ Verification error:", err);
+            console.error(err);
             toast.error("Something went wrong during verification.");
           } finally {
             setIsPaying(false);
@@ -166,167 +143,72 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
 
       rzp.open();
     } catch (err) {
-      console.error("❌ Razorpay setup error:", err);
+      console.error(err);
       toast.error("Something went wrong during payment setup.");
       setIsPaying(false);
     }
   };
 
   const proceedToPayment = (planKey) => {
-    // 🚨 Force login before payment
-    if (!userData?.id) {
-      setShowPlanOptions(false);
-      return setShowLoginPopup(true);
-    }
-
-    setSelectedPlan(planKey);
+    if (!userData?.id) return setShowPlanOptions(false), setShowLoginPopup(true);
     setShowPlanOptions(false);
     loadRazorpay(planKey);
   };
 
-  const handlePayment = () => {
-    if (!isPaying) setShowPlanOptions(true);
-  };
-
   return (
     <>
-      {/* Loader */}
       {isPaying && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <svg
-              className="animate-spin h-12 w-12 text-indigo-600 mb-4"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
+            <svg className="animate-spin h-12 w-12 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
             </svg>
-            <p className="text-indigo-600 font-semibold text-lg">
-              Processing your payment...
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              Please do not refresh or close the page
-            </p>
+            <p className="text-indigo-600 font-semibold text-lg">Processing your payment...</p>
+            <p className="text-sm text-gray-600 mt-2">Please do not refresh or close the page</p>
           </div>
         </div>
       )}
 
-      {/* Main Button */}
       <button
-        className={` w-1/2 py-2.5 px-2 text-md rounded-xl transition-all ${
-          hasPaid
-            ? "bg-green-600 hover:bg-green-700 text-white"
-            : "bg-indigo-600 hover:bg-indigo-700 text-white"
-        } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
+        className={`w-1/2 py-2.5 px-2 text-md rounded-xl transition-all ${hasPaid ? "bg-green-600 text-white" : "bg-indigo-600 hover:bg-indigo-700 text-white"} ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
         disabled={isPaying}
-        onClick={handlePayment}
+        onClick={() => setShowPlanOptions(true)}
       >
         {isPaying ? "Processing..." : hasPaid ? "Upgrade" : "Subscribe"}
       </button>
 
-      {/* Plan Options */}
       {showPlanOptions && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={() => setShowPlanOptions(false)}
-        >
-          <div
-            className="relative bg-white p-6 rounded-lg w-[90%] max-w-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-2 right-3 text-gray-500 hover:text-gray-700 text-2xl"
-              onClick={() => setShowPlanOptions(false)}
-              aria-label="Close"
-            >
-              &times;
-            </button>
-
-            <h2 className="text-xl font-bold mb-4 text-center">
-              Choose Your Plan
-            </h2>
-
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPlanOptions(false)}>
+          <div className="relative bg-white p-6 rounded-lg w-[90%] max-w-md" onClick={(e) => e.stopPropagation()}>
+            <button className="absolute top-2 right-3 text-gray-500 hover:text-gray-700 text-2xl" onClick={() => setShowPlanOptions(false)}>&times;</button>
+            <h2 className="text-xl font-bold mb-4 text-center">Choose Your Plan</h2>
             <div className="space-y-4">
               {Object.entries(plans).map(([key, plan]) => (
-                <div
-                  key={key}
-                  className={`relative border-2 ${
-                    key === "trial" ? "border-yellow-400" : "border-red-500"
-                  } bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`}
-                  onClick={() => proceedToPayment(key)}
-                >
-                  <span
-                    className={`absolute top-[-10px] right-[-10px] ${
-                      key === "trial" ? "bg-yellow-400" : "bg-red-500"
-                    } text-white text-xs px-2 py-1 rounded-full shadow`}
-                  >
-                    {plan.label}
-                  </span>
-
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {plan.label} - ₹{plan.amount} + GST
-                  </h3>
+                <div key={key} className={`relative border-2 ${key==="trial"?"border-yellow-400":"border-red-500"} bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`} onClick={() => proceedToPayment(key)}>
+                  <span className={`absolute top-[-10px] right-[-10px] ${key==="trial"?"bg-yellow-400":"bg-red-500"} text-white text-xs px-2 py-1 rounded-full shadow`}>{plan.label}</span>
+                  <h3 className="text-lg font-semibold text-gray-800">{plan.label} - ₹{plan.amount} + GST</h3>
                   <p className="text-sm text-gray-700">{plan.description}</p>
                 </div>
               ))}
-
-              <Link
-                to="/subscription"
-                className="block text-center text-sm text-blue-600 hover:underline mt-4"
-              >
-                More Details
-              </Link>
+              <Link to="/subscription" className="block text-center text-sm text-blue-600 hover:underline mt-4">More Details</Link>
             </div>
           </div>
         </div>
       )}
 
-      {/* Login Required Popup */}
       {showLoginPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
-            {/* Close Button */}
-            <button
-              onClick={() => setShowLoginPopup(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-            >
-              ✕
-            </button>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-              Login Required
-            </h2>
-            <p className="text-sm text-gray-600 mb-6 text-center">
-              Please login to continue with payment.
-            </p>
-            <button
-              onClick={() => navigate("/login")}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
-            >
-              Go to Login
-            </button>
+            <button onClick={() => setShowLoginPopup(false)} className="absolute top-2 right-2 text-gray-600 hover:text-gray-900">✕</button>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">Login Required</h2>
+            <p className="text-sm text-gray-600 mb-6 text-center">Please login to continue with payment.</p>
+            <button onClick={() => navigate("/login")} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors">Go to Login</button>
           </div>
         </div>
       )}
 
-      {/* Invoice Modal */}
-      <InvoiceModal
-        isOpen={showInvoiceModal}
-        onClose={() => setShowInvoiceModal(false)}
-        invoiceUrl={invoiceUrl}
-      />
+      <InvoiceModal isOpen={showInvoiceModal} onClose={() => setShowInvoiceModal(false)} invoiceUrl={invoiceUrl} />
     </>
   );
 }

@@ -47,6 +47,8 @@ export default function ContactCard({
   const [showHelpPopup, setShowHelpPopup] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
 
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+
   const [wallet, setWallet] = useState(0); // store live balance only
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
@@ -118,10 +120,14 @@ export default function ContactCard({
   const handleUnlock = async () => {
     setIsUnlocking(true);
     try {
-      const payload = unlockType === "referral" ? { referral_code: user.referral_code } : {};
+      const payload =
+        unlockType === "referral" ? { referral_code: user.referral_code } : {};
       const res = await unlockContact(property.id, payload);
 
-      if (res.msg.includes("successfully") || res.msg.includes("referral rewards")) {
+      if (
+        res.msg.includes("successfully") ||
+        res.msg.includes("referral rewards")
+      ) {
         const [status, leads] = await Promise.all([
           fetchUserContactStatus(),
           getUnlockedLeads(),
@@ -138,7 +144,9 @@ export default function ContactCard({
     } catch (err) {
       const msg = err?.response?.data?.msg;
       if (msg === "No subscription or referral rewards") {
-        toast.error("No subscription or referral credits left. Please subscribe.");
+        toast.error(
+          "No subscription or referral credits left. Please subscribe."
+        );
         setShowPlanPopup(true);
       } else if (msg === "Contact already unlocked") {
         const [status, leads] = await Promise.all([
@@ -180,13 +188,20 @@ export default function ContactCard({
     }
   };
 
-  const canSchedule = selectedBookingDateTime && (hasPaid || unlockType === "referral");
+  const canSchedule =
+    selectedBookingDateTime && (hasPaid || unlockType === "referral");
 
   return (
-    <div className="flex justify-between flex-col w-full lg:w-[23rem]" style={{ fontFamily: "para_font" }}>
+    <div
+      className="flex justify-between flex-col w-full lg:w-[23rem]"
+      style={{ fontFamily: "para_font" }}
+    >
       {/* Contact Card */}
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full">
-        <h2 className="text-lg text-gray-900 flex items-center gap-2 mb-4" style={{ fontFamily: "heading_font" }}>
+        <h2
+          className="text-lg text-gray-900 flex items-center gap-2 mb-4"
+          style={{ fontFamily: "heading_font" }}
+        >
           <FaUserCircle className="text-indigo-600 text-2xl" />
           {!user || (!hasPaid && wallet <= 0)
             ? "Subscribe to Call / Chat"
@@ -199,10 +214,15 @@ export default function ContactCard({
           {/* CALL BUTTON */}
           <button
             onClick={() => {
-              if (isOwner || ["admin", "owner", "rm"].includes((userRole || "").toLowerCase())) {
+              if (
+                isOwner ||
+                ["admin", "owner", "rm"].includes(
+                  (userRole || "").toLowerCase()
+                )
+              ) {
                 setShowCallPopup(true);
-              } else if (!user) {
-                setShowPlanPopup(true);
+              } else if (!user || !user.id) {
+                setShowLoginPopup(true); // Show login popup
               } else if (!hasPaid && wallet < 500) {
                 setShowPlanPopup(true);
               } else if (!isUnlocked) {
@@ -224,8 +244,8 @@ export default function ContactCard({
             onClick={() => {
               if (isOwner) {
                 window.location.href = "/dashboard?tab=Chat";
-              } else if (!user) {
-                setShowPlanPopup(true);
+              } else if (!user || !user.id) {
+                setShowLoginPopup(true); // Show login popup
               } else if (!hasPaid && wallet < 500) {
                 setShowPlanPopup(true);
               } else if (!isUnlocked) {
@@ -257,11 +277,40 @@ export default function ContactCard({
           </button>
         </div>
 
+        {showLoginPopup && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
+      {/* Close Button */}
+      <button
+        onClick={() => setShowLoginPopup(false)}
+        className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+      >
+        ✕
+      </button>
+      <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+        Login Required
+      </h2>
+      <p className="text-sm text-gray-600 mb-6 text-center">
+        Please login to continue.
+      </p>
+      <button
+        onClick={() => (window.location.href = "/login")}
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
+      >
+        Go to Login
+      </button>
+    </div>
+  </div>
+)}
+
+
         {/* CALL POPUP */}
         {showCallPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-xl p-6 shadow-xl w-[20rem] text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Call Owner</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Call Owner
+              </h3>
               <p className="text-xl font-bold text-indigo-600 mb-6">
                 +91 {property?.owner_phone || "Unavailable"}
               </p>
@@ -285,8 +334,12 @@ export default function ContactCard({
               >
                 ✕
               </button>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Help & Support</h3>
-              <p className="text-md font-medium text-gray-700 mb-6">+91 90044 63371</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Help & Support
+              </h3>
+              <p className="text-md font-medium text-gray-700 mb-6">
+                +91 90044 63371
+              </p>
               <div className="flex justify-center gap-6">
                 <a
                   href="tel:+919004463371"
@@ -295,7 +348,9 @@ export default function ContactCard({
                   <FaPhoneAlt />
                 </a>
                 <a
-                  href={`https://wa.me/919004463371?text=${encodeURIComponent("I want help regarding")}`}
+                  href={`https://wa.me/919004463371?text=${encodeURIComponent(
+                    "I want help regarding"
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-12 h-12 rounded-full bg-green-500 hover:bg-green-600 text-white text-2xl"
@@ -324,24 +379,34 @@ export default function ContactCard({
 
       {/* Booking Card */}
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
-        <h2 className="text-lg flex items-center gap-2 mb-3" style={{ fontFamily: "heading_font" }}>
-          {!existingBookingDateTime && <FaCalendarAlt className="text-indigo-600" />} Booking Schedule
+        <h2
+          className="text-lg flex items-center gap-2 mb-3"
+          style={{ fontFamily: "heading_font" }}
+        >
+          {!existingBookingDateTime && (
+            <FaCalendarAlt className="text-indigo-600" />
+          )}{" "}
+          Booking Schedule
         </h2>
 
         {isOwner ? (
-          <p className="text-sm text-gray-500 italic text-center">This is your property. Booking is disabled.</p>
+          <p className="text-sm text-gray-500 italic text-center">
+            This is your property. Booking is disabled.
+          </p>
         ) : (
           <>
-          {hasPaid && (
-  <p className="text-sm text-gray-500 mb-2">
-    Bookings remaining: {remainingBookings}
-  </p>
-)}
+            {hasPaid && (
+              <p className="text-sm text-gray-500 mb-2">
+                Bookings remaining: {remainingBookings}
+              </p>
+            )}
 
             <div className="flex justify-between items-center gap-3">
               <div className="flex items-center gap-2 w-full">
                 {!isUnlocked ? (
-                  <span className="text-gray-500 text-sm">Unlock contact to enable booking</span>
+                  <span className="text-gray-500 text-sm">
+                    Unlock contact to enable booking
+                  </span>
                 ) : existingBookingDateTime ? (
                   <div className="flex items-center gap-2 bg-green-50 border border-green-200 px-3 py-2 rounded-lg shadow-sm">
                     <FaCheckCircle className="text-green-600 text-lg" />
@@ -410,7 +475,11 @@ export default function ContactCard({
         <div className="flex items-center justify-center gap-5">
           <SiGooglepay className="text-3xl text-indigo-600" />
           <SiPaytm className="text-3xl text-blue-600" />
-          <PaymentButton hasPaid={hasPaid} userMobile={userMobile} setHasPaid={setHasPaid} />
+          <PaymentButton
+            hasPaid={hasPaid}
+            userMobile={userMobile}
+            setHasPaid={setHasPaid}
+          />
         </div>
       </div>
 
@@ -422,13 +491,18 @@ export default function ContactCard({
             <p className="text-sm text-gray-700 mb-4">
               {unlockType === "referral" ? (
                 <>
-                  This will use <strong>500 EMS currency</strong> from your referral balance.<br />
+                  This will use <strong>500 EMS currency</strong> from your
+                  referral balance.
+                  <br />
                   You have <strong>{wallet}</strong> EMS remaining.
                 </>
               ) : (
                 <>
-                  This will use <strong>1 credit</strong> from your subscription plan.<br />
-                  You have <strong>{contactStatus.remaining}</strong> remaining credits.
+                  This will use <strong>1 credit</strong> from your subscription
+                  plan.
+                  <br />
+                  You have <strong>{contactStatus.remaining}</strong> remaining
+                  credits.
                 </>
               )}
             </p>
@@ -443,7 +517,9 @@ export default function ContactCard({
                 onClick={handleUnlock}
                 disabled={isUnlocking}
                 className={`text-sm px-4 py-2 rounded-md text-white ${
-                  isUnlocking ? "bg-indigo-400" : "bg-indigo-600 hover:bg-indigo-700"
+                  isUnlocking
+                    ? "bg-indigo-400"
+                    : "bg-indigo-600 hover:bg-indigo-700"
                 }`}
               >
                 {isUnlocking ? "Unlocking..." : "Confirm"}
@@ -460,7 +536,12 @@ export default function ContactCard({
             <h2 className="text-lg mb-3 text-gray-800">Confirm Booking</h2>
             <p className="text-sm text-gray-700 mb-4">
               Scheduling this booking will consume{" "}
-              <strong>{unlockType === "referral" ? "250 EMS currency" : "1 subscription credit"}</strong>.<br />
+              <strong>
+                {unlockType === "referral"
+                  ? "250 EMS currency"
+                  : "1 subscription credit"}
+              </strong>
+              .<br />
               {unlockType === "referral"
                 ? `You have ${wallet} EMS remaining.`
                 : `You have ${bookingStatus.remaining} credits remaining.`}

@@ -24,6 +24,7 @@ import MyBookings from "../../components/UserPageComp/MyBookings";
 import ReferAndEarn from "../../components/UserPageComp/ReferAndEarn";
 import MyWallet from "../../components/UserPageComp/MyWallet";
 import UserChat from "../../components/UserPageComp/UserChat";
+import SavedProperties from "../../components/UserPageComp/SavedProperties";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -35,6 +36,7 @@ const TAB_TITLES = {
   MyBookings: "Your Bookings",
   ReferEarn: "Invite Friends, Earn Rewards!",
   MyWallet: "Referral Wallet",
+  SavedProperties: "Saved Properties"
 };
 
 function LoadingMessage({ message }) {
@@ -234,6 +236,7 @@ export default function UserDashboard() {
         {activeTab === "MyBookings" && <MyBookings />}
         {activeTab === "Chat" && <UserChat />}
         {activeTab === "DedicatedRM" && user && <DedicatedRM userId={user.id} />}
+        {activeTab === "SavedProperties" && <SavedProperties />}
 
         <RaiseQueryModal
           isOpen={!!selectedProperty}

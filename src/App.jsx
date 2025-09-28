@@ -253,11 +253,11 @@ function AnimatedRoutes() {
           element={
             <PageWrapper>
               <Layout>
-                <ProtectedRoute
+                {/* <ProtectedRoute
                   allowedRoles={["user", "owner", "admin", "rm", "hr"]}
-                >
+                > */}
                   <PropertyDetail />
-                </ProtectedRoute>
+                {/* </ProtectedRoute> */}
               </Layout>
             </PageWrapper>
           }

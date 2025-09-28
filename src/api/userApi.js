@@ -158,6 +158,40 @@ export const getReferralTransactions = async () => {
   }
 };
 
+// Save a property
+export const saveProperty = async (propertyId) => {
+  try {
+    const res = await axiosInstance.post("/save", { propertyId });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error saving property:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+// Remove a saved property
+export const removeSavedProperty = async (propertyId) => {
+  try {
+    const res = await axiosInstance.delete("/remove", { data: { propertyId } });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error removing saved property:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+// Get all saved properties
+export const getSavedProperties = async () => {
+  try {
+    const res = await axiosInstance.get("/all");
+    return res.data.properties; // array of saved properties
+  } catch (err) {
+    console.error("❌ Error fetching saved properties:", err.response?.data || err.message);
+    return [];
+  }
+};
+
+
 
 
 export default axiosInstance;

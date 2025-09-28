@@ -14,7 +14,6 @@ export default function EditModal({
 
   // Log editForm whenever it changes
   useEffect(() => {
-    console.log("EditForm Data:", editForm);
   }, [editForm]);
 
   const handleFileChange = async (e, type) => {

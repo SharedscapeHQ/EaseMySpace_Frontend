@@ -69,3 +69,41 @@ export const fetchGuestUnlockedContacts = async (phone) => {
     throw err;
   }
 };
+
+// Save a property for a guest/lead user
+export const saveLeadProperty = async (phone, propertyId) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/save`, { phone, propertyId }, { timeout: 10000 });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Failed to save property for guest:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+// Remove a saved property for a guest/lead user
+export const removeLeadProperty = async (phone, propertyId) => {
+  try {
+    const res = await axios.delete(`${BASE_URL}/remove`, {
+      data: { phone, propertyId },
+      timeout: 10000,
+    });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Failed to remove property for guest:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+export const fetchLeadSavedProperties = async (phone) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/guest-saved`, {
+      params: { phone },
+      timeout: 10000,
+    });
+    return res.data.properties || [];
+  } catch (err) {
+    console.error("❌ Failed to fetch guest saved properties:", err.response?.data || err.message);
+    return [];
+  }
+};

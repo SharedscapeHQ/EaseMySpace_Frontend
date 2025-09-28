@@ -24,28 +24,24 @@ export default function LeadUserProfile() {
   const [loading, setLoading] = useState(true);
   const [genderEdited, setGenderEdited] = useState(false);
 
+  // Fetch profile on mount
   useEffect(() => {
     async function fetchProfile() {
       try {
-        // Get stored phone with +91 prefix for display
-        let storedPhone = localStorage.getItem("user_verified_mobile") || "";
-
-        // Prepare plain 10-digit phone for backend API call (strip +91 if present)
-        const phoneForApi = storedPhone.startsWith("+91")
-          ? storedPhone.slice(3)
-          : storedPhone;
-
+        const storedPhone = localStorage.getItem("user_verified_mobile") || "";
+        const phoneForApi = storedPhone.startsWith("+91") ? storedPhone.slice(3) : storedPhone;
         setProfile((prev) => ({ ...prev, phone: storedPhone }));
 
         const data = await fetchLeadUserProfile(phoneForApi);
         if (data.success && data.profile) {
-          setProfile((prev) => ({
-            ...prev,
+          setProfile({
+            ...profile,
             firstName: data.profile.firstName || "",
             lastName: data.profile.lastName || "",
             email: data.profile.email || "",
             gender: data.profile.gender || "male",
-          }));
+            phone: storedPhone,
+          });
 
           setFilledFields({
             firstName: !!data.profile.firstName,
@@ -66,6 +62,7 @@ export default function LeadUserProfile() {
     fetchProfile();
   }, []);
 
+  // Calculate completion percentage
   useEffect(() => {
     const filledCount = requiredFields.reduce((count, field) => {
       if (field === "password") {
@@ -76,27 +73,19 @@ export default function LeadUserProfile() {
       return count;
     }, 0);
 
-    const percent = Math.floor((filledCount / requiredFields.length) * 100);
-    setCompleted(percent);
+    setCompleted(Math.floor((filledCount / requiredFields.length) * 100));
   }, [profile, finalized]);
 
   const handleChange = (e) => {
     if (finalized) return;
     const { name, value } = e.target;
-    setProfile((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (name === "gender" && !genderEdited) {
-      setGenderEdited(true);
-    }
+    setProfile((prev) => ({ ...prev, [name]: value }));
+    if (name === "gender" && !genderEdited) setGenderEdited(true);
   };
 
   const handleUpdate = async () => {
     try {
-      // Send plain 10-digit phone to backend by stripping +91
       const phonePlain = profile.phone.startsWith("+91") ? profile.phone.slice(3) : profile.phone;
-
       const dataToSend = { phone: phonePlain };
 
       requiredFields.forEach((field) => {
@@ -137,15 +126,15 @@ export default function LeadUserProfile() {
   if (loading) return <div className="p-6 text-center">Loading profile...</div>;
 
   return (
-    <div className="bg-white shadow rounded p-4 sm:p-6 lg:p-10">
-      <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">Guest User Profile</h2>
+    <div className="bg-white shadow rounded-lg p-6 ">
+      <h2 className="text-2xl font-bold text-center mb-8">Complete Your Profile</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Form Section */}
         <div>
-          <p className="mb-4 text-gray-600 text-sm sm:text-base">
+          <div className="mb-4 text-gray-700">
             <span className="font-semibold">Phone:</span> {profile.phone}
-          </p>
+          </div>
 
           {["firstName", "lastName", "email", "gender", "password"].map((field) =>
             field === "gender" ? (
@@ -155,7 +144,7 @@ export default function LeadUserProfile() {
                 value={profile.gender}
                 onChange={handleChange}
                 disabled={genderEdited || finalized}
-                className="w-full p-2 sm:p-3 border rounded mb-4 focus:outline-none focus:ring focus:ring-indigo-200 text-sm sm:text-base"
+                className="w-full mb-4 p-3 border rounded focus:outline-none focus:ring focus:ring-indigo-200 text-sm sm:text-base"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -170,23 +159,23 @@ export default function LeadUserProfile() {
                 placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                 type={field === "password" ? "password" : "text"}
                 disabled={filledFields[field] || finalized}
-                className="w-full p-2 sm:p-3 border rounded mb-4 focus:outline-none focus:ring focus:ring-indigo-200 text-sm sm:text-base"
+                className="w-full mb-4 p-3 border rounded focus:outline-none focus:ring focus:ring-indigo-200 text-sm sm:text-base"
               />
             )
           )}
 
-          <div className="mt-4 text-center">
+          <div className="mt-6 text-center">
             {!finalized ? (
               <button
                 onClick={handleUpdate}
-                className="bg-indigo-600 text-white px-4 sm:px-6 py-2 rounded hover:bg-indigo-700 transition text-sm sm:text-base"
+                className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition text-sm sm:text-base"
               >
                 Update Profile
               </button>
             ) : (
               <button
                 onClick={() => (window.location.href = "/login")}
-                className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base"
+                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base"
               >
                 Login
               </button>
@@ -195,8 +184,8 @@ export default function LeadUserProfile() {
         </div>
 
         {/* Progress Section */}
-        <div className="flex flex-col items-center">
-          <div className="w-36 h-36 sm:w-48 sm:h-48">
+        <div className="flex flex-col items-center justify-center">
+          <div className="w-40 h-40 sm:w-48 sm:h-48">
             <PieChart
               data={[
                 { title: "Completed", value: completed, color: "#4caf50" },
@@ -204,14 +193,8 @@ export default function LeadUserProfile() {
               ]}
               lineWidth={20}
               rounded
-              label={({ dataEntry }) =>
-                dataEntry.title === "Completed" ? `${completed}%` : ""
-              }
-              labelStyle={{
-                fontSize: "14px",
-                fontWeight: "bold",
-                fill: "#4caf50",
-              }}
+              label={({ dataEntry }) => (dataEntry.title === "Completed" ? `${completed}%` : "")}
+              labelStyle={{ fontSize: "14px", fontWeight: "bold", fill: "#4caf50" }}
               animate
             />
           </div>

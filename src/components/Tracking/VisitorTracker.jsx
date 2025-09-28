@@ -30,7 +30,7 @@ export default function VisitorTracker() {
           sendTrack({ latitude, longitude, is_precise: true });
         },
         (err) => {
-          console.warn("Geolocation denied, fallback to IP:", err);
+          // console.warn("Geolocation denied, fallback to IP:", err);
           // ✅ Fallback: IP-based location only
           sendTrack({ is_precise: false });
         },

@@ -14,11 +14,9 @@ export default function WithdrawalRequests() {
   try {
     setLoading(true);
     const res = await getAllWithdrawals();
-    console.log("🔍 Raw response:", res);
 
     if (res.data.success) {
       setWithdrawals(res.data.withdrawals);
-      console.log("✅ Withdrawals from API:", res.data.withdrawals);
     } else {
       console.warn("⚠️ Backend error:", res.data.message);
     }

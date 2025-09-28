@@ -6,12 +6,12 @@ import {
   FaTv,
   FaChair,
   FaLock,
-  FaGasPump,
   FaPuzzlePiece,
   FaShower,
 } from 'react-icons/fa';
+import { FaFire } from "react-icons/fa6";
+import { GiCctvCamera } from "react-icons/gi";
 import { GiIceCube } from 'react-icons/gi';
-import { FiEye } from 'react-icons/fi';
 import {
   MdOutlineLocalLaundryService,
   MdOutlineElevator,
@@ -40,14 +40,14 @@ const amenityIcons = {
   'air conditioning': <FaSnowflake />,
   refrigerator: <GiIceCube />,
   'washing machine': <MdOutlineLocalLaundryService />,
-  cctv: <FiEye />,
+  cctv: <GiCctvCamera />,
   security: <FaLock />,
   geyser: <FaShower />,
   lift: <MdOutlineElevator />,
   'power backup': <MdOutlinePower />,
   furniture: <FaChair />,
   tv: <FaTv />,
-  'gas connection': <FaGasPump />,
+  'gas connection': <FaFire />,
 };
 
 function PropertyAmenities({ amenities, property }) {
