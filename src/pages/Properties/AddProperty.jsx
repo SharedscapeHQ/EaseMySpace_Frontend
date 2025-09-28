@@ -55,85 +55,88 @@ const AddProperty = () => {
       reader.onerror = reject;
     });
 
-  const handleFileChange = async (e, type) => {
-    const files = Array.from(e.target.files);
-    try {
-      const base64s = await Promise.all(
-        files.map(async (file) => {
-          const result = await toBase64(file);
-          const [, , data] = result.match(/^data:(.+);base64,(.*)$/);
-          return data;
-        })
-      );
-      setFormData((prev) => ({
-        ...prev,
-        [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
-      }));
-    } catch {
-      toast.error(`Failed to process ${type} file(s)`);
-    }
-  };
+// Keep full base64 (do NOT strip prefix)
+const handleFileChange = async (e, type) => {
+  const files = Array.from(e.target.files);
+  try {
+    const base64s = await Promise.all(files.map(toBase64));
+    setFormData((prev) => ({
+      ...prev,
+      [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
+    }));
+    e.target.value = ""; // reset file input after selection
+  } catch {
+    toast.error(`Failed to process ${type} file(s)`);
+  }
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+// --- handleSubmit --- 
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Trim only leading/trailing spaces from location before validation
-    const trimmedLocation = formData.location.trim();
+  const trimmedLocation = formData.location.trim();
 
-    const requiredFields = ["title", "location", "gender", "owner_phone"];
-    for (const field of requiredFields) {
-      const value = field === "location" ? trimmedLocation : formData[field];
-      if (!value) {
-        toast.error(`Please fill ${field.replace("_", " ")}`);
-        return;
-      }
-    }
-
-    if (!formData.image_base64.length) {
-      toast.error("Please upload at least one image");
+  // Required fields
+  const requiredFields = ["title", "location", "gender", "owner_phone"];
+  for (const field of requiredFields) {
+    const value = field === "location" ? trimmedLocation : formData[field];
+    if (!value) {
+      toast.error(`Please fill ${field.replace("_", " ")}`);
       return;
     }
+  }
 
-    setUploading(true);
-    try {
-      const validPricingOptions = formData.pricingOptions.filter(
-        (opt) => opt.price && opt.deposit
-      );
+  if (!formData.image_base64.length) {
+    toast.error("Please upload at least one image");
+    return;
+  }
 
-      await addProperty({
-        ...formData,
-        location: trimmedLocation,
-        pricingOptions: validPricingOptions,
-      });
+  // Ensure at least one pricing option has values
+  const validPricingOptions = formData.pricingOptions.filter(
+    (opt) => opt.price && opt.deposit
+  );
+  if (!validPricingOptions.length) {
+    toast.error("Please enter at least one rent & deposit option");
+    return;
+  }
 
-      toast.success("Property Added Successfully!");
-      setShowPopup(true);
+  setUploading(true);
+  try {
+    await addProperty({
+      ...formData,
+      location: trimmedLocation,
+      pricingOptions: validPricingOptions,
+    });
 
-      setFormData({
-        title: "",
-        location: "",
-        gender: "",
-        looking_for: "",
-        bhk_type: "",
-        distance_from_station: "",
-        bathrooms: "",
-        owner_phone: "",
-        description: "",
-        image_base64: [],
-        video_base64: [],
-        amenities: [],
-        pricingOptions: [
-          { occupancy: "single", price: "", deposit: "" },
-          { occupancy: "double", price: "", deposit: "" },
-          { occupancy: "triple", price: "", deposit: "" },
-        ],
-      });
-    } catch {
-      toast.error("Failed to upload");
-    } finally {
-      setUploading(false);
-    }
-  };
+    toast.success("Property Added Successfully!");
+    setShowPopup(true);
+    // Reset form
+    setFormData({
+      title: "",
+      location: "",
+      gender: "",
+      looking_for: "",
+      bhk_type: "",
+      distance_from_station: "",
+      bathrooms: "",
+      owner_phone: "",
+      description: "",
+      image_base64: [],
+      video_base64: [],
+      amenities: [],
+      pricingOptions: [
+        { occupancy: "single", price: "", deposit: "" },
+        { occupancy: "double", price: "", deposit: "" },
+        { occupancy: "triple", price: "", deposit: "" },
+      ],
+    });
+  } catch {
+    toast.error("Failed to upload");
+  } finally {
+    setUploading(false);
+  }
+};
+
 
   const renderSelect = (name, label, options, required = false) => (
     <motion.div
