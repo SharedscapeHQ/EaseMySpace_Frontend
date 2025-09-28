@@ -126,17 +126,31 @@ const [modalUser, setModalUser] = useState(null);
 };
 
 
-  const fetchProperties = async () => {
-    try {
-      setLoadingProps(true);
-      const { data } = await getAllProperties();
-      setProperties(Array.isArray(data) ? data : []);
-    } catch {
-      toast.error("Error loading properties");
-    } finally {
-      setLoadingProps(false);
-    }
-  };
+ const fetchProperties = async () => {
+  try {
+    setLoadingProps(true);
+
+    const { data } = await getAllProperties();
+    
+
+    // Ensure always an array, and normalize pricing
+    const safeData = Array.isArray(data)
+      ? data.map((prop) => ({
+          ...prop,
+          pricing: Array.isArray(prop.pricing) ? prop.pricing : [],
+        }))
+      : [];
+
+    setProperties(safeData);
+  } catch (err) {
+    console.error("Error loading properties:", err);
+    toast.error("Error loading properties");
+    setProperties([]);
+  } finally {
+    setLoadingProps(false);
+  }
+};
+
 
   const handleApprove = async (id) => {
     await approveProperty(id);
@@ -153,17 +167,24 @@ const [modalUser, setModalUser] = useState(null);
   };
 
   const openEditModal = (property) => {
-    setEditingProperty(property);
-    setEditForm({
-      ...property,
-      amenities: Array.isArray(property.amenities)
-        ? property.amenities
-        : (property.amenities || "").split(",").map((a) => a.trim()),
-      is_newly_listed: property.is_newly_listed || false,
-      verified: property.verified === true || property.verified === "true",
-      newly_listed_position: property.newly_listed_position || "",
-    });
-  };
+  setEditingProperty(property);
+
+  setEditForm({
+    ...property,
+    // Pull price and deposit from first pricing entry
+    price: property.pricing?.[0]?.price ?? "",       // fallback to empty string
+    deposit: property.pricing?.[0]?.deposit ?? "",   // fallback to empty string
+
+    amenities: Array.isArray(property.amenities)
+      ? property.amenities
+      : (property.amenities || "").split(",").map((a) => a.trim()),
+
+    is_newly_listed: property.is_newly_listed || false,
+    verified: property.verified === true || property.verified === "true",
+    newly_listed_position: property.newly_listed_position || "",
+  });
+};
+
 
   const handleEditChange = (e) => {
     const { name, value, type, checked } = e.target;

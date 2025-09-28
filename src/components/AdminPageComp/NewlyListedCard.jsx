@@ -6,6 +6,14 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
   const [showInput, setShowInput] = useState(false);
   const [position, setPosition] = useState("");
 
+  // Helper to get price safely
+  const getFirstPrice = () => {
+    if (property.pricing?.length > 0 && property.pricing[0].price != null) {
+      return Number(property.pricing[0].price).toLocaleString();
+    }
+    return null;
+  };
+
   const handleRemove = async () => {
     try {
       await markNewlyListed(property.id, false, null);
@@ -13,6 +21,7 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
       fetchProperties();
     } catch (err) {
       toast.error("Failed to remove");
+      console.error(err);
     }
   };
 
@@ -45,26 +54,28 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
     }
   };
 
+  const firstPrice = getFirstPrice();
+
   return (
-    <div style={{fontFamily:"para_font"}} className="bg-white rounded-xl border hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+    <div style={{ fontFamily: "para_font" }} className="bg-white rounded-xl border hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
       {/* Image */}
       <div className="relative h-44 md:h-48">
         <img
-          src={Array.isArray(property.image) ? property.image[0] : property.image}
+          src={Array.isArray(property.image) ? property.image[0] : property.image || "/default-property.jpg"}
           alt={property.title}
           className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
         />
         {property.is_newly_listed && (
-          <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs  px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+          <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
             <FiCheckCircle className="text-[10px]" /> Marked
           </span>
         )}
       </div>
 
       {/* Details */}
-      <div className="p-4 ">
+      <div className="p-4">
         <div className="flex justify-between items-center">
-          <h3 style={{fontFamily:"heading_font"}} className="text-zinc-800 text-xs md:text-base truncate">
+          <h3 style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base truncate">
             {property.title}
           </h3>
           {property.verified && (
@@ -74,8 +85,9 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
           )}
         </div>
 
-        <p style={{fontFamily:"heading_font"}} className="text-zinc-800 text-xs md:text-base">
-          ₹ {Number(property.price).toLocaleString()}/mo
+        {/* Price */}
+        <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base">
+          {firstPrice ? `₹ ${firstPrice}/mo` : "Price not available"}
         </p>
         <p className="text-gray-600 text-sm">{property.location}</p>
 
@@ -84,12 +96,11 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
           <>
             <div className="text-sm text-green-700 mt-1 flex items-center gap-2">
               Position: 
-              <span className="bg-green-100 text-green-700  px-2 py-0.5 rounded">
+              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded">
                 {property.newly_listed_position ?? "-"}
               </span>
             </div>
 
-            {/* Buttons side by side */}
             <div className="flex gap-2 mt-3">
               <button
                 onClick={handleRemove}
@@ -108,13 +119,12 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
           </>
         ) : (
           <>
-            {/* Buttons side by side */}
             <div className="flex gap-2 mt-3">
               <button
                 onClick={() => setShowInput(!showInput)}
                 className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition text-sm font-medium"
               >
-                 {showInput ? "Cancel" : "Mark Featured"}
+                {showInput ? "Cancel" : "Mark Featured"}
                 {showInput ? <FiChevronUp /> : <FiChevronDown />}
               </button>
 
@@ -126,11 +136,8 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
               </button>
             </div>
 
-            {/* Input field for position */}
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                showInput ? "max-h-20 opacity-100 mt-2" : "max-h-0 opacity-0"
-              }`}
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${showInput ? "max-h-20 opacity-100 mt-2" : "max-h-0 opacity-0"}`}
             >
               <div className="flex gap-2">
                 <input

@@ -17,7 +17,17 @@ export default function OldProperties() {
     try {
       setLoading(true);
       const res = await getOldProperties();
-      setProperties(res.data.data);
+
+      // Normalize pricing & image
+      const safeProps = Array.isArray(res.data.data)
+        ? res.data.data.map((prop) => ({
+            ...prop,
+            pricing: Array.isArray(prop.pricing) ? prop.pricing : [],
+            image: Array.isArray(prop.image) ? prop.image : prop.image ? [prop.image] : ["/default-property.jpg"],
+          }))
+        : [];
+
+      setProperties(safeProps);
     } catch (err) {
       console.error("Failed to fetch old properties:", err);
       setError("Failed to fetch old properties");
@@ -44,9 +54,9 @@ export default function OldProperties() {
 
   // Filter properties based on search input
   const filteredProperties = properties.filter((p) =>
-    p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.owner_code.toLowerCase().includes(searchTerm.toLowerCase())
+    p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.owner_code?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -59,7 +69,7 @@ export default function OldProperties() {
 
         <input
           type="text"
-          placeholder="Search by title or location"
+          placeholder="Search by title, location, or owner code"
           className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-64"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

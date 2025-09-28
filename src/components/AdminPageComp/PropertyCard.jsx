@@ -2,12 +2,26 @@ import React from "react";
 import { FiCheckCircle } from "react-icons/fi";
 
 export default function PropertyCard({ property, onApprove, onEdit, onDelete }) {
+  // Pick first image or fallback
+  const imageUrl =
+    Array.isArray(property.image) && property.image.length > 0
+      ? property.image[0]
+      : property.image || "/default-property.jpg";
+
+  // Pricing logic
+  const hasPricing = property.pricing?.length > 0;
+  const firstPrice = hasPricing ? Number(property.pricing[0].price).toLocaleString() : null;
+  const multiplePricing = hasPricing && property.pricing.length > 1;
+
   return (
-    <div style={{ fontFamily: "para_font" }} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div
+      style={{ fontFamily: "para_font" }}
+      className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+    >
       {/* Property Image */}
       <div className="relative">
         <img
-          src={Array.isArray(property.image) ? property.image[0] : property.image}
+          src={imageUrl}
           alt={property.title}
           className="w-full h-48 object-cover"
         />
@@ -22,7 +36,10 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
       {/* Property Details */}
       <div className="p-5">
         <div className="flex items-center justify-between">
-          <h3 style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base truncate">
+          <h3
+            style={{ fontFamily: "heading_font" }}
+            className="text-zinc-800 text-xs md:text-base truncate"
+          >
             {property.title}
           </h3>
           <span className="bg-yellow-400 text-zinc-900 px-3 py-0.5 text-sm rounded-md">
@@ -30,9 +47,18 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
           </span>
         </div>
 
-        <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base">
-          ₹ {Number(property.price).toLocaleString()}/mo
-        </p>
+        {/* Pricing */}
+        {hasPricing ? (
+          <p
+            style={{ fontFamily: "heading_font" }}
+            className="text-zinc-800 text-xs md:text-base"
+          >
+            ₹ {firstPrice}/mo {multiplePricing && <span className="text-gray-500 text-xs">(multiple options)</span>}
+          </p>
+        ) : (
+          <p className="text-gray-500 text-xs md:text-base">No Rent available</p>
+        )}
+
         <p className="text-gray-600 text-sm">{property.location}</p>
 
         {/* Action Buttons */}

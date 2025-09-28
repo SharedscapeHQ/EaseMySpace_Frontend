@@ -14,6 +14,7 @@ import PropertyMap from "./PropertyMap";
 import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 import LoginPromptModal from "./LoginPromptModal";
+import EssentialDetails from "./EssentialDetails";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -215,30 +216,7 @@ function PropertyDetail() {
             setShowPlanPopup={setShowPlanPopup}
           />
 
-          <div className="mt-6 border border-gray-300 p-6 rounded-lg bg-white">
-            <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-4">
-              Essential Details
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
-              {[
-                { label: "Rent", value: `₹${property.price || "N/A"}` },
-                { label: "Deposit", value: `₹${property.deposit || "N/A"}` },
-                { label: "Flat Status", value: property.flat_status || "N/A" },
-                { label: "BHK Type", value: property.bhk_type || "N/A" },
-                { label: "Looking For", value: property.looking_for || "N/A" },
-                { label: "Occupancy", value: property.occupancy || "N/A" },
-                { label: "Gender", value: property.gender || "N/A" },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col items-center justify-center text-center px-2 py-3 bg-white rounded-md lg:shadow-none lg:border-l border-b lg:border-b-0"
-                >
-                  <span className="text-xs lg:text-base text-gray-600 font-medium">{item.label}</span>
-                  <span className="text-xs lg:text-base text-gray-900 font-semibold">{item.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+         <EssentialDetails property={property} />
 
           <div className="bg-white rounded-xl border p-6">
             <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">

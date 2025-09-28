@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaHome, FaCheckCircle } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
@@ -7,13 +7,10 @@ import { addProperty } from "../../api/propertiesApi";
 const AddProperty = () => {
   const [formData, setFormData] = useState({
     title: "",
-    price: "",
-    deposit: "",
     location: "",
     gender: "",
     looking_for: "",
     bhk_type: "",
-    occupancy: "",
     distance_from_station: "",
     bathrooms: "",
     owner_phone: "",
@@ -21,7 +18,15 @@ const AddProperty = () => {
     image_base64: [],
     video_base64: [],
     amenities: [],
+    pricingOptions: [
+      { occupancy: "single", price: "", deposit: "" },
+      { occupancy: "double", price: "", deposit: "" },
+      { occupancy: "triple", price: "", deposit: "" },
+    ],
   });
+
+  const [uploading, setUploading] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const amenityOptions = [
     "wifi",
@@ -38,9 +43,6 @@ const AddProperty = () => {
     "tv",
     "gas connection",
   ];
-
-  const [uploading, setUploading] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
 
   const handleChange = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -72,69 +74,62 @@ const AddProperty = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const requiredFields = [
-      "title",
-      "price",
-      "deposit",
-      "location",
-      "gender",
-      "owner_phone",
-    ];
-    for (const field of requiredFields) {
-      if (!formData[field]) {
-        toast.error(`Please fill ${field.replace("_", " ")}`);
-        return;
-      }
-    }
-    if (!formData.image_base64.length) {
-      toast.error("Please upload at least one image");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const requiredFields = ["title", "location", "gender", "owner_phone"];
+  for (const field of requiredFields) {
+    if (!formData[field]) {
+      toast.error(`Please fill ${field.replace("_", " ")}`);
       return;
     }
+  }
 
-    setUploading(true);
-    try {
-      await addProperty(formData);
-      toast.success("Property Added Successfully!");
+  if (!formData.image_base64.length) {
+    toast.error("Please upload at least one image");
+    return;
+  }
 
-      // Show popup
-      setShowPopup(true);
+  setUploading(true);
+  try {
+    // Only keep pricing options with non-empty values
+    const validPricingOptions = formData.pricingOptions.filter(
+      (opt) => opt.price && opt.deposit
+    );
 
-      setFormData({
-        title: "",
-        price: "",
-        deposit: "",
-        location: "",
-        gender: "",
-        looking_for: "",
-        bhk_type: "",
-        occupancy: "",
-        distance_from_station: "",
-        bathrooms: "",
-        owner_phone: "",
-        description: "",
-        image_base64: [],
-        video_base64: [],
-        amenities: [],
-      });
-    } catch {
-      toast.error("Failed to upload");
-    } finally {
-      setUploading(false);
-    }
-  };
+    await addProperty({ ...formData, pricingOptions: validPricingOptions });
+    toast.success("Property Added Successfully!");
+    setShowPopup(true);
 
-  // Auto-hide popup after 5 seconds
-  useEffect(() => {
-    if (showPopup) {
-      // const timer = setTimeout(() => setShowPopup(false), 5000);
-      // return () => clearTimeout(timer);
-    }
-  }, [showPopup]);
+    setFormData({
+      title: "",
+      location: "",
+      gender: "",
+      looking_for: "",
+      bhk_type: "",
+      distance_from_station: "",
+      bathrooms: "",
+      owner_phone: "",
+      description: "",
+      image_base64: [],
+      video_base64: [],
+      amenities: [],
+      pricingOptions: [
+        { occupancy: "single", price: "", deposit: "" },
+        { occupancy: "double", price: "", deposit: "" },
+        { occupancy: "triple", price: "", deposit: "" },
+      ],
+    });
+  } catch {
+    toast.error("Failed to upload");
+  } finally {
+    setUploading(false);
+  }
+};
+
 
   const renderSelect = (name, label, options, required = false) => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4">
       <label className="font-semibold block mb-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
@@ -144,7 +139,7 @@ const AddProperty = () => {
         value={formData[name]}
         onChange={handleChange}
         required={required}
-        className="w-full px-4 py-3 border rounded-lg mb-4"
+        className="w-full px-4 py-3 border rounded-lg"
       >
         <option value="">Select</option>
         {options.map((opt) => (
@@ -157,60 +152,101 @@ const AddProperty = () => {
   );
 
   return (
-    <div className="min-h-screen bg-indigo-50 p-4 md:p-10 relative">
+    <div className="min-h-screen bg-indigo-50 p-4 md:p-10">
       <motion.form
         onSubmit={handleSubmit}
-        className="max-w-3xl mx-auto bg-white shadow-2xl rounded-3xl p-8 space-y-6"
+        className="max-w-5xl mx-auto bg-white shadow-2xl rounded-3xl p-8 space-y-8 w-full"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-3xl font-bold text-indigo-700 flex items-center gap-3">
+        <h1 className="text-3xl font-bold text-indigo-700 flex items-center gap-3 mb-6">
           <FaHome /> Add Property Details
         </h1>
 
-        {/* Text Inputs */}
-        {[
-          ["title", "Your Name", true],
-          ["location", "Location", true],
-          ["price", "Rent (₹)", true],
-          ["deposit", "Security Deposit (₹)", true],
-          ["owner_phone", "Owner Phone Number", true],
-          ["distance_from_station", "Distance from Station", false],
-          ["bathrooms", "Number of Bathrooms", false],
-        ].map(([key, label, required]) => (
-          <div key={key}>
-            <label className="font-semibold block mb-1">
-              {label} {required && <span className="text-red-500">*</span>}
-            </label>
-            <input
-              name={key}
-              value={formData[key]}
-              onChange={handleChange}
-              type={["price", "deposit", "bathrooms"].includes(key) ? "number" : "text"}
-              placeholder={label}
-              required={required}
-              className="w-full px-4 py-3 border rounded-lg mb-4"
-            />
-          </div>
-        ))}
+        {/* Basic Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[
+            ["title", "Yout First Name", true],
+            ["location", "Location", true],
+            ["owner_phone", "Owner Phone", true],
+            ["bathrooms", "Bathrooms", false],
+            ["distance_from_station", "Distance from Station", false],
+          ].map(([key, label, required]) => (
+            <div key={key}>
+              <label className="font-semibold block mb-1">
+                {label} {required && <span className="text-red-500">*</span>}
+              </label>
+              <input
+                type={["bathrooms"].includes(key) ? "number" : "text"}
+                name={key}
+                value={formData[key]}
+                onChange={handleChange}
+                placeholder={label}
+                required={required}
+                className="w-full px-4 py-3 border rounded-lg"
+              />
+            </div>
+          ))}
+        </div>
 
         {/* Dropdowns */}
-        {renderSelect("gender", "Gender Preference", ["male", "female", "others"], true)}
-        {renderSelect("bhk_type", "BHK Type", [
-          "1 BHK",
-          "1.5 BHK",
-          "2 BHK",
-          "2.5 BHK",
-          "3 BHK",
-          "4 BHK",
-        ])}
-        {renderSelect("occupancy", "Occupancy", ["single", "double", "triple"])}
-        {renderSelect("looking_for", "Looking For", ["flatmate", "vacant", "pg"])}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {renderSelect("gender", "Gender Preference", ["male", "female", "any"], true)}
+          {renderSelect("bhk_type", "BHK Type", ["1 BHK","1.5 BHK","2 BHK","2.5 BHK","3 BHK","4 BHK"])}
+          {renderSelect("occupancy", "Occupancy", ["single","double","triple"])}
+          {renderSelect("looking_for", "Looking For", ["flatmate","vacant","pg"])}
+        </div>
+
+        {/* Pricing Section */}
+       <div className="border-t pt-4">
+  <h2 className="font-bold mb-2 text-indigo-600">Pricing per Occupancy</h2>
+  {formData.pricingOptions.map((opt, idx) => (
+    <div key={opt.occupancy} className="flex flex-wrap gap-4 items-center mb-2">
+      <span className="w-24 font-medium">{opt.occupancy}</span>
+      <input
+        type="text"
+        inputMode="decimal"
+        pattern="[0-9]*"
+        placeholder="Rent (₹)"
+        value={opt.price}
+        onChange={(e) => {
+          const val = e.target.value.replace(/[^0-9]/g, "");
+          setFormData(prev => {
+            const updated = [...prev.pricingOptions];
+            updated[idx].price = val;
+            return { ...prev, pricingOptions: updated };
+          });
+        }}
+        onWheel={(e) => e.currentTarget.blur()} // Prevent scroll
+        className="border px-2 py-2 rounded w-32"
+      />
+      <input
+        type="text"
+        inputMode="decimal"
+        pattern="[0-9]*"
+        placeholder="Deposit (₹)"
+        value={opt.deposit}
+        onChange={(e) => {
+          const val = e.target.value.replace(/[^0-9]/g, "");
+          setFormData(prev => {
+            const updated = [...prev.pricingOptions];
+            updated[idx].deposit = val;
+            return { ...prev, pricingOptions: updated };
+          });
+        }}
+        onWheel={(e) => e.currentTarget.blur()} // Prevent scroll
+        className="border px-2 py-2 rounded w-32"
+      />
+    </div>
+  ))}
+</div>
+
 
         {/* Amenities Section */}
-        <div>
-          <label className="font-semibold block mb-2">Select Amenities</label>
+        <div className="border-t pt-4">
+          <h2 className="font-bold mb-2 text-indigo-600">Amenities</h2>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
             {amenityOptions.map((amenity) => (
               <label key={amenity} className="flex items-center gap-2 text-sm text-gray-700">
@@ -220,96 +256,115 @@ const AddProperty = () => {
                   checked={formData.amenities.includes(amenity)}
                   onChange={(e) => {
                     const selected = e.target.checked;
-                    setFormData((prev) => ({
+                    setFormData(prev => ({
                       ...prev,
                       amenities: selected
                         ? [...prev.amenities, amenity]
-                        : prev.amenities.filter((a) => a !== amenity),
+                        : prev.amenities.filter(a => a !== amenity),
                     }));
                   }}
                 />
                 {amenity}
               </label>
             ))}
-            <div className="mt-2">
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Other Amenities
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. gym, garden, intercom"
-                onBlur={(e) => {
-                  const input = e.target.value.trim();
-                  if (input) {
-                    const newAmenities = input
-                      .split(",")
-                      .map((a) => a.trim().toLowerCase())
-                      .filter((a) => a && !formData.amenities.includes(a));
+          </div>
 
-                    if (newAmenities.length) {
-                      setFormData((prev) => ({
-                        ...prev,
-                        amenities: [...prev.amenities, ...newAmenities],
-                      }));
-                    }
-
-                    e.target.value = "";
+          <input
+            type="text"
+            placeholder="Add other amenities (comma separated)"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === ",") {
+                e.preventDefault();
+                const input = e.target.value.trim();
+                if (input) {
+                  const newAmenities = input
+                    .split(",")
+                    .map(a => a.trim().toLowerCase())
+                    .filter(a => a && !formData.amenities.includes(a));
+                  if (newAmenities.length) {
+                    setFormData(prev => ({
+                      ...prev,
+                      amenities: [...prev.amenities, ...newAmenities],
+                    }));
                   }
-                }}
-                className="w-full px-3 py-2 border rounded-md text-sm"
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Separate with commas (e.g. intercom, gym)
-              </p>
-            </div>
+                  e.target.value = "";
+                }
+              }
+            }}
+            className="w-full px-3 py-2 border rounded-md text-sm mb-2"
+          />
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            {formData.amenities.map((amenity) => (
+              <span
+                key={amenity}
+                className="flex items-center gap-1 bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-sm"
+              >
+                {amenity}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData(prev => ({
+                      ...prev,
+                      amenities: prev.amenities.filter(a => a !== amenity),
+                    }))
+                  }
+                  className="font-bold text-xs text-indigo-600 hover:text-indigo-900"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
           </div>
         </div>
 
         {/* Description */}
-        <div>
+        <div className="border-t pt-4">
           <label className="font-semibold block mb-1">Short Description</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             placeholder="Write something about the property..."
-            className="w-full px-4 py-3 border rounded-lg mb-4"
+            className="w-full px-4 py-3 border rounded-lg"
             rows="4"
           />
         </div>
 
-        {/* Image Upload */}
-        <div>
-          <label className="block font-semibold mb-1">Upload Image *</label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, "image")}
-            className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
-          />
-          {formData.image_base64.length > 0 && (
-            <p className="text-green-600 flex items-center mt-1 gap-2">
-              <FaCheckCircle /> {formData.image_base64.length} image(s) selected
-            </p>
-          )}
-        </div>
+        {/* Media Uploads */}
+        <div className="border-t pt-4">
+          <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Images *</label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => handleFileChange(e, "image")}
+              className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
+            />
+            {formData.image_base64.length > 0 && (
+              <p className="text-green-600 flex items-center mt-1 gap-2">
+                <FaCheckCircle /> {formData.image_base64.length} image(s) selected
+              </p>
+            )}
+          </div>
 
-        {/* Video Upload */}
-        <div>
-          <label className="block font-semibold mb-1">Upload Video</label>
-          <input
-            type="file"
-            multiple
-            accept="video/*"
-            onChange={(e) => handleFileChange(e, "video")}
-            className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
-          />
-          {formData.video_base64.length > 0 && (
-            <p className="text-green-600 flex items-center mt-1 gap-2">
-              <FaCheckCircle /> {formData.video_base64.length} video(s) selected
-            </p>
-          )}
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Videos</label>
+            <input
+              type="file"
+              multiple
+              accept="video/*"
+              onChange={(e) => handleFileChange(e, "video")}
+              className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
+            />
+            {formData.video_base64.length > 0 && (
+              <p className="text-green-600 flex items-center mt-1 gap-2">
+                <FaCheckCircle /> {formData.video_base64.length} video(s) selected
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Submit */}
@@ -327,76 +382,49 @@ const AddProperty = () => {
         </motion.button>
       </motion.form>
 
-    <AnimatePresence>
-{showPopup && (
-  <>
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 0.5 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black z-40"
-      onClick={() => setShowPopup(false)}
-    />
-
-    {/* Popup Container */}
-    <div style={{fontFamily:"para_font"}} className="fixed inset-0 flex items-center justify-center z-50 px-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        className="bg-white shadow-2xl rounded-xl p-6 max-w-sm w-full border-l-4 border-blue-600"
-      >
-        <div className="flex justify-between items-start mb-3">
-          <h2 className="text-lg text-blue-600 font-bold">Property Submitted!</h2>
-          <button
-            onClick={() => setShowPopup(false)}
-            className="text-gray-400 hover:text-gray-600 font-bold text-xl"
-          >
-            ×
-          </button>
-        </div>
-
-        <p className="text-gray-700 text-sm mb-4">
-          Your property is in the queue for admin approval. Once approved, it will be visible on{" "}
-          <a
-            href="https://easemyspace.in/view-properties"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline"
-          >
-            EaseMySpace.in
-          </a>
-        </p>
-
-       <div className="flex items-center justify-center   mt-4">
-  <span className="text-sm text-green-700">For any query connect with us on</span>
-  <button
-    onClick={() =>
-      window.open(
-        "https://wa.me/+919004463371?text=Hi,%20I’ve%20just%20listed%20my%20property%20on%20your%20EasemySpace.in.%20Please%20approve%20it%20and%20let%20me%20know%20the%20status."
-      )
-    }
-    className=" text-green-600 py-2 px-4 rounded-full hover:text-green-700 transition flex items-center justify-center"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-      className="w-6 h-6"
-    >
-      <path d="M20.52 3.48A11.77 11.77 0 0012 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.97L0 24l6.3-1.65A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.18-1.24-6.17-3.48-8.52zM12 22a9.9 9.9 0 01-5.05-1.38l-.36-.21-3.73.98 1-3.64-.24-.38A9.95 9.95 0 012 12c0-5.51 4.49-10 10-10s10 4.49 10 10-4.49 10-10 10zm5.44-7.62c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15s-.77.97-.95 1.17c-.18.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.88-.78-1.47-1.74-1.64-2.04-.17-.3-.02-.47.13-.62.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.51-.17-.01-.37-.01-.57-.01s-.52.07-.8.37c-.27.3-1.05 1.03-1.05 2.52s1.08 2.92 1.23 3.12c.15.2 2.13 3.26 5.16 4.57.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" />
-    </svg>
-  </button>
-</div>
-
-      </motion.div>
-    </div>
-  </>
-)}
-
-</AnimatePresence>
-
-
+      {/* Success Popup */}
+      <AnimatePresence>
+        {showPopup && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setShowPopup(false)}
+            />
+            <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="bg-white shadow-2xl rounded-xl p-6 max-w-sm w-full border-l-4 border-blue-600"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h2 className="text-lg text-blue-600 font-bold">Property Submitted!</h2>
+                  <button
+                    onClick={() => setShowPopup(false)}
+                    className="text-gray-400 hover:text-gray-600 font-bold text-xl"
+                  >
+                    ×
+                  </button>
+                </div>
+                <p className="text-gray-700 text-sm mb-4">
+                  Your property is in the queue for admin approval. Once approved, it will be visible on{" "}
+                  <a
+                    href="https://easemyspace.in/view-properties"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    EaseMySpace.in
+                  </a>
+                </p>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
