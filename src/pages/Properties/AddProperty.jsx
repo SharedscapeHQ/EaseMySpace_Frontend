@@ -71,6 +71,7 @@ const handleFileChange = async (e, type) => {
 };
 
 // --- handleSubmit --- 
+// --- handleSubmit --- 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -100,12 +101,21 @@ const handleSubmit = async (e) => {
     return;
   }
 
+  // ✅ Get owner_code from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const owner_code = user?.owner_code;
+  if (!owner_code) {
+    toast.error("Owner code missing. Please log in again.");
+    return;
+  }
+
   setUploading(true);
   try {
     await addProperty({
       ...formData,
       location: trimmedLocation,
       pricingOptions: validPricingOptions,
+      owner_code, // ✅ attach owner_code
     });
 
     toast.success("Property Added Successfully!");
@@ -136,6 +146,7 @@ const handleSubmit = async (e) => {
     setUploading(false);
   }
 };
+
 
 
   const renderSelect = (name, label, options, required = false) => (
