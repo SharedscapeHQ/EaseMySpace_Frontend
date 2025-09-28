@@ -25,17 +25,13 @@ export default function EssentialDetails({ property }) {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
         {[
-          { label: "Rent", value: selected.price !== "N/A" ? `₹${selected.price}` : "N/A" },
-          { label: "Deposit", value: selected.deposit !== "N/A" ? `₹${selected.deposit}` : "N/A" },
-          { label: "Flat Status", value: property.flat_status || "N/A" },
-          { label: "BHK Type", value: property.bhk_type || "N/A" },
-          { label: "Looking For", value: property.looking_for || "N/A" },
+          // Occupancy first
           {
             label: "Occupancy",
             value:
               pricingOptions.length > 1 ? (
                 <select
-                  className="border rounded px-1 py-0.5 text-xs lg:text-base"
+                  className=" bg-blue-200  px-2.5 outline-none text-blue-900 rounded py-0.5 text-xs lg:text-base"
                   value={selected.occupancy}
                   onChange={(e) => {
                     const opt = pricingOptions.find(
@@ -54,6 +50,11 @@ export default function EssentialDetails({ property }) {
                 selected.occupancy || "N/A"
               ),
           },
+          { label: "Rent", value: selected.price !== "N/A" ? `₹${selected.price}` : "N/A" },
+          { label: "Deposit", value: selected.deposit !== "N/A" ? `₹${selected.deposit}` : "N/A" },
+          { label: "Flat Status", value: property.flat_status || "N/A" },
+          { label: "BHK Type", value: property.bhk_type || "N/A" },
+          { label: "Looking For", value: property.looking_for || "N/A" },
           { label: "Gender", value: property.gender || "N/A" },
         ].map((item, idx) => (
           <div
