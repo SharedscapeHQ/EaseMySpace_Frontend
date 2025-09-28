@@ -108,7 +108,7 @@ export default function EditModal({
         </div>
       </div>
 
-      {/* === Pricing per Occupancy === */}
+      {/* === Rent per Occupancy === */}
       <div className="mb-6 border-t pt-4">
         <h4 className="font-semibold mb-3 text-indigo-600">Rent & Deposit per Occupancy</h4>
         {(editForm.pricing || []).map((opt, idx) => (

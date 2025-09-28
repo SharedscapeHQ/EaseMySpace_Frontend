@@ -200,7 +200,7 @@ const AddProperty = () => {
 
         {/* Pricing Section */}
        <div className="border-t pt-4">
-  <h2 className="font-bold mb-2 text-indigo-600">Pricing per Occupancy</h2>
+  <h2 className="font-bold mb-2 text-indigo-600">Rent per Occupancy</h2>
   {formData.pricingOptions.map((opt, idx) => (
     <div key={opt.occupancy} className="flex flex-wrap gap-4 items-center mb-2">
       <span className="w-24 font-medium">{opt.occupancy}</span>
