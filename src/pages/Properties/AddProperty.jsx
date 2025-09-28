@@ -74,62 +74,73 @@ const AddProperty = () => {
     }
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const requiredFields = ["title", "location", "gender", "owner_phone"];
-  for (const field of requiredFields) {
-    if (!formData[field]) {
-      toast.error(`Please fill ${field.replace("_", " ")}`);
+    // Trim only leading/trailing spaces from location before validation
+    const trimmedLocation = formData.location.trim();
+
+    const requiredFields = ["title", "location", "gender", "owner_phone"];
+    for (const field of requiredFields) {
+      const value = field === "location" ? trimmedLocation : formData[field];
+      if (!value) {
+        toast.error(`Please fill ${field.replace("_", " ")}`);
+        return;
+      }
+    }
+
+    if (!formData.image_base64.length) {
+      toast.error("Please upload at least one image");
       return;
     }
-  }
 
-  if (!formData.image_base64.length) {
-    toast.error("Please upload at least one image");
-    return;
-  }
+    setUploading(true);
+    try {
+      const validPricingOptions = formData.pricingOptions.filter(
+        (opt) => opt.price && opt.deposit
+      );
 
-  setUploading(true);
-  try {
-    // Only keep pricing options with non-empty values
-    const validPricingOptions = formData.pricingOptions.filter(
-      (opt) => opt.price && opt.deposit
-    );
+      await addProperty({
+        ...formData,
+        location: trimmedLocation,
+        pricingOptions: validPricingOptions,
+      });
 
-    await addProperty({ ...formData, pricingOptions: validPricingOptions });
-    toast.success("Property Added Successfully!");
-    setShowPopup(true);
+      toast.success("Property Added Successfully!");
+      setShowPopup(true);
 
-    setFormData({
-      title: "",
-      location: "",
-      gender: "",
-      looking_for: "",
-      bhk_type: "",
-      distance_from_station: "",
-      bathrooms: "",
-      owner_phone: "",
-      description: "",
-      image_base64: [],
-      video_base64: [],
-      amenities: [],
-      pricingOptions: [
-        { occupancy: "single", price: "", deposit: "" },
-        { occupancy: "double", price: "", deposit: "" },
-        { occupancy: "triple", price: "", deposit: "" },
-      ],
-    });
-  } catch {
-    toast.error("Failed to upload");
-  } finally {
-    setUploading(false);
-  }
-};
-
+      setFormData({
+        title: "",
+        location: "",
+        gender: "",
+        looking_for: "",
+        bhk_type: "",
+        distance_from_station: "",
+        bathrooms: "",
+        owner_phone: "",
+        description: "",
+        image_base64: [],
+        video_base64: [],
+        amenities: [],
+        pricingOptions: [
+          { occupancy: "single", price: "", deposit: "" },
+          { occupancy: "double", price: "", deposit: "" },
+          { occupancy: "triple", price: "", deposit: "" },
+        ],
+      });
+    } catch {
+      toast.error("Failed to upload");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const renderSelect = (name, label, options, required = false) => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="mb-4"
+    >
       <label className="font-semibold block mb-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
@@ -139,7 +150,7 @@ const AddProperty = () => {
         value={formData[name]}
         onChange={handleChange}
         required={required}
-        className="w-full px-4 py-3 border rounded-lg"
+        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
       >
         <option value="">Select</option>
         {options.map((opt) => (
@@ -167,7 +178,7 @@ const AddProperty = () => {
         {/* Basic Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            ["title", "Yout First Name", true],
+            ["title", "Property Title", true],
             ["location", "Location", true],
             ["owner_phone", "Owner Phone", true],
             ["bathrooms", "Bathrooms", false],
@@ -181,10 +192,19 @@ const AddProperty = () => {
                 type={["bathrooms"].includes(key) ? "number" : "text"}
                 name={key}
                 value={formData[key]}
-                onChange={handleChange}
+                onChange={(e) => {
+                  let val = e.target.value;
+
+                  // Allow only digits and max 10 characters for owner_phone
+                  if (key === "owner_phone") {
+                    val = val.replace(/\D/g, "").slice(0, 10);
+                  }
+
+                  handleChange({ target: { name: key, value: val } });
+                }}
                 placeholder={label}
                 required={required}
-                className="w-full px-4 py-3 border rounded-lg"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               />
             </div>
           ))}
@@ -194,54 +214,52 @@ const AddProperty = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {renderSelect("gender", "Gender Preference", ["male", "female", "any"], true)}
           {renderSelect("bhk_type", "BHK Type", ["1 BHK","1.5 BHK","2 BHK","2.5 BHK","3 BHK","4 BHK"])}
-          {renderSelect("occupancy", "Occupancy", ["single","double","triple"])}
           {renderSelect("looking_for", "Looking For", ["flatmate","vacant","pg"])}
         </div>
 
         {/* Pricing Section */}
-       <div className="border-t pt-4">
-  <h2 className="font-bold mb-2 text-indigo-600">Rent per Occupancy</h2>
-  {formData.pricingOptions.map((opt, idx) => (
-    <div key={opt.occupancy} className="flex flex-wrap gap-4 items-center mb-2">
-      <span className="w-24 font-medium">{opt.occupancy}</span>
-      <input
-        type="text"
-        inputMode="decimal"
-        pattern="[0-9]*"
-        placeholder="Rent (₹)"
-        value={opt.price}
-        onChange={(e) => {
-          const val = e.target.value.replace(/[^0-9]/g, "");
-          setFormData(prev => {
-            const updated = [...prev.pricingOptions];
-            updated[idx].price = val;
-            return { ...prev, pricingOptions: updated };
-          });
-        }}
-        onWheel={(e) => e.currentTarget.blur()} // Prevent scroll
-        className="border px-2 py-2 rounded w-32"
-      />
-      <input
-        type="text"
-        inputMode="decimal"
-        pattern="[0-9]*"
-        placeholder="Deposit (₹)"
-        value={opt.deposit}
-        onChange={(e) => {
-          const val = e.target.value.replace(/[^0-9]/g, "");
-          setFormData(prev => {
-            const updated = [...prev.pricingOptions];
-            updated[idx].deposit = val;
-            return { ...prev, pricingOptions: updated };
-          });
-        }}
-        onWheel={(e) => e.currentTarget.blur()} // Prevent scroll
-        className="border px-2 py-2 rounded w-32"
-      />
-    </div>
-  ))}
-</div>
-
+        <div className="border-t pt-4">
+          <h2 className="font-bold mb-2 text-indigo-600">Rent per Occupancy</h2>
+          {formData.pricingOptions.map((opt, idx) => (
+            <div key={opt.occupancy} className="flex flex-wrap gap-4 items-center mb-2">
+              <span className="w-24 font-medium">{opt.occupancy}</span>
+              <input
+                type="text"
+                inputMode="decimal"
+                pattern="[0-9]*"
+                placeholder="Rent (₹)"
+                value={opt.price}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/[^0-9]/g, "");
+                  setFormData(prev => {
+                    const updated = [...prev.pricingOptions];
+                    updated[idx].price = val;
+                    return { ...prev, pricingOptions: updated };
+                  });
+                }}
+                onWheel={(e) => e.currentTarget.blur()}
+                className="border px-2 py-2 rounded w-32 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+              <input
+                type="text"
+                inputMode="decimal"
+                pattern="[0-9]*"
+                placeholder="Deposit (₹)"
+                value={opt.deposit}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/[^0-9]/g, "");
+                  setFormData(prev => {
+                    const updated = [...prev.pricingOptions];
+                    updated[idx].deposit = val;
+                    return { ...prev, pricingOptions: updated };
+                  });
+                }}
+                onWheel={(e) => e.currentTarget.blur()}
+                className="border px-2 py-2 rounded w-32 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
+          ))}
+        </div>
 
         {/* Amenities Section */}
         <div className="border-t pt-4">
@@ -291,7 +309,7 @@ const AddProperty = () => {
                 }
               }
             }}
-            className="w-full px-3 py-2 border rounded-md text-sm mb-2"
+            className="w-full px-3 py-2 border rounded-md text-sm mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
 
           <div className="flex flex-wrap gap-2 mt-2">
@@ -315,6 +333,7 @@ const AddProperty = () => {
                 </button>
               </span>
             ))}
+         
           </div>
         </div>
 
@@ -326,7 +345,7 @@ const AddProperty = () => {
             value={formData.description}
             onChange={handleChange}
             placeholder="Write something about the property..."
-            className="w-full px-4 py-3 border rounded-lg"
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             rows="4"
           />
         </div>
@@ -334,6 +353,8 @@ const AddProperty = () => {
         {/* Media Uploads */}
         <div className="border-t pt-4">
           <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
+
+          {/* Images */}
           <div className="mb-4">
             <label className="block font-semibold mb-1">Images *</label>
             <input
@@ -350,6 +371,7 @@ const AddProperty = () => {
             )}
           </div>
 
+          {/* Videos */}
           <div className="mb-4">
             <label className="block font-semibold mb-1">Videos</label>
             <input
@@ -367,12 +389,12 @@ const AddProperty = () => {
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Submit Button */}
         <motion.button
           type="submit"
           disabled={uploading}
           whileTap={{ scale: 0.97 }}
-          className={`w-full py-3 font-semibold rounded-xl transition duration-300 ${
+          className={`w-1/2 py-3 font-semibold rounded-xl transition duration-300 ${
             uploading
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-indigo-600 text-white hover:bg-indigo-700"
