@@ -3,25 +3,27 @@ import Footer from '../Footer';
 
 const CancellationRefundPolicy = () => {
   return (
-    <section className="bg-white py-10  h-screen">
-      <div className="max-w-4xl mx-auto bg-zinc-200 p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+    <section className="bg-gradient-to-b from-white to-zinc-50 py-12 px-4">
+      <div className="max-w-3xl mx-auto bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-zinc-200">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-zinc-800 mb-8">
           Cancellation & Refund Policy
         </h2>
-        <p className="text-gray-700 mb-4">
+
+        <p className="text-zinc-700 leading-relaxed mb-5 text-center">
           At <strong>EaseMySpace</strong>, we strive to provide a transparent and seamless experience. Please note:
         </p>
-        <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+
+        <ul className="list-disc pl-6 space-y-4 text-zinc-700 mb-6">
           <li>
-            All payments made on{' '}
+            All payments made on{" "}
             <a
               href="https://easemyspace.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 font-medium hover:underline"
             >
               EaseMySpace.in
-            </a>{' '}
+            </a>{" "}
             are final and non-refundable.
           </li>
           <li>
@@ -31,22 +33,28 @@ const CancellationRefundPolicy = () => {
             We encourage users to carefully review their listings and details before confirming payment.
           </li>
         </ul>
-        <p className="text-gray-700 mb-2">
-          For any queries or concerns, you can reach out to us at{' '}
+
+        <p className="text-zinc-700 mb-3 text-center">
+          For any queries or concerns, you can reach out to us at{" "}
           <a
             href="mailto:support@easemyspace.in"
-            className="text-blue-600 hover:underline"
+            className="text-blue-600 font-medium hover:underline"
           >
             support@easemyspace.in
           </a>.
         </p>
-        <p className="text-gray-700">
+
+        <p className="text-zinc-700 text-center font-medium">
           By making a payment on our platform, you agree to this policy.
         </p>
       </div>
-      <Footer/>
+
+      <div className="mt-10">
+        <Footer />
+      </div>
     </section>
   );
 };
+
 
 export default CancellationRefundPolicy;

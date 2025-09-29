@@ -27,55 +27,64 @@ function LifeAtEMSHero() {
     landscapePairs.push(landscapeImages.slice(i, i + 2));
   }
 
-  return (
-    <section className="w-full min-h-screen bg-blue-100 py-10">
-      {/* SEO-friendly heading */}
-      <h1
+return (
+  <section className="w-full min-h-screen bg-blue-100 py-5">
+    {/* Heading */}
+    <div className="mb-6 text-center px-4">
+      <h2
         style={{ fontFamily: "heading_font" }}
-        className="w-full text-center text-4xl md:text-5xl font-bold pt-5 mb-10"
+        className="text-lg lg:text-3xl text-black leading-tight"
       >
-        Working at EaseMySpace
-      </h1>
+        Life at EaseMySpace
+      </h2>
+      <p
+        className="text-sm lg:text-lg text-gray-600 mt-2 max-w-2xl mx-auto text-center"
+        itemProp="description"
+      >
+        A Glimpse Into Our Vibrant Work Culture
+      </p>
+    </div>
 
-      <div className="container mx-auto px-4 space-y-10">
-        {/* Landscape images first */}
-        {landscapePairs.map((pair, rowIndex) => (
-          <div
-            key={rowIndex}
-            className="flex flex-col md:flex-row gap-6"
-          >
-            {pair.map((img, colIndex) => (
-              <div
-                key={colIndex}
-                className="flex-1 flex items-center justify-center"
-              >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  loading="lazy"
-                  className="rounded-xl shadow-lg object-cover w-full h-72 md:h-96"
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-
-        {/* Portrait images at the end */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 ">
-          {portraitImages.map((img, idx) => (
-            <div key={idx} className="flex items-center justify-center">
+    <div className="container mx-auto px-4 space-y-5">
+      {/* Landscape images */}
+      {landscapePairs.map((pair, rowIndex) => (
+        <div
+          key={rowIndex}
+          className="flex flex-col md:flex-row gap-6"
+        >
+          {pair.map((img, colIndex) => (
+            <div
+              key={colIndex}
+              className="flex-1 flex items-center justify-center"
+            >
               <img
                 src={img.src}
                 alt={img.alt}
                 loading="lazy"
-                className="rounded-xl object-contain w-full h-[500px]"
+                className="rounded-xl object-contain w-full "
               />
             </div>
           ))}
         </div>
+      ))}
+
+      {/* Portrait images */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {portraitImages.map((img, idx) => (
+          <div key={idx} className="flex items-center justify-center">
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              className="rounded-xl w-full object-cover h-[300px] sm:h-[500px]"
+            />
+          </div>
+        ))}
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
+
 }
 
 export default LifeAtEMSHero;

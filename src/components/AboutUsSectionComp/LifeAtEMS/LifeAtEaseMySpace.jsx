@@ -82,21 +82,7 @@ export default function LifeAtEaseMySpace() {
         style={{ fontFamily: "para_font" }}
         className="lg:px-10 px-3 max-w-7xl mx-auto py-10"
       >
-        {/* Heading */}
-        <div className="mb-6 text-left">
-          <h2
-            style={{ fontFamily: "heading_font" }}
-            className="text-lg lg:text-3xl mb-0 text-black leading-tight"
-          >
-            Life at EaseMySpace
-          </h2>
-          <p
-            className="text-sm lg:text-lg text-gray-600 mt-2 max-w-2xl"
-            itemProp="description"
-          >
-            A Glimpse Into Our Vibrant Work Culture
-          </p>
-        </div>
+       
 
         {/* Alternating Sections with Background */}
         <div className="space-y-10">

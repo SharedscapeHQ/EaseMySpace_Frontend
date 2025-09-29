@@ -25,7 +25,7 @@ export default function MsgFromFounder() {
   return (
     <section
       style={{ fontFamily: "para_font" }}
-      className="lg:px-10 px-3 max-w-7xl mx-auto lg:pt-3 pt-7"
+      className="lg:px-10  max-w-7xl mx-auto lg:pt-3 pt-7"
     >
       {/* Heading */}
       <div className="mb-6 text-left">
@@ -42,7 +42,7 @@ export default function MsgFromFounder() {
 
       {/* Founder Section */}
       <div
-        className={`flex flex-col lg:flex-row items-center gap-8 rounded-2xl p-6 bg-blue-50 dark:bg-blue-900`}
+        className={`flex flex-col lg:flex-row items-center gap-8 rounded-2xl p-6 px-3 bg-blue-50 dark:bg-blue-900`}
       >
         {/* Video */}
         <div className="relative w-full lg:w-1/2 flex justify-center">

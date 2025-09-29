@@ -65,12 +65,12 @@ export default function ContactPage() {
           initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex justify-center w-full max-w-md h-64 md:h-80"
+          className="justify-center hidden lg:flex w-full max-w-md h-64 md:h-80"
         >
           <img
             src={heroImg}
             alt="Contact EaseMySpace for PGs, Flats and Flatmates in Mumbai"
-            className="w-full h-full object-contain"
+            className="w-full h-full  object-contain"
           />
         </motion.div>
 
