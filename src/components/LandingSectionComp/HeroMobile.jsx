@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
-import pgImg from "/landing-assets/pgImg.png";
-import sharedImg from "/landing-assets/sharedImg.png";
-import vacantImg from "/landing-assets/vacantImg.png";
+import pgImg from "/landing-assets/pgImg.webp";
+import sharedImg from "/landing-assets/sharedImg.webp";
+import vacantImg from "/landing-assets/vacantImg.webp";
 import heroImg from "/heroImg/hero.png";
 
 export default function HeroMobile({ properties }) {

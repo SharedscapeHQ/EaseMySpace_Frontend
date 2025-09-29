@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
-import pgImg from "/landing-assets/pgImg.png";
-import sharedImg from "/landing-assets/sharedImg.png";
-import vacantImg from "/landing-assets/vacantImg.png";
+import pgImg from "/landing-assets/pgImg.webp";
+import sharedImg from "/landing-assets/sharedImg.webp";
+import vacantImg from "/landing-assets/vacantImg.webp";
 import Hero_vid from "/heroImg/Hero_vid.webm";
 import Poster from "/heroImg/Poster.jpg";
 
