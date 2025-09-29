@@ -148,7 +148,7 @@ export default function HeroDesktop() {
                     src={item.img}
                     alt={`Find ${item.title} listings, shared accommodations, and rental options`}
                     className="max-w-[80%] max-h-[80%] object-contain"
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
                 <span className="relative z-10 text-base font-semibold text-zinc-700 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-zinc-900">

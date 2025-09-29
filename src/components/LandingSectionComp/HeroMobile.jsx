@@ -82,7 +82,7 @@ export default function HeroMobile({ properties }) {
                 src={item.img}
                 alt={`Find ${item.title} properties, PGs, or shared accommodations`}
                 className="w-14 h-14 object-contain"
-                loading="lazy"
+                loading="eager"
               />
             </div>
             <span
