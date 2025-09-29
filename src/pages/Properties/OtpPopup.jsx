@@ -82,7 +82,7 @@ function OtpPopup({ onVerified, onClose, otpPurpose }) {
         }
 
         toast.success("OTP verified successfully!");
-        onVerified(true);
+        onVerified(userMobile);
         onClose();
       } else {
         toast.error(res.data.message || "Invalid OTP");

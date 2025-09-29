@@ -24,43 +24,67 @@ export default function LeadUserProfile() {
   const [loading, setLoading] = useState(true);
   const [genderEdited, setGenderEdited] = useState(false);
 
-  // Fetch profile on mount
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        const storedPhone = localStorage.getItem("user_verified_mobile") || "";
-        const phoneForApi = storedPhone.startsWith("+91") ? storedPhone.slice(3) : storedPhone;
-        setProfile((prev) => ({ ...prev, phone: storedPhone }));
+ // Fetch profile on mount
+useEffect(() => {
+  async function fetchProfile() {
+    try {
+      const storedPhone = localStorage.getItem("user_verified_mobile") || "";
 
-        const data = await fetchLeadUserProfile(phoneForApi);
-        if (data.success && data.profile) {
-          setProfile({
-            ...profile,
-            firstName: data.profile.firstName || "",
-            lastName: data.profile.lastName || "",
-            email: data.profile.email || "",
-            gender: data.profile.gender || "male",
-            phone: storedPhone,
-          });
+      // Debug logs
+      console.log("📱 Raw storedPhone from localStorage:", storedPhone);
+      console.log("📱 Type of storedPhone:", typeof storedPhone);
 
-          setFilledFields({
-            firstName: !!data.profile.firstName,
-            lastName: !!data.profile.lastName,
-            email: !!data.profile.email,
-            gender: !!data.profile.gender,
-          });
-
-          setFinalized(data.profile.finalized || false);
-          setGenderEdited(false);
-        }
-      } catch {
-        toast.error("Failed to fetch profile data");
-      } finally {
+      if (!storedPhone) {
+        toast.error("No verified phone found");
         setLoading(false);
+        return;
       }
+
+      // remove +91 prefix if present
+      const phoneForApi = storedPhone.startsWith("+91")
+        ? storedPhone.slice(3)
+        : storedPhone;
+
+      // Debug logs
+      console.log("📱 Processed phoneForApi to send:", phoneForApi);
+
+      setProfile((prev) => ({ ...prev, phone: storedPhone }));
+
+      const data = await fetchLeadUserProfile(phoneForApi);
+
+      // Debug log API response
+      console.log("✅ fetchLeadUserProfile API response:", data);
+
+      if (data.success && data.profile) {
+        setProfile((prev) => ({
+          ...prev,
+          firstName: data.profile.firstName || "",
+          lastName: data.profile.lastName || "",
+          email: data.profile.email || "",
+          gender: data.profile.gender || "male",
+          phone: storedPhone,
+        }));
+
+        setFilledFields({
+          firstName: !!data.profile.firstName,
+          lastName: !!data.profile.lastName,
+          email: !!data.profile.email,
+          gender: !!data.profile.gender,
+        });
+
+        setFinalized(data.profile.finalized || false);
+        setGenderEdited(false);
+      }
+    } catch (err) {
+      console.error("❌ Error in fetchProfile:", err);
+      toast.error("Failed to fetch profile data");
+    } finally {
+      setLoading(false);
     }
-    fetchProfile();
-  }, []);
+  }
+  fetchProfile();
+}, []);
+
 
   // Calculate completion percentage
   useEffect(() => {
@@ -85,7 +109,10 @@ export default function LeadUserProfile() {
 
   const handleUpdate = async () => {
     try {
-      const phonePlain = profile.phone.startsWith("+91") ? profile.phone.slice(3) : profile.phone;
+      const phonePlain = profile.phone.startsWith("+91")
+        ? profile.phone.slice(3)
+        : profile.phone;
+
       const dataToSend = { phone: phonePlain };
 
       requiredFields.forEach((field) => {
@@ -94,6 +121,7 @@ export default function LeadUserProfile() {
         }
       });
 
+      // prevent sending empty password
       if (!dataToSend.password) delete dataToSend.password;
 
       if (Object.keys(dataToSend).length <= 1) {
@@ -104,7 +132,7 @@ export default function LeadUserProfile() {
       await updateLeadUserProfile(dataToSend);
       toast.success("Profile updated successfully!");
 
-      if (completed === 100) {
+      if (completed === 100 && !finalized) {
         try {
           await finalizeRegistration(phonePlain);
           toast.success("Registration finalized! Please login.");
@@ -126,7 +154,7 @@ export default function LeadUserProfile() {
   if (loading) return <div className="p-6 text-center">Loading profile...</div>;
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 ">
+    <div className="bg-white shadow rounded-lg p-6">
       <h2 className="text-2xl font-bold text-center mb-8">Complete Your Profile</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -193,7 +221,9 @@ export default function LeadUserProfile() {
               ]}
               lineWidth={20}
               rounded
-              label={({ dataEntry }) => (dataEntry.title === "Completed" ? `${completed}%` : "")}
+              label={({ dataEntry }) =>
+                dataEntry.title === "Completed" ? `${completed}%` : ""
+              }
               labelStyle={{ fontSize: "14px", fontWeight: "bold", fill: "#4caf50" }}
               animate
             />

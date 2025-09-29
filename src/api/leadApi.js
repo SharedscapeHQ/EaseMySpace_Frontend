@@ -24,19 +24,21 @@ export const finalizeRegistration = async (phone) => {
 
 export const fetchLeadUserProfile = async (phone) => {
   try {
+    if (!phone || typeof phone !== "string") {
+      throw new Error(`Invalid phone passed: ${phone}`);
+    }
+
     const res = await axios.get(`${BASE_URL}/lead-user/profile`, {
       params: { phone },
       timeout: 10000,
     });
     return res.data;
   } catch (err) {
-    console.error(
-      "❌ Failed to fetch lead user profile:",
-      err.response?.data || err.message
-    );
+    console.error("❌ Failed to fetch lead user profile:", err.response?.data || err.message);
     throw err;
   }
 };
+
 
 export const fetchGuestSubscriptions = async (phone) => {
   try {
