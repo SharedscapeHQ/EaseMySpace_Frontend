@@ -18,7 +18,6 @@ export default function GuestSavedProperties() {
 
       try {
         const data = await fetchLeadSavedProperties(phone);
-        console.log("Guest saved properties:", data);
         setProperties(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("❌ Failed to fetch guest saved properties:", err);

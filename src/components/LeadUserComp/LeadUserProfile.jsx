@@ -30,9 +30,7 @@ useEffect(() => {
     try {
       const storedPhone = localStorage.getItem("user_verified_mobile") || "";
 
-      // Debug logs
-      console.log("📱 Raw storedPhone from localStorage:", storedPhone);
-      console.log("📱 Type of storedPhone:", typeof storedPhone);
+      
 
       if (!storedPhone) {
         toast.error("No verified phone found");
@@ -45,15 +43,11 @@ useEffect(() => {
         ? storedPhone.slice(3)
         : storedPhone;
 
-      // Debug logs
-      console.log("📱 Processed phoneForApi to send:", phoneForApi);
 
       setProfile((prev) => ({ ...prev, phone: storedPhone }));
 
       const data = await fetchLeadUserProfile(phoneForApi);
 
-      // Debug log API response
-      console.log("✅ fetchLeadUserProfile API response:", data);
 
       if (data.success && data.profile) {
         setProfile((prev) => ({

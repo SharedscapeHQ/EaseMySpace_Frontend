@@ -21,10 +21,10 @@ return (
    <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {[
-      { label: "BHK Type", value: property.bhk_type || "N/A" },
-      { label: "Flat Status", value: property.flat_status || "N/A" },
-      { label: "Looking For", value: property.looking_for || "N/A" },
-      { label: "Gender", value: property.gender || "N/A" },
+      { label: "BHK Type", value: property.bhk_type || "Unavailable" },
+      { label: "Location", value: property.location || "Unavailable" },
+      { label: "Looking For", value: property.looking_for || "Unavailable" },
+      { label: "Gender preference", value: property.gender || "Unavailable" },
     ].map((item, idx) => (
       <div
         key={idx}

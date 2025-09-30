@@ -11,7 +11,6 @@ export default function SavedProperties() {
     async function fetchSaved() {
       try {
         const data = await getSavedProperties(); // data is already an array
-        console.log("✅ Saved properties from API:", data);
         setProperties(Array.isArray(data) ? data : []); // ensure it's always an array
       } catch (err) {
         console.error("❌ Failed to fetch saved properties:", err);
