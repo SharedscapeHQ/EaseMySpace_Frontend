@@ -27,7 +27,6 @@ export default function EssentialDetails({ property }) {
   ) || { price: "N/A", deposit: "N/A" };
 
   useEffect(() => {
-    console.log("💰 Rooms Data:", roomsWithLabels);
   }, [roomsWithLabels]);
 
   return (

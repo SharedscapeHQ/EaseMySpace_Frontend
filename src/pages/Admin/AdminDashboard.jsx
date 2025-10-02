@@ -167,23 +167,49 @@ const [modalUser, setModalUser] = useState(null);
   };
 
   const openEditModal = (property) => {
+
+  // Transform flat pricing into rooms
+  const groupedPricing = [];
+  if (Array.isArray(property.pricing) && property.pricing.length > 0) {
+    let roomCounter = 1;
+    let tempRoom = { room_name: `Room ${roomCounter}`, occupancies: [] };
+
+    property.pricing.forEach((p) => {
+      tempRoom.occupancies.push({
+        occupancy: p.occupancy,
+        price: p.price,
+        deposit: p.deposit,
+      });
+
+      // Example: new room every 2 occupancies
+      if (tempRoom.occupancies.length === 2) {
+        groupedPricing.push(tempRoom);
+        roomCounter++;
+        tempRoom = { room_name: `Room ${roomCounter}`, occupancies: [] };
+      }
+    });
+
+    if (tempRoom.occupancies.length > 0) {
+      groupedPricing.push(tempRoom);
+    }
+  }
+
   setEditingProperty(property);
 
   setEditForm({
     ...property,
-    // Pull price and deposit from first pricing entry
-    price: property.pricing?.[0]?.price ?? "",       // fallback to empty string
-    deposit: property.pricing?.[0]?.deposit ?? "",   // fallback to empty string
-
+    pricing: groupedPricing, // ✅ nested rooms
+    price: property.pricing?.[0]?.price ?? "",
+    deposit: property.pricing?.[0]?.deposit ?? "",
     amenities: Array.isArray(property.amenities)
       ? property.amenities
       : (property.amenities || "").split(",").map((a) => a.trim()),
-
     is_newly_listed: property.is_newly_listed || false,
     verified: property.verified === true || property.verified === "true",
     newly_listed_position: property.newly_listed_position || "",
   });
 };
+
 
 
   const handleEditChange = (e) => {

@@ -193,7 +193,7 @@ const handleSubmit = async (e) => {
         {/* Basic Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            ["title", "Title", true],
+            ["title", "Name", true],
             ["location", "Location", true],
             ["owner_phone", "Owner Phone", true],
             ["bathrooms", "Bathrooms", false],
