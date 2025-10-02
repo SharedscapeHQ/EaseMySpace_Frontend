@@ -18,11 +18,7 @@ const AddProperty = () => {
     image_base64: [],
     video_base64: [],
     amenities: [],
-    pricingOptions: [
-      { occupancy: "single", price: "", deposit: "" },
-      { occupancy: "double", price: "", deposit: "" },
-      { occupancy: "triple", price: "", deposit: "" },
-    ],
+    pricingOptions: [],
   });
 
   const [uploading, setUploading] = useState(false);
@@ -44,6 +40,17 @@ const AddProperty = () => {
     "gas connection",
   ];
 
+  const bhkOptions = [
+    "1 BHK",
+    "1.5 BHK",
+    "2 BHK",
+    "2.5 BHK",
+    "3 BHK",
+    "4 BHK",
+    "1 RK",
+    "2 RK",
+  ];
+
   const handleChange = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -55,29 +62,26 @@ const AddProperty = () => {
       reader.onerror = reject;
     });
 
-// Keep full base64 (do NOT strip prefix)
-const handleFileChange = async (e, type) => {
-  const files = Array.from(e.target.files);
-  try {
-    const base64s = await Promise.all(files.map(toBase64));
-    setFormData((prev) => ({
-      ...prev,
-      [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
-    }));
-    e.target.value = ""; // reset file input after selection
-  } catch {
-    toast.error(`Failed to process ${type} file(s)`);
-  }
-};
+  const handleFileChange = async (e, type) => {
+    const files = Array.from(e.target.files);
+    try {
+      const base64s = await Promise.all(files.map(toBase64));
+      setFormData((prev) => ({
+        ...prev,
+        [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
+      }));
+      e.target.value = "";
+    } catch {
+      toast.error(`Failed to process ${type} file(s)`);
+    }
+  };
 
-// --- handleSubmit --- 
-// --- handleSubmit --- 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const trimmedLocation = formData.location.trim();
 
-  // Required fields
+  // Basic validation
   const requiredFields = ["title", "location", "gender", "owner_phone"];
   for (const field of requiredFields) {
     const value = field === "location" ? trimmedLocation : formData[field];
@@ -92,16 +96,19 @@ const handleSubmit = async (e) => {
     return;
   }
 
-  // Ensure at least one pricing option has values
-  const validPricingOptions = formData.pricingOptions.filter(
-    (opt) => opt.price && opt.deposit
+  // Validate that each room has at least one occupancy with values
+  const validRooms = formData.pricingOptions.filter(
+    (room) =>
+      room.room_name &&
+      room.occupancies &&
+      room.occupancies.some((occ) => occ.occupancy && occ.price && occ.deposit)
   );
-  if (!validPricingOptions.length) {
-    toast.error("Please enter at least one rent & deposit option");
+
+  if (validRooms.length === 0) {
+    toast.error("Please enter at least one pricing option with occupancy");
     return;
   }
 
-  // ✅ Get owner_code from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const owner_code = user?.owner_code;
   if (!owner_code) {
@@ -114,12 +121,13 @@ const handleSubmit = async (e) => {
     await addProperty({
       ...formData,
       location: trimmedLocation,
-      pricingOptions: validPricingOptions,
-      owner_code, // ✅ attach owner_code
+      pricingOptions: validRooms, // send nested array directly
+      owner_code,
     });
 
     toast.success("Property Added Successfully!");
     setShowPopup(true);
+
     // Reset form
     setFormData({
       title: "",
@@ -134,14 +142,11 @@ const handleSubmit = async (e) => {
       image_base64: [],
       video_base64: [],
       amenities: [],
-      pricingOptions: [
-        { occupancy: "single", price: "", deposit: "" },
-        { occupancy: "double", price: "", deposit: "" },
-        { occupancy: "triple", price: "", deposit: "" },
-      ],
+      pricingOptions: [],
     });
-  } catch {
-    toast.error("Failed to upload");
+  } catch (err) {
+    console.error("Add property error:", err);
+    toast.error("Failed to upload property");
   } finally {
     setUploading(false);
   }
@@ -150,11 +155,7 @@ const handleSubmit = async (e) => {
 
 
   const renderSelect = (name, label, options, required = false) => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="mb-4"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4">
       <label className="font-semibold block mb-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
@@ -192,7 +193,7 @@ const handleSubmit = async (e) => {
         {/* Basic Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            ["title", "First Name", true],
+            ["title", "Title", true],
             ["location", "Location", true],
             ["owner_phone", "Owner Phone", true],
             ["bathrooms", "Bathrooms", false],
@@ -208,12 +209,7 @@ const handleSubmit = async (e) => {
                 value={formData[key]}
                 onChange={(e) => {
                   let val = e.target.value;
-
-                  // Allow only digits and max 10 characters for owner_phone
-                  if (key === "owner_phone") {
-                    val = val.replace(/\D/g, "").slice(0, 10);
-                  }
-
+                  if (key === "owner_phone") val = val.replace(/\D/g, "").slice(0, 10);
                   handleChange({ target: { name: key, value: val } });
                 }}
                 placeholder={label}
@@ -227,52 +223,122 @@ const handleSubmit = async (e) => {
         {/* Dropdowns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {renderSelect("gender", "Gender Preference", ["male", "female", "any"], true)}
-          {renderSelect("bhk_type", "BHK Type", ["1 BHK","1.5 BHK","2 BHK","2.5 BHK","3 BHK","4 BHK"])}
+          {renderSelect("bhk_type", "BHK & RK Type", bhkOptions)}
           {renderSelect("looking_for", "Looking For", ["flatmate","vacant","pg"])}
         </div>
 
         {/* Pricing Section */}
         <div className="border-t pt-4">
-          <h2 className="font-bold mb-2 text-indigo-600">Rent per Occupancy</h2>
-          {formData.pricingOptions.map((opt, idx) => (
-            <div key={opt.occupancy} className="flex flex-wrap gap-4 items-center mb-2">
-              <span className="w-24 font-medium">{opt.occupancy}</span>
-              <input
-                type="text"
-                inputMode="decimal"
-                pattern="[0-9]*"
-                placeholder="Rent (₹)"
-                value={opt.price}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/[^0-9]/g, "");
-                  setFormData(prev => {
-                    const updated = [...prev.pricingOptions];
-                    updated[idx].price = val;
-                    return { ...prev, pricingOptions: updated };
-                  });
+          <h2 className="font-bold mb-2 text-indigo-600">Rent per Room</h2>
+          {formData.pricingOptions.map((room, rIdx) => (
+            <div key={rIdx} className="border p-4 rounded mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <input
+                  type="text"
+                  value={room.room_name}
+                  placeholder="Room Name"
+                  onChange={(e) => {
+                    const updated = [...formData.pricingOptions];
+                    updated[rIdx].room_name = e.target.value;
+                    setFormData((prev) => ({ ...prev, pricingOptions: updated }));
+                  }}
+                  className="border px-2 py-1 rounded w-32"
+                />
+                <button
+                  type="button"
+                  className="text-red-600 font-bold"
+                  onClick={() => {
+                    const updated = [...formData.pricingOptions];
+                    updated.splice(rIdx, 1);
+                    setFormData((prev) => ({ ...prev, pricingOptions: updated }));
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+
+              {room.occupancies?.map((occ, oIdx) => (
+                <div key={oIdx} className="flex gap-2 items-center mb-2">
+                  <select
+                    value={occ.occupancy}
+                    onChange={(e) => {
+                      const updated = [...formData.pricingOptions];
+                      updated[rIdx].occupancies[oIdx].occupancy = e.target.value;
+                      setFormData((prev) => ({ ...prev, pricingOptions: updated }));
+                    }}
+                    className="border px-2 py-1 rounded w-32"
+                  >
+                    <option value="">Occupancy</option>
+                    <option value="single">Single</option>
+                    <option value="double">Double</option>
+                    <option value="triple">Triple</option>
+                  </select>
+
+                  <input
+                    type="text"
+                    placeholder="Rent (₹)"
+                    value={occ.price}
+                    onChange={(e) => {
+                      const updated = [...formData.pricingOptions];
+                      updated[rIdx].occupancies[oIdx].price = e.target.value.replace(/\D/g, "");
+                      setFormData((prev) => ({ ...prev, pricingOptions: updated }));
+                    }}
+                    className="border px-2 py-1 rounded w-32"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Deposit (₹)"
+                    value={occ.deposit}
+                    onChange={(e) => {
+                      const updated = [...formData.pricingOptions];
+                      updated[rIdx].occupancies[oIdx].deposit = e.target.value.replace(/\D/g, "");
+                      setFormData((prev) => ({ ...prev, pricingOptions: updated }));
+                    }}
+                    className="border px-2 py-1 rounded w-32"
+                  />
+
+                  <button
+                    type="button"
+                    className="text-red-600 font-bold"
+                    onClick={() => {
+                      const updated = [...formData.pricingOptions];
+                      updated[rIdx].occupancies.splice(oIdx, 1);
+                      setFormData((prev) => ({ ...prev, pricingOptions: updated }));
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                className="bg-indigo-600 text-white px-3 py-1 rounded"
+                onClick={() => {
+                  const updated = [...formData.pricingOptions];
+                  if (!updated[rIdx].occupancies) updated[rIdx].occupancies = [];
+                  updated[rIdx].occupancies.push({ occupancy: "", price: "", deposit: "" });
+                  setFormData((prev) => ({ ...prev, pricingOptions: updated }));
                 }}
-                onWheel={(e) => e.currentTarget.blur()}
-                className="border px-2 py-2 rounded w-32 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-              <input
-                type="text"
-                inputMode="decimal"
-                pattern="[0-9]*"
-                placeholder="Deposit (₹)"
-                value={opt.deposit}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/[^0-9]/g, "");
-                  setFormData(prev => {
-                    const updated = [...prev.pricingOptions];
-                    updated[idx].deposit = val;
-                    return { ...prev, pricingOptions: updated };
-                  });
-                }}
-                onWheel={(e) => e.currentTarget.blur()}
-                className="border px-2 py-2 rounded w-32 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
+              >
+                Add Occupancy
+              </button>
             </div>
           ))}
+
+          <button
+            type="button"
+            className="bg-indigo-600 text-white px-4 py-2 rounded"
+            onClick={() =>
+              setFormData((prev) => ({
+                ...prev,
+                pricingOptions: [...prev.pricingOptions, { room_name: `Room ${prev.pricingOptions.length + 1}`, occupancies: [] }],
+              }))
+            }
+          >
+            Add Room
+          </button>
         </div>
 
         {/* Amenities Section */}
@@ -288,11 +354,11 @@ const handleSubmit = async (e) => {
                   checked={formData.amenities.includes(amenity)}
                   onChange={(e) => {
                     const selected = e.target.checked;
-                    setFormData(prev => ({
+                    setFormData((prev) => ({
                       ...prev,
                       amenities: selected
                         ? [...prev.amenities, amenity]
-                        : prev.amenities.filter(a => a !== amenity),
+                        : prev.amenities.filter((a) => a !== amenity),
                     }));
                   }}
                 />
@@ -311,10 +377,10 @@ const handleSubmit = async (e) => {
                 if (input) {
                   const newAmenities = input
                     .split(",")
-                    .map(a => a.trim().toLowerCase())
-                    .filter(a => a && !formData.amenities.includes(a));
+                    .map((a) => a.trim().toLowerCase())
+                    .filter((a) => a && !formData.amenities.includes(a));
                   if (newAmenities.length) {
-                    setFormData(prev => ({
+                    setFormData((prev) => ({
                       ...prev,
                       amenities: [...prev.amenities, ...newAmenities],
                     }));
@@ -336,9 +402,9 @@ const handleSubmit = async (e) => {
                 <button
                   type="button"
                   onClick={() =>
-                    setFormData(prev => ({
+                    setFormData((prev) => ({
                       ...prev,
-                      amenities: prev.amenities.filter(a => a !== amenity),
+                      amenities: prev.amenities.filter((a) => a !== amenity),
                     }))
                   }
                   className="font-bold text-xs text-indigo-600 hover:text-indigo-900"
@@ -347,7 +413,6 @@ const handleSubmit = async (e) => {
                 </button>
               </span>
             ))}
-         
           </div>
         </div>
 
@@ -367,8 +432,6 @@ const handleSubmit = async (e) => {
         {/* Media Uploads */}
         <div className="border-t pt-4">
           <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
-
-          {/* Images */}
           <div className="mb-4">
             <label className="block font-semibold mb-1">Images *</label>
             <input
@@ -385,7 +448,6 @@ const handleSubmit = async (e) => {
             )}
           </div>
 
-          {/* Videos */}
           <div className="mb-4">
             <label className="block font-semibold mb-1">Videos</label>
             <input
@@ -409,9 +471,7 @@ const handleSubmit = async (e) => {
           disabled={uploading}
           whileTap={{ scale: 0.97 }}
           className={`w-1/2 py-3 font-semibold rounded-xl transition duration-300 ${
-            uploading
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-indigo-600 text-white hover:bg-indigo-700"
+            uploading ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-700"
           }`}
         >
           {uploading ? "Uploading..." : "Submit Property"}

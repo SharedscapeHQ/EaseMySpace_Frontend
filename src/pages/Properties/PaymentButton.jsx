@@ -114,7 +114,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               setHasPaid(true);
               localStorage.setItem("has_paid_lead", "true");
               localStorage.setItem("user_verified_mobile", phone);
-              toast.success("✅ Payment successful!");
+              toast.success("Payment successful!");
               setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
             } else {
