@@ -20,6 +20,11 @@ export default function PaymentButtonSubs({
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const navigate = useNavigate();
+const goToLogin = () => {
+  const currentPath = location.pathname + location.search;
+  navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
+};
+
 
   const plans = {
     trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
@@ -208,6 +213,7 @@ export default function PaymentButtonSubs({
   <LoginPopup
   isOpen={showLoginPopup}
   onClose={() => setShowLoginPopup(false)}
+  onLoginClick={goToLogin}
 />
 
       <InvoiceModal

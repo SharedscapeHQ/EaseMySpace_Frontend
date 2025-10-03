@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginPopup({ isOpen, onClose }) {
+export default function LoginPopup({ isOpen, onClose, onLoginClick }) {
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -26,7 +26,7 @@ export default function LoginPopup({ isOpen, onClose }) {
         </p>
 
         <button
-          onClick={() => navigate("/login")}
+          onClick={onLoginClick}
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
         >
           Go to Login
