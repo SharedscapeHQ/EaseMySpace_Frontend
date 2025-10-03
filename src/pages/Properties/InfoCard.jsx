@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaPhoneAlt,
   FaUserCircle,
@@ -46,6 +47,8 @@ export default function ContactCard({
   const [showCallPopup, setShowCallPopup] = useState(false);
   const [showHelpPopup, setShowHelpPopup] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+
+  const navigate = useNavigate();
 
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -294,7 +297,10 @@ export default function ContactCard({
         Please login to continue.
       </p>
       <button
-        onClick={() => (window.location.href = "/login")}
+        onClick={() => {
+    const currentPath = window.location.pathname + window.location.search;
+    navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
+  }}
         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
       >
         Go to Login
