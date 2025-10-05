@@ -33,6 +33,9 @@ import RMAssignments from "../../components/OwnerPageComp/RMAssignments";
 import VisitorsTable from "../../components/OwnerPageComp/VisitorsTable";
 import Marketing from "../../components/AdminPageComp/Marketing";
 import WithdrawalRequests from "../../components/OwnerPageComp/WithdrawalRequests";
+import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
+import WithdrawalRequestsAgent from "../../components/OwnerPageComp/WithdrawalRequestsAgent";
+
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -495,6 +498,9 @@ export default function OwnerDashboard() {
 
                               {activeTab === "Marketing" && <Marketing />}
                               {activeTab === "Withdrawals" && <WithdrawalRequests />}
+                                        {activeTab === "allWorkerProfiles" && <Maid_profiles />}
+                                        {activeTab === "AgentWithdrawals" && <WithdrawalRequestsAgent />}
+                              
                     
 
           <EditModal

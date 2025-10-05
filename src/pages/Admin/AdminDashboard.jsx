@@ -23,12 +23,14 @@ import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
-import CareersPage from "../../components/HrUserComp/CareersPage";
+// import CareersPage from "../../components/HrUserComp/CareersPage";
 import OldProperties from "../../components/AdminPageComp/OldProperties";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 import RequirementReq from "../../components/AdminPageComp/RequirementReq";
 import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 import Marketing from "../../components/AdminPageComp/Marketing";
+import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
+import AdminQueries from "../../components/AdminPageComp/Maid_profiles/AdminQueries";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -570,6 +572,8 @@ const [modalUser, setModalUser] = useState(null);
           )}
 
           {activeTab === "Marketing" && <Marketing />}
+          {activeTab === "allWorkerProfiles" && <Maid_profiles />}
+          {activeTab === "maidQueries" && <AdminQueries />}
 
           <EditModal
             editForm={editForm}

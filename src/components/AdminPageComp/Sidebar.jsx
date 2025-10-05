@@ -21,15 +21,15 @@ import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
 import { FaCommentSms } from "react-icons/fa6";
 
 export default function Sidebar({ activeTab, setActiveTab, handleLogout, pendingCount, role }) {
-  const [openSections, setOpenSections] = useState({}); // mobile dropdown state
+  const [openSections, setOpenSections] = useState({});
 
   const toggleSection = (title) => {
     setOpenSections((prev) => ({
       ...Object.keys(prev).reduce((acc, key) => {
-        acc[key] = false; // close all others
+        acc[key] = false;
         return acc;
       }, {}),
-      [title]: !prev[title], // toggle current
+      [title]: !prev[title],
     }));
   };
 
@@ -64,15 +64,15 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
     {
       title: "Business & Careers",
       icon: <FiBriefcase className="text-gray-400" />,
-      items: [
-        ...(role === "Owner"
+      items:
+        role === "Owner"
           ? [
               { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
               { label: "RM Assignments", value: "RMAssignments", icon: <FiUsers /> },
               { label: "Withdrawal Requests", value: "Withdrawals", icon: <FiDownload /> },
+              { label: "Agent Withdrawals", value: "AgentWithdrawals", icon: <FiDownload /> },
             ]
-          : []),
-      ],
+          : [],
     },
     {
       title: "Communication",
@@ -83,14 +83,23 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
         { label: "Marketing", value: "Marketing", icon: <FiStar /> },
       ],
     },
+    {
+      title: "Maid Service",
+      icon: <FiUsers className="text-gray-400" />,
+      items: [{ label: "All Profiles", value: "allWorkerProfiles", icon: <FiUsers /> }, { label: "Queries", value: "maidQueries", icon: <FiMessageCircle /> }],
+    },
   ];
 
-  const handleTabClick = (value) => {
-    setActiveTab(value);
-    setOpenSections({}); // close dropdown after click
-  };
+const handleTabClick = (value) => {
+  setActiveTab(value);
 
-  // Close mobile dropdowns on scroll
+  // Only close dropdown on mobile
+  if (window.innerWidth < 1024) { // lg breakpoint
+    setOpenSections({});
+  }
+};
+
+
   useEffect(() => {
     const handleScroll = () => setOpenSections({});
     window.addEventListener("scroll", handleScroll);
@@ -102,52 +111,48 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
       {/* Mobile Horizontal Menu */}
       <div className="lg:hidden sticky top-0 z-50 bg-white shadow-md">
         <div className="flex overflow-x-auto relative">
-         {sections
-  .filter(({ items }) => items.length > 0) // Only show sections that have items
-  .map(({ title, icon, items }) => (
-    <div key={title} className="relative flex-shrink-0">
-      <button
-        onClick={() => toggleSection(title)}
-        className={`flex flex-col items-center px-4 py-2 text-sm font-semibold whitespace-nowrap ${
-          openSections[title] ? "text-indigo-700" : "text-gray-600"
-        }`}
-      >
-        <span className="text-lg">{icon}</span>
-        <span>{title}</span>
-      </button>
+          {sections.filter(({ items }) => items.length > 0).map(({ title, icon, items }) => (
+            <div key={title} className="relative flex-shrink-0">
+              <button
+                onClick={() => toggleSection(title)}
+                className={`flex flex-col items-center px-4 py-2 text-sm font-semibold whitespace-nowrap ${
+                  openSections[title] ? "text-indigo-700" : "text-gray-600"
+                }`}
+              >
+                <span className="text-lg">{icon}</span>
+                <span>{title}</span>
+              </button>
 
-      {/* Dropdown items rendered absolutely on page */}
-      <div
-        className={`fixed top-32 left-0 w-full bg-white shadow-lg z-50 border-t transition-all duration-300 ease-in-out
-          ${openSections[title] ? "max-h-64 opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}
-      >
-        <div className="overflow-y-auto">
-          {items.map(({ label, value, icon, badge }) => (
-            <button
-              key={value}
-              onClick={() => handleTabClick(value)}
-              className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 w-full text-left border-b"
-            >
-              <span className="text-lg">{icon}</span>
-              <span>{label}</span>
-              {badge > 0 && (
-                <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                  {badge}
-                </span>
-              )}
-            </button>
+              <div
+                className={`fixed top-32 left-0 w-full bg-white shadow-lg z-50 border-t transition-all duration-300 ease-in-out ${
+                  openSections[title] ? "max-h-64 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+                }`}
+              >
+                <div className="overflow-y-auto">
+                  {items.map(({ label, value, icon, badge }) => (
+                    <button
+                      key={value}
+                      onClick={() => handleTabClick(value)}
+                      className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 w-full text-left border-b"
+                    >
+                      <span className="text-lg">{icon}</span>
+                      <span>{label}</span>
+                      {badge > 0 && (
+                        <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                          {badge}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           ))}
-        </div>
-      </div>
-    </div>
-))}
-
         </div>
       </div>
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex fixed top-20 left-0 z-30 w-64 bg-white shadow-lg border-r h-[calc(100vh-5rem)] flex-col">
-        {/* Desktop Header */}
         <div className="p-6 border-b flex items-center justify-between flex-shrink-0">
           <h2 className="text-xl font-bold text-indigo-700">{role} Panel</h2>
           <button
@@ -158,21 +163,15 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
           </button>
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="flex-1 px-4 py-3 space-y-4 overflow-y-auto scrollbar-hide">
           {sections.map(({ title, icon, items }) =>
             items.length > 0 ? (
               <div key={title} className="border-b pb-2">
                 <button
-                  onClick={() =>
-                    setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }))
-                  }
+                  onClick={() => setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }))}
                   className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wide hover:text-indigo-600 transition"
                 >
-                  <div className="flex items-center gap-2">
-                    {icon}
-                    <span>{title}</span>
-                  </div>
+                  <div className="flex items-center gap-2">{icon}<span>{title}</span></div>
                   {openSections[title] ? <FiChevronDown /> : <FiChevronRight />}
                 </button>
 
@@ -191,10 +190,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, pending
                           : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-lg">{icon}</span>
-                        <span className="truncate">{label}</span>
-                      </div>
+                      <div className="flex items-center gap-3"><span className="text-lg">{icon}</span><span className="truncate">{label}</span></div>
                       {badge > 0 && (
                         <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                           {badge}
