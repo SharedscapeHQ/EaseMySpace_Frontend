@@ -4,7 +4,6 @@ import { getAllAdminQueries, resolveAdminQuery } from "../../../api/Maid_api/mai
 export default function AdminQueries() {
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [remarks, setRemarks] = useState({}); 
 
   // Fetch queries
   const fetchQueries = async () => {
@@ -25,15 +24,8 @@ export default function AdminQueries() {
 
   // Handle resolve query
   const handleResolve = async (id) => {
-    const remark = remarks[id];
-    if (!remark || remark.trim() === "") {
-      alert("Please enter a remark before resolving.");
-      return;
-    }
-
     try {
-      await resolveAdminQuery(id, remark);
-      setRemarks((prev) => ({ ...prev, [id]: "" }));
+      await resolveAdminQuery(id); // no remark now
       fetchQueries(); // refresh list
     } catch (err) {
       console.error("❌ Failed to resolve query:", err);
@@ -70,36 +62,25 @@ export default function AdminQueries() {
                   Message: {query.query_text}
                 </p>
 
-                {/* Show remark if resolved */}
                 {query.status === "resolved" && (
-                  <p className="text-xs text-green-600">Remark: {query.remark || "-"}</p>
-                )}
-
-                {/* Remark input for resolving */}
-                {query.status !== "resolved" && (
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      placeholder="Enter remark..."
-                      value={remarks[query.id] || ""}
-                      onChange={(e) =>
-                        setRemarks((prev) => ({ ...prev, [query.id]: e.target.value }))
-                      }
-                      className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    />
-                  </div>
+                  <>
+                    <p className="text-xs text-green-600">✅ Resolved</p>
+                    {query.resolved_by_name && (
+                      <p className="text-xs text-gray-600">
+                        Resolved by: <span className="font-medium">{query.resolved_by_name}</span>
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
 
               {/* Right section: actions */}
               <div className="flex flex-col items-start sm:items-end gap-2 mt-4 sm:mt-0">
-                {query.status === "resolved" && (
+                {query.status === "resolved" ? (
                   <span className="px-2 py-1 rounded text-white text-sm bg-green-600">
                     RESOLVED
                   </span>
-                )}
-
-                {query.status !== "resolved" && (
+                ) : (
                   <button
                     onClick={() => handleResolve(query.id)}
                     className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium"
