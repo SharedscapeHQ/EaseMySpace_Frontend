@@ -133,6 +133,7 @@ const [modalUser, setModalUser] = useState(null);
     setLoadingProps(true);
 
     const { data } = await getAllProperties();
+    console.log("Fetched properties from API:", data);
     
 
     // Ensure always an array, and normalize pricing
@@ -572,8 +573,8 @@ const [modalUser, setModalUser] = useState(null);
           )}
 
           {activeTab === "Marketing" && <Marketing />}
-          {activeTab === "allWorkerProfiles" && <Maid_profiles />}
-          {activeTab === "maidQueries" && <AdminQueries />}
+          {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}
+          {activeTab === "maidQueries" && <AdminQueries />} */}
 
           <EditModal
             editForm={editForm}

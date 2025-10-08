@@ -37,3 +37,8 @@ export const approveWithdrawalRequest = async (id) => {
   const res = await adminAxios.put(`/withdrawals/${id}/approve`);
   return res.data;
 };
+
+export const getAllBookingsWithDetails = async () => {
+  const res = await adminAxios.get("/bookings");
+  return res.data;
+};

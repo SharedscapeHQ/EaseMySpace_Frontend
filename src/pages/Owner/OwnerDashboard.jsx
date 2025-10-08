@@ -35,6 +35,7 @@ import Marketing from "../../components/AdminPageComp/Marketing";
 import WithdrawalRequests from "../../components/OwnerPageComp/WithdrawalRequests";
 import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
 import WithdrawalRequestsAgent from "../../components/OwnerPageComp/WithdrawalRequestsAgent";
+import AllMaidBookings from "../../components/AdminPageComp/Maid_profiles/AllMaidBookings";
 
 
 export default function OwnerDashboard() {
@@ -498,8 +499,9 @@ export default function OwnerDashboard() {
 
                               {activeTab === "Marketing" && <Marketing />}
                               {activeTab === "Withdrawals" && <WithdrawalRequests />}
-                                        {activeTab === "allWorkerProfiles" && <Maid_profiles />}
+                                        {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}
                                         {activeTab === "AgentWithdrawals" && <WithdrawalRequestsAgent />}
+                                        {activeTab === "maidBookings" && <AllMaidBookings />} */}
                               
                     
 
