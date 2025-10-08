@@ -161,7 +161,7 @@ export default function ViewAllProperties() {
   return (
     <>
       <div
-        className="w-full pb-5 bg-zinc-100 min-h-screen lg:py-5 py-3"
+        className="w-full pb-5 bg-zinc-100 dark:bg-zinc-900  min-h-screen lg:py-5 py-3"
         style={{ fontFamily: "para_font" }}
       >
         {/* Helmet for SEO */}
@@ -186,10 +186,10 @@ export default function ViewAllProperties() {
         </Helmet>
 
         {/* Header */}
-        <section className="w-full text-center mb-6 px-2">
+        <section className="w-full text-center  mb-6 px-2">
           <h1
             style={{ fontFamily: "heading_font" }}
-            className="text-lg lg:text-3xl font-semibold text-black"
+            className="text-lg lg:text-3xl font-semibold text-black dark:text-white"
           >
             {filters.looking_for === "pg" &&
               `Verified PGs in ${filters.location || "Mumbai"}`}
@@ -199,7 +199,7 @@ export default function ViewAllProperties() {
               `Vacant Flats in ${filters.location || "Mumbai"}`}
             {!filters.looking_for && "PGs, Flats & Flatmates Across Mumbai"}
           </h1>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
             {filters.looking_for === "pg"
               ? `Book your ideal paying guest accommodation hassle-free`
               : filters.looking_for === "flatmate"

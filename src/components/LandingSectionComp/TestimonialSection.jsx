@@ -129,7 +129,7 @@ const TestimonialSection = () => {
       <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
         <h2
           style={{ fontFamily: "heading_font" }}
-          className="text-xl sm:text-3xl mb-8 font-bold text-left"
+          className="text-lg sm:text-3xl mb-5 text-left"
         >
           Google Reviews of our customers
         </h2>

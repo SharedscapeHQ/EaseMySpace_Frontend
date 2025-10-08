@@ -55,14 +55,7 @@ export default function RecentlyViewed({ property }) {
           </div>
         </div>
 
-        {/* Book Now Button */}
-        <button
-          style={{ fontFamily: "heading_font" }}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-md mt-2"
-        >
-          Book Now
-        </button>
-
+        
         {/* Rent Info */}
         <div className="text-center">
           <p className="font-bold text-black text-base">
@@ -73,22 +66,7 @@ export default function RecentlyViewed({ property }) {
           </p>
         </div>
 
-        {/* Payment Options */}
-        <div className="flex items-center justify-center text-xs text-gray-500 mt-1 gap-2">
-          <span>Pay with</span>
-          <div className="flex items-center gap-2">
-                    <img
-                      src="https://www.svgrepo.com/show/475656/google-color.svg"
-                      alt="Google Pay"
-                      className="h-4 object-contain"
-                    />
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png"
-                      alt="Paytm"
-                      className="h-4 object-contain"
-                    />
-                  </div>
-        </div>
+       
       </div>
     </div>
   );

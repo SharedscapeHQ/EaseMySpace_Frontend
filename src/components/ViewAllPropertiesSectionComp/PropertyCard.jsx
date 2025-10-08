@@ -17,7 +17,7 @@ const PropertyCard = ({ p }) => {
   return (
     <div
       onClick={handleClick}
-      className="w-full max-w-sm bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition flex flex-col"
+      className="w-full max-w-sm bg-white dark:bg-zinc-700 rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition flex flex-col"
     >
       {/* Main Image */}
       <div className="relative w-full h-40">
@@ -61,7 +61,7 @@ const PropertyCard = ({ p }) => {
 
       {/* Location + Looking For */}
       <div className="flex justify-between items-center px-4">
-        <div className="flex items-center text-gray-600 text-sm gap-1">
+        <div className="flex items-center text-gray-600 dark:text-gray-100 text-sm gap-1">
           <FiMapPin className="text-gray-500" />
           {p.location ? p.location.split(" ").slice(-2).join(" ") : "Unknown"}
         </div>
@@ -77,20 +77,20 @@ const PropertyCard = ({ p }) => {
       </div>
 
       {/* Rent | Deposit | BHK */}
-      <div className="flex items-stretch text-sm font-medium text-gray-700 py-2">
+      <div className="flex items-stretch text-sm font-medium text-gray-700 dark:text-gray-100 py-2">
         <div className="flex-1 text-center py-3">
-          <div className="text-gray-900">₹{p.price?.toLocaleString() || "N/A"}</div>
-          <div className="text-xs text-gray-500">Rent</div>
+          <div className="text-gray-900 dark:text-white">₹{p.price?.toLocaleString() || "N/A"}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-100">Rent</div>
         </div>
         <div className="w-[2px] bg-gray-300 mx-2"></div>
         <div className="flex-1 text-center py-3">
-          <div className="text-gray-900">₹{p.deposit?.toLocaleString() || "-"}</div>
-          <div className="text-xs text-gray-500">Deposit</div>
+          <div className="text-gray-900 dark:text-white">₹{p.deposit?.toLocaleString() || "-"}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-100">Deposit</div>
         </div>
         <div className="w-[2px] bg-gray-300 mx-2"></div>
         <div className="flex-1 text-center py-3">
-          <div className="text-gray-900">{p.bhk_type || "-"}</div>
-          <div className="text-xs text-gray-500">BHK</div>
+          <div className="text-gray-900 dark:text-white">{p.bhk_type || "-"}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-100">BHK</div>
         </div>
       </div>
 
@@ -100,9 +100,9 @@ const PropertyCard = ({ p }) => {
           <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-lg">
             {p.title?.charAt(0) || "U"}
           </div>
-          <span className="font-medium text-sm text-gray-700">{p.title || "Owner"}</span>
+          <span className="font-medium text-sm text-gray-700 dark:text-white">{p.title || "Owner"}</span>
         </div>
-        <div className="flex items-center gap-4 text-blue-600 text-xl">
+        <div className="flex items-center gap-4 text-blue-600 dark:text-blue-400 text-xl">
           <IoChatboxEllipsesOutline className="cursor-pointer" />
           <IoCall className="cursor-pointer" />
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getSavedProperties } from "../../api/userApi";
-import PropertyCard from "./PropertyCard";
-import { FiHeart, FiClock } from "react-icons/fi";
+import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
+import dayjs from "dayjs";
 
 export default function SavedProperties() {
   const [properties, setProperties] = useState([]);
@@ -10,8 +10,8 @@ export default function SavedProperties() {
   useEffect(() => {
     async function fetchSaved() {
       try {
-        const data = await getSavedProperties(); // data is already an array
-        setProperties(Array.isArray(data) ? data : []); // ensure it's always an array
+        const data = await getSavedProperties();
+        setProperties(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("❌ Failed to fetch saved properties:", err);
         setProperties([]);
@@ -19,44 +19,80 @@ export default function SavedProperties() {
         setLoading(false);
       }
     }
-
     fetchSaved();
   }, []);
 
   if (loading) {
     return (
-      <div className="text-gray-700 font-medium py-6 flex items-center gap-2">
-        <FiClock className="animate-spin text-xl" /> Loading saved properties...
+      <div className="text-gray-700 dark:text-gray-300 font-medium py-6 flex items-center gap-2">
+        Loading saved properties...
       </div>
     );
   }
 
   if (!properties.length) {
     return (
-      <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200 text-center">
-        <FiHeart className="text-red-500 text-3xl mx-auto mb-4" />
-        <p className="text-gray-700 font-medium">No saved properties yet.</p>
+      <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-gray-200 dark:border-zinc-700 text-center">
+        <p className="text-gray-700 dark:text-gray-300 font-medium">No saved properties yet.</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex flex-wrap gap-6">
         {properties.map((property) => (
-          <PropertyCard
+          <div
             key={property.id}
-            property={{
-              ...property,
-              // Safe check: only use images array if valid
-              image: Array.isArray(property.image) && property.image.length > 0
-                ? property.image
-                : property.cover
-                ? [property.cover]
-                : [],
-            }}
-            onRaiseQuery={() => alert(`Raise query for ${property.title || "Untitled"}`)}
-          />
+            onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+            className="min-w-[300px] max-w-[300px] group bg-white dark:bg-zinc-700 rounded-2xl border border-zinc-200 dark:border-zinc-600 flex-shrink-0 overflow-hidden shadow-md cursor-pointer hover:shadow-lg"
+          >
+            {/* Image */}
+            <div className="relative w-full h-44">
+              {property.image && property.image.length > 0 ? (
+                <img
+                  src={property.image[0]}
+                  alt={property.title || "Property image"}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 italic">
+                  No Image
+                </div>
+              )}
+            </div>
+
+            {/* Details */}
+            <div className="p-4 flex flex-col gap-3">
+              {/* Owner Info */}
+              <p className="text-zinc-800 dark:text-zinc-200 text-sm">Owner's Contact</p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-semibold text-lg">
+                    {property.title?.charAt(0) || "U"}
+                  </div>
+                  <span className="font-medium text-sm text-gray-700 dark:text-gray-300">
+                    {property.title}
+                  </span>
+                </div>
+
+                <div className="flex gap-4 text-blue-500">
+                  <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
+                  <IoCall className="text-2xl cursor-pointer" />
+                </div>
+              </div>
+
+              {/* Rent Info */}
+              <div className="text-center">
+                <p className="font-bold text-black dark:text-white text-base">
+                  ₹ {Number(property.price || 0).toLocaleString()}/month
+                </p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                  {property.bhk_type} in {property.location || "Unknown location"}
+                </p>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>

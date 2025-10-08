@@ -72,10 +72,10 @@ export default function FAQSection() {
       </Helmet>
 
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">
-        <h2
-  style={{ fontFamily: "heading_font" }}
-  className="text-lg sm:text-3xl mb-5 text-left"
->
+       <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-lg sm:text-3xl mb-5 text-left"
+        >
   FAQs on PGs, Flats & Flatmates in Mumbai
 </h2>
 

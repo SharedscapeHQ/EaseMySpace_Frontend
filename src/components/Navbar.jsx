@@ -75,10 +75,10 @@ export default function Navbar() {
 
   return (
     <header style={{ fontFamily: "para_font" }}>
-      <nav className="fixed top-0 w-full h-[5rem] dark:bg-zinc-500 flex items-center justify-between px-3 md:px-8 bg-white lg:shadow-sm z-40">
+      <nav className="fixed top-0 w-full h-[5rem] dark:bg-zinc-200 flex items-center justify-between px-3 md:px-8 bg-white lg:shadow-sm z-40">
         {/* Logo & Hamburger */}
         <div className="flex items-center gap-3">
-          <button aria-label="Toggle menu" className="w-6 h-6 sm:w-10 sm:h-10 mt-3 lg:mt-0 relative text-zinc-700 dark:text-white" onClick={() => setOpen(p => !p)}>
+          <button aria-label="Toggle menu" className="w-6 h-6 sm:w-10 sm:h-10 mt-3 lg:mt-0 relative text-zinc-700 " onClick={() => setOpen(p => !p)}>
             <Hamburger animatedOpen={open} /> 
           </button>
           <Link to="/" aria-label="Homepage" className="flex items-center">

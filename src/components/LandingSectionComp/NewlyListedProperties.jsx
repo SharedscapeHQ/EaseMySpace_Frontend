@@ -110,13 +110,17 @@ export default function NewlyListedProperties() {
             Top Sharing Rooms
           </h2>
 
-          <Link
-            to="/view-properties"
-            className="text-blue-600 dark:text-blue-400 text-[13px] lg:text-base font-medium hover:underline"
-            style={{ fontFamily: "para_font" }}
-          >
-            View All
-          </Link>
+          <div className="group inline-block relative">
+  <Link
+    to="/view-properties"
+    className="relative text-blue-600 dark:text-blue-400 text-[13px] lg:text-base font-medium transition-all duration-300 ease-in-out hover:text-blue-700 dark:hover:text-blue-300"
+    style={{ fontFamily: "para_font" }}
+  >
+    View All
+    <span className="absolute left-0 bottom-[-2px] w-0 h-[2px] bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+  </Link>
+</div>
+
         </div>
 
         <div className="relative">

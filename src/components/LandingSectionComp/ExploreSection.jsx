@@ -16,15 +16,12 @@ export default function ExploreSection() {
   <div className="lg:px-10 px-3 max-w-7xl mx-auto">
     {/* Header */}
     {!selectedFeature && (
-      <motion.h2
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
+      <h2
         style={{ fontFamily: "heading_font" }}
-        className="text-2xl lg:text-3xl font-semibold text-black dark:text-white mb-10"
-      >
+          className="text-lg sm:text-3xl mb-5 text-left"
+        >
         Explore Your Perfect Match
-      </motion.h2>
+      </h2>
     )}
 
     {/* Cards */}

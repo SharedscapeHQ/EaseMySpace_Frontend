@@ -4,6 +4,8 @@ import leftImg from "/CTA-assets/cta2.png";
 import rightImg from "/CTA-assets/cta.png";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { IoSparklesOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
+import { FaStar } from "react-icons/fa"
 
 function Banner() {
   const [isOpen, setIsOpen] = useState(false);
@@ -155,95 +157,116 @@ function Banner() {
 
       {/* Popup Modal */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 px-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl relative overflow-hidden flex flex-col md:flex-row">
+       
+
+<div className="fixed inset-0 bg-black  bg-opacity-70 flex justify-center items-center z-50 px-4">
+  <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl relative overflow-hidden flex flex-col md:flex-row">
+    <button
+      onClick={() => setIsOpen(false)}
+      className="absolute top-3 right-3 text-zinc-500 hover:text-black dark:hover:text-white text-lg"
+      aria-label="Close popup"
+    >
+      ✕
+    </button>
+
+    {/* Left Section */}
+    <div className="bg-blue-50 p-6 md:w-1/2 dark:bg-zinc-700 dark:text-white border-r border-zinc-200 dark:border-zinc-800 flex flex-col justify-center text-center md:text-left">
+      <h3 className="text-zinc-800 dark:text-zinc-200  font-semibold text-lg mb-4 flex items-center justify-center md:justify-start gap-1">
+        Why Choose EaseMySpace? <IoSparklesOutline className="text-blue-500 dark:text-blue-100 text-lg" />
+      </h3>
+
+      <ul className="space-y-2 text-sm text-zinc-600 text-left mx-auto md:mx-0 w-fit">
+        <li className="flex items-center gap-2 dark:text-zinc-200">
+          <IoCheckmarkCircleOutline className="text-green-600 dark:text-green-200" />
+          Zero Brokerage – Direct Connect with Owners
+        </li>
+        <li className="flex items-center gap-2 dark:text-zinc-200">
+          <IoCheckmarkCircleOutline className="text-green-600 dark:text-green-200" />
+          Largest Network of Flatmates & Vacant Rooms
+        </li>
+        <li className="flex items-center gap-2 dark:text-zinc-200">
+          <IoCheckmarkCircleOutline className="text-green-600 dark:text-green-200" />
+          Verified & Active Listings Only
+        </li>
+        <li className="flex items-center gap-2 dark:text-zinc-200">
+          <IoCheckmarkCircleOutline className="text-green-600 dark:text-green-200" />
+          Personalized Assistance by EMS Experts
+        </li>
+      </ul>
+
+      <div className="mt-6 text-sm text-zinc-500 dark:text-zinc-200 text-center md:text-left flex items-center justify-center md:justify-start gap-1">
+        <FaStar className="text-yellow-500" />
+        India’s Fastest Growing Urban Living Platform
+        <FaStar className="text-yellow-500" />
+      </div>
+    </div>
+
+    {/* Right Section */}
+    <div className="p-6 md:w-1/2 dark:bg-zinc-900 dark:text-white flex flex-col justify-center items-center text-center">
+      {!submitted ? (
+        <>
+          <h2 className="text-xl font-semibold text-zinc-800 dark:text-white mb-2">
+            How can we help you?
+          </h2>
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4">
+            Speak with a space solution expert.
+          </p>
+          <form onSubmit={handleSubmit} className="space-y-3 dark:text-zinc-900 w-full max-w-sm">
+            <input
+              type="text"
+              name="name"
+              placeholder="*Enter your name"
+              aria-label="Enter your name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="*Enter your mobile number"
+              aria-label="Enter your mobile number"
+              value={formData.phone}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/\D/g, "");
+                setFormData({ ...formData, phone: onlyNums });
+              }}
+              maxLength={10}
+              required
+              className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="*Enter your email"
+              aria-label="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
             <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-3 right-3 text-zinc-500 hover:text-black text-lg"
-              aria-label="Close popup"
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-800 transition disabled:opacity-50"
             >
-              ✕
+              {loading ? "Submitting..." : "Request Callback"}
             </button>
-
-            <div className="bg-blue-50 p-6 md:w-1/2 border-r border-zinc-200 flex flex-col justify-center text-center md:text-left">
-              <h3 className="text-zinc-800 font-semibold text-lg mb-4">
-                Why Choose EaseMySpace? ✨
-              </h3>
-              <ul className="space-y-2 text-sm text-zinc-600 text-left mx-auto md:mx-0 w-fit">
-                <li>✅ Zero Brokerage – Direct Connect with Owners</li>
-                <li>✅ Largest Network of Flatmates & Vacant Rooms</li>
-                <li>✅ Verified & Active Listings Only</li>
-                <li>✅ Personalized Assistance by EMS Experts</li>
-              </ul>
-              <div className="mt-6 text-sm text-zinc-500 text-center md:text-left">
-                🌟 India’s Fastest Growing Urban Living Platform 🌟
-              </div>
-            </div>
-
-            <div className="p-6 md:w-1/2 flex flex-col justify-center items-center text-center">
-              {!submitted ? (
-                <>
-                  <h2 className="text-xl font-semibold text-zinc-800 mb-2">
-                    How can we help you?
-                  </h2>
-                  <p className="text-sm text-zinc-600 mb-4">
-                    Speak with a space solution expert.
-                  </p>
-                  <form onSubmit={handleSubmit} className="space-y-3 w-full max-w-sm">
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="*Enter your name"
-                      aria-label="Enter your name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="*Enter your mobile number"
-                      aria-label="Enter your mobile number"
-                      value={formData.phone}
-                      onChange={(e) => {
-                        const onlyNums = e.target.value.replace(/\D/g, "");
-                        setFormData({ ...formData, phone: onlyNums });
-                      }}
-                      maxLength={10}
-                      required
-                      className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="*Enter your email"
-                      aria-label="Enter your email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-800 transition disabled:opacity-50"
-                    >
-                      {loading ? "Submitting..." : "Request Callback"}
-                    </button>
-                  </form>
-                </>
-              ) : (
-                <div className="text-center text-green-600 font-medium text-lg">
-                  ✅ We’ve received your request!
-                  <p className="text-zinc-600 text-sm mt-2">
-                    Our team will contact you shortly.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+          </form>
+        </>
+      ) : (
+        <div className="text-center text-green-600 dark:text-green-200 font-medium text-lg">
+          ✅ We’ve received your request!
+          <p className="text-zinc-600 text-sm mt-2">
+            Our team will contact you shortly.
+          </p>
         </div>
+      )}
+    </div>
+  </div>
+</div>
+
       )}
     </>
   );

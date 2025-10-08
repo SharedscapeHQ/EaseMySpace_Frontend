@@ -56,7 +56,7 @@ return (
     </div>
 
     {/* Hint text always at bottom */}
-    <span className="mt-4 text-xs lg:text-xl text-zinc-400 dark:text-blue-300 text-center">
+    <span className="mt-4 text-xs lg:text-xl text-zinc-400  text-center">
       <span className="sm:hidden">Tap to pause and read</span>
       <span className="hidden sm:inline">Hover to stop and read</span>
     </span>

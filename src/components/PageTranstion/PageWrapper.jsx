@@ -21,11 +21,7 @@ export default function PageWrapper({ children }) {
       exit="out"
       variants={pageVariants}
       transition={pageTransition}
-      style={{
-        width: "100%",
-        minHeight: "100vh",
-        background: "inherit", // make sure your body or parent has a color
-      }}
+      className="w-full min-h-screen bg-inherit transition-colors duration-500"
     >
       {children}
     </motion.div>
