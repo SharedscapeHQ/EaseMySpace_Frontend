@@ -26,34 +26,42 @@ export default function FunnyQuotes() {
     return () => clearInterval(timer);
   }, [paused]);
 
-  return (
-    <div className="w-full flex justify-center items-center py-6 bg-white dark:bg-zinc-900 transition-colors duration-500">
-      <div
-        className="relative flex items-center h-32 sm:h-36 md:h-40 lg:h-48 xl:h-52"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={index}
-            className={`relative text-center text-[24px] sm:text-[28px] md:text-[35px] lg:text-[40px] xl:text-[45px] font-bold
-                        bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-400 dark:to-indigo-500
-                        bg-clip-text text-transparent px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full`}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <span className="absolute left-2 sm:left-4 top-0.5 sm:top-1 text-xl sm:text-2xl text-blue-400 dark:text-blue-300">
-              “
-            </span>
-            {quotes[index]}
-            <span className="absolute right-2 sm:right-4 bottom-0.5 sm:bottom-1 text-xl sm:text-2xl text-blue-400 dark:text-blue-300">
-              ”
-            </span>
-          </motion.p>
-        </AnimatePresence>
-      </div>
+return (
+  <div className="w-full flex flex-col justify-center items-center py-6 bg-white dark:bg-zinc-900 transition-colors duration-500 relative">
+    <div
+      className="relative flex items-center h-28 w-full justify-center"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={index}
+          className={`relative text-center text-[15px] sm:text-[28px] md:text-[35px] lg:text-[40px] xl:text-[25px] font-bold
+                      bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-400 dark:to-indigo-500
+                      bg-clip-text text-transparent px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full`}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.95 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <span className="absolute left-2 sm:left-4 top-0.5 sm:top-1 text-xl sm:text-2xl text-blue-400 dark:text-blue-300">
+            “
+          </span>
+          {quotes[index]}
+          <span className="absolute right-2 sm:right-4 bottom-0.5 sm:bottom-1 text-xl sm:text-2xl text-blue-400 dark:text-blue-300">
+            ”
+          </span>
+        </motion.p>
+      </AnimatePresence>
     </div>
-  );
+
+    {/* Hint text always at bottom */}
+    <span className="mt-4 text-xs lg:text-xl text-zinc-400 dark:text-blue-300 text-center">
+      <span className="sm:hidden">Tap to pause and read</span>
+      <span className="hidden sm:inline">Hover to stop and read</span>
+    </span>
+  </div>
+);
+
+
 }

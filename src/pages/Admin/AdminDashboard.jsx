@@ -169,39 +169,26 @@ const [modalUser, setModalUser] = useState(null);
     }
   };
 
-  const openEditModal = (property) => {
-
-  // Transform flat pricing into rooms
-  const groupedPricing = [];
-  if (Array.isArray(property.pricing) && property.pricing.length > 0) {
-    let roomCounter = 1;
-    let tempRoom = { room_name: `Room ${roomCounter}`, occupancies: [] };
-
-    property.pricing.forEach((p) => {
-      tempRoom.occupancies.push({
-        occupancy: p.occupancy,
-        price: p.price,
-        deposit: p.deposit,
-      });
-
-      // Example: new room every 2 occupancies
-      if (tempRoom.occupancies.length === 2) {
-        groupedPricing.push(tempRoom);
-        roomCounter++;
-        tempRoom = { room_name: `Room ${roomCounter}`, occupancies: [] };
-      }
-    });
-
-    if (tempRoom.occupancies.length > 0) {
-      groupedPricing.push(tempRoom);
-    }
-  }
+const openEditModal = (property) => {
+  // ✅ Transform pricing into correct modal structure
+  const groupedPricing = Array.isArray(property.pricing)
+    ? property.pricing.map((p, idx) => ({
+        room_name: p.room_name || `Room ${idx + 1}`,
+        occupancies: [
+          {
+            occupancy: p.occupancy,
+            price: p.price,
+            deposit: p.deposit,
+          },
+        ],
+      }))
+    : [];
 
   setEditingProperty(property);
 
   setEditForm({
     ...property,
-    pricing: groupedPricing, // ✅ nested rooms
+    pricing: groupedPricing, 
     price: property.pricing?.[0]?.price ?? "",
     deposit: property.pricing?.[0]?.deposit ?? "",
     amenities: Array.isArray(property.amenities)
