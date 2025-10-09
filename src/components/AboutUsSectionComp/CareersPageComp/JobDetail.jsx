@@ -11,15 +11,13 @@ import { getAllJobs, applyForJob } from "../../../api/jobApi";
 import { toast } from "react-hot-toast";
 
 export default function JobDetail() {
-  const { id } = useParams();
+  const { titleAndId } = useParams(); // ✅ fixed
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [recording, setRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioURL, setAudioURL] = useState("");
 
-  // Form fields
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -33,7 +31,6 @@ export default function JobDetail() {
         setJobs(data);
       } catch (error) {
         toast.error("Failed to fetch jobs.");
-        console.error("Failed to fetch jobs:", error);
       } finally {
         setLoading(false);
       }
@@ -41,24 +38,31 @@ export default function JobDetail() {
     fetchJobs();
   }, []);
 
-  if (loading) return <p className="p-6 text-center text-gray-500">Loading job...</p>;
+  if (loading)
+    return <p className="p-6 text-center text-gray-500">Loading job...</p>;
 
-  const job = jobs.find((j) => j.id?.toString() === id);
 
-  if (!job) return <p className="p-6 text-center text-red-500">Job not found.</p>;
+  const jobId =
+    typeof titleAndId === "string" && titleAndId.includes("-")
+      ? titleAndId.split("-").pop()
+      : titleAndId?.toString();
 
-  // Recording functions
+
+  const job = jobs.find((j) => j.id?.toString() === jobId);
+
+  if (!job)
+    return <p className="p-6 text-center text-red-500">Job not found.</p>;
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream);
-      let chunks = [];
+      const chunks = [];
 
       recorder.ondataavailable = (e) => chunks.push(e.data);
       recorder.onstop = () => {
         const blob = new Blob(chunks, { type: "audio/webm" });
         setAudioURL(URL.createObjectURL(blob));
-        chunks = [];
       };
 
       recorder.start();
@@ -88,9 +92,9 @@ export default function JobDetail() {
     try {
       let audioFile = null;
       if (audioURL) {
-        const response = await fetch(audioURL);
-        const audioBlob = await response.blob();
-        audioFile = new File([audioBlob], "intro.mp3", { type: "audio/mpeg" });
+        const res = await fetch(audioURL);
+        const blob = await res.blob();
+        audioFile = new File([blob], "intro.mp3", { type: "audio/mpeg" });
       }
 
       const applicationData = {
@@ -105,14 +109,13 @@ export default function JobDetail() {
       await applyForJob(applicationData);
       toast.success("Application submitted successfully!");
 
-      // Reset form
       setFullName("");
       setEmail("");
       setPhone("");
       setAudioURL("");
       if (resumeRef.current) resumeRef.current.value = null;
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       toast.error("Failed to submit application. Please try again.");
     } finally {
       setSubmitting(false);
@@ -129,157 +132,52 @@ export default function JobDetail() {
       </Link>
 
       <div className="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-8 flex flex-col lg:flex-row gap-10">
-        {/* Left - Job Info */}
         <div className="lg:w-[60%] space-y-6">
-          <h1 className="text-4xl capitalize font-bold text-gray-900">{job.role}</h1>
+          <h1 className="text-4xl capitalize font-bold text-gray-900">
+            {job.role}
+          </h1>
 
-          {/* Job Meta */}
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-              <FaBriefcase /> {job.dept}
-            </span>
+          <div className="flex flex-wrap items-center gap-3">
+            <MetaTag icon={<FaBriefcase />} text={job.dept} color="blue" />
             {job.location && (
-              <span className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                <FaMapMarkerAlt /> {job.location}
-              </span>
+              <MetaTag icon={<FaMapMarkerAlt />} text={job.location} color="green" />
             )}
             {job.salary && (
-              <span className="flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">
-                <FaRupeeSign /> {job.salary}
-              </span>
+              <MetaTag icon={<FaRupeeSign />} text={job.salary} color="yellow" />
             )}
             {job.experience && (
-              <span className="flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm">
-                <FaClock /> {job.experience} exp
-              </span>
+              <MetaTag icon={<FaClock />} text={`${job.experience} exp`} color="indigo" />
             )}
           </div>
 
-          {/* Job Description */}
           <div className="prose prose-indigo max-w-none text-gray-800 whitespace-pre-line">
-            <h2 className="text-2xl font-semibold">Job Overview</h2>
-            <p>{job.description}</p>
-
-            {job.responsibilities?.length > 0 && (
-              <>
-                <h2 className="text-2xl font-semibold mt-4">Responsibilities</h2>
-                <ul className="list-disc pl-6">
-                  {job.responsibilities.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2 mt-1">
-                      <FaCheckCircle className="text-green-500 mt-1" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {job.requirements?.length > 0 && (
-              <>
-                <h2 className="text-2xl font-semibold mt-4">Requirements</h2>
-                <ul className="list-disc pl-6">
-                  {job.requirements.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2 mt-1">
-                      <FaCheckCircle className="text-green-500 mt-1" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {job.perks?.length > 0 && (
-              <>
-                <h2 className="text-2xl font-semibold mt-4">Perks & Benefits</h2>
-                <ul className="list-disc pl-6">
-                  {job.perks.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2 mt-1">
-                      <FaCheckCircle className="text-blue-500 mt-1" /> {item}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+            <Section title="Job Overview" content={job.description} />
+            {job.responsibilities?.length > 0 && <ListSection title="Responsibilities" items={job.responsibilities} />}
+            {job.requirements?.length > 0 && <ListSection title="Requirements" items={job.requirements} />}
+            {job.perks?.length > 0 && <ListSection title="Perks & Benefits" items={job.perks} />}
           </div>
         </div>
 
-        {/* Right - Application Form */}
-        <div className="bg-gray-100 w-[45%] p-6 rounded-lg shadow-inner">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900">Apply for this job</h2>
+        <div className="bg-gray-100 lg:w-[45%] p-6 rounded-lg shadow-inner">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900">
+            Apply for this job
+          </h2>
+
           <form className="space-y-5" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">Full Name</label>
-              <input
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Your full name"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">Role</label>
-              <input
-                type="text"
-                value={job.role}
-                readOnly
-                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">Phone</label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="10-digit phone number"
-                pattern="\d{10}"
-                maxLength={10}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">Attach Resume</label>
-              <input
-                ref={resumeRef}
-                type="file"
-                accept=".pdf,.doc,.docx"
-                required
-                className="w-full border border-gray-300 rounded-md p-2 bg-white cursor-pointer"
-              />
-            </div>
+            <InputField label="Full Name" value={fullName} onChange={setFullName} placeholder="Your full name" required />
+            <InputField label="Role" value={job.role} readOnly />
+            <InputField label="Email" type="email" value={email} onChange={setEmail} placeholder="Your email address" required />
+            <InputField label="Phone" type="tel" value={phone} onChange={setPhone} placeholder="10-digit phone number" pattern="\d{10}" maxLength={10} required />
+            <FileUpload ref={resumeRef} />
 
             <div>
               <label className="block text-gray-700 font-medium mb-2">Intro (Optional)</label>
               {!recording ? (
-                <button
-                  type="button"
-                  onClick={startRecording}
-                  className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition"
-                >
+                <button type="button" onClick={startRecording} className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition">
                   🎙 Start Recording
                 </button>
               ) : (
-                <button
-                  type="button"
-                  onClick={stopRecording}
-                  className="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition"
-                >
+                <button type="button" onClick={stopRecording} className="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition">
                   ⏹ Stop Recording
                 </button>
               )}
@@ -287,31 +185,15 @@ export default function JobDetail() {
 
             {audioURL && (
               <div className="mt-3 space-y-2">
-                <audio controls src={audioURL} className="w-full rounded-md"></audio>
+                <audio controls src={audioURL} className="w-full rounded-md" />
                 <div className="flex space-x-3">
-                  <button
-                    type="button"
-                    onClick={startRecording}
-                    className="flex-1 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md"
-                  >
-                    🔄 Retake
-                  </button>
-                  <button
-                    type="button"
-                    onClick={deleteRecording}
-                    className="flex-1 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md"
-                  >
-                    🗑 Delete
-                  </button>
+                  <button type="button" onClick={startRecording} className="flex-1 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md">🔄 Retake</button>
+                  <button type="button" onClick={deleteRecording} className="flex-1 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md">🗑 Delete</button>
                 </div>
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md font-semibold"
-            >
+            <button type="submit" disabled={submitting} className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md font-semibold">
               {submitting ? "Submitting..." : "Submit Application"}
             </button>
           </form>
@@ -320,3 +202,50 @@ export default function JobDetail() {
     </div>
   );
 }
+
+/* Helper Components */
+function MetaTag({ icon, text, color }) {
+  const colors = {
+    blue: "bg-blue-100 text-blue-700",
+    green: "bg-green-100 text-green-700",
+    yellow: "bg-yellow-100 text-yellow-700",
+    indigo: "bg-indigo-100 text-indigo-700",
+  };
+  return <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${colors[color]}`}>{icon} {text}</span>;
+}
+
+function Section({ title, content }) {
+  return (
+    <>
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <p>{content}</p>
+    </>
+  );
+}
+
+function ListSection({ title, items }) {
+  return (
+    <>
+      <h2 className="text-2xl font-semibold mt-4">{title}</h2>
+      <ul className="list-disc pl-6">
+        {items.map((item, idx) => (
+          <li key={idx} className="flex items-start gap-2 mt-1"><FaCheckCircle className="text-green-500 mt-1" /> {item}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+const InputField = ({ label, type = "text", value, onChange, readOnly = false, ...props }) => (
+  <div>
+    <label className="block text-gray-700 font-medium mb-1">{label}</label>
+    <input type={type} value={value} onChange={onChange ? (e) => onChange(e.target.value) : undefined} readOnly={readOnly} className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ${readOnly ? "bg-gray-200 cursor-not-allowed" : "focus:ring-indigo-500 bg-white"}`} {...props} />
+  </div>
+);
+
+const FileUpload = React.forwardRef((props, ref) => (
+  <div>
+    <label className="block text-gray-700 font-medium mb-1">Attach Resume</label>
+    <input ref={ref} type="file" accept=".pdf,.doc,.docx" required className="w-full border border-gray-300 rounded-md p-2 bg-white cursor-pointer" {...props} />
+  </div>
+));

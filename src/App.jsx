@@ -155,15 +155,15 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/jobs/:id"
-          element={
-            <PageWrapper>
-              <Layout>
-                <JobDetail />
-              </Layout>
-            </PageWrapper>
-          }
-        />
+  path="/jobs/:titleAndId"
+  element={
+    <PageWrapper>
+      <Layout>
+        <JobDetail />
+      </Layout>
+    </PageWrapper>
+  }
+/>
         <Route
           path="/subscription"
           element={

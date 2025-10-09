@@ -37,6 +37,7 @@ export default function Careers() {
     const fetchJobs = async () => {
       try {
         const data = await getAllJobs();
+        
         setJobs(data);
       } catch (err) {
         toast.error("Failed to load job openings.");
@@ -211,11 +212,12 @@ const handleSubmit = async (e) => {
                   <p className="text-gray-600 text-sm mt-3 line-clamp-3">{job.description}</p>
                 </div>
                 <Link
-                  to={`/jobs/${job.id}`}
-                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-center font-medium"
-                >
-                  Apply Now
-                </Link>
+  to={`/jobs/${job.role.toLowerCase().replace(/\s+/g, "-")}-${job.id}`}
+  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-center font-medium transition-all duration-300 hover:scale-[1.03]"
+>
+  Apply Now
+</Link>
+
               </div>
             ))}
           </div>
