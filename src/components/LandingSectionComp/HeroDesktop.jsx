@@ -7,7 +7,7 @@ import vacantImg from "/landing-assets/vacantImg.webp";
 import Hero_vid from "/heroImg/Hero_vid.webm";
 import Diwali_vid from "/heroImg/Diwali_vid.mp4";
 import Poster from "/heroImg/Poster.jpg";
-import EMSChatbot from "../Chats/EMSChatbot";
+// import EMSChatbot from "../Chats/EMSChatbot";
 
 export default function HeroDesktop() {
   const videoRef = useRef(null);
