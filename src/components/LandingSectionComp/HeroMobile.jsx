@@ -5,6 +5,7 @@ import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
 import heroImg from "/heroImg/hero.png";
+import DiwaliImg from "/heroImg/diwali_img.jpg";
 
 export default function HeroMobile({ properties }) {
   const navigate = useNavigate();
@@ -101,9 +102,9 @@ export default function HeroMobile({ properties }) {
       {/* Hero Image */}
       <div className="relative w-full h-56 rounded-xl overflow-hidden animate-fade-in-up">
         <img
-          src={heroImg}
+          src={DiwaliImg}
           alt="Explore PGs, flatmates, and rental flats with EaseMySpace"
-          className="w-full h-[110%] object-cover"
+          className="w-full h-[90%] object-cover"
           loading="eager"
           fetchpriority="high"
         />
