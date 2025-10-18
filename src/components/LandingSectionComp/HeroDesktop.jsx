@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
 import Hero_vid from "/heroImg/Hero_vid.webm";
+import Diwali_vid from "/heroImg/Diwali_vid.mp4";
 import Poster from "/heroImg/Poster.jpg";
+import EMSChatbot from "../Chats/EMSChatbot";
 
 export default function HeroDesktop() {
   const videoRef = useRef(null);
@@ -13,6 +15,8 @@ export default function HeroDesktop() {
   const cardsRef = useRef([]);
   const buttonRef = useRef(null);
   const flipButtonRef = useRef(null);
+
+  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
     // Try playing video (fix autoplay on mobile)
@@ -102,6 +106,19 @@ export default function HeroDesktop() {
       className="hidden lg:block w-full bg-white dark:bg-zinc-900 px-6"
       style={{ height: "calc(100vh - 5rem)" }}
     >
+      <EMSChatbot
+          isOpen={chatOpen}
+          onClose={() => setChatOpen(false)}
+        />
+
+        {/* Chat Icon Button */}
+        {/* <button
+          onClick={() => setChatOpen(true)}
+          className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl"
+          aria-label="Open EaseMySpace chat"
+        >
+          💬
+        </button> */}
       <div className="max-w-7xl mx-auto grid grid-cols-2 gap-12 items-center h-full">
         {/* Left */}
         <div>
@@ -198,7 +215,7 @@ export default function HeroDesktop() {
         <div className="w-full overflow-hidden rounded-lg h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[70vh] 2xl:h-[90vh]">
           <video
             ref={videoRef}
-            src={Hero_vid}
+            src={Diwali_vid}
             poster={Poster}
             autoPlay
             muted
