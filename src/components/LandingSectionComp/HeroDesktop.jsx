@@ -106,10 +106,10 @@ export default function HeroDesktop() {
       className="hidden lg:block w-full bg-white dark:bg-zinc-900 px-6"
       style={{ height: "calc(100vh - 5rem)" }}
     >
-      <EMSChatbot
+      {/* <EMSChatbot
           isOpen={chatOpen}
           onClose={() => setChatOpen(false)}
-        />
+        /> */}
 
         {/* Chat Icon Button */}
         {/* <button
