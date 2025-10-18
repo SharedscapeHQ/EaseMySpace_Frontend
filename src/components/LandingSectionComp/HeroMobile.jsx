@@ -104,7 +104,7 @@ export default function HeroMobile({ properties }) {
         <img
           src={DiwaliImg}
           alt="Explore PGs, flatmates, and rental flats with EaseMySpace"
-          className="w-full h-[90%] object-cover"
+          className="w-full h-[100%] object-fit "
           loading="eager"
           fetchpriority="high"
         />
