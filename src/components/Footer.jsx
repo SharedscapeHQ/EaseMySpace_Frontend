@@ -17,6 +17,7 @@ import {
   FaBriefcase,
   FaUsers
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import brandImg from "/navbar-assets/brand-logo.png";
 
 const icons = [
@@ -44,6 +45,11 @@ const icons = [
     Icon: FaWhatsapp,
     color: "from-green-400 to-green-600 border-green-500/50",
     url: "https://wa.me/919004463371", },
+    {
+    Icon: FaXTwitter,
+    color: "from-zinc-700 to-black border-zinc-700/50",
+    url: "https://twitter.com/easemyspace",
+  },
 ];
 
 export default function Footer() {
