@@ -42,7 +42,7 @@ const icons = [
     url: "https://www.linkedin.com/company/easemyspace",
   },
   {
-    Icon: FaWhatsapp,
+    Icon: FaWhatsapp, 
     color: "from-green-400 to-green-600 border-green-500/50",
     url: "https://wa.me/919004463371", },
     {
