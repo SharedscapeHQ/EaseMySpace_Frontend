@@ -85,16 +85,15 @@ export default function SubscriptionPlans() {
   gst: "+18% GST",
   savings: "Save ₹1,800!",
   color: "red",
-      features: [
-        { text: "Up to 20 Property Visits (In-person)", included: true },
-        { text: "20 Property Owner Contact Unlocks", included: true },
-        { text: "Dedicated Relationship Manager", included: true },
-        { text: "Accompanied Property Visits (With EMS Executive)", included: true },
-        { text: "Unlimited Video Tours Before Visit", included: true },
-        { text: "Relocation Assistance (On-call)", included: true },
-        { text: "Post-shifting Support - Extended & Priority", included: true },
-        { text: "Match Recommendations - Hand-picked by RM", included: true },
-      ],
+     features: [
+  { text: "Up to 20 contact access", included: true },
+  { text: "Personalised Dashboard", included: true },
+  { text: "Post Requirement", included: true },
+  { text: "Re-location assistance (on call)", included: true },
+  { text: "Dedicated Customer Support", included: true },
+  { text: "New listed property alert", included: true },
+  { text: "Post-shifting basic support (If needed)", included: true },
+],
     },
   ];
 
