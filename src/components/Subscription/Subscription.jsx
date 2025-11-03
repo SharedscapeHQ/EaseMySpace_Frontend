@@ -81,9 +81,9 @@ export default function SubscriptionPlans() {
   title: "Ultimate Plan",
   description: "45 days validity with all premium services",
   originalPrice: "₹3,799",
-  price: "₹1,999",
+  price: "₹3,499",
   gst: "+18% GST",
-  savings: "Save ₹1,800!",
+  savings: "Save ₹300!",
   color: "red",
      features: [
   { text: "Up to 20 contact access", included: true },
