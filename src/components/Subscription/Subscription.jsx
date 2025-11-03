@@ -56,26 +56,26 @@ export default function SubscriptionPlans() {
   }, [userMobile, hasPaid]);
 
   const plans = [
-    {
-      type: "trial",
-      title: "Trial Plan",
-      description: "7 days validity with essential services",
-      originalPrice: "₹599",
-      price: "₹399",
-      gst: "+ GST",
-      savings: "Save ₹200!",
-      color: "yellow",
-      features: [
-        { text: "Up to 1 Property Visits (In-person)", included: true },
-        { text: "1 Property Owner Contact Unlocks", included: true },
-        { text: "Dedicated Relationship Manager", included: true },
-        { text: "Accompanied Property Visits (With EMS Executive)", included: true },
-        { text: "Up to 1 Video Tours Before Visit", included: true },
-        { text: "Relocation Assistance (On-call)", included: true },
-        { text: "Post-shifting Support - Standard", included: true },
-        { text: "Match Recommendations - Basic", included: true },
-      ],
-    },
+    // {
+    //   type: "trial",
+    //   title: "Trial Plan",
+    //   description: "7 days validity with essential services",
+    //   originalPrice: "₹599",
+    //   price: "₹399",
+    //   gst: "+ GST",
+    //   savings: "Save ₹200!",
+    //   color: "yellow",
+    //   features: [
+    //     { text: "Up to 1 Property Visits (In-person)", included: true },
+    //     { text: "1 Property Owner Contact Unlocks", included: true },
+    //     { text: "Dedicated Relationship Manager", included: true },
+    //     { text: "Accompanied Property Visits (With EMS Executive)", included: true },
+    //     { text: "Up to 1 Video Tours Before Visit", included: true },
+    //     { text: "Relocation Assistance (On-call)", included: true },
+    //     { text: "Post-shifting Support - Standard", included: true },
+    //     { text: "Match Recommendations - Basic", included: true },
+    //   ],
+    // },
     {
       type: "ultimate",
   title: "Ultimate Plan",
@@ -149,15 +149,16 @@ export default function SubscriptionPlans() {
       </section>
 
       {/* Plans Section */}
-      <section className="mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-        {plans.map((plan, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
-          >
+      <section
+  className={`mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:gap-6 ${
+    plans.length === 1 ? "lg:grid-cols-1 justify-items-center" : "lg:grid-cols-2"
+  }`}
+>
+  {plans.map((plan, index) => (
+    <motion.div
+      key={index}
+      className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
+    >
             {/* Badge */}
             <span
               className={`absolute -top-3 left-1/2 -translate-x-1/2 ${badgeColors[plan.color]} text-white text-xs px-2 py-1 rounded-full shadow uppercase tracking-wider`}

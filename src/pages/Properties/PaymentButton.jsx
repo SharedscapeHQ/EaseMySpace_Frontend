@@ -17,11 +17,11 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const navigate = useNavigate();
 
   const plans = {
-    trial: {
-      label: "Trial",
-      amount: 399,
-      description: "7 days validity with essential services.",
-    },
+    // trial: {
+    //   label: "Trial",
+    //   amount: 399,
+    //   description: "7 days validity with essential services.",
+    // },
     ultimate: {
       label: "Ultimate",
       amount: 1999,
