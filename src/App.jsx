@@ -39,6 +39,7 @@ import AnalyticsTracker from "./components/Seo/AnalyticsTracker";
 import BlogPage from "./pages/BlogPage";
 import VisitorTracker from "./components/Tracking/VisitorTracker";
 import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtEaseMySpace";
+import ListerSubscription from "./components/Lister-Subscription/ListerSubscription";
 
 // import Maid_Landing from "./pages/Maid_Service/Maid_Landing";
 // import ProfileDetail from "./components/Maid_service_comp/ProfileDetails/ProfileDetails";
@@ -170,6 +171,16 @@ function AnimatedRoutes() {
             <PageWrapper>
               <Layout>
                 <SubscriptionPlans />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/lister-subscription"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ListerSubscription />
               </Layout>
             </PageWrapper>
           }
