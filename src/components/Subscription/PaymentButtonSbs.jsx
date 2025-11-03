@@ -5,6 +5,8 @@ import { getCurrentUser } from "../../api/authApi";
 import InvoiceModal from "./InvoiceModal";
 import { useNavigate } from "react-router-dom";
 import LoginPopup from "./LoginPopup";
+import ReactDOM from "react-dom";
+
 
 export default function PaymentButtonSubs({
   hasPaid,
@@ -162,39 +164,42 @@ const goToLogin = () => {
 
   return (
     <>
-      {/* FULL-SCREEN PAYMENT LOADER */}
-      {isPaying && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <svg
-              className="animate-spin h-12 w-12 text-indigo-600 mb-4"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
-            </svg>
-            <p className="text-indigo-600 font-semibold text-lg">
-              Processing your payment...
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              Please do not refresh or close the page
-            </p>
-          </div>
-        </div>
-      )}
+   {isPaying &&
+  ReactDOM.createPortal(
+    <div style={{fontFamily:"para_font"}} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <svg
+          className="animate-spin h-12 w-12 text-indigo-600 mb-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          ></path>
+        </svg>
+        <p className="text-indigo-600 font-semibold text-lg">
+          Processing your payment...
+        </p>
+        <p className="text-sm text-gray-600 mt-2">
+          Please do not refresh or close the page
+        </p>
+      </div>
+    </div>,
+    document.body // ⚡ Render at the top level of the DOM
+  )}
+
+
 
       {/* PAYMENT BUTTON */}
       <button
