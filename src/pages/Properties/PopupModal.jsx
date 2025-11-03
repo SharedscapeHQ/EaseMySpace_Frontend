@@ -56,7 +56,7 @@ const plans = [
   //     ],
   //   },
     {
-      type: "ultimate",
+      type: "ultimate", 
   title: "Ultimate Plan",
   description: "45 days validity with all premium services",
   originalPrice: "₹3,799",
