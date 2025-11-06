@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
 import Footer from "../Footer";
 import LoginPopup from "../Subscription/LoginPopup";
+import InvoiceModal from "../Subscription/InvoiceModal";
 import { getCurrentUser } from "../../api/authApi";
 import { createListerOrder, verifyListerPayment } from "../../api/ListerPaymentApi";
 
@@ -24,6 +25,7 @@ export default function ListerSubscription() {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [invoiceUrl, setInvoiceUrl] = useState(null); // <-- NEW: invoice URL state
 
   const plans = [
     {
@@ -116,7 +118,10 @@ export default function ListerSubscription() {
             });
 
             if (!verifyRes?.success) toast.error("Payment verification failed. Contact support.");
-            else toast.success("Payment Successful ✅");
+            else {
+              toast.success("Payment Successful ✅");
+              if (verifyRes.invoiceUrl) setInvoiceUrl(verifyRes.invoiceUrl); // <-- Show invoice modal
+            }
           } catch (err) {
             console.error(err);
             toast.error("Payment verification failed.");
@@ -179,6 +184,7 @@ export default function ListerSubscription() {
         </div>
       )}
 
+      {/* Plans Section */}
       <section className="pb-10 lg:px-10 pt-3 px-3">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
@@ -194,7 +200,6 @@ export default function ListerSubscription() {
         </p>
       </section>
 
-      {/* Plans Section */}
       <section
         className={`mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:gap-6 ${
           plans.length === 1 ? "lg:grid-cols-1 justify-items-center" : "lg:grid-cols-2"
@@ -205,14 +210,12 @@ export default function ListerSubscription() {
             key={index}
             className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
           >
-            {/* Badge */}
             <span
               className={`absolute -top-3 left-1/2 -translate-x-1/2 ${badgeColors[plan.color]} text-white text-xs px-2 py-1 rounded-full shadow uppercase tracking-wider`}
             >
               {plan.type}
             </span>
 
-            {/* Desktop Layout */}
             <div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
               <div className="lg:w-1/3">
                 <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{plan.title}</h2>
@@ -244,7 +247,7 @@ export default function ListerSubscription() {
         ))}
       </section>
 
-      {/* Mobile Bottom Sheet Popup */}
+      {/* Mobile Bottom Sheet */}
       {selectedPlan && (
         <motion.div
           className="fixed inset-0 bg-black/50 z-50 flex justify-center items-end"
@@ -271,7 +274,7 @@ export default function ListerSubscription() {
             <p className="text-sm italic mb-4">{selectedPlan.description}</p>
             <p className="text-2xl font-bold text-zinc-900 mb-2">{selectedPlan.price} <span className="text-xs">{selectedPlan.gst}</span></p>
             <p className="text-green-500 text-sm mb-4">{selectedPlan.duration}</p>
- 
+
             <ul className="space-y-2 text-sm mb-4">
               {selectedPlan.features.map((feat, i) => (
                 <li key={i} className="flex items-start gap-2">
@@ -289,6 +292,13 @@ export default function ListerSubscription() {
           </motion.div>
         </motion.div>
       )}
+
+      {/* Invoice Modal */}
+      <InvoiceModal
+        isOpen={!!invoiceUrl}
+        invoiceUrl={invoiceUrl}
+        onClose={() => setInvoiceUrl(null)}
+      />
 
       {showLoginPopup && (
         <LoginPopup
