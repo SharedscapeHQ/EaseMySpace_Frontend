@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
 import PaymentButtonSubs from "./PaymentButtonSbs";
 import Footer from "../Footer";
-import axios from "axios";
 import { getCurrentUser } from "../../api/authApi";
 
 // Icons
@@ -20,7 +19,6 @@ const CrossIcon = () => (
 );
 
 export default function SubscriptionPlans() {
-  const [hasPaid, setHasPaid] = useState(false);
   const [userData, setUserData] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
@@ -30,14 +28,10 @@ export default function SubscriptionPlans() {
         const user = await getCurrentUser();
         if (!user?.id) {
           toast.error("Please log in to view subscription plans.");
-          setTimeout(() => {
-            window.location.href = "/login";
-          }, 1500);
+          setTimeout(() => (window.location.href = "/login"), 1500);
           return;
         }
-
         setUserData(user);
-        if (user?.subscription_status === "paid") setHasPaid(true);
       } catch (err) {
         console.error("❌ Failed to load user:", err);
         toast.error("Please log in to continue.");
@@ -45,20 +39,6 @@ export default function SubscriptionPlans() {
       }
     })();
   }, []);
-
-  // ✅ Check subscription status (based on backend logic)
-  useEffect(() => {
-    if (userData && !hasPaid) {
-      axios
-        .get(`https://api.easemyspace.in/api/payment/check-subscription?userId=${userData.id}`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          if (res.data?.paid) setHasPaid(true);
-        })
-        .catch((err) => console.error("Subscription check failed:", err));
-    }
-  }, [userData, hasPaid]);
 
   const plans = [
     {
@@ -82,26 +62,10 @@ export default function SubscriptionPlans() {
     },
   ];
 
-  const borderColors = {
-    red: "border-red-400",
-    yellow: "border-yellow-400",
-    indigo: "border-indigo-400",
-  };
-  const bgColors = {
-    red: "from-red-50",
-    yellow: "from-yellow-50",
-    indigo: "from-indigo-50",
-  };
-  const textColors = {
-    red: "text-red-500",
-    yellow: "text-yellow-500",
-    indigo: "text-indigo-500",
-  };
-  const badgeColors = {
-    red: "bg-red-500",
-    yellow: "bg-yellow-500",
-    indigo: "bg-indigo-500",
-  };
+  const borderColors = { red: "border-red-400", yellow: "border-yellow-400", indigo: "border-indigo-400" };
+  const bgColors = { red: "from-red-50", yellow: "from-yellow-50", indigo: "from-indigo-50" };
+  const textColors = { red: "text-red-500", yellow: "text-yellow-500", indigo: "text-indigo-500" };
+  const badgeColors = { red: "bg-red-500", yellow: "bg-yellow-500", indigo: "bg-indigo-500" };
 
   return (
     <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
@@ -188,12 +152,7 @@ export default function SubscriptionPlans() {
                   ))}
                 </ul>
                 <div className="flex justify-center lg:justify-end">
-                  <PaymentButtonSubs
-                    hasPaid={hasPaid}
-                    setHasPaid={setHasPaid}
-                    userData={userData}
-                    planName={plan.type}
-                  />
+                  <PaymentButtonSubs userData={userData} planName={plan.type} />
                 </div>
               </div>
             </div>
@@ -239,12 +198,7 @@ export default function SubscriptionPlans() {
                 </li>
               ))}
             </ul>
-            <PaymentButtonSubs
-              hasPaid={hasPaid}
-              setHasPaid={setHasPaid}
-              userData={userData}
-              planName={selectedPlan.type}
-            />
+            <PaymentButtonSubs userData={userData} planName={selectedPlan.type} />
           </motion.div>
         </motion.div>
       )}

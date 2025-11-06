@@ -107,7 +107,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
         prefill: {
           name: userData.firstName || "Guest User",
           email: userData.email || "guest@easemyspace.com",
-          contact: phone.startsWith("+91") ? phone : `+91${phone}`,
+          contact: phone ? (phone.startsWith("+91") ? phone : `+91${phone}`) : "",
         },
         theme: { color: "#6366F1" },
         modal: {
@@ -132,7 +132,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
   };
 
   const handlePayment = () => {
-    if (hasPaid || isPaying) return;
+    if (isPaying) return;
     const planKey = ["trial", "ultimate"].includes(planName?.toLowerCase())
       ? planName.toLowerCase()
       : null;
@@ -187,14 +187,12 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
       <button
         style={{ fontFamily: "para_font" }}
         className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
-          hasPaid
-            ? "bg-green-600 text-white cursor-default"
-            : "bg-indigo-600 hover:bg-indigo-700 text-white"
-        } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
-        disabled={hasPaid || isPaying}
+          isPaying ? "opacity-60 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"
+        }`}
+        disabled={isPaying}
         onClick={handlePayment}
       >
-        {isPaying ? "Processing..." : hasPaid ? "Subscribed" : "Subscribe"}
+        {isPaying ? "Processing..." : "Subscribe"}
       </button>
 
       <LoginPopup
