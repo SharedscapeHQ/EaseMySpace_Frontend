@@ -2,11 +2,10 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://api.easemyspace.in/api/payment",
-  withCredentials: true, 
+  withCredentials: true,
   timeout: 20000,
 });
 
-// 1. Create Razorpay Order
 export const createOrder = async ({ amount, planName }) => {
   try {
     const res = await api.post("/create-order", { amount, planName });
@@ -22,7 +21,7 @@ export const verifyPayment = async (paymentData) => {
     const res = await api.post("/verify", paymentData, { timeout: 60000 });
     return res.data;
   } catch (err) {
-    console.error("❌ Failed to verify payment:", err.message);
+    console.error("❌ Failed to verify payment:", err.response?.data || err.message);
     throw err;
   }
 };

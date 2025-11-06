@@ -7,26 +7,18 @@ import { useNavigate } from "react-router-dom";
 import LoginPopup from "./LoginPopup";
 import ReactDOM from "react-dom";
 
-
-export default function PaymentButtonSubs({
-  hasPaid,
-  setHasPaid,
-  planName,
-  userMobile,
-}) {
+export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
   const [userData, setUserData] = useState({});
   const [isPaying, setIsPaying] = useState(false);
-  const [activeUserPhone, setActiveUserPhone] = useState(userMobile || "");
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const navigate = useNavigate();
-const goToLogin = () => {
-  const currentPath = location.pathname + location.search;
-  navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
-};
-
+  const goToLogin = () => {
+    const currentPath = location.pathname + location.search;
+    navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
+  };
 
   const plans = {
     trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
@@ -39,10 +31,8 @@ const goToLogin = () => {
         const data = await getCurrentUser();
         setUserData(data);
         if (data?.subscription_status === "paid") setHasPaid(true);
-        const phone = data?.phone || localStorage.getItem("user_verified_mobile") || "";
-        setActiveUserPhone(phone);
       } catch {
-        setActiveUserPhone(localStorage.getItem("user_verified_mobile") || "");
+        // User not logged in
       }
     })();
   }, [setHasPaid]);
@@ -71,15 +61,15 @@ const goToLogin = () => {
       const taxRate = 18;
       const amountWithGST = Math.round(plan.amount * (1 + taxRate / 100));
 
-      const { orderId, currency } = await createOrder({ amount: amountWithGST, planName: planKey });
+      const { orderId, currency } = await createOrder({
+        amount: amountWithGST,
+        planName: planKey,
+      });
 
-      let phone = userData.phone || userMobile || activeUserPhone;
+      const phone = userData.phone;
       if (!phone) {
-        phone = prompt("📱 Please enter your phone number for payment:");
-        if (!phone) {
-          setIsPaying(false);
-          return toast.error("Phone number is required.");
-        }
+        setIsPaying(false);
+        return toast.error("⚠️ Your account has no phone number linked. Please update your profile.");
       }
 
       const options = {
@@ -96,16 +86,12 @@ const goToLogin = () => {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount: amountWithGST,
-              phone,
               plan_type: planKey,
             });
 
             if (result.success) {
               setHasPaid(true);
-              localStorage.setItem("has_paid_lead", "true");
-              localStorage.setItem("user_verified_mobile", phone);
               toast.success("Payment successful!");
-
               setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
             } else {
@@ -147,60 +133,57 @@ const goToLogin = () => {
 
   const handlePayment = () => {
     if (hasPaid || isPaying) return;
-
     const planKey = ["trial", "ultimate"].includes(planName?.toLowerCase())
       ? planName.toLowerCase()
       : null;
     if (!planKey) return toast.error("❌ Invalid or missing plan name.");
 
-    // 🚨 Force login before payment
-    if (!userData?.id) {
-      return setShowLoginPopup(true);
-    }
+    if (!userData?.id) return setShowLoginPopup(true);
 
     loadRazorpay(planKey);
   };
 
   return (
     <>
-   {isPaying &&
-  ReactDOM.createPortal(
-    <div style={{fontFamily:"para_font"}} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-        <svg
-          className="animate-spin h-12 w-12 text-indigo-600 mb-4"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v8H4z"
-          ></path>
-        </svg>
-        <p className="text-indigo-600 font-semibold text-lg">
-          Processing your payment...
-        </p>
-        <p className="text-sm text-gray-600 mt-2">
-          Please do not refresh or close the page
-        </p>
-      </div>
-    </div>,
-    document.body // ⚡ Render at the top level of the DOM
-  )}
+      {/* Overlay while paying */}
+      {isPaying &&
+        ReactDOM.createPortal(
+          <div
+            style={{ fontFamily: "para_font" }}
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm"
+          >
+            <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+              <svg
+                className="animate-spin h-12 w-12 text-indigo-600 mb-4"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              <p className="text-indigo-600 font-semibold text-lg">
+                Processing your payment...
+              </p>
+              <p className="text-sm text-gray-600 mt-2">
+                Please do not refresh or close the page
+              </p>
+            </div>
+          </div>,
+          document.body
+        )}
 
-
-
-      {/* PAYMENT BUTTON */}
       <button
         style={{ fontFamily: "para_font" }}
         className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
@@ -214,11 +197,11 @@ const goToLogin = () => {
         {isPaying ? "Processing..." : hasPaid ? "Subscribed" : "Subscribe"}
       </button>
 
-  <LoginPopup
-  isOpen={showLoginPopup}
-  onClose={() => setShowLoginPopup(false)}
-  onLoginClick={goToLogin}
-/>
+      <LoginPopup
+        isOpen={showLoginPopup}
+        onClose={() => setShowLoginPopup(false)}
+        onLoginClick={goToLogin}
+      />
 
       <InvoiceModal
         isOpen={showInvoiceModal}
