@@ -5,38 +5,50 @@ import toast from "react-hot-toast";
 import Footer from "../Footer";
 import LoginPopup from "../Subscription/LoginPopup";
 import { getCurrentUser } from "../../api/authApi";
+import { createListerOrder, verifyListerPayment } from "../../api/ListerPaymentApi";
+
+// Icons
+const CheckIcon = () => (
+  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+  </svg>
+);
+const CrossIcon = () => (
+  <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
 
 export default function ListerSubscription() {
   const [userData, setUserData] = useState(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
-  const [isPaying, setIsPaying] = useState(false); // Payment loader
+  const [isPaying, setIsPaying] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
-  const plan = {
-    id: "standard",
-    title: "Standard Lister",
-    price: 999,
-    duration: "45 Days",
-    gst: "+18% GST",
-    description: "Access all essential services for property owners.",
-    features: [
-      "Up to 2 property listings",
-      "Unlimited edits & updates",
-      "WhatsApp lead notifications",
-      "Standard visibility",
-      "Dedicated support",
-      "Personalised Dashboard",
-    ],
-    color: "indigo",
-  };
+  const plans = [
+    {
+      id: "standard",
+      type: "Standard",
+      title: "Standard Lister",
+      description: "Access all essential services for property owners.",
+      price: "₹999",
+      gst: "+18% GST",
+      duration: "45 Days",
+      color: "indigo",
+      features: [
+        { text: "Up to 2 property listings", included: true },
+        { text: "Unlimited edits & updates", included: true },
+        { text: "WhatsApp lead notifications", included: true },
+        { text: "Standard visibility", included: true },
+        { text: "Dedicated support", included: true },
+        { text: "Personalised Dashboard", included: true },
+      ],
+    },
+  ];
 
-  const colorClasses = {
-    indigo: "from-indigo-100 border-indigo-400",
-  };
-
-  const goToLogin = () => {
-    const currentPath = location.pathname + location.search;
-    window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
-  };
+  const borderColors = { indigo: "border-indigo-400" };
+  const bgColors = { indigo: "from-indigo-50" };
+  const badgeColors = { indigo: "bg-indigo-500" };
 
   useEffect(() => {
     (async () => {
@@ -59,21 +71,26 @@ export default function ListerSubscription() {
       document.body.appendChild(script);
     });
 
-  const openRazorpay = async () => {
-    if (!userData?.id) {
-      return setShowLoginPopup(true); // show login overlay
-    }
+  const openRazorpay = async (plan) => {
+    if (!userData?.id) return setShowLoginPopup(true);
 
     try {
-      setIsPaying(true); // show loader
+      setIsPaying(true);
       const loaded = await loadRazorpayScript();
       if (!loaded) {
         setIsPaying(false);
         return toast.error("Razorpay SDK failed to load.");
       }
 
-      const gstAmount = Math.round(plan.price * 0.18);
-      const total = plan.price + gstAmount;
+      const numericPrice = parseInt(plan.price.replace("₹", ""));
+      const gstAmount = Math.round(numericPrice * 0.18);
+      const total = numericPrice + gstAmount;
+
+      const orderRes = await createListerOrder({
+        amount: total,
+        planName: plan.id,
+      });
+      if (!orderRes?.success) throw new Error("Failed to create order.");
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
@@ -81,17 +98,7 @@ export default function ListerSubscription() {
         currency: "INR",
         name: "EaseMySpace",
         description: plan.title,
-        handler: function (response) {
-          setIsPaying(false); // hide loader
-          toast.success("Payment Successful ✅");
-          console.log("Razorpay Payment ID:", response.razorpay_payment_id);
-        },
-        modal: {
-          ondismiss: () => {
-            setIsPaying(false); // hide loader if user closes modal
-            toast("Payment cancelled.", { icon: "👋" });
-          },
-        },
+        order_id: orderRes.orderId,
         prefill: {
           name: userData.firstName || "EaseMySpace User",
           email: userData.email || "customer@example.com",
@@ -99,8 +106,29 @@ export default function ListerSubscription() {
             ? userData.phone
             : `+91${userData.phone || "9999999999"}`,
         },
-        theme: {
-          color: "#4f46e5",
+        theme: { color: "#4f46e5" },
+        handler: async function (response) {
+          try {
+            const verifyRes = await verifyListerPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+
+            if (!verifyRes?.success) toast.error("Payment verification failed. Contact support.");
+            else toast.success("Payment Successful ✅");
+          } catch (err) {
+            console.error(err);
+            toast.error("Payment verification failed.");
+          } finally {
+            setIsPaying(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setIsPaying(false);
+            toast("Payment cancelled.", { icon: "👋" });
+          },
         },
       };
 
@@ -109,16 +137,22 @@ export default function ListerSubscription() {
         setIsPaying(false);
         toast.error(`❌ Payment failed: ${response.error.description}`);
       });
+
       rzp.open();
     } catch (err) {
       setIsPaying(false);
-      toast.error("Failed to load Razorpay SDK.");
       console.error(err);
+      toast.error("Payment process failed. Please try again.");
     }
   };
 
+  const goToLogin = () => {
+    const currentPath = location.pathname + location.search;
+    window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 font-para_font">
+    <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
       <Helmet>
         <title>Lister Subscription | EaseMySpace</title>
         <meta
@@ -127,7 +161,6 @@ export default function ListerSubscription() {
         />
       </Helmet>
 
-      {/* Payment Loader */}
       {isPaying && (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
@@ -137,19 +170,8 @@ export default function ListerSubscription() {
               fill="none"
               viewBox="0 0 24 24"
             >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
             <p className="text-indigo-600 font-semibold text-lg">Processing your payment...</p>
             <p className="text-sm text-gray-600 mt-2">Please do not refresh or close the page</p>
@@ -157,66 +179,117 @@ export default function ListerSubscription() {
         </div>
       )}
 
-      {/* Header */}
-      <section className="px-4 lg:px-10 py-8 text-center">
+      <section className="pb-10 lg:px-10 pt-3 px-3">
         <motion.h1
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{ fontFamily: "heading_font" }}
-          className="text-3xl lg:text-5xl font-bold text-gray-900 mb-3"
+          className="text-2xl lg:text-4xl lg:mt-5 text-zinc-900"
         >
           Lister Subscription
         </motion.h1>
-        <p className="text-gray-600 text-sm lg:text-base max-w-xl mx-auto">
-          Get started with the Standard Lister plan. Manage your properties efficiently.
+        <p className="mt-3 text-xs lg:text-base text-zinc-700">
+          Get started with our subscription plans. Manage your properties efficiently.
         </p>
       </section>
 
-      {/* Subscription Card */}
-      <section className="flex justify-center px-4 lg:px-10 pb-10">
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          className={`border-2 ${colorClasses[plan.color]} bg-gradient-to-br to-white p-8 rounded-3xl shadow-xl max-w-md w-full relative`}
-        >
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs px-3 py-1 rounded-full shadow-lg uppercase tracking-wider">
-            Popular
-          </span>
-
-          <h2
-            style={{ fontFamily: "heading_font" }}
-            className="text-2xl font-bold text-gray-900 mt-4 mb-2 text-center"
+      {/* Plans Section */}
+      <section
+        className={`mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:gap-6 ${
+          plans.length === 1 ? "lg:grid-cols-1 justify-items-center" : "lg:grid-cols-2"
+        }`}
+      >
+        {plans.map((plan, index) => (
+          <motion.div
+            key={index}
+            className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
           >
-            {plan.title}
-          </h2>
+            {/* Badge */}
+            <span
+              className={`absolute -top-3 left-1/2 -translate-x-1/2 ${badgeColors[plan.color]} text-white text-xs px-2 py-1 rounded-full shadow uppercase tracking-wider`}
+            >
+              {plan.type}
+            </span>
 
-          <p className="text-gray-600 text-center mb-6">{plan.description}</p>
-
-          <div className="text-center mb-6">
-            <p className="text-4xl font-bold text-gray-900">
-              ₹{plan.price} <span className="text-lg font-medium text-gray-500">{plan.gst}</span>
-            </p>
-            <p className="text-green-600 font-semibold mt-1">{plan.duration}</p>
-          </div>
-
-          <ul className="space-y-3 mb-6">
-            {plan.features.map((f, i) => (
-              <li key={i} className="flex items-center gap-3 text-gray-700">
-                <span className="text-green-500 text-xl">✔</span> {f}
-              </li>
-            ))}
-          </ul>
-
-          <button
-            onClick={openRazorpay}
-            className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all text-lg"
-          >
-            Pay Now
-          </button>
-        </motion.div>
+            {/* Desktop Layout */}
+            <div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
+              <div className="lg:w-1/3">
+                <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{plan.title}</h2>
+                <p className="text-xs italic mb-4">{plan.description}</p>
+                <p className="text-3xl font-extrabold text-zinc-900">
+                  {plan.price} <span className="text-xl font-normal">{plan.gst}</span>
+                </p>
+                <p className="text-green-500 font-semibold text-sm">{plan.duration}</p>
+              </div>
+              <div className="lg:w-2/3 flex flex-col justify-start">
+                <ul className="space-y-3 text-sm mb-6">
+                  {plan.features.map((feat, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckIcon /> {feat.text}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex justify-center lg:justify-end">
+                  <button
+                    onClick={() => openRazorpay(plan)}
+                    className={`py-3 px-6 rounded-xl ${badgeColors[plan.color]} text-white font-semibold text-lg transition-all`}
+                  >
+                    Pay Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </section>
 
-      {/* Login Popup */}
+      {/* Mobile Bottom Sheet Popup */}
+      {selectedPlan && (
+        <motion.div
+          className="fixed inset-0 bg-black/50 z-50 flex justify-center items-end"
+          onClick={() => setSelectedPlan(null)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="bg-white w-full max-w-md rounded-t-3xl p-6 shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            <button
+              className="text-right w-full mb-4 text-gray-500 font-bold"
+              onClick={() => setSelectedPlan(null)}
+            >
+              Close
+            </button>
+            <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-2">{selectedPlan.title}</h2>
+            <p className="text-sm italic mb-4">{selectedPlan.description}</p>
+            <p className="text-2xl font-bold text-zinc-900 mb-2">{selectedPlan.price} <span className="text-xs">{selectedPlan.gst}</span></p>
+            <p className="text-green-500 text-sm mb-4">{selectedPlan.duration}</p>
+ 
+            <ul className="space-y-2 text-sm mb-4">
+              {selectedPlan.features.map((feat, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <CheckIcon /> {feat.text}
+                </li>
+              ))}
+            </ul>
+
+            <button
+              onClick={() => openRazorpay(selectedPlan)}
+              className={`py-3 px-6 rounded-xl ${badgeColors[selectedPlan.color]} text-white font-semibold text-lg w-full`}
+            >
+              Pay Now
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+
       {showLoginPopup && (
         <LoginPopup
           isOpen={showLoginPopup}
