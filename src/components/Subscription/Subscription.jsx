@@ -27,7 +27,6 @@ export default function SubscriptionPlans() {
       try {
         const user = await getCurrentUser();
         if (!user?.id) {
-          toast.error("Please log in to view subscription plans.");
           return;
         }
         setUserData(user);
