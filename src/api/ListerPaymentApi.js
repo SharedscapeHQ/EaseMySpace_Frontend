@@ -12,7 +12,7 @@ export const createListerOrder = async ({ amount, planName }) => {
   try {
     const res = await requestAxios.post("/create-order", {
       amount,
-      plan_name: planName,
+      planName: planName,
     });
     return res.data;
   } catch (err) {
