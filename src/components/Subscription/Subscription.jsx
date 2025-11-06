@@ -28,7 +28,6 @@ export default function SubscriptionPlans() {
         const user = await getCurrentUser();
         if (!user?.id) {
           toast.error("Please log in to view subscription plans.");
-          setTimeout(() => (window.location.href = "/login"), 1500);
           return;
         }
         setUserData(user);
