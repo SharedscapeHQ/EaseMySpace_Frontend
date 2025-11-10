@@ -20,14 +20,16 @@ export default function ListerSubscription() {
   const plans = [
     {
       id: "standard",
-      type: "Standard",
-      title: "Standard Lister",
-      description: "Access all essential services for property owners.",
-      numericPrice: 999,
-      price: "₹999",
-      gst: "+18% GST",
-      duration: "45 Days",
-      color: "indigo",
+    type: "Standard",
+    title: "Standard Lister",
+    description: "Access all essential services for property owners.",
+    originalPrice: "₹2,999",
+    price: "₹999",
+    numericPrice: 999,
+    savings: "Save ₹2,000!",
+    gst: "+18% GST",
+    duration: "45 Days",
+    color: "indigo",
       features: [
         { text: "Up to 2 property listings", included: true },
         { text: "Unlimited edits & updates", included: true },
@@ -95,44 +97,52 @@ export default function ListerSubscription() {
               {plan.type}
             </span>
 
-            {/* Mobile Layout */}
-            <div className="flex flex-col gap-2 lg:hidden">
-              <h2 style={{ fontFamily: "heading_font" }} className="text-lg font-semibold">
-                {plan.title}
-              </h2>
-              <p className="text-sm text-zinc-700">{plan.price} <span className="text-xs">{plan.gst}</span></p>
-              <p className="text-green-500 text-xs">{plan.duration}</p>
-              <button
-                className={`mt-2 w-full py-2 rounded-lg text-white ${badgeColors[plan.color]}`}
-                onClick={() => setSelectedPlan(plan)}
-              >
-                More Details
-              </button>
-            </div>
+          {/* Mobile Layout */}
+<div className="flex flex-col gap-2 lg:hidden">
+  <h2 style={{ fontFamily: "heading_font" }} className="text-lg font-semibold">
+    {plan.title}
+  </h2>
+  <p className="line-through text-zinc-500 text-base">{plan.originalPrice}</p>
+  <p className="text-sm text-zinc-700">
+    {plan.price} <span className="text-xs">{plan.gst}</span>
+  </p>
+  <p className="text-green-500 text-xs">{plan.savings}</p>
+  <button
+    className={`mt-2 w-full py-2 rounded-lg text-white ${badgeColors[plan.color]}`}
+    onClick={() => setSelectedPlan(plan)}
+  >
+    More Details
+  </button>
+</div>
 
-            {/* Desktop Layout */}
-            <div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
-              <div className="lg:w-1/3">
-                <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{plan.title}</h2>
-                <p className="text-xs italic mb-4">{plan.description}</p>
-                <p className="text-3xl font-extrabold text-zinc-900">
-                  {plan.price} <span className="text-xl font-normal">{plan.gst}</span>
-                </p>
-                <p className="text-green-500 font-semibold text-sm">{plan.duration}</p>
-              </div>
-              <div className="lg:w-2/3 flex flex-col justify-start">
-                <ul className="space-y-3 text-sm mb-6">
-                  {plan.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <CheckIcon /> {feat.text}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex justify-center lg:justify-end">
-                  <ListerPaymentButton plan={plan} userData={userData} onInvoiceGenerated={(url) => setInvoiceUrl(url)} />
-                </div>
-              </div>
-            </div>
+
+           {/* Desktop Layout */}
+<div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
+  <div className="lg:w-1/3">
+    <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">{plan.title}</h2>
+    <p className="text-xs italic mb-4">{plan.description}</p>
+    <div className="mb-4">
+      <p className="line-through text-zinc-500 text-lg">{plan.originalPrice}</p>
+      <p className="text-3xl font-extrabold text-zinc-900">
+        {plan.price} <span className="text-xl font-normal">{plan.gst}</span>
+      </p>
+      <p className="text-green-500 font-semibold text-sm">{plan.savings}</p>
+    </div>
+  </div>
+  <div className="lg:w-2/3 flex flex-col justify-start">
+    <ul className="space-y-3 text-sm mb-6">
+      {plan.features.map((feat, i) => (
+        <li key={i} className="flex items-start gap-2">
+          <CheckIcon /> {feat.text}
+        </li>
+      ))}
+    </ul>
+    <div className="flex justify-center lg:justify-end">
+      <ListerPaymentButton plan={plan} userData={userData} onInvoiceGenerated={(url) => setInvoiceUrl(url)} />
+    </div>
+  </div>
+</div>
+
           </motion.div>
         ))}
       </section>
