@@ -24,7 +24,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
     // },
     ultimate: {
       label: "Ultimate",
-      amount: 1999,
+      amount: 1299,
       description: "45 days validity with all premium services",
     },
   };
