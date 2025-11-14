@@ -209,8 +209,9 @@ export default function NewlyListedProperties() {
                       <span className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
                         {p.title}
                       </span>
-                        {(() => {
+                      {(() => {
   if (!p.created_at) return null;
+
   const created = new Date(p.created_at);
   const now = new Date();
   const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
@@ -219,7 +220,7 @@ export default function NewlyListedProperties() {
 
   let displayText = "";
   if (diffDays === 0) displayText = "Today";
-  else if (diffDays === 1) displayText = "1d ago";
+  else if (diffDays >= 1 && diffDays <= 6) displayText = `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
   else displayText = "a week ago"; 
 
   return (
@@ -228,6 +229,7 @@ export default function NewlyListedProperties() {
     </span>
   );
 })()}
+
                     </div>
                     <div className="flex gap-3 text-blue-500">
                       <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
