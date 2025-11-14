@@ -188,19 +188,25 @@ export default function RecentAddedProperties() {
                       <span className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
                         {p.title}
                       </span>
-                      {(() => {
-    if (!p.created_at) return null;
-    const created = new Date(p.created_at);
-    const now = new Date();
-    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
-    if (diffDays > 10) return null;
+                     {(() => {
+  if (!p.created_at) return null;
+  const created = new Date(p.created_at);
+  const now = new Date();
+  const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
 
-    return (
-     <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[11px] px-1 py-[0.5px]">
-  Listed {diffDays === 0 ? "Today" : diffDays === 1 ? "1d ago" : `${diffDays}d ago`}
-</span>
-    );
-  })()}
+  if (diffDays > 10) return null; 
+
+  let displayText = "";
+  if (diffDays === 0) displayText = "Today";
+  else if (diffDays === 1) displayText = "1d ago";
+  else displayText = "a week ago"; 
+
+  return (
+    <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[9px] px-1 py-[0.5px]">
+      Listed {displayText}
+    </span>
+  );
+})()}
                     </div>
                     <div className="flex gap-3 text-blue-500 dark:text-blue-400">
                       <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
