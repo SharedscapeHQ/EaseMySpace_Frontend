@@ -101,6 +101,19 @@ const PropertyCard = ({ p }) => {
             {p.title?.charAt(0) || "U"}
           </div>
           <span className="font-medium text-sm text-gray-700 dark:text-white">{p.title || "Owner"}</span>
+          {(() => {
+    if (!p.created_at) return null;
+    const created = new Date(p.created_at);
+    const now = new Date();
+    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+    if (diffDays > 10) return null;
+
+    return (
+     <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[11px] px-1 py-[0.5px]">
+  Listed {diffDays === 0 ? "Today" : diffDays === 1 ? "1d ago" : `${diffDays}d ago`}
+</span>
+    );
+  })()}
         </div>
         <div className="flex items-center gap-4 text-blue-600 dark:text-blue-400 text-xl">
           <IoChatboxEllipsesOutline className="cursor-pointer" />

@@ -106,7 +106,7 @@ export default function HeroMobile({ properties }) {
           alt="Explore PGs, flatmates, and rental flats with EaseMySpace"
           className="w-full h-[110%] object-cover"
           loading="eager"
-          fetchpriority="high"
+          fetchPriority="high"
         />
         <p className="sr-only">
           Hero image showing modern rental properties, PG accommodations, and shared flats.

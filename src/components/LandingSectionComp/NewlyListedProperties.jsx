@@ -25,7 +25,7 @@ export default function NewlyListedProperties() {
     async function fetchNewlyListed() {
       setLoading(true);
       try {
-        const { data } = await newlyListedProperties();
+        const { data } = await newlyListedProperties(); 
         const filtered = data
           .filter((p) => p.is_newly_listed && p.status === "approved")
           .sort(
@@ -205,9 +205,23 @@ export default function NewlyListedProperties() {
                       <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-xl">
                         {p.title?.charAt(0) || "U"}
                       </div>
+                      
                       <span className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
                         {p.title}
                       </span>
+                       {(() => {
+    if (!p.created_at) return null;
+    const created = new Date(p.created_at);
+    const now = new Date();
+    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+    if (diffDays > 10) return null;
+
+    return (
+     <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[11px] px-1 py-[0.5px]">
+  Listed {diffDays === 0 ? "Today" : diffDays === 1 ? "1d ago" : `${diffDays}d ago`}
+</span>
+    );
+  })()}
                     </div>
                     <div className="flex gap-3 text-blue-500">
                       <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
