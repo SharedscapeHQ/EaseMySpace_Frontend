@@ -19,6 +19,27 @@ export default function ListerSubscription() {
 
   const plans = [
     {
+  id: "basic",
+  type: "Basic",
+  title: "Basic Lister",
+  description: "Best for owners who want to list a single property at an affordable price.",
+  originalPrice: "₹799",
+  price: "₹299",
+  numericPrice: 299,
+  savings: "Save ₹500!",
+  gst: "+18% GST",
+  duration: "30 Days",
+  color: "orange",
+
+  features: [
+    { text: "1 property listing", included: true },
+    { text: "Unlimited edits & updates", included: true },
+    { text: "WhatsApp lead notifications", included: true },
+    { text: "Standard visibility", included: true },
+    { text: "Basic support", included: true },
+  ],
+},
+    {
       id: "standard",
     type: "Standard",
     title: "Standard Lister",
@@ -41,9 +62,21 @@ export default function ListerSubscription() {
     },
   ];
 
-  const borderColors = { indigo: "border-indigo-400" };
-  const bgColors = { indigo: "from-indigo-50" };
-  const badgeColors = { indigo: "bg-indigo-500" };
+  const borderColors = { 
+  indigo: "border-indigo-400",
+  orange: "border-orange-400"
+};
+
+const bgColors = { 
+  indigo: "from-indigo-50",
+  orange: "from-orange-50"
+};
+
+const badgeColors = { 
+  indigo: "bg-indigo-500",
+  orange: "bg-orange-500"
+};
+
 
   useEffect(() => {
     (async () => {
