@@ -40,13 +40,32 @@ export default function SubscriptionPlans() {
 
   const plans = [
     {
+     type: "trial",
+title: "Trial Plan",
+description: "1 days validity with all premium services",
+originalPrice: "₹599",
+price: "₹99",
+gst: "+18% GST",
+savings: "Save ₹500!",
+color: "yellow",
+      features: [
+        { text: "Up to 1 contact access", included: true },
+        { text: "Personalised Dashboard", included: true },
+        { text: "Post Requirement", included: true },
+        { text: "Re-location assistance (on call)", included: true },
+        { text: "Dedicated Customer Support", included: true },
+        { text: "New listed property alert", included: true },
+        { text: "Post-shifting basic support (If needed)", included: true },
+      ],
+    },
+    {
      type: "ultimate",
 title: "Ultimate Plan",
 description: "45 days validity with all premium services",
 originalPrice: "₹3,799",
-price: "₹1,299",
+price: "₹2,999",
 gst: "+18% GST",
-savings: "Save ₹2,500!",
+savings: "Save ₹800!",
 color: "red",
       features: [
         { text: "Up to 20 contact access", included: true },
@@ -58,6 +77,7 @@ color: "red",
         { text: "Post-shifting basic support (If needed)", included: true },
       ],
     },
+    
   ];
 
   const borderColors = { red: "border-red-400", yellow: "border-yellow-400", indigo: "border-indigo-400" };

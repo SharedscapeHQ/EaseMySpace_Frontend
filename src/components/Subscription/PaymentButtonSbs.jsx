@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import LoginPopup from "./LoginPopup";
 import ReactDOM from "react-dom";
 
-export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
+export default function PaymentButtonSubs({ planName }) {
   const [userData, setUserData] = useState({});
   const [isPaying, setIsPaying] = useState(false);
   const [invoiceUrl, setInvoiceUrl] = useState("");
@@ -22,7 +22,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
 
   const plans = {
     trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
-    ultimate: { amount: 1299, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
+    ultimate: { amount: 2999, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
   };
 
   useEffect(() => {
@@ -30,12 +30,9 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
       try {
         const data = await getCurrentUser();
         setUserData(data);
-        if (data?.subscription_status === "paid") setHasPaid(true);
-      } catch {
-        // User not logged in
-      }
+      } catch {}
     })();
-  }, [setHasPaid]);
+  }, []);
 
   const loadScript = (src) =>
     new Promise((resolve) => {
@@ -90,7 +87,6 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
             });
 
             if (result.success) {
-              setHasPaid(true);
               toast.success("Payment successful!");
               setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
@@ -107,7 +103,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
         prefill: {
           name: userData.firstName || "Guest User",
           email: userData.email || "guest@easemyspace.com",
-          contact: phone ? (phone.startsWith("+91") ? phone : `+91${phone}`) : "",
+          contact: phone.startsWith("+91") ? phone : `+91${phone}`,
         },
         theme: { color: "#6366F1" },
         modal: {
@@ -137,15 +133,12 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
       ? planName.toLowerCase()
       : null;
     if (!planKey) return toast.error("❌ Invalid or missing plan name.");
-
     if (!userData?.id) return setShowLoginPopup(true);
-
     loadRazorpay(planKey);
   };
 
   return (
     <>
-      {/* Overlay while paying */}
       {isPaying &&
         ReactDOM.createPortal(
           <div
@@ -170,15 +163,11 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
                 <path
                   className="opacity-75"
                   fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8H4z"
+                  d="M4 12a 8 8 0 018-8v8H4z"
                 ></path>
               </svg>
-              <p className="text-indigo-600 font-semibold text-lg">
-                Processing your payment...
-              </p>
-              <p className="text-sm text-gray-600 mt-2">
-                Please do not refresh or close the page
-              </p>
+              <p className="text-indigo-600 font-semibold text-lg">Processing your payment...</p>
+              <p className="text-sm text-gray-600 mt-2">Please do not refresh or close the page</p>
             </div>
           </div>,
           document.body
