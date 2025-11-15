@@ -22,7 +22,7 @@ export default function PaymentButtonSubs({ hasPaid, setHasPaid, planName }) {
 
   const plans = {
     trial: { amount: 399, description: "Trial Plan - 7 Days Access, 1 Contact" },
-    ultimate: { amount: 8, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
+    ultimate: { amount: 1299, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
   };
 
   useEffect(() => {
