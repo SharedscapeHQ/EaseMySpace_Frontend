@@ -52,7 +52,7 @@ export default function ListerSubscription() {
     duration: "45 Days",
     color: "indigo",
       features: [
-        { text: "Up to 2 property listings", included: true },
+        { text: "Up to 3 property listings", included: true },
         { text: "Unlimited edits & updates", included: true },
         { text: "WhatsApp lead notifications", included: true },
         { text: "Standard visibility", included: true },
