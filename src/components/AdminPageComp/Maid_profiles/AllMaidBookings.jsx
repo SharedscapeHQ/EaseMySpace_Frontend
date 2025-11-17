@@ -12,7 +12,6 @@ export default function AllMaidBookings() {
       try {
         setLoading(true);
         const res = await getAllBookingsWithDetails();
-        console.log("Bookings API response:", res); // log API response
         setBookings(res.bookings || []);
       } catch (err) {
         console.error("Error fetching bookings:", err);

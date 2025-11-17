@@ -65,6 +65,24 @@ export const getUserSubscription = async () => {
   return res.data;
 };
 
+export const getListerUserSubscription = async () => {
+  const res = await axiosInstance.get("/lister-subscription");
+  return res.data;
+};
+
+export const checkListerUserSubscription = async () => {
+  try {
+    const res = await axiosInstance.get("/lister-subscription/check");
+    return res.data; 
+  } catch (err) {
+    console.error(
+      "❌ Error checking lister subscription:",
+      err.response?.data || err.message
+    );
+    return { active: false, remaining: 0 };
+  }
+};
+
 export const getUnlockedProperties = async () => {
   const res = await axiosInstance.get("/unlocked-contacts");
   return res.data; // array of unlocked property objects
@@ -184,12 +202,96 @@ export const removeSavedProperty = async (propertyId) => {
 export const getSavedProperties = async () => {
   try {
     const res = await axiosInstance.get("/all");
-    return res.data.properties; // array of saved properties
+    return res.data.properties;
   } catch (err) {
     console.error("❌ Error fetching saved properties:", err.response?.data || err.message);
     return [];
   }
 };
+
+export const makeRentPayment = async ({ property_id, room_label, occupancy, amount, deposit }) => {
+  try {
+    const res = await axiosInstance.post("/rent/pay", {
+      property_id,
+      room_label,
+      occupancy,
+      amount,
+      deposit: deposit || 0,
+    });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error making rent payment:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+export const makeMonthlyRentPayment = async ({
+  property_id,
+  user_id,
+  amount,
+  deposit = 0,
+  payment_month,
+  payment_year,
+  room_label = "default",
+  occupancy = "single"
+}) => {
+  try {
+    const res = await axiosInstance.post("/rent/pay/monthly", {
+      property_id,
+      user_id,
+      amount,
+      deposit,
+      payment_month,
+      payment_year,
+      room_label,
+      occupancy
+    });
+    return res.data;
+  } catch (err) {
+    console.error(
+      "❌ Error making monthly rent payment:",
+      err.response?.data || err.message
+    );
+    throw err;
+  }
+};
+
+
+export const getRentPaymentHistory = async () => {
+  try {
+    const res = await axiosInstance.get("/rent/history");
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error fetching rent payment history:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
+export const getPropertiesWithPayments = async () => {
+  try {
+    const res = await axiosInstance.get("/properties-with-payments");
+    return res.data; 
+  } catch (err) {
+    console.error(
+      "❌ Error fetching properties with payments:",
+      err.response?.data || err.message
+    );
+    throw err;
+  }
+};
+
+export const checkIfOccupant = async () => {
+  try {
+    const res = await axiosInstance.get("/check-occupant"); 
+    return res.data.isOccupant;
+    
+  } catch (err) {
+    console.error("❌ Error checking occupant status:", err.response?.data || err.message);
+    return false;
+  }
+};
+
+
 
 
 

@@ -22,7 +22,6 @@ export default function EditMaidModal({ maid, isOpen, onClose, onSave }) {
 
   useEffect(() => {
     if (maid) {
-      console.log("Editing Maid:", maid);
       setForm({
         first_name: maid.first_name || "",
         last_name: maid.last_name || "",

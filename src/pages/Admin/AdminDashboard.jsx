@@ -31,6 +31,9 @@ import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 import Marketing from "../../components/AdminPageComp/Marketing";
 import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
 import AdminQueries from "../../components/AdminPageComp/Maid_profiles/AdminQueries";
+import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
+import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
+import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -133,7 +136,6 @@ const [modalUser, setModalUser] = useState(null);
     setLoadingProps(true);
 
     const { data } = await getAllProperties();
-    console.log("Fetched properties from API:", data);
     
 
     // Ensure always an array, and normalize pricing
@@ -155,11 +157,20 @@ const [modalUser, setModalUser] = useState(null);
 };
 
 
-  const handleApprove = async (id) => {
-    await approveProperty(id);
-    toast.success("Property approved");
+ const handleApprove = async (propertyId) => {
+  try {
+    const res = await approveProperty(propertyId);
+
+    toast.success("Property approved successfully");
     fetchProperties();
-  };
+  } catch (err) {
+    if (err.response?.status === 403) {
+      toast.error("KYC Pending");
+    } else {
+      toast.error("Failed to approve property");
+    }
+  }
+};
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this property?")) {
@@ -558,6 +569,11 @@ const openEditModal = (property) => {
               <OldProperties />
             </section>
           )}
+
+                    {activeTab === "RentPayments" && <RentPaymentsDashboard />}
+                    {activeTab === "allAccounts" && <LandlordAgents />}
+                    {activeTab === "TallyReports" && <LandlordLedgerSummary />}
+          
 
           {activeTab === "Marketing" && <Marketing />}
           {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}

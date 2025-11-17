@@ -43,5 +43,17 @@ export const clearFollowUp = (payload) =>
     withCredentials: true,
   });
 
+  export const getAllRentPayments = () => {
+  return axios.get(`${BASE_URL}/rent-payments`, config);
+};
+
+export const getAllWithdrawals = () => {
+  return axios.get(`${BASE_URL}/withdrawals`, config);
+};
+
+export const approveWithdrawal = (withdrawalId) => {
+  return axios.post(`${BASE_URL}/withdrawals/${withdrawalId}/approve`, {}, config);
+};
+
 
 

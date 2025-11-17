@@ -36,6 +36,10 @@ import WithdrawalRequests from "../../components/OwnerPageComp/WithdrawalRequest
 import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
 import WithdrawalRequestsAgent from "../../components/OwnerPageComp/WithdrawalRequestsAgent";
 import AllMaidBookings from "../../components/AdminPageComp/Maid_profiles/AllMaidBookings";
+import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
+import LandlordWithdrawals from "../../components/OwnerPageComp/LandlordWithdrawals";
+import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
+import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
 
 
 export default function OwnerDashboard() {
@@ -502,7 +506,11 @@ export default function OwnerDashboard() {
                                         {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}
                                         {activeTab === "AgentWithdrawals" && <WithdrawalRequestsAgent />}
                                         {activeTab === "maidBookings" && <AllMaidBookings />} */}
+                                                  {activeTab === "allAccounts" && <LandlordAgents />}
                               
+          {activeTab === "RentPayments" && <RentPaymentsDashboard />}
+          {activeTab === "RentWithdrawals" && <LandlordWithdrawals />}
+                                        {activeTab === "TallyReports" && <LandlordLedgerSummary />}
                     
 
           <EditModal

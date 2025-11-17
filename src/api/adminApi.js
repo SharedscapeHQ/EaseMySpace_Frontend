@@ -108,3 +108,19 @@ export const deleteLocation = (id) => {
 export const sendSMS = (recipient, message) => {
   return adminAxios.post("/sendSMS", { recipient, message });
 };
+
+export const getAllLandlordAgents = () => {
+  return adminAxios.get("/landlord-agents");
+};
+
+export const updateLandlordAgentVerification = (id, verified) => {
+  return adminAxios.patch(`/landlord-agents/${id}/verify`, { verified });
+};
+
+export const getAllAccountAssignments = () => {
+  return adminAxios.get("/assignments");
+};
+
+export const getAllLandlordsLedgerSummary = () => {
+  return adminAxios.get("/landlord-ledger-summary");
+};
