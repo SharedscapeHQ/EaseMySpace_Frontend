@@ -5,6 +5,7 @@ import { saveProperty, removeSavedProperty, getSavedProperties } from "../../api
 import { getCurrentUser } from "../../api/authApi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 import { saveLeadProperty, removeLeadProperty, fetchLeadSavedProperties } from "../../api/leadApi";
+import ShareButton from "./ShareButton";
 
 const SavePropertyButton = ({ propertyId }) => {
   const [saved, setSaved] = useState(false);
@@ -105,8 +106,13 @@ const SavePropertyButton = ({ propertyId }) => {
 
   const isButtonDisabled = isLoggedIn === null;
 
-  return (
-    <>
+return (
+  <>
+    <div className="flex items-center gap-2">
+      {/* Share Button on the left */}
+      {/* <ShareButton /> */}
+
+      {/* Save Button */}
       <motion.button
         onClick={toggleSave}
         disabled={isButtonDisabled}
@@ -140,24 +146,25 @@ const SavePropertyButton = ({ propertyId }) => {
         </AnimatePresence>
         {saved ? "Saved" : "Save"}
       </motion.button>
+    </div>
 
-      {showOtpPopup && (
-        <OtpPopup
-          otpPurpose="save property"
-          onVerified={(verifiedPhone) => {
-            // Set OTP verified and save the verified phone
-            localStorage.setItem("otp_verified", "true");
-            localStorage.setItem("user_verified_mobile", verifiedPhone);
-            setPhone(verifiedPhone);
-            setIsOtpVerified(true);
-            setShowOtpPopup(false);
-            toggleSave();
-          }}
-          onClose={() => setShowOtpPopup(false)}
-        />
-      )}
-    </>
-  );
+    {showOtpPopup && (
+      <OtpPopup
+        otpPurpose="save property"
+        onVerified={(verifiedPhone) => {
+          localStorage.setItem("otp_verified", "true");
+          localStorage.setItem("user_verified_mobile", verifiedPhone);
+          setPhone(verifiedPhone);
+          setIsOtpVerified(true);
+          setShowOtpPopup(false);
+          toggleSave();
+        }}
+        onClose={() => setShowOtpPopup(false)}
+      />
+    )}
+  </>
+);
+
 };
 
 export default SavePropertyButton;

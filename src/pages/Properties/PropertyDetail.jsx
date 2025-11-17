@@ -15,7 +15,9 @@ import RelatedProperties from "./RelatedProperties";
 import Footer from "../../components/Footer";
 import LoginPromptModal from "./LoginPromptModal";
 import EssentialDetails from "./EssentialDetails";
+import EssentialDetailsSub from "./EssentailDetailsSub";
 import SavePropertyButton from "./SavePropertyButton";
+import PropertyHeaderSectionSub from "./PropertyDetailsHeroSub";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -193,14 +195,34 @@ function PropertyDetail() {
           <div className="flex items-center justify-between flex-wrap">
   {/* Left side */}
   <div className="flex items-center gap-2 flex-wrap">
-    <div className="text-base lg:text-xl font-semibold text-gray-800">
+    <div className="text-base lg:text-2xl font-semibold text-gray-800">
       {generateTitle(property.title)}
     </div>
     {property.verified && (
-      <span className="bg-green-500 text-white text-[8px] px-2 py-1 rounded-full flex items-center gap-1">
-        <FiCheckCircle className="text-xs" /> Verified
+      <span className="bg-green-500 text-white text-[8px] lg:text-sm px-2 py-1 rounded-full flex items-center gap-1">
+        <FiCheckCircle className="text-xs lg:text-sm" /> Verified
       </span>
     )}
+   {(() => {
+  if (!property.created_at) return null;
+
+  const created = new Date(property.created_at);
+  const now = new Date();
+  const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 10) return null;
+
+  let label = "";
+  if (diffDays === 0) label = "Added today";
+  else if (diffDays === 1) label = "Added 1 day ago";
+  else label = `Added ${diffDays} days ago`;
+
+  return (
+    <span className="bg-blue-500 text-white text-[8px] lg:text-sm px-2 py-1 rounded-full flex items-center gap-1">
+      {label}
+    </span>
+  );
+})()}
     {/* {visitCount > 0 && (
       <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
         <FiEye className="text-gray-500" /> {visitCount} Visits
@@ -209,21 +231,77 @@ function PropertyDetail() {
   </div>
 
   {/* Right side */}
+  
   <SavePropertyButton propertyId={property.id} />
 </div>
 
-          <PropertyHeaderSection
-            property={property}
-            lightboxIdx={lightboxIdx}
-            setLightboxIdx={setLightboxIdx}
-            stepLightbox={stepLightbox}
-            hasPaid={hasPaid}
-            userMobile={loggedInUser?.phone}
-            setHasPaid={setHasPaid}
-            setShowPlanPopup={setShowPlanPopup}
-          />
+         {property.owner_code === "subdomainEMS221" ? (
+  <PropertyHeaderSectionSub
+    property={property}
+    setLightboxIdx={setLightboxIdx}
+    hasPaid={hasPaid}
+    userMobile={loggedInUser?.phone}
+    setHasPaid={setHasPaid}
+    setShowPlanPopup={setShowPlanPopup}
+  />
+) : (
+  <PropertyHeaderSection
+    property={property}
+    lightboxIdx={lightboxIdx}
+    setLightboxIdx={setLightboxIdx}
+    stepLightbox={stepLightbox}
+    hasPaid={hasPaid}
+    userMobile={loggedInUser?.phone}
+    setHasPaid={setHasPaid}
+    setShowPlanPopup={setShowPlanPopup}
+  />
+)}
 
-         <EssentialDetails property={property} />
+       {property.owner_code === "subdomainEMS221" ? (
+  <EssentialDetailsSub
+    property={property}
+    onPaymentSuccess={(roomLabel, occupancy) => {
+      setProperty((prev) => ({
+        ...prev,
+        pricingOptions: prev.pricingOptions.map((room) =>
+          room.room_label === roomLabel
+            ? {
+                ...room,
+                occupancies: room.occupancies.map((o) =>
+                  o.occupancy === occupancy
+                    ? { ...o, availability: "occupied" }
+                    : o
+                ),
+              }
+            : room
+        ),
+      }));
+    }}
+  />
+) : (
+  <EssentialDetails
+    property={property}
+    onPaymentSuccess={(roomLabel, occupancy) => {
+      setProperty((prev) => ({
+        ...prev,
+        pricingOptions: prev.pricingOptions.map((room) =>
+          room.room_label === roomLabel
+            ? {
+                ...room,
+                occupancies: room.occupancies.map((o) =>
+                  o.occupancy === occupancy
+                    ? { ...o, availability: "occupied" }
+                    : o
+                ),
+              }
+            : room
+        ),
+      }));
+    }}
+  />
+)}
+
+
 
           <div className="bg-white rounded-xl border p-6">
             <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">
