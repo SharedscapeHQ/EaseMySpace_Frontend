@@ -7,7 +7,6 @@ export default {
   ],
   theme: {
     extend: {
-      // You can add your custom styles here if needed
     }
   },
   plugins: [],
