@@ -13,7 +13,7 @@ export default function NavbarRightActions() {
 
       {/* Desktop EMS / FlipUI */}
       
-     <div className=" lg:inline-block group">
+     <div className="lg:hidden group">
   <Link
     to="demand-form"
     className="inline-block text-center px-4 py-2 rounded-full border-2 border-blue-500 font-bold lg:text-base text-xs text-blue-600 bg-white hover:bg-blue-600 hover:text-white transition-all duration-200 shadow-md"
@@ -21,6 +21,26 @@ export default function NavbarRightActions() {
     Post Requirement
   </Link>
 </div>
+    <div className="hidden lg:inline-block group">
+  <Link
+    to="demand-form"
+    className="inline-block text-center px-4 py-2 rounded-full lg:text-base text-xs bg-white hover:bg-blue-600 hover:text-white transition-all duration-200"
+  >
+    Post Requirement
+  </Link>
+</div>
+
+<div className="hidden lg:inline-block group">
+<a
+  href="https://property.easemyspace.in/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-block text-center px-4 py-2 rounded-full lg:text-base text-xs bg-white hover:bg-blue-600 hover:text-white transition-all duration-200"
+>
+  Become a Partner
+</a>
+</div>
+
 
 
       {/* Mobile Add Property Button
