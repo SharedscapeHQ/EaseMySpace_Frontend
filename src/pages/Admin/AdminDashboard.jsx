@@ -34,6 +34,7 @@ import AdminQueries from "../../components/AdminPageComp/Maid_profiles/AdminQuer
 import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
 import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
 import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
+import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -573,6 +574,8 @@ const openEditModal = (property) => {
                     {activeTab === "RentPayments" && <RentPaymentsDashboard />}
                     {activeTab === "allAccounts" && <LandlordAgents />}
                     {activeTab === "TallyReports" && <LandlordLedgerSummary />}
+                    {activeTab === "RequestsLandlord" && <RequestsTableLandlord />}
+                    {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
           
 
           {activeTab === "Marketing" && <Marketing />}

@@ -16,9 +16,11 @@ import {
   FiChevronDown,
   FiChevronRight,
   FiDollarSign,
+  FiPhone,
 } from "react-icons/fi";
 import { LuCrown } from "react-icons/lu";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
+import { CiViewList } from "react-icons/ci";
 import { FaCommentSms } from "react-icons/fa6";
 
 export default function Sidebar({
@@ -97,6 +99,8 @@ const sections = [
             { label: "All Accounts", value: "allAccounts", icon: <FiUsers /> },
             { label: "Rent Payments", value: "RentPayments", icon: <FiDollarSign /> },
             { label: "Tally Reports", value: "TallyReports", icon: <FiClipboard /> },
+      { label: "CallBack Requests", value: "RequestsLandlord", icon: <VscGitPullRequestGoToChanges /> },
+      { label: "Complaints", value: "ComplaintLandlord", icon: <CiViewList /> },
           ],
         },
       ]),
@@ -111,7 +115,7 @@ const sections = [
         badge: pendingCount,
       },
       { label: "Send SMS", value: "SendSMS", icon: <FaCommentSms /> },
-      { label: "Marketing", value: "Marketing", icon: <FiStar /> },
+      // { label: "Marketing", value: "Marketing", icon: <FiStar /> },
     ],
   },
 ];

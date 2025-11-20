@@ -124,3 +124,11 @@ export const getAllAccountAssignments = () => {
 export const getAllLandlordsLedgerSummary = () => {
   return adminAxios.get("/landlord-ledger-summary");
 };
+
+export const getAllComplaints = () => {
+  return adminAxios.get("/complaints");
+};
+
+export const resolveComplaint = (id) => {
+  return adminAxios.patch(`/complaints/${id}/resolve`);
+};
