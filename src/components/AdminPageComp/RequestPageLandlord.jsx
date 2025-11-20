@@ -11,7 +11,7 @@ export default function ComplaintsTable() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingIds, setLoadingIds] = useState({});
-  const [filter, setFilter] = useState("all"); // all | pending | resolved
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     fetchComplaints();
@@ -20,7 +20,7 @@ export default function ComplaintsTable() {
   const fetchComplaints = async () => {
     try {
       const res = await getAllComplaints();
-      setComplaints(res.data.complaints || []);
+      setComplaints(res?.data?.complaints || []);
     } catch (err) {
       toast.error("Failed to load complaints");
     } finally {
@@ -34,14 +34,18 @@ export default function ComplaintsTable() {
     try {
       const res = await resolveComplaint(id);
 
+      // safely extract complaint data
+      const updatedComplaint =
+        res?.complaint || res?.data?.complaint || {};
+
       setComplaints((prev) =>
         prev.map((c) =>
           c.id === id
             ? {
                 ...c,
                 is_resolved: true,
-                resolved_by_firstname: res.complaint.resolved_by_firstname,
-                resolved_at: res.complaint.resolved_at,
+                resolved_by_firstname: updatedComplaint.resolved_by_firstname || "Admin",
+                resolved_at: updatedComplaint.resolved_at || new Date().toISOString(),
               }
             : c
         )
@@ -100,10 +104,11 @@ export default function ComplaintsTable() {
 
       <h2 className="text-lg font-semibold mb-4">All Complaints</h2>
 
-      <table className="min-w-full text-sm text-gray-800">
-        <thead className="bg-gray-100 text-gray-700 text-sm">
+      <table className="min-w-full text-sm text-gray-800 border-collapse">
+        <thead className="bg-gray-100 text-gray-700 text-sm border-b">
           <tr>
             <th className="px-4 py-3 text-left font-semibold">User</th>
+            <th className="px-4 py-3 text-left font-semibold">Subject</th>
             <th className="px-4 py-3 text-left font-semibold">Complaint</th>
             <th className="px-4 py-3 text-left font-semibold">Created At</th>
             <th className="px-4 py-3 text-left font-semibold">Resolved By</th>
@@ -116,46 +121,70 @@ export default function ComplaintsTable() {
         <tbody>
           {filteredComplaints.length === 0 ? (
             <tr>
-              <td colSpan="7" className="text-center py-5 text-gray-500">
+              <td colSpan="8" className="text-center py-6 text-gray-500">
                 No complaints found.
               </td>
             </tr>
           ) : (
             filteredComplaints.map((c) => (
-              <tr key={c.id} className="border-b even:bg-gray-50">
-                <td className="px-4 py-3">
-                  {c.firstName} {c.lastName} <br />
-                  <span className="text-xs text-gray-600">{c.email}</span>
+              <tr
+                key={c.id}
+                className="border-b even:bg-gray-50 hover:bg-gray-100 transition"
+              >
+                {/* USER */}
+                <td className="px-4 py-4">
+                  <div className="font-medium text-gray-900">
+                    {c.raised_firstname} {c.raised_lastname}
+                  </div>
+                  <div className="text-xs text-gray-600">{c.raised_email}</div>
+                  <div className="text-xs text-gray-600">{c.raised_phone}</div>
                 </td>
 
-                <td className="px-4 py-3 max-w-xs break-words">{c.message}</td>
+                {/* SUBJECT */}
+                <td className="px-4 py-4 font-semibold text-gray-900">
+                  {c.subject || "—"}
+                </td>
 
-                <td className="px-4 py-3">{formatDate(c.created_at)}</td>
+                {/* MESSAGE */}
+                <td className="px-4 py-4 max-w-xs break-words text-gray-700">
+                  {c.message}
+                </td>
 
-                <td className="px-4 py-3">
+                {/* CREATED DATE */}
+                <td className="px-4 py-4">{formatDate(c.created_at)}</td>
+
+                {/* RESOLVED BY */}
+                <td className="px-4 py-4">
                   {c.is_resolved ? c.resolved_by_firstname : "—"}
                 </td>
 
-                <td className="px-4 py-3">
+                {/* RESOLVED AT */}
+                <td className="px-4 py-4">
                   {c.is_resolved ? formatDate(c.resolved_at) : "—"}
                 </td>
 
-                <td className="px-4 py-3">
+                {/* STATUS */}
+                <td className="px-4 py-4">
                   {c.is_resolved ? (
-                    <span className="text-green-600 font-medium">Resolved</span>
+                    <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
+                      Resolved
+                    </span>
                   ) : (
-                    <span className="text-red-600 font-medium">Pending</span>
+                    <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded text-xs font-medium">
+                      Pending
+                    </span>
                   )}
                 </td>
 
-                <td className="px-4 py-3">
+                {/* ACTION */}
+                <td className="px-4 py-4">
                   {c.is_resolved ? (
-                    <span className="text-gray-500 text-sm">—</span>
+                    <span className="text-gray-400 text-sm">—</span>
                   ) : (
                     <button
                       onClick={() => handleResolve(c.id)}
                       disabled={loadingIds[c.id]}
-                      className="bg-indigo-600 text-white text-xs px-3 py-1 rounded hover:bg-indigo-700 disabled:opacity-50"
+                      className="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded hover:bg-indigo-700 disabled:opacity-50 shadow-sm"
                     >
                       {loadingIds[c.id] ? "Resolving..." : "Resolve"}
                     </button>
@@ -166,7 +195,6 @@ export default function ComplaintsTable() {
           )}
         </tbody>
       </table>
-
     </div>
   );
 }
