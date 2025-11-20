@@ -99,7 +99,7 @@ const sections = [
             { label: "All Accounts", value: "allAccounts", icon: <FiUsers /> },
             { label: "Rent Payments", value: "RentPayments", icon: <FiDollarSign /> },
             { label: "Tally Reports", value: "TallyReports", icon: <FiClipboard /> },
-      { label: "CallBack Requests", value: "RequestsLandlord", icon: <VscGitPullRequestGoToChanges /> },
+      { label: "Contact Sales", value: "RequestsLandlord", icon: <VscGitPullRequestGoToChanges /> },
       { label: "Complaints", value: "ComplaintLandlord", icon: <CiViewList /> },
           ],
         },
