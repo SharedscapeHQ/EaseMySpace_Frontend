@@ -132,3 +132,11 @@ export const getAllComplaints = () => {
 export const resolveComplaint = (id) => {
   return adminAxios.patch(`/complaints/${id}/resolve`);
 };
+
+export const getAllSalesInquiries = () => {
+  return adminAxios.get("/sales-inquiries");
+};
+
+export const updateSalesInquiry = (id, data) => {
+  return adminAxios.patch(`/sales-inquiries/${id}/action`, data);
+};
