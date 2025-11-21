@@ -571,7 +571,7 @@ const openEditModal = (property) => {
               <OldProperties />
             </section>
           )}
-
+ 
                     {activeTab === "RentPayments" && <RentPaymentsDashboard />}
                     {activeTab === "allAccounts" && <LandlordAgents />}
                     {activeTab === "TallyReports" && <LandlordLedgerSummary />}

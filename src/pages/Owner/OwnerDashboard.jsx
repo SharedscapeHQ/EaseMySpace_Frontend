@@ -510,7 +510,7 @@ export default function OwnerDashboard() {
                                         {activeTab === "maidBookings" && <AllMaidBookings />} */}
                                                   {activeTab === "allAccounts" && <LandlordAgents />}
                               
-          {activeTab === "RentPayments" && <RentPaymentsDashboard />}
+                 {activeTab === "RentPayments" && <RentPaymentsDashboard />}
           {activeTab === "RentWithdrawals" && <LandlordWithdrawals />}
                                         {activeTab === "TallyReports" && <LandlordLedgerSummary />}
                                         {activeTab === "RequestsLandlord" && <ContactSalesTable />}

@@ -102,7 +102,7 @@ const sections = [
       { label: "Contact Sales", value: "RequestsLandlord", icon: <VscGitPullRequestGoToChanges /> },
       { label: "Complaints", value: "ComplaintLandlord", icon: <CiViewList /> },
           ],
-        },
+        }, 
       ]),
   {
     title: "Communication",
