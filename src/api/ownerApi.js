@@ -55,5 +55,8 @@ export const approveWithdrawal = (withdrawalId) => {
   return axios.post(`${BASE_URL}/withdrawals/${withdrawalId}/approve`, {}, config);
 };
 
+export const getPlatformRevenue = () => {
+  return axios.get(`${BASE_URL}/platform/revenue`, config);
+};
 
 
