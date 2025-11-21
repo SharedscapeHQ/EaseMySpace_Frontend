@@ -15,10 +15,8 @@ export default function PayRent() {
     try {
       setLoading(true);
       const res = await getPropertiesWithPayments();
-      console.log("📦 Properties with payments:", res);
       setProperties(res || []);
     } catch (err) {
-      console.error("❌ Failed to fetch properties:", err);
       toast.error("Failed to load properties.");
     } finally {
       setLoading(false);

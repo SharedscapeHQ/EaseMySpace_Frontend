@@ -16,7 +16,6 @@ export default function RentPaymentsDashboard() {
     setLoading(true);
     fetchAllRentPayments()
       .then((res) => {
-        console.log("API Response:", res.data);
         setPayments(res.data || []);
       })
       .catch(console.error)

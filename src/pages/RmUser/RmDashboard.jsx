@@ -6,6 +6,10 @@ import AssignedUserBooking from "../../components/RmUserComp/AssignedUserBooking
 import AssignedUsers from "../../components/RmUserComp/AssignedUsers";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 import LeadsTable from "../../components/RmUserComp/LeadsTable";
+import LandlordAgents from "../../components/AdminPageComp/LandlordAgents"
+import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
+import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
+import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 
 export default function RMDashboard() {
   const [activeTab, setActiveTab] = useState("BookingSchedule");
@@ -30,6 +34,12 @@ export default function RMDashboard() {
             <RequestsTable />
           </section>
         )}
+        {activeTab === "allAccounts" && <LandlordAgents />}
+        {activeTab === "RentPayments" && <RentPaymentsDashboard />}
+        {activeTab === "RequestsLandlord" && <ContactSalesTable />}
+        {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
+
+
       </main>
     </div>
   );

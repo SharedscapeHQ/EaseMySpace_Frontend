@@ -62,6 +62,7 @@ const sections = [
       { label: "Top Locations", value: "ManageLocations", icon: <FiMapPin /> },
       { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },
       { label: "Posted Requirement", value: "PostRequirement", icon: <FiClipboard /> },
+      { label: "Property Reports", value: "PropertyReports", icon: <FiFlag /> },
       ...(role === "Owner"
         ? [
             { label: "Visit Track", value: "VisitTrack", icon: <FiEye /> },
@@ -79,6 +80,7 @@ const sections = [
             { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
             { label: "RM Assignments", value: "RMAssignments", icon: <FiUsers /> },
             { label: "Withdrawal Requests", value: "Withdrawals", icon: <FiDownload /> },
+            { label: "Platform Revenue", value: "platformRevenue", icon: <FiDownload /> },
           ],
         },
         {
@@ -87,7 +89,7 @@ const sections = [
           items: [
             { label: "All Accounts", value: "allAccounts", icon: <FiUsers /> },
             { label: "Rent Payments", value: "RentPayments", icon: <FiDollarSign /> },
-            { label: "Rent Withdrawals", value: "RentWithdrawals", icon: <FiDownload /> },
+            { label: "Rent Withdrawals", value: "RentWithdrawals", icon: <FiDollarSign /> },
           ],
         },
       ]
