@@ -41,6 +41,7 @@ import LandlordWithdrawals from "../../components/OwnerPageComp/LandlordWithdraw
 import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
 import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
+import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 
 
 export default function OwnerDashboard() {
@@ -512,7 +513,7 @@ export default function OwnerDashboard() {
           {activeTab === "RentPayments" && <RentPaymentsDashboard />}
           {activeTab === "RentWithdrawals" && <LandlordWithdrawals />}
                                         {activeTab === "TallyReports" && <LandlordLedgerSummary />}
-                                        {activeTab === "RequestsLandlord" && <RequestsTableLandlord />}
+                                        {activeTab === "RequestsLandlord" && <ContactSalesTable />}
                                         {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
                     
 
