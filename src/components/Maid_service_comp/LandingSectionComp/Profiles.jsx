@@ -9,7 +9,6 @@ export default function Profiles() {
   useEffect(() => {
     const loadProfiles = async () => {
       const data = await fetchKycVerifiedProfiles();
-      console.log("Fetched KYC Verified Profiles:", data);
       setProfiles(data);
       setLoading(false);
     };

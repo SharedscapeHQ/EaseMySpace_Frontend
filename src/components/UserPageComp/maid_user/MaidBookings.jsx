@@ -13,14 +13,12 @@ export default function MaidBookings() {
   useEffect(() => {
     async function loadBookings() {
       if (!userId) {
-        console.log("❌ No userId found in localStorage");
         setLoading(false);
         return;
       }
 
       try {
         const data = await fetchUserBookings(userId);
-        console.log("✅ Fetched bookings data:", data);
         setBookings(data || []);
       } catch (err) {
         console.error("❌ Failed to fetch bookings:", err);

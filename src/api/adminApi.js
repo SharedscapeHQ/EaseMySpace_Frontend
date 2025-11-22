@@ -140,3 +140,11 @@ export const getAllSalesInquiries = () => {
 export const updateSalesInquiry = (id, data) => {
   return adminAxios.patch(`/sales-inquiries/${id}/action`, data);
 };
+
+export const getAllPropertyReports = () => {
+  return adminAxios.get("/property-reports");
+};
+
+export const resolvePropertyReport = (id, data) => {
+  return adminAxios.patch(`/property-reports/${id}/resolve`, data);
+};

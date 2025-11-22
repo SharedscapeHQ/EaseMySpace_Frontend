@@ -5,7 +5,6 @@ export default function BookingPopup({ profile, selectedPlan, selectedDate, sele
   const [loading, setLoading] = useState(false);
 
   const handleConfirmBooking = async () => {
-    console.log("Booking triggered");
 
     // Validate required fields
     if (!profile?.id || !selectedPlan?.label || !selectedPlan?.price || !selectedDate || !selectedTime) {
@@ -32,12 +31,10 @@ export default function BookingPopup({ profile, selectedPlan, selectedDate, sele
       booking_time: selectedTime,
     };
 
-    console.log("Booking data prepared:", bookingData);
 
     try {
       setLoading(true);
       const response = await addWorkerBooking(bookingData);
-      console.log("Booking response:", response);
       alert("Booking successful! 🎉");
       onClose();
     } catch (err) {
