@@ -29,7 +29,7 @@ export default function LoginPromptModal({ onClose, onAction, onSkip }) {
         </h2>
 
         {/* Message */}
-        <p className="text-gray-600 text-sm mb-6 text-center">
+        <div className="text-gray-600 text-sm mb-6 text-center">
           Log in to explore full property details and enjoy your personalized dashboard:
           <ul className="list-disc list-inside mt-2 text-left text-gray-700">
             <li>Recently viewed properties</li>
@@ -37,7 +37,7 @@ export default function LoginPromptModal({ onClose, onAction, onSkip }) {
             <li>Raise queries for any issues</li>
           </ul>
           Or skip for now and browse anonymously.
-        </p>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-3">
