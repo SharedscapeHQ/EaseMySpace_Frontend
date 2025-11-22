@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import brandLogo from "/navbar-assets/brand-logo.png";
-import { logoutUser } from "../api/authApi";
+import { logoutUser, getCurrentUser  } from "../api/authApi";
 
 import Hamburger from "./NavbarComp/Hamburger";
 import ProfileDropdown from "./NavbarComp/ProfileDropdown";
@@ -11,10 +11,7 @@ import NavbarRightActions from "./NavbarComp/NavbarRightActions";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(() => {
-    const cache = localStorage.getItem("user");
-    return cache ? JSON.parse(cache) : null;
-  });
+  const [user, setUser] = useState(null);
   const [isVerified, setIsVerified] = useState(localStorage.getItem("otp_verified") === "true");
 
   const syncUser = useCallback(() => {
@@ -24,6 +21,15 @@ export default function Navbar() {
     const otpStatus = localStorage.getItem("otp_verified");
     setIsVerified(otpStatus === "true");
   }, []);
+
+  useEffect(() => {
+  async function fetchUser() {
+    const me = await getCurrentUser(); 
+    setUser(me);
+  }
+
+  fetchUser();
+}, []);
 
   useEffect(() => {
     window.addEventListener("storage", syncUser);
@@ -51,9 +57,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try { await logoutUser(); } catch {}
-    localStorage.clear();
-    window.dispatchEvent(new Event("auth-change"));
-    navigate("/");
+    setUser(null);
+navigate("/");
   };
 
   useEffect(() => {

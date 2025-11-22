@@ -98,11 +98,8 @@ export default function Agreement() {
     return <p className="text-center text-gray-500 mt-10">No agreements found.</p>;
 
   return (
-    <div className="p-6 space-y-6">
-      <h2 className="text-2xl font-semibold text-indigo-700 flex items-center gap-2">
-        <FiFileText /> Rent Agreements
-      </h2>
-
+    <div className=" space-y-6">
+      
       <div className="space-y-4">
         {properties.map((property) => (
           <div

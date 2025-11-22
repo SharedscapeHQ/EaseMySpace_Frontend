@@ -107,55 +107,67 @@ export default function DownloadReceipt() {
     };
   };
 
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold text-indigo-700 flex items-center gap-2 mb-4">
-        <FiFileText /> Download Rent Receipts
-      </h2>
+return (
+  <div className=" mx-auto">
 
-      {loading ? (
-        <ul className="space-y-3">
-          {Array(3)
-            .fill(0)
-            .map((_, idx) => (
-              <li
-                key={idx}
-                className="flex justify-between items-center border p-3 rounded-lg hover:bg-gray-50 animate-pulse"
-              >
-                <div className="space-y-2 w-full">
-                  <div className="h-4 bg-gray-300 rounded w-1/3"></div>
-                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                </div>
-                <div className="h-8 w-24 bg-gray-300 rounded"></div>
-              </li>
-            ))}
-        </ul>
-      ) : receipts.length ? (
-        <ul className="space-y-3">
-          {receipts.map((r) => (
-            <li
-              key={r.id}
-              className="flex justify-between items-center border p-3 rounded-lg hover:bg-gray-50"
+
+    {/* Loading State */}
+    {loading ? (
+      <div className="space-y-4">
+        {Array(4)
+          .fill(0)
+          .map((_, idx) => (
+            <div
+              key={idx}
+              className="border border-gray-200 p-4 rounded-xl shadow-sm animate-pulse"
             >
-              <div>
-                <p className="font-semibold">{r.property}</p>
-                <p className="text-sm text-gray-500">
-                  Tenant: {r.tenant} | Month/Year: {r.paymentMonth}/{r.paymentYear} | Payment Date: {r.date} | Rs {r.amount}
-                  {r.deposit > 0 ? ` | Deposit: Rs ${r.deposit}` : ""}
+              <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+            </div>
+          ))}
+      </div>
+    ) : receipts.length ? (
+      <div className="space-y-4">
+        {receipts.map((r) => (
+          <div
+            key={r.id}
+            className="border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer bg-white"
+          >
+            <div className="flex justify-between items-start">
+              <div className="space-y-1">
+                <p className="font-semibold text-gray-800">{r.property}</p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium text-gray-700">Tenant:</span> {r.tenant}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {r.paymentMonth}/{r.paymentYear} | Paid on: {r.date}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Rent: <span className="font-medium">₹{r.amount}</span>
+                  {r.deposit > 0 && (
+                    <> | Deposit: <span className="font-medium">₹{r.deposit}</span></>
+                  )}
                 </p>
               </div>
+
               <button
                 onClick={() => generatePDF(r)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-sm"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm shadow-md transition-all"
               >
                 Download PDF
               </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-center text-gray-500 mt-5">No receipts found.</p>
-      )}
-    </div>
-  );
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="text-center text-gray-500 mt-8">
+        <div className="text-6xl mb-4">📄</div>
+        <p className="text-lg font-medium">No receipts available yet</p>
+        <p className="text-sm mt-1">Generate receipts once your tenant makes rent payments.</p>
+      </div>
+    )}
+  </div>
+);
+
 }
