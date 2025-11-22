@@ -105,7 +105,16 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
     },
   ];
 
-  const handleTabClick = (value) => setActiveTab(value);
+  const handleTabClick = (value) => {
+  setActiveTab(value);
+
+  if (window.innerWidth < 1024) {
+    setMobileExpandedGroup(null);
+    setMobileExpandedSubGroup(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+  }
+};
 
   return (
     <>
