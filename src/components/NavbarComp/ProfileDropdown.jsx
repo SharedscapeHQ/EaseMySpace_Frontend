@@ -15,7 +15,7 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
       >
         {user && (
           <span 
-  className="hidden sm:inline text-sm font-semibold tracking-wide"
+  className="hidden capitalize sm:inline text-sm font-semibold tracking-wide"
   style={{ 
     fontFamily: "heading_font",
     background: "linear-gradient(to right, #3b82f6, #6366f1)",
