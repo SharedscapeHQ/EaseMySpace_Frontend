@@ -5,7 +5,7 @@ import { saveProperty, removeSavedProperty, getSavedProperties } from "../../api
 import { getCurrentUser } from "../../api/authApi";
 import OtpPopup from "../../pages/Properties/OtpPopup";
 import { saveLeadProperty, removeLeadProperty, fetchLeadSavedProperties } from "../../api/leadApi";
-import ShareButton from "./ShareButton";
+import ShareReportActions from "./ShareReportActions";
 
 const SavePropertyButton = ({ propertyId }) => {
   const [saved, setSaved] = useState(false);
@@ -109,8 +109,8 @@ const SavePropertyButton = ({ propertyId }) => {
 return (
   <>
     <div className="flex items-center gap-2">
-      {/* Share Button on the left */}
-      {/* <ShareButton /> */}
+
+<ShareReportActions propertyId={propertyId} />
 
       {/* Save Button */}
       <motion.button

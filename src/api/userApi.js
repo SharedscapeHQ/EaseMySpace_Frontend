@@ -291,6 +291,20 @@ export const checkIfOccupant = async () => {
   }
 };
 
+export const submitPropertyReport = async ({ propertyId, type, message }) => {
+  try {
+    const res = await axiosInstance.post("/report", {
+      propertyId,
+      reportType: type, 
+      message
+    });
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error submitting property report:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
 
 
 
