@@ -28,20 +28,28 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
 
         )}
 
-        {user ? (
-         <div
-         style={{ fontFamily: "heading_font" }}
-  className="w-7 h-7 ml-1 sm:w-8 text-xl sm:h-8 rounded-full flex items-center justify-center font-bold text-white 
-             bg-gradient-to-br from-blue-500 to-indigo-600 
-             shadow-lg border-2 border-white 
-             transition-transform duration-300 transform hover:scale-110" 
->
-  {user.firstName[0].toUpperCase()}
-</div>
+       {user ? (
+  user.profile_image ? (
+    <img
+      src={user.profile_image}
+      alt={user.firstName}
+      className="w-7 h-7 ml-1 sm:w-10 sm:h-10 rounded-full object-cover shadow-lg border-1 border-white transition-transform duration-300 transform hover:scale-110"
+    />
+  ) : (
+    <div
+      style={{ fontFamily: "heading_font" }}
+      className="w-7 h-7 ml-1 sm:w-8 text-xl sm:h-8 rounded-full flex items-center justify-center font-bold text-white 
+                 bg-gradient-to-br from-blue-500 to-indigo-600 
+                 shadow-lg border-2 border-white 
+                 transition-transform duration-300 transform hover:scale-110"
+    >
+      {user.firstName[0].toUpperCase()}
+    </div>
+  )
+) : (
+  <FaUserCircle className="text-2xl" />
+)}
 
-        ) : (
-          <FaUserCircle className="text-2xl" />
-        )}
       </button>
 
       <AnimatePresence>

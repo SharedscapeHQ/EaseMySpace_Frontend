@@ -305,6 +305,16 @@ export const submitPropertyReport = async ({ propertyId, type, message }) => {
   }
 };
 
+export const updateUserProfile = async (updatedData) => {
+  try {
+    const res = await axiosInstance.put("/update-profile", updatedData);
+    return res.data;
+  } catch (err) {
+    console.error("❌ Error updating profile:", err.response?.data || err.message);
+    throw err;
+  }
+};
+
 
 
 

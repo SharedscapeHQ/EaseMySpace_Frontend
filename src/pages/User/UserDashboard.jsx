@@ -30,6 +30,7 @@ import ListerPlanDetails from "../../components/UserPageComp/ListerPlanDetails";
 
 import { FiClock } from "react-icons/fi";
 import { AiOutlineWhatsApp } from "react-icons/ai";
+import MyProfile from "../../components/UserPageComp/MyProfile";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -46,6 +47,7 @@ const TAB_TITLES = {
   PayRent: "Pay Your Rent",
   DownloadReceipt: "Download Rent Receipts",
   Agreement: "Rental Agreement",
+  MyProfile: "My Profile",
 };
 
 function LoadingMessage({ message }) {
@@ -73,7 +75,7 @@ export default function UserDashboard() {
 
   const getInitialTab = () => {
     const params = new URLSearchParams(location.search);
-    return params.get("tab") || "MyProperties";
+    return params.get("tab") || "MyProfile";
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
@@ -248,6 +250,7 @@ useEffect(() => {
             {activeTab === "Chat" && <UserChat />}
             {activeTab === "DedicatedRM" && user && <DedicatedRM userId={user.id} />}
             {activeTab === "SavedProperties" && <SavedProperties />}
+            {activeTab === "MyProfile" && <MyProfile />}
 
             {["PayRent", "DownloadReceipt", "Agreement"].includes(activeTab) &&
               !isOccupant && (
