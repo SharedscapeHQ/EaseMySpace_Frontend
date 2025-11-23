@@ -43,6 +43,8 @@ import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedger
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 import PlatformRevenueTable from "../../components/OwnerPageComp/PlatformRevenueTable";
+import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
+
 
 
 export default function OwnerDashboard() {
@@ -517,6 +519,7 @@ export default function OwnerDashboard() {
                                         {activeTab === "RequestsLandlord" && <ContactSalesTable />}
                                         {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
                                         {activeTab === "platformRevenue" && <PlatformRevenueTable />}
+                                        {activeTab === "PropertyReports" && <ManagePropertyReport />}
                     
 
           <EditModal

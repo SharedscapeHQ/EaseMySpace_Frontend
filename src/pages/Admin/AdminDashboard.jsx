@@ -36,6 +36,7 @@ import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
 import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
+import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -577,6 +578,7 @@ const openEditModal = (property) => {
                     {activeTab === "TallyReports" && <LandlordLedgerSummary />}
                     {activeTab === "RequestsLandlord" && <ContactSalesTable />}
                     {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
+                    {activeTab === "PropertyReports" && <ManagePropertyReport />}
           
 
           {activeTab === "Marketing" && <Marketing />}
