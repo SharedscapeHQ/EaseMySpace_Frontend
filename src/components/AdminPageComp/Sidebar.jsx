@@ -157,7 +157,7 @@ const sections = [
                 <div
                   className={`fixed top-32 left-0 w-full bg-white shadow-lg z-50 border-t transition-all duration-300 ease-in-out ${
                     openSections[title]
-                      ? "max-h-64 opacity-100"
+                      ? "min-h-70 opacity-100"
                       : "max-h-0 opacity-0 overflow-hidden"
                   }`}
                 >
