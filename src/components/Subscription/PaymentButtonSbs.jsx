@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
 import { getCurrentUser } from "../../api/authApi";
-import InvoiceModal from "./InvoiceModal";
 import { useNavigate } from "react-router-dom";
 import LoginPopup from "./LoginPopup";
 import ReactDOM from "react-dom";
 
-export default function PaymentButtonSubs({ planName }) {
+export default function PaymentButtonSubs({ planName, onPaymentSuccess  }) {
   const [userData, setUserData] = useState({});
   const [isPaying, setIsPaying] = useState(false);
-  const [invoiceUrl, setInvoiceUrl] = useState("");
-  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const navigate = useNavigate();
@@ -88,8 +85,7 @@ export default function PaymentButtonSubs({ planName }) {
 
             if (result.success) {
               toast.success("Payment successful!");
-              setInvoiceUrl(result.data.invoice_url);
-              setShowInvoiceModal(true);
+              if (onPaymentSuccess) onPaymentSuccess(result.data.invoice_url);
             } else {
               toast.error("⚠️ Payment verification failed!");
             }
@@ -190,11 +186,7 @@ export default function PaymentButtonSubs({ planName }) {
         onLoginClick={goToLogin}
       />
 
-      <InvoiceModal
-        isOpen={showInvoiceModal}
-        onClose={() => setShowInvoiceModal(false)}
-        invoiceUrl={invoiceUrl}
-      />
+     
     </>
   );
 }

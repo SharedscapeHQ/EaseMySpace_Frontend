@@ -5,22 +5,46 @@ import toast from "react-hot-toast";
 import PaymentButtonSubs from "./PaymentButtonSbs";
 import Footer from "../Footer";
 import { getCurrentUser } from "../../api/authApi";
+import InvoiceModal from "./InvoiceModal";
 
 // Icons
 const CheckIcon = () => (
-  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+  <svg
+    className="w-4 h-4 text-green-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M5 13l4 4L19 7"
+    />
   </svg>
 );
 const CrossIcon = () => (
-  <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+  <svg
+    className="w-4 h-4 text-red-400"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M6 18L18 6M6 6l12 12"
+    />
   </svg>
 );
 
 export default function SubscriptionPlans() {
   const [userData, setUserData] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const [invoiceUrl, setInvoiceUrl] = useState("");
+const [showInvoiceModal, setShowInvoiceModal] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -40,14 +64,14 @@ export default function SubscriptionPlans() {
 
   const plans = [
     {
-     type: "trial",
-title: "Trial Plan",
-description: "1 days validity with all premium services",
-originalPrice: "₹599",
-price: "₹99",
-gst: "+18% GST",
-savings: "Save ₹500!",
-color: "yellow",
+      type: "trial",
+      title: "Trial Plan",
+      description: "1 days validity with all premium services",
+      originalPrice: "₹599",
+      price: "₹99",
+      gst: "+18% GST",
+      savings: "Save ₹500!",
+      color: "yellow",
       features: [
         { text: "Up to 1 contact access", included: true },
         { text: "Personalised Dashboard", included: true },
@@ -59,14 +83,14 @@ color: "yellow",
       ],
     },
     {
-     type: "ultimate",
-title: "Ultimate Plan",
-description: "45 days validity with all premium services",
-originalPrice: "₹3,799",
-price: "₹2,999",
-gst: "+18% GST",
-savings: "Save ₹800!",
-color: "red",
+      type: "ultimate",
+      title: "Ultimate Plan",
+      description: "45 days validity with all premium services",
+      originalPrice: "₹3,799",
+      price: "₹2,999",
+      gst: "+18% GST",
+      savings: "Save ₹800!",
+      color: "red",
       features: [
         { text: "Up to 20 contact access", included: true },
         { text: "Personalised Dashboard", included: true },
@@ -77,23 +101,47 @@ color: "red",
         { text: "Post-shifting basic support (If needed)", included: true },
       ],
     },
-    
   ];
 
-  const borderColors = { red: "border-red-400", yellow: "border-yellow-400", indigo: "border-indigo-400" };
-  const bgColors = { red: "from-red-50", yellow: "from-yellow-50", indigo: "from-indigo-50" };
-  const textColors = { red: "text-red-500", yellow: "text-yellow-500", indigo: "text-indigo-500" };
-  const badgeColors = { red: "bg-red-500", yellow: "bg-yellow-500", indigo: "bg-indigo-500" };
+  const borderColors = {
+    red: "border-red-400",
+    yellow: "border-yellow-400",
+    indigo: "border-indigo-400",
+  };
+  const bgColors = {
+    red: "from-red-50",
+    yellow: "from-yellow-50",
+    indigo: "from-indigo-50",
+  };
+  const textColors = {
+    red: "text-red-500",
+    yellow: "text-yellow-500",
+    indigo: "text-indigo-500",
+  };
+  const badgeColors = {
+    red: "bg-red-500",
+    yellow: "bg-yellow-500",
+    indigo: "bg-indigo-500",
+  };
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
+    <div
+      style={{ fontFamily: "para_font" }}
+      className="min-h-screen bg-white font-inter"
+    >
       <Helmet>
-        <title>Subscription Plans Of EaseMySpace | Verified PGs, Flats & Flatmates in Mumbai</title>
+        <title>
+          Subscription Plans Of EaseMySpace | Verified PGs, Flats & Flatmates in
+          Mumbai
+        </title>
         <meta
           name="description"
           content="Choose the perfect subscription plan to access verified PGs, shared flats, and flatmates in Mumbai. Get expert support and premium services to find your ideal rental space quickly and hassle-free."
         />
-        <link rel="canonical" href="https://easemyspace.in/subscription-plans" />
+        <link
+          rel="canonical"
+          href="https://easemyspace.in/subscription-plans"
+        />
       </Helmet>
 
       <section className="pb-10 lg:px-10 pt-3 px-3">
@@ -107,39 +155,55 @@ color: "red",
           Choose Your Plan
         </motion.h1>
         <p className="mt-3 text-xs lg:text-base text-zinc-700">
-          Get started with verified PGs, shared flats, flatmates, and expert support in Mumbai – your perfect rental space is one step away.
+          Get started with verified PGs, shared flats, flatmates, and expert
+          support in Mumbai – your perfect rental space is one step away.
         </p>
       </section>
 
       {/* Plans */}
       <section
         className={`mx-auto lg:px-10 px-3 pb-10 grid grid-cols-1 lg:gap-6 ${
-          plans.length === 1 ? "lg:grid-cols-1 justify-items-center" : "lg:grid-cols-2"
+          plans.length === 1
+            ? "lg:grid-cols-1 justify-items-center"
+            : "lg:grid-cols-2"
         }`}
       >
         {plans.map((plan, index) => (
           <motion.div
             key={index}
-            className={`relative border-2 ${borderColors[plan.color]} bg-gradient-to-br ${bgColors[plan.color]} to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
+            className={`relative border-2 ${
+              borderColors[plan.color]
+            } bg-gradient-to-br ${
+              bgColors[plan.color]
+            } to-white p-4 rounded-2xl shadow-lg lg:hover:scale-[1.02] transition-all`}
           >
             <span
-              className={`absolute -top-3 left-1/2 -translate-x-1/2 ${badgeColors[plan.color]} text-white text-xs px-2 py-1 rounded-full shadow uppercase tracking-wider`}
+              className={`absolute -top-3 left-1/2 -translate-x-1/2 ${
+                badgeColors[plan.color]
+              } text-white text-xs px-2 py-1 rounded-full shadow uppercase tracking-wider`}
             >
               {plan.type.charAt(0).toUpperCase() + plan.type.slice(1)}
             </span>
 
             {/* Mobile Layout */}
             <div className="flex flex-col gap-2 lg:hidden">
-              <h2 style={{ fontFamily: "heading_font" }} className="text-lg font-semibold">
+              <h2
+                style={{ fontFamily: "heading_font" }}
+                className="text-lg font-semibold"
+              >
                 {plan.title}
               </h2>
-              <p className="line-through text-zinc-500 text-base">{plan.originalPrice}</p>
+              <p className="line-through text-zinc-500 text-base">
+                {plan.originalPrice}
+              </p>
               <p className="text-sm text-zinc-700">
                 {plan.price} <span className="text-xs">{plan.gst}</span>
               </p>
               <p className="text-green-500 text-xs">{plan.savings}</p>
               <button
-                className={`mt-2 w-full py-2 rounded-lg text-white ${badgeColors[plan.color]}`}
+                className={`mt-2 w-full py-2 rounded-lg text-white ${
+                  badgeColors[plan.color]
+                }`}
                 onClick={() => setSelectedPlan(plan)}
               >
                 More Details
@@ -149,23 +213,36 @@ color: "red",
             {/* Desktop Layout */}
             <div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
               <div className="lg:w-1/3">
-                <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">
+                <h2
+                  style={{ fontFamily: "heading_font" }}
+                  className="text-xl mb-1"
+                >
                   {plan.title}
                 </h2>
                 <p className="text-xs italic mb-4">{plan.description}</p>
                 <div className="mb-4">
-                  <p className="line-through text-zinc-500 text-lg">{plan.originalPrice}</p>
-                  <p className={`text-3xl font-extrabold ${textColors[plan.color]}`}>
-                    {plan.price} <span className="text-xl font-normal">{plan.gst}</span>
+                  <p className="line-through text-zinc-500 text-lg">
+                    {plan.originalPrice}
                   </p>
-                  <p className="text-green-500 font-semibold text-sm">{plan.savings}</p>
+                  <p
+                    className={`text-3xl font-extrabold ${
+                      textColors[plan.color]
+                    }`}
+                  >
+                    {plan.price}{" "}
+                    <span className="text-xl font-normal">{plan.gst}</span>
+                  </p>
+                  <p className="text-green-500 font-semibold text-sm">
+                    {plan.savings}
+                  </p>
                 </div>
               </div>
               <div className="lg:w-2/3">
                 <ul className="space-y-3 text-sm mb-6">
                   {plan.features.map((feat, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      {feat.included ? <CheckIcon /> : <CrossIcon />} {feat.text}
+                      {feat.included ? <CheckIcon /> : <CrossIcon />}{" "}
+                      {feat.text}
                     </li>
                   ))}
                 </ul>
@@ -206,9 +283,12 @@ color: "red",
             </h2>
             <p className="text-sm italic mb-4">{selectedPlan.description}</p>
             <p className="text-2xl font-bold text-zinc-900 mb-2">
-              {selectedPlan.price} <span className="text-xs">{selectedPlan.gst}</span>
+              {selectedPlan.price}{" "}
+              <span className="text-xs">{selectedPlan.gst}</span>
             </p>
-            <p className="text-green-500 text-sm mb-4">{selectedPlan.savings}</p>
+            <p className="text-green-500 text-sm mb-4">
+              {selectedPlan.savings}
+            </p>
             <ul className="space-y-2 text-sm mb-4">
               {selectedPlan.features.map((feat, i) => (
                 <li key={i} className="flex items-start gap-2">
@@ -216,10 +296,23 @@ color: "red",
                 </li>
               ))}
             </ul>
-            <PaymentButtonSubs userData={userData} planName={selectedPlan.type} />
+            <PaymentButtonSubs
+              userData={userData}
+              planName={selectedPlan.type}
+              onPaymentSuccess={(url) => {
+                setInvoiceUrl(url);
+                setShowInvoiceModal(true);
+              }}
+            />
+
           </motion.div>
         </motion.div>
       )}
+            <InvoiceModal
+  isOpen={showInvoiceModal}
+  onClose={() => setShowInvoiceModal(false)}
+  invoiceUrl={invoiceUrl}
+/>
 
       <Footer />
     </div>
