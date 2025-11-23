@@ -10,9 +10,10 @@ import LandlordAgents from "../../components/AdminPageComp/LandlordAgents"
 import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
+import MyProfile from "../../components/UserPageComp/MyProfile";
 
 export default function RMDashboard() {
-  const [activeTab, setActiveTab] = useState("BookingSchedule");
+  const [activeTab, setActiveTab] = useState("MyProfile");
 
   return (
     <div className="flex">
@@ -38,6 +39,8 @@ export default function RMDashboard() {
         {activeTab === "RentPayments" && <RentPaymentsDashboard />}
         {activeTab === "RequestsLandlord" && <ContactSalesTable />}
         {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
+        {activeTab === "MyProfile" && <MyProfile />}
+
 
 
       </main>

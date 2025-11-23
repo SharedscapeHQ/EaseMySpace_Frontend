@@ -37,6 +37,7 @@ import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedger
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
+import MyProfile from "../../components/UserPageComp/MyProfile";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const [modalUser, setModalUser] = useState(null);
   const [leads, setLeads] = useState([]);
   const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [activeTab, setActiveTab] = useState("Users");
+  const [activeTab, setActiveTab] = useState("MyProfile");
 
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingProps, setLoadingProps] = useState(true);
@@ -579,6 +580,8 @@ const openEditModal = (property) => {
                     {activeTab === "RequestsLandlord" && <ContactSalesTable />}
                     {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
                     {activeTab === "PropertyReports" && <ManagePropertyReport />}
+                    {activeTab === "MyProfile" && <MyProfile />}
+                    
           
 
           {activeTab === "Marketing" && <Marketing />}

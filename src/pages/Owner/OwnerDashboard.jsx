@@ -44,13 +44,14 @@ import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLan
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 import PlatformRevenueTable from "../../components/OwnerPageComp/PlatformRevenueTable";
 import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
+import MyProfile from "../../components/UserPageComp/MyProfile";
 
 
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
   const mainRef = useRef(null);
-  const [activeTab, setActiveTab] = useState("Users");
+  const [activeTab, setActiveTab] = useState("MyProfile");
 
   // Leads state
   const [leads, setLeads] = useState([]);
@@ -520,6 +521,8 @@ export default function OwnerDashboard() {
                                         {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
                                         {activeTab === "platformRevenue" && <PlatformRevenueTable />}
                                         {activeTab === "PropertyReports" && <ManagePropertyReport />}
+                                        {activeTab === "MyProfile" && <MyProfile />}
+                                        
                     
 
           <EditModal
