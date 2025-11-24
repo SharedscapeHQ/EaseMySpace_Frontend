@@ -247,7 +247,10 @@ const [showInvoiceModal, setShowInvoiceModal] = useState(false);
                   ))}
                 </ul>
                 <div className="flex justify-center lg:justify-end">
-                  <PaymentButtonSubs userData={userData} planName={plan.type} />
+                  <PaymentButtonSubs userData={userData} planName={plan.type} onPaymentSuccess={(url) => {
+    setInvoiceUrl(url);
+    setShowInvoiceModal(true);
+  }} />
                 </div>
               </div>
             </div>
