@@ -5,10 +5,11 @@ import PlaceholderImg from "/testimonial/placeholder.jpg";
 import ConnectPopup from "./ConnectPopup";
 
 export default function SalesPersonCard({ className = "" }) {
-  const name = "Dharmendra Mishra";
-  const phone = "+91 8090200513";
+  const name = "";
+  const phone = "+91 9004463371";
   // const phone = "+91 7738794701";
-  const role = "EMS Consultant";
+  // const role = "EMS Consultant";
+  const role = "EMS Sales Team ";
   const bullets = [
     "Helps you discover the best listings",
     "Matches you with verified flatmates",
@@ -44,7 +45,7 @@ export default function SalesPersonCard({ className = "" }) {
     {/* Image */}
     <div className="w-24 h-24 rounded-full border-3 border-white shadow-md overflow-hidden flex-shrink-0">
       <img
-        src={SalesPerson}
+        src={PlaceholderImg}
         alt={name}
         className="w-full h-full object-cover scale-110"
       />
