@@ -66,14 +66,14 @@ const [showInvoiceModal, setShowInvoiceModal] = useState(false);
     {
       type: "trial",
       title: "Trial Plan",
-      description: "1 days validity with all premium services",
-      originalPrice: "₹599",
-      price: "₹99",
+      description: "7 days validity with all premium services",
+      originalPrice: "₹699",
+      price: "₹499",
       gst: "+18% GST",
-      savings: "Save ₹500!",
+      savings: "Save ₹200!",
       color: "yellow",
       features: [
-        { text: "Up to 1 contact access", included: true },
+        { text: "Up to 5 contact access", included: true },
         { text: "Personalised Dashboard", included: true },
         { text: "Post Requirement", included: true },
         { text: "Re-location assistance (on call)", included: true },
@@ -92,7 +92,7 @@ const [showInvoiceModal, setShowInvoiceModal] = useState(false);
       savings: "Save ₹800!",
       color: "red",
       features: [
-        { text: "Up to 20 contact access", included: true },
+        { text: "Up to 31 contact access", included: true },
         { text: "Personalised Dashboard", included: true },
         { text: "Post Requirement", included: true },
         { text: "Re-location assistance (on call)", included: true },

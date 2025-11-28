@@ -18,8 +18,8 @@ export default function PaymentButtonSubs({ planName, onPaymentSuccess  }) {
   };
 
   const plans = {
-    trial: { amount: 99, description: "Trial Plan - 1 Days Access, 1 Contact" },
-    ultimate: { amount: 2999, description: "Ultimate Plan - 45 Days Access, 20 Contacts" },
+    trial: { amount: 499, description: "Trial Plan - 7 Days Access, 5 Contact" },
+    ultimate: { amount: 2999, description: "Ultimate Plan - 45 Days Access, 31 Contacts" },
   };
 
   useEffect(() => {

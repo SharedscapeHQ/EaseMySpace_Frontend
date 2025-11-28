@@ -19,8 +19,8 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const plans = {
     trial: {
       label: "Trial",
-      amount: 99,
-      description: "1 days validity with essential services.",
+      amount: 499,
+      description: "7 days validity with essential services.",
     },
     ultimate: {
       label: "Ultimate",
