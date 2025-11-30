@@ -153,5 +153,9 @@
   font-family: 'para_font';
   src: url('/fonts/para_font.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'test_font';
+  src: url('/fonts/ems_Appfont.ttf') format('truetype');
+}
 
 
