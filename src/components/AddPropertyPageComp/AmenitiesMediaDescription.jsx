@@ -46,6 +46,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
     { label: "Bedroom Images", key: "bedroom_images" },
     { label: "Kitchen Images", key: "kitchen_images" },
     { label: "Bathroom Images", key: "bathroom_images" },
+    { label: "Hall Images", key: "hall_images" },
     { label: "Additional Images", key: "additional_images" },
   ];
 

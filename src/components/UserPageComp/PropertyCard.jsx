@@ -16,6 +16,7 @@ const PropertyCard = ({ property, onRaiseQuery }) => {
     if (property.bedroom_images?.length > 0) return property.bedroom_images[0];
     if (property.kitchen_images?.length > 0) return property.kitchen_images[0];
     if (property.bathroom_images?.length > 0) return property.bathroom_images[0];
+    if (property.hall_images?.length > 0) return property.hall_images[0];
     if (property.additional_images?.length > 0) return property.additional_images[0];
     return null;
   };

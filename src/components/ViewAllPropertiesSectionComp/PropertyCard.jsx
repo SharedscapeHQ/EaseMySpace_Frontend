@@ -20,6 +20,7 @@ const PropertyCard = ({ p }) => {
     ...(p.bedroom_images || []),
     ...(p.kitchen_images || []),
     ...(p.bathroom_images || []),
+    ...(p.hall_images || []),
     ...(p.additional_images || []),
   ].filter(Boolean);
 

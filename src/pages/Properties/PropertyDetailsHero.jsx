@@ -21,6 +21,7 @@ function PropertyHeaderSection({
     ...(Array.isArray(property.bedroom_images) ? property.bedroom_images : []),
     ...(Array.isArray(property.kitchen_images) ? property.kitchen_images : []),
     ...(Array.isArray(property.bathroom_images) ? property.bathroom_images : []),
+    ...(Array.isArray(property.hall_images) ? property.hall_images : []),
     ...(Array.isArray(property.additional_images) ? property.additional_images : []),
   ].filter(Boolean); // remove null/undefined
 

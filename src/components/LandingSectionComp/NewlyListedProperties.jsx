@@ -25,6 +25,7 @@ const getPrimaryImage = (p) => {
     p.bedroom_images?.[0] ||
     p.kitchen_images?.[0] ||
     p.bathroom_images?.[0] ||
+    p.hall_images?.[0] ||
     p.additional_images?.[0] ||
     null
   );
@@ -54,6 +55,7 @@ export default function NewlyListedProperties() {
             bedroom_images: parseImages(p.bedroom_images),
             kitchen_images: parseImages(p.kitchen_images),
             bathroom_images: parseImages(p.bathroom_images),
+            hall_images: parseImages(p.hall_images),
             additional_images: parseImages(p.additional_images),
           }));
 

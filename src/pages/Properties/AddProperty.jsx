@@ -22,6 +22,7 @@ const AddProperty = () => {
     bedroom_images_base64: [],
   kitchen_images_base64: [],
   bathroom_images_base64: [],
+  hall_images_base64: [],
   additional_images_base64: [],
     image_base64: [],
     video_base64: [],
@@ -51,6 +52,7 @@ const handleSubmit = async (e) => {
     ...(formData.bedroom_images_base64 || []),
     ...(formData.kitchen_images_base64 || []),
     ...(formData.bathroom_images_base64 || []),
+    ...(formData.hall_images_base64 || []),
     ...(formData.additional_images_base64 || []),
   ];
 
@@ -105,6 +107,7 @@ const handleSubmit = async (e) => {
       bedroom_images_base64: [],
       kitchen_images_base64: [],
       bathroom_images_base64: [],
+      hall_images_base64: [],
       additional_images_base64: [],
       image_base64: [],
       video_base64: [],

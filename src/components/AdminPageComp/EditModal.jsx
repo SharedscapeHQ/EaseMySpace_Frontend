@@ -175,6 +175,7 @@ export default function EditModal({
     { key: "bedroom_images", label: "Bedroom Images" },
     { key: "kitchen_images", label: "Kitchen Images" },
     { key: "bathroom_images", label: "Bathroom Images" },
+    { key: "hall_images", label: "Hall Images" },
     { key: "additional_images", label: "Additional Images" },
   ];
 
