@@ -3,8 +3,19 @@ import { FaCheckCircle } from "react-icons/fa";
 
 const AmenitiesMediaDescription = ({ formData, setFormData }) => {
   const amenityOptions = [
-    "wifi", "parking", "air conditioning", "refrigerator", "washing machine",
-    "cctv", "security", "geyser", "lift", "power backup", "furniture", "tv", "gas connection"
+    "wifi",
+    "parking",
+    "air conditioning",
+    "refrigerator",
+    "washing machine",
+    "cctv",
+    "security",
+    "geyser",
+    "lift",
+    "power backup",
+    "furniture",
+    "tv",
+    "gas connection",
   ];
 
   const toBase64 = (file) =>
@@ -16,18 +27,27 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
     });
 
   const handleFileChange = async (e, type) => {
-    const files = Array.from(e.target.files);
-    try {
-      const base64s = await Promise.all(files.map(toBase64));
-      setFormData((prev) => ({
-        ...prev,
-        [`${type}_base64`]: [...prev[`${type}_base64`], ...base64s],
-      }));
-      e.target.value = "";
-    } catch {
-      alert(`Failed to process ${type} file(s)`);
-    }
-  };
+  const files = Array.from(e.target.files);
+  try {
+    const base64s = await Promise.all(files.map(toBase64));
+    setFormData((prev) => ({
+      ...prev,
+      [`${type}_base64`]: [...(prev[`${type}_base64`] || []), ...base64s],
+    }));
+    e.target.value = "";
+  } catch {
+    alert(`Failed to process ${type} file(s)`);
+  }
+};
+
+
+  // ✅ Render separate file inputs for each image category
+  const imageCategories = [
+    { label: "Bedroom Images", key: "bedroom_images" },
+    { label: "Kitchen Images", key: "kitchen_images" },
+    { label: "Bathroom Images", key: "bathroom_images" },
+    { label: "Additional Images", key: "additional_images" },
+  ];
 
   return (
     <>
@@ -36,7 +56,10 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
         <h2 className="font-bold mb-2 text-indigo-600">Amenities</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
           {amenityOptions.map((amenity) => (
-            <label key={amenity} className="flex items-center gap-2 text-sm text-gray-700">
+            <label
+              key={amenity}
+              className="flex items-center gap-2 text-sm text-gray-700"
+            >
               <input
                 type="checkbox"
                 value={amenity}
@@ -111,7 +134,9 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
         <textarea
           name="description"
           value={formData.description}
-          onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, description: e.target.value }))
+          }
           placeholder="Write something about the property..."
           className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
           rows="4"
@@ -121,22 +146,28 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
       {/* Media Upload */}
       <div className="border-t pt-4">
         <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Images *</label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, "image")}
-            className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
-          />
-          {formData.image_base64.length > 0 && (
-            <p className="text-green-600 flex items-center mt-1 gap-2">
-              <FaCheckCircle /> {formData.image_base64.length} image(s) selected
-            </p>
-          )}
-        </div>
 
+        {/* Separate Image Uploads */}
+        {imageCategories.map((cat) => (
+          <div className="mb-4" key={cat.key}>
+            <label className="block font-semibold mb-1">{cat.label}</label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => handleFileChange(e, cat.key)}
+              className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
+            />
+            {formData[`${cat.key}_base64`]?.length > 0 && (
+              <p className="text-green-600 flex items-center mt-1 gap-2">
+                <FaCheckCircle /> {formData[`${cat.key}_base64`].length} image(s)
+                selected
+              </p>
+            )}
+          </div>
+        ))}
+
+        {/* Videos */}
         <div className="mb-4">
           <label className="block font-semibold mb-1">Videos</label>
           <input

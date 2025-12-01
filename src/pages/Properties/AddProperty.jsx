@@ -19,6 +19,10 @@ const AddProperty = () => {
     bathrooms: "",
     owner_phone: "",
     description: "",
+    bedroom_images_base64: [],
+  kitchen_images_base64: [],
+  bathroom_images_base64: [],
+  additional_images_base64: [],
     image_base64: [],
     video_base64: [],
     amenities: [],
@@ -28,78 +32,92 @@ const AddProperty = () => {
   const [uploading, setUploading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const trimmedLocation = formData.location.trim();
-    const requiredFields = ["title", "location", "gender", "owner_phone"];
+  const trimmedLocation = formData.location?.trim() || "";
+  const requiredFields = ["title", "location", "gender", "owner_phone"];
 
-    for (const field of requiredFields) {
-      const value = field === "location" ? trimmedLocation : formData[field];
-      if (!value) {
-        toast.error(`Please fill ${field.replace("_", " ")}`);
-        return;
-      }
-    }
-
-    if (!formData.image_base64.length) {
-      toast.error("Please upload at least one image");
+  for (const field of requiredFields) {
+    const value = field === "location" ? trimmedLocation : formData[field];
+    if (!value) {
+      toast.error(`Please fill ${field.replace("_", " ")}`);
       return;
     }
+  }
 
-    const validRooms = formData.pricingOptions.filter(
-      (room) =>
-        room.room_name &&
-        room.occupancies &&
-        room.occupancies.some((occ) => occ.occupancy && occ.price && occ.deposit)
-    );
+  // ✅ Safely gather all images
+  const allImages = [
+    ...(formData.bedroom_images_base64 || []),
+    ...(formData.kitchen_images_base64 || []),
+    ...(formData.bathroom_images_base64 || []),
+    ...(formData.additional_images_base64 || []),
+  ];
 
-    if (!validRooms.length) {
-      toast.error("Please enter at least one pricing option with occupancy");
-      return;
-    }
+  if (allImages.length === 0) {
+    toast.error("Please upload at least one image");
+    return;
+  }
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const owner_code = user?.owner_code;
-    if (!owner_code) {
-      toast.error("Owner code missing. Please log in again.");
-      return;
-    }
+  // Filter valid pricing rooms
+  const validRooms = (formData.pricingOptions || []).filter(
+    (room) =>
+      room.room_name &&
+      room.occupancies &&
+      room.occupancies.some((occ) => occ.occupancy && occ.price && occ.deposit)
+  );
 
-    setUploading(true);
+  if (!validRooms.length) {
+    toast.error("Please enter at least one pricing option with occupancy");
+    return;
+  }
 
-    try {
-      await addProperty({
-        ...formData,
-        location: trimmedLocation,
-        pricingOptions: validRooms,
-        owner_code,
-      });
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const owner_code = user?.owner_code;
+  if (!owner_code) {
+    toast.error("Owner code missing. Please log in again.");
+    return;
+  }
 
-      setShowPopup(true);
+  setUploading(true);
 
-      setFormData({
-        title: "",
-        location: "",
-        gender: "",
-        looking_for: "",
-        bhk_type: "",
-        distance_from_station: "",
-        bathrooms: "",
-        owner_phone: "",
-        description: "",
-        image_base64: [],
-        video_base64: [],
-        amenities: [],
-        pricingOptions: [],
-      });
-    } catch (err) {
-      console.error("Add property error:", err);
-      toast.error("Failed to upload property");
-    } finally {
-      setUploading(false);
-    }
-  };
+  try {
+    await addProperty({
+      ...formData,
+      location: trimmedLocation,
+      pricingOptions: validRooms,
+      owner_code,
+    });
+
+    setShowPopup(true);
+
+    // ✅ Reset formData with all image arrays included
+    setFormData({
+      title: "",
+      location: "",
+      gender: "",
+      looking_for: "",
+      bhk_type: "",
+      distance_from_station: "",
+      bathrooms: "",
+      owner_phone: "",
+      description: "",
+      bedroom_images_base64: [],
+      kitchen_images_base64: [],
+      bathroom_images_base64: [],
+      additional_images_base64: [],
+      image_base64: [],
+      video_base64: [],
+      amenities: [],
+      pricingOptions: [],
+    });
+  } catch (err) {
+    console.error("Add property error:", err);
+    toast.error("Failed to upload property");
+  } finally {
+    setUploading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-indigo-50 p-4 md:p-10">
