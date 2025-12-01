@@ -144,46 +144,55 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
       </div>
 
       {/* Media Upload */}
-      <div className="border-t pt-4">
-        <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
+     <div className="border-t pt-4">
+  <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
 
-        {/* Separate Image Uploads */}
-        {imageCategories.map((cat) => (
-          <div className="mb-4" key={cat.key}>
-            <label className="block font-semibold mb-1">{cat.label}</label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, cat.key)}
-              className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
-            />
-            {formData[`${cat.key}_base64`]?.length > 0 && (
-              <p className="text-green-600 flex items-center mt-1 gap-2">
-                <FaCheckCircle /> {formData[`${cat.key}_base64`].length} image(s)
-                selected
-              </p>
-            )}
-          </div>
-        ))}
+  {/* Responsive Grid: 1 column on mobile, 2 on desktop */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* Separate Image Uploads */}
+    {imageCategories.map((cat) => (
+      <div className="mb-2" key={cat.key}>
+        <label className="block font-semibold mb-1">{cat.label}</label>
 
-        {/* Videos */}
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Videos</label>
-          <input
-            type="file"
-            multiple
-            accept="video/*"
-            onChange={(e) => handleFileChange(e, "video")}
-            className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
-          />
-          {formData.video_base64.length > 0 && (
-            <p className="text-green-600 flex items-center mt-1 gap-2">
-              <FaCheckCircle /> {formData.video_base64.length} video(s) selected
-            </p>
-          )}
-        </div>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) => handleFileChange(e, cat.key)}
+          className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
+        />
+
+        {formData[`${cat.key}_base64`]?.length > 0 && (
+          <p className="text-green-600 flex items-center mt-1 gap-2">
+            <FaCheckCircle />
+            {formData[`${cat.key}_base64`].length} image(s) selected
+          </p>
+        )}
       </div>
+    ))}
+
+    {/* Videos */}
+    <div className="mb-2">
+      <label className="block font-semibold mb-1">Videos</label>
+
+      <input
+        type="file"
+        multiple
+        accept="video/*"
+        onChange={(e) => handleFileChange(e, "video")}
+        className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
+      />
+
+      {formData.video_base64.length > 0 && (
+        <p className="text-green-600 flex items-center mt-1 gap-2">
+          <FaCheckCircle />
+          {formData.video_base64.length} video(s) selected
+        </p>
+      )}
+    </div>
+  </div>
+</div>
+
     </>
   );
 };
