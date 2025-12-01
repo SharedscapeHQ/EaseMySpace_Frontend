@@ -11,8 +11,56 @@ const PropertyCard = ({ p }) => {
     navigate(`/properties/${p.id}`, { state: { property: p } });
   };
 
-  const thumbs = p.images.filter((img) => img !== p.cover).slice(0, 3);
-  const extra = p.images.length - 1 - thumbs.length;
+  /** ---------------------------
+   * IMAGE MERGE + COVER LOGIC
+   * -------------------------- */
+
+  const mergedImages = [
+    ...(p.images || []),
+    ...(p.bedroom_images || []),
+    ...(p.kitchen_images || []),
+    ...(p.bathroom_images || []),
+    ...(p.additional_images || []),
+  ].filter(Boolean);
+
+  const finalCover = p.cover
+    ? p.cover
+    : mergedImages.length > 0
+    ? mergedImages[0]
+    : null;
+
+  const thumbs = mergedImages
+    .filter((img) => img !== finalCover)
+    .slice(0, 3);
+
+  const extra = mergedImages.length - 1 - thumbs.length;
+
+  /** ---------------------------
+   * LISTED DATE TEXT
+   * -------------------------- */
+
+  const renderListedTag = () => {
+    if (!p.created_at) return null;
+
+    const created = new Date(p.created_at);
+    const now = new Date();
+    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 10) return null;
+
+    let displayText =
+      diffDays === 0
+        ? "Today"
+        : diffDays <= 6
+        ? `${diffDays} day${diffDays > 1 ? "s" : ""} ago`
+        : "a week ago";
+
+    return (
+      <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[9px] px-1 py-[0.5px]">
+        Listed {displayText}
+      </span>
+    );
+  };
 
   return (
     <div
@@ -21,9 +69,9 @@ const PropertyCard = ({ p }) => {
     >
       {/* Main Image */}
       <div className="relative w-full h-40">
-        {p.cover ? (
+        {finalCover ? (
           <img
-            src={p.cover}
+            src={finalCover}
             alt={p.title}
             className="w-full h-full object-cover"
           />
@@ -32,6 +80,7 @@ const PropertyCard = ({ p }) => {
             No Image
           </div>
         )}
+
         {p.verified && (
           <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
             Verified
@@ -43,7 +92,7 @@ const PropertyCard = ({ p }) => {
       <div className="flex gap-2 p-3">
         {thumbs.map((t, i) => (
           <div key={i} className="relative h-16 flex-1">
-            <img src={t} alt="" className="h-full w-full object-cover rounded-lg" />
+            <img src={t} className="h-full w-full object-cover rounded-lg" />
             {i === thumbs.length - 1 && extra > 0 && (
               <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm rounded-lg">
                 +{extra}
@@ -51,6 +100,7 @@ const PropertyCard = ({ p }) => {
             )}
           </div>
         ))}
+
         {Array.from({ length: 3 - thumbs.length }).map((_, i) => (
           <div
             key={i}
@@ -65,6 +115,7 @@ const PropertyCard = ({ p }) => {
           <FiMapPin className="text-gray-500" />
           {p.location ? p.location.split(" ").slice(-2).join(" ") : "Unknown"}
         </div>
+
         {p.looking_for && (
           <span className="bg-blue-100 text-blue-600 text-xs font-medium px-3 py-1 rounded-full">
             {p.looking_for === "flatmate"
@@ -79,15 +130,23 @@ const PropertyCard = ({ p }) => {
       {/* Rent | Deposit | BHK */}
       <div className="flex items-stretch text-sm font-medium text-gray-700 dark:text-gray-100 py-2">
         <div className="flex-1 text-center py-3">
-          <div className="text-gray-900 dark:text-white">₹{p.price?.toLocaleString() || "N/A"}</div>
+          <div className="text-gray-900 dark:text-white">
+            ₹{p.price?.toLocaleString() || "N/A"}
+          </div>
           <div className="text-xs text-gray-500 dark:text-gray-100">Rent</div>
         </div>
+
         <div className="w-[2px] bg-gray-300 mx-2"></div>
+
         <div className="flex-1 text-center py-3">
-          <div className="text-gray-900 dark:text-white">₹{p.deposit?.toLocaleString() || "-"}</div>
+          <div className="text-gray-900 dark:text-white">
+            ₹{p.deposit?.toLocaleString() || "-"}
+          </div>
           <div className="text-xs text-gray-500 dark:text-gray-100">Deposit</div>
         </div>
+
         <div className="w-[2px] bg-gray-300 mx-2"></div>
+
         <div className="flex-1 text-center py-3">
           <div className="text-gray-900 dark:text-white">{p.bhk_type || "-"}</div>
           <div className="text-xs text-gray-500 dark:text-gray-100">BHK</div>
@@ -100,29 +159,14 @@ const PropertyCard = ({ p }) => {
           <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-lg">
             {p.title?.charAt(0) || "U"}
           </div>
-          <span className="font-medium text-sm text-gray-700 dark:text-white">{p.title || "Owner"}</span>
-         {(() => {
-  if (!p.created_at) return null;
 
-  const created = new Date(p.created_at);
-  const now = new Date();
-  const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+          <span className="font-medium text-sm text-gray-700 dark:text-white">
+            {p.title || "Owner"}
+          </span>
 
-  if (diffDays > 10) return null; 
-
-  let displayText = "";
-  if (diffDays === 0) displayText = "Today";
-  else if (diffDays >= 1 && diffDays <= 6) displayText = `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-  else displayText = "a week ago"; 
-
-  return (
-    <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[9px] px-1 py-[0.5px]">
-      Listed {displayText}
-    </span>
-  );
-})()}
-
+          {renderListedTag()}
         </div>
+
         <div className="flex items-center gap-4 text-blue-600 dark:text-blue-400 text-xl">
           <IoChatboxEllipsesOutline className="cursor-pointer" />
           <IoCall className="cursor-pointer" />

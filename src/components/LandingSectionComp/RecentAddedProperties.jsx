@@ -11,9 +11,21 @@ const parseImages = (raw) => {
     return raw
       .slice(1, -1)
       .split(",")
-      .map((s) => s.trim().replace(/^"|"$/g, ""))
+      .map((s) => s.trim().replace(/^"|"$/g, "").replace(/^'|'$/g, ""))
       .filter(Boolean);
   return [];
+};
+
+// Select highest-priority available image
+const getPrimaryImage = (p) => {
+  return (
+    p.images?.[0] ||
+    p.bedroom_images?.[0] ||
+    p.kitchen_images?.[0] ||
+    p.bathroom_images?.[0] ||
+    p.additional_images?.[0] ||
+    null
+  );
 };
 
 export default function RecentAddedProperties() {
@@ -27,10 +39,19 @@ export default function RecentAddedProperties() {
       setLoading(true);
       try {
         const res = await axios.get("https://api.easemyspace.in/api/properties/all");
+
         const sorted = res.data
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .slice(0, 6)
-          .map((p) => ({ ...p, images: parseImages(p.image) }));
+          .map((p) => ({
+            ...p,
+            images: parseImages(p.image),
+            bedroom_images: parseImages(p.bedroom_images),
+            kitchen_images: parseImages(p.kitchen_images),
+            bathroom_images: parseImages(p.bathroom_images),
+            additional_images: parseImages(p.additional_images),
+          }));
+
         setRecentProperties(sorted);
       } catch {
         setRecentProperties([]);
@@ -48,20 +69,22 @@ export default function RecentAddedProperties() {
           Discover the Latest Properties
         </h2>
         <div className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide mt-10">
-          {Array(4).fill(0).map((_, i) => (
-            <div
-              key={i}
-              className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden animate-pulse"
-            >
-              <div className="h-48 w-full bg-zinc-200 flex items-center justify-center rounded-t-2xl" />
-              <div className="p-4 flex flex-col gap-1">
-                <div className="h-4 bg-zinc-200 rounded w-[60%] mb-2" />
-                <div className="h-4 bg-zinc-300 rounded w-[30%] mb-2" />
-                <div className="h-3 bg-zinc-200 rounded w-[40%] mb-2" />
-                <div className="h-3 bg-zinc-300 rounded w-[70%]" />
+          {Array(4)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="min-w-[270px] max-w-[270px] group bg-white rounded-2xl border border-zinc-200 flex-shrink-0 overflow-hidden animate-pulse"
+              >
+                <div className="h-48 w-full bg-zinc-200 flex items-center justify-center rounded-t-2xl" />
+                <div className="p-4 flex flex-col gap-1">
+                  <div className="h-4 bg-zinc-200 rounded w-[60%] mb-2" />
+                  <div className="h-4 bg-zinc-300 rounded w-[30%] mb-2" />
+                  <div className="h-3 bg-zinc-200 rounded w-[40%] mb-2" />
+                  <div className="h-3 bg-zinc-300 rounded w-[70%]" />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </section>
     );
@@ -86,24 +109,20 @@ export default function RecentAddedProperties() {
           >
             Recently Listed Shared Rooms
           </h2>
-         <div className="group inline-block relative">
-  <Link
-    to="/view-properties"
-    className="relative text-blue-600 dark:text-blue-400 text-[13px] lg:text-base font-medium transition-all duration-300 ease-in-out hover:text-blue-700 dark:hover:text-blue-300"
-    style={{ fontFamily: "para_font" }}
-  >
-    View All
-    <span className="absolute left-0 bottom-[-2px] w-0 h-[2px] bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-  </Link>
-</div>
-
-        </div>  
+          <div className="group inline-block relative">
+            <Link
+              to="/view-properties"
+              className="relative text-blue-600 dark:text-blue-400 text-[13px] lg:text-base font-medium transition-all duration-300 ease-in-out hover:text-blue-700 dark:hover:text-blue-300"
+              style={{ fontFamily: "para_font" }}
+            >
+              View All
+              <span className="absolute left-0 bottom-[-2px] w-0 h-[2px] bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+          </div>
+        </div>
 
         <div className="relative">
-          <div
-            ref={scrollRef}
-            className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
-          >
+          <div ref={scrollRef} className="flex gap-5 overflow-x-auto scroll-smooth pb-4 scrollbar-hide">
             {recentProperties.map((p) => (
               <Link
                 to={`/properties/${p.id}`}
@@ -112,17 +131,21 @@ export default function RecentAddedProperties() {
               >
                 {/* Image Section */}
                 <div className="relative w-full h-44">
-                  {p.images?.length > 0 ? (
-                    <img
-                      src={p.images[0]}
-                      alt={p.title || "Property image"}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-zinc-100 dark:bg-zinc-600 flex items-center justify-center text-zinc-400 italic">
-                      No Image
-                    </div>
-                  )}
+                  {(() => {
+                    const img = getPrimaryImage(p);
+                    return img ? (
+                      <img
+                        src={img}
+                        alt={p.title || "Property image"}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-zinc-100 dark:bg-zinc-600 flex items-center justify-center text-zinc-400 italic">
+                        No Image
+                      </div>
+                    );
+                  })()}
+
                   {p.verified && (
                     <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
                       Verified
@@ -172,9 +195,7 @@ export default function RecentAddedProperties() {
                     </div>
                     <div className="w-[1px] bg-zinc-300 dark:bg-zinc-600"></div>
                     <div className="flex-1 text-center py-2">
-                      <div className="text-zinc-900 dark:text-white font-semibold">
-                        {p.bhk_type || "-"}
-                      </div>
+                      <div className="text-zinc-900 dark:text-white font-semibold">{p.bhk_type || "-"}</div>
                       <div className="text-xs text-zinc-500 dark:text-zinc-400">BHK</div>
                     </div>
                   </div>
@@ -185,31 +206,31 @@ export default function RecentAddedProperties() {
                       <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-semibold text-xl">
                         {p.title?.charAt(0) || "U"}
                       </div>
-                      <span className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
-                        {p.title}
-                      </span>
-                    {(() => {
-  if (!p.created_at) return null;
+                      <span className="font-medium text-sm text-zinc-700 dark:text-zinc-200">{p.title}</span>
 
-  const created = new Date(p.created_at);
-  const now = new Date();
-  const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+                      {(() => {
+                        if (!p.created_at) return null;
 
-  if (diffDays > 10) return null;
+                        const created = new Date(p.created_at);
+                        const now = new Date();
+                        const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
 
-  let displayText = "";
-  if (diffDays === 0) displayText = "Today";
-  else if (diffDays >= 1 && diffDays <= 6) displayText = `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-  else displayText = "a week ago"; 
+                        if (diffDays > 10) return null;
 
-  return (
-    <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[9px] px-1 py-[0.5px]">
-      Listed {displayText}
-    </span>
-  );
-})()}
+                        let displayText = "";
+                        if (diffDays === 0) displayText = "Today";
+                        else if (diffDays >= 1 && diffDays <= 6)
+                          displayText = `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+                        else displayText = "a week ago";
 
+                        return (
+                          <span className="text-blue-500 border-2 rounded-full border-blue-300 text-[9px] px-1 py-[0.5px]">
+                            Listed {displayText}
+                          </span>
+                        );
+                      })()}
                     </div>
+
                     <div className="flex gap-3 text-blue-500 dark:text-blue-400">
                       <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
                       <IoCall className="text-2xl cursor-pointer" />
