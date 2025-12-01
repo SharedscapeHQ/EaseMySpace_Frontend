@@ -10,6 +10,7 @@ import Yogita_thumbnail from "/life_at_ems/thumbnails/Yogita.jpg";
 import "../About.css";
 import Footer from "../../Footer";
 import LifeAtEMSHero from "./LifeAtEMSHero";
+import WeekendAtEMS from "./WeekendAtEMS";
 
 const videos = [
   // {
@@ -121,6 +122,7 @@ export default function LifeAtEaseMySpace() {
               </div>
             </div>
           ))}
+        <WeekendAtEMS/>
         </div>
       </section>
       <Footer />

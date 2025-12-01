@@ -4,14 +4,18 @@ import { FiCheckCircle, FiX } from "react-icons/fi";
 export default function PropertyCard({ property, onApprove, onEdit, onDelete }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Pick first image or fallback
+  // Pick first main image, fallback to bedroom_images, then default
   const imageUrl =
     Array.isArray(property.image) && property.image.length > 0
       ? property.image[0]
-      : property.image || "/default-property.jpg";
+      : Array.isArray(property.bedroom_images) && property.bedroom_images.length > 0
+      ? property.bedroom_images[0]
+      : "/default-property.jpg";
 
   const hasPricing = property.pricing?.length > 0;
-  const firstPrice = hasPricing ? Number(property.pricing[0].price).toLocaleString() : null;
+  const firstPrice = hasPricing
+    ? Number(property.pricing[0].price).toLocaleString()
+    : null;
   const multiplePricing = hasPricing && property.pricing.length > 1;
 
   const handleApproveClick = () => {
@@ -36,7 +40,6 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
             <FiCheckCircle className="text-sm" /> Verified
           </span>
         )}
-        
       </div>
 
       {/* Property Details */}
@@ -48,21 +51,20 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
           >
             {property.title}
           </h3>
-        <span
-  className={`px-3 py-0.5 text-sm rounded-md text-white ${
-    property.added_by_user_id === null
-      ? "bg-blue-500" 
-      : "bg-yellow-500" 
-  }`}
->
-  {property.added_by_user_id === null ? "Main Website" : "Subdomain"}
-</span>
+          <span
+            className={`px-3 py-0.5 text-sm rounded-md text-white ${
+              property.added_by_user_id === null ? "bg-blue-500" : "bg-yellow-500"
+            }`}
+          >
+            {property.added_by_user_id === null ? "Main Website" : "Subdomain"}
+          </span>
         </div>
 
         {/* Pricing */}
         {hasPricing ? (
           <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base">
-            ₹ {firstPrice}/mo {multiplePricing && <span className="text-gray-500 text-xs">(multiple options)</span>}
+            ₹ {firstPrice}/mo{" "}
+            {multiplePricing && <span className="text-gray-500 text-xs">(multiple options)</span>}
           </p>
         ) : (
           <p className="text-gray-500 text-xs md:text-base">No Rent available</p>

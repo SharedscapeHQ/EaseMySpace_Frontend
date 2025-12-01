@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function EditModal({
   editForm,
@@ -10,10 +10,10 @@ export default function EditModal({
 }) {
   if (!editingProperty) return null;
 
-  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [draggedImage, setDraggedImage] = useState(null); // { img, fromCategory, index }
 
-  // File handling (unchanged)
-  const handleFileChange = async (e, type) => {
+  // ---------------- File Handling ----------------
+  const handleFileChange = async (e, type, category = null) => {
     const files = Array.from(e.target.files);
     const base64Files = await Promise.all(
       files.map(
@@ -27,20 +27,31 @@ export default function EditModal({
       )
     );
 
-    setEditForm((prev) => ({
-      ...prev,
-      [`${type}_base64`]: [...(prev[`${type}_base64`] || []), ...base64Files],
-    }));
+    if (category) {
+      setEditForm((prev) => ({
+        ...prev,
+        [category]: [...(prev[category] || []), ...base64Files],
+      }));
+    } else {
+      setEditForm((prev) => ({
+        ...prev,
+        image: [...(prev.image || []), ...base64Files],
+      }));
+    }
   };
 
-  const handleRemoveImage = (img, idx) => {
-    const updated = (editForm.image || []).filter((_, i) => i !== idx);
+  const handleRemoveImage = (img, idx, category = null) => {
+    const target = category || "image";
+    const updated = (editForm[target] || []).filter((_, i) => i !== idx);
     setEditForm((prev) => ({
       ...prev,
-      image: updated,
+      [target]: updated,
       remove_image_urls: [...(prev.remove_image_urls || []), img],
     }));
-    setEditingProperty((prev) => ({ ...prev, image: updated }));
+    setEditingProperty((prev) => ({
+      ...prev,
+      [target]: updated,
+    }));
   };
 
   const handleRemoveVideo = (idx) => {
@@ -115,6 +126,58 @@ export default function EditModal({
     });
   };
 
+  // ---------------- Drag & Drop ----------------
+  const handleDropToCategory = (category) => {
+    if (!draggedImage) return;
+
+    // Remove from original
+    const fromArr = [...(editForm[draggedImage.fromCategory] || [])];
+    fromArr.splice(draggedImage.index, 1);
+
+    // Add to target category
+    const toArr = [...(editForm[category] || []), draggedImage.img];
+
+    setEditForm((prev) => ({
+      ...prev,
+      [draggedImage.fromCategory]: fromArr,
+      [category]: toArr,
+    }));
+
+    setDraggedImage(null);
+  };
+
+  const renderImages = (images = [], category = null) => (
+    <div className="flex flex-wrap gap-3">
+      {images.map((img, idx) => (
+        <div
+          key={idx}
+          className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
+          draggable
+          onDragStart={() =>
+            setDraggedImage({ img, fromCategory: category || "image", index: idx })
+          }
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={() => handleDropToCategory(category || "image")}
+        >
+          <img src={img} className="w-full h-full object-cover" />
+          <button
+            onClick={() => handleRemoveImage(img, idx, category)}
+            className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+
+  const categories = [
+    { key: "bedroom_images", label: "Bedroom Images" },
+    { key: "kitchen_images", label: "Kitchen Images" },
+    { key: "bathroom_images", label: "Bathroom Images" },
+    { key: "additional_images", label: "Additional Images" },
+  ];
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4">
       <div className="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -135,12 +198,7 @@ export default function EditModal({
                 "select",
                 ["1 BHK", "1.5 BHK", "2 BHK", "2.5 BHK", "3 BHK", "4 BHK"],
               ],
-              [
-                "looking_for",
-                "Looking For",
-                "select",
-                ["flatmate", "vacant", "pg"],
-              ],
+              ["looking_for", "Looking For", "select", ["flatmate", "vacant", "pg"]],
               ["gender", "Gender", "select", ["male", "female", "Any"]],
               ["owner_code", "Owner Code"],
               ["owner_phone", "Owner Phone"],
@@ -342,10 +400,7 @@ export default function EditModal({
                   setEditForm((prev) => ({
                     ...prev,
                     amenities: Array.from(
-                      new Set([
-                        ...(Array.isArray(prev.amenities) ? prev.amenities : []),
-                        ...custom,
-                      ])
+                      new Set([...(Array.isArray(prev.amenities) ? prev.amenities : []), ...custom])
                     ),
                   }));
                 }
@@ -392,9 +447,7 @@ export default function EditModal({
               }
             />
             {editForm.verified ? (
-              <span className="text-green-700">
-                Verified (click to unverify)
-              </span>
+              <span className="text-green-700">Verified (click to unverify)</span>
             ) : (
               <span className="text-gray-700">Mark as Verified</span>
             )}
@@ -405,10 +458,7 @@ export default function EditModal({
               name="phone_visible"
               checked={!!editForm.phone_visible}
               onChange={(e) =>
-                setEditForm((prev) => ({
-                  ...prev,
-                  phone_visible: e.target.checked,
-                }))
+                setEditForm((prev) => ({ ...prev, phone_visible: e.target.checked }))
               }
             />
             {editForm.phone_visible ? (
@@ -419,92 +469,68 @@ export default function EditModal({
           </label>
         </div>
 
-        {/* === Media (Images & Videos) === */}
+        {/* === Main Images Section === */}
         <div className="mb-6">
-          <h4 className="font-semibold mb-3 text-indigo-600">Media</h4>
-
-          {/* Images */}
-          {(editForm.image || []).length > 0 && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">
-                Current Images
-              </label>
-              <div className="flex flex-wrap gap-3">
-                {editForm.image.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
-                    draggable
-                    onDragStart={() => setDraggedIndex(idx)}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={() => {
-                      if (draggedIndex === null || draggedIndex === idx) return;
-                      const updated = [...editForm.image];
-                      const [moved] = updated.splice(draggedIndex, 1);
-                      updated.splice(idx, 0, moved);
-                      setEditForm((prev) => ({ ...prev, image: updated }));
-                      setDraggedIndex(null);
-                    }}
-                  >
-                    <img
-                      src={img}
-                      alt={`img-${idx}`}
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      onClick={() => handleRemoveImage(img, idx)}
-                      className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <h4 className="font-semibold mb-3 text-indigo-600">Current Images</h4>
+          {renderImages(editForm.image || [], null)}
           <input
             type="file"
             multiple
             accept="image/*"
+            className="mt-2"
             onChange={(e) => handleFileChange(e, "image")}
           />
-
-          {/* Videos */}
-          {(editForm.video || []).length > 0 && (
-            <div className="mt-4">
-              <label className="block text-sm font-medium mb-2">
-                Current Videos
-              </label>
-              <div className="flex flex-wrap gap-3">
-                {editForm.video.map((vid, idx) => (
-                  <div
-                    key={idx}
-                    className="relative w-48 h-32 border rounded overflow-hidden"
-                  >
-                    <video
-                      src={vid}
-                      controls
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      onClick={() => handleRemoveVideo(idx)}
-                      className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          <input
-            type="file"
-            multiple
-            accept="video/*"
-            className="mt-2"
-            onChange={(e) => handleFileChange(e, "video")}
-          />
         </div>
+
+        {/* === Category Sections === */}
+        {categories.map(({ key, label }) => (
+          <div
+            key={key}
+            className="mb-4 border p-3 rounded"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDropToCategory(key)}
+          >
+            <h5 className="font-semibold mb-2">{label}</h5>
+            {renderImages(editForm[key] || [], key)}
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="mt-2"
+              onChange={(e) => handleFileChange(e, "image", key)}
+            />
+          </div>
+        ))}
+
+        {/* === Videos Section === */}
+        {(editForm.video || []).length > 0 && (
+          <div className="mt-4">
+            <label className="block text-sm font-medium mb-2">Current Videos</label>
+            <div className="flex flex-wrap gap-3">
+              {editForm.video.map((vid, idx) => (
+                <div
+                  key={idx}
+                  className="relative w-48 h-32 border rounded overflow-hidden"
+                >
+                  <video src={vid} controls className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => handleRemoveVideo(idx)}
+                    className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+            <input
+              type="file"
+              multiple
+              accept="video/*"
+              className="mt-2"
+              onChange={(e) => handleFileChange(e, "video")}
+            />
+          </div>
+        )}
 
         {/* Newly Listed Position */}
         {editForm.is_newly_listed && (
