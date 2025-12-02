@@ -19,12 +19,9 @@ const parseImages = (raw) => {
 // Select highest-priority available image
 const getPrimaryImage = (p) => {
   return (
-    p.images?.[0] ||
+    p.image?.[0] ||
     p.bedroom_images?.[0] ||
-    p.kitchen_images?.[0] ||
-    p.bathroom_images?.[0] ||
     p.hall_images?.[0] ||
-    p.additional_images?.[0] ||
     null
   );
 };
@@ -134,7 +131,7 @@ export default function RecentAddedProperties() {
                 {/* Image Section */}
                 <div className="relative w-full h-44">
                   {(() => {
-                    const img = getPrimaryImage(p);
+              const img = getPrimaryImage(p);
                     return img ? (
                       <img
                         src={img}

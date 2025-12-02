@@ -21,12 +21,9 @@ const parseImages = (raw) => {
 // Priority chooser
 const getPrimaryImage = (p) => {
   return (
-    p.images?.[0] ||
+    p.image?.[0] ||
     p.bedroom_images?.[0] ||
-    p.kitchen_images?.[0] ||
-    p.bathroom_images?.[0] ||
     p.hall_images?.[0] ||
-    p.additional_images?.[0] ||
     null
   );
 };
