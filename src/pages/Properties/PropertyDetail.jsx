@@ -27,23 +27,36 @@ function PropertyDetail() {
     v == null ? "" : String(v).replace(/^"+|"+$/g, "").trim();
 
   const parseImages = (raw) => {
-    if (!raw) return [];
-    if (Array.isArray(raw)) return raw.map(stripQuotes).filter(Boolean);
-    if (typeof raw === "string" && raw.startsWith("{")) {
-      return raw.slice(1, -1).split(",").map(stripQuotes).filter(Boolean);
-    }
-    return [stripQuotes(raw)];
-  };
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw.map(stripQuotes).filter(Boolean);
+  if (typeof raw === "string" && raw.startsWith("{")) {
+    return raw.slice(1, -1).split(",").map(stripQuotes).filter(Boolean);
+  }
+  return [stripQuotes(raw)];
+};
 
-  const enrich = (row) => {
-    const images = parseImages(row.image);
-    return {
-      ...row,
-      images,
-      video: stripQuotes(row.video),
-      cover: images[0],
-    };
+const enrich = (row) => {
+  const allImageFields = [
+    "image",
+    "bedroom_images",
+    "kitchen_images",
+    "bathroom_images",
+    "hall_images",
+    "additional_images",
+  ];
+
+  const images = allImageFields
+    .map((field) => parseImages(row[field]))
+    .flat(); // flatten array of arrays
+
+  return {
+    ...row,
+    images,
+    video: stripQuotes(row.video),
+    cover: images[0], // first available image
   };
+};
+
 
   const generateTitle = (title) => {
     if (!title) return "Property Listing";
