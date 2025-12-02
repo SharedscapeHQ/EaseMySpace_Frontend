@@ -47,17 +47,24 @@ const handleSubmit = async (e) => {
     }
   }
 
-  // ✅ Safely gather all images
-  const allImages = [
-    ...(formData.bedroom_images_base64 || []),
-    ...(formData.kitchen_images_base64 || []),
-    ...(formData.bathroom_images_base64 || []),
-    ...(formData.hall_images_base64 || []),
-    ...(formData.additional_images_base64 || []),
+  // ✅ Check mandatory image sections
+  const requiredImageSections = [
+    "bedroom_images_base64",
+    "kitchen_images_base64",
+    "bathroom_images_base64",
+    "hall_images_base64",
   ];
 
-  if (allImages.length === 0) {
-    toast.error("Please upload at least one image");
+  const missingSections = requiredImageSections.filter(
+    (section) => !formData[section] || formData[section].length === 0
+  );
+
+  if (missingSections.length > 0) {
+    toast.error(
+      `Please upload at least one image for: ${missingSections
+        .map((s) => s.replace("_base64", "").replace("_", " "))
+        .join(", ")}`
+    );
     return;
   }
 
@@ -93,7 +100,6 @@ const handleSubmit = async (e) => {
 
     setShowPopup(true);
 
-    // ✅ Reset formData with all image arrays included
     setFormData({
       title: "",
       location: "",

@@ -127,46 +127,62 @@ export default function EditModal({
   };
 
   // ---------------- Drag & Drop ----------------
-  const handleDropToCategory = (category) => {
-    if (!draggedImage) return;
+const handleDropToCategory = (category, dropIndex) => {
+  if (!draggedImage) return;
 
-    // Remove from original
-    const fromArr = [...(editForm[draggedImage.fromCategory] || [])];
-    fromArr.splice(draggedImage.index, 1);
+  const fromCategory = draggedImage.fromCategory;
+  const img = draggedImage.img;
 
-    // Add to target category
-    const toArr = [...(editForm[category] || []), draggedImage.img];
+  // Copy original array
+  const fromArr = [...(editForm[fromCategory] || [])];
 
+  // Remove the dragged image
+  fromArr.splice(draggedImage.index, 1);
+
+  // If same category, insert at the dropIndex
+  if (fromCategory === category) {
+    fromArr.splice(dropIndex, 0, img);
     setEditForm((prev) => ({
       ...prev,
-      [draggedImage.fromCategory]: fromArr,
+      [category]: fromArr,
+    }));
+  } else {
+    // Moving to a different category
+    const toArr = [...(editForm[category] || [])];
+    toArr.splice(dropIndex, 0, img);
+    setEditForm((prev) => ({
+      ...prev,
+      [fromCategory]: fromArr,
       [category]: toArr,
     }));
+  }
 
-    setDraggedImage(null);
-  };
+  setDraggedImage(null);
+};
+
 
   const renderImages = (images = [], category = null) => (
     <div className="flex flex-wrap gap-3">
       {images.map((img, idx) => (
-        <div
-          key={idx}
-          className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
-          draggable
-          onDragStart={() =>
-            setDraggedImage({ img, fromCategory: category || "image", index: idx })
-          }
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={() => handleDropToCategory(category || "image")}
-        >
-          <img src={img} className="w-full h-full object-cover" />
-          <button
-            onClick={() => handleRemoveImage(img, idx, category)}
-            className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-          >
-            ✕
-          </button>
-        </div>
+      <div
+  key={idx}
+  className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
+  draggable
+  onDragStart={() =>
+    setDraggedImage({ img, fromCategory: category || "image", index: idx })
+  }
+  onDragOver={(e) => e.preventDefault()}
+  onDrop={() => handleDropToCategory(category || "image", idx)}
+>
+  <img src={img} className="w-full h-full object-cover" />
+  <button
+    onClick={() => handleRemoveImage(img, idx, category)}
+    className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+  >
+    ✕
+  </button>
+</div>
+
       ))}
     </div>
   );
