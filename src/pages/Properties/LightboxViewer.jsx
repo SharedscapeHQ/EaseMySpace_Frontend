@@ -4,9 +4,14 @@ import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 function LightboxViewer({ property, lightboxIdx, setLightboxIdx, stepLightbox }) {
   if (lightboxIdx === null || !property?.images?.length) return null;
 
-  const images = property.images; // all merged images
+  const media = [...(property.images || [])];
+if (property.video) {
+  media.push(property.video);
+}
+
   const index = lightboxIdx;
-  const total = images.length;
+  const total = media.length;
+
 
   return (
     <div
@@ -25,11 +30,21 @@ function LightboxViewer({ property, lightboxIdx, setLightboxIdx, stepLightbox })
       </button>
 
       <div className="relative">
-        <img
-          src={images[index]}
-          alt=""
-          className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
-        />
+       {media[index].endsWith(".mp4") ? (
+  <video
+    src={media[index]}
+    controls
+    autoPlay
+    className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+  />
+) : (
+  <img
+    src={media[index]}
+    alt=""
+    className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+  />
+)}
+
 
         <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-3 py-1 rounded-full">
           {index + 1} / {total}
