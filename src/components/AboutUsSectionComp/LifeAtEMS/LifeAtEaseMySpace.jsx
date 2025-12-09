@@ -122,7 +122,7 @@ export default function LifeAtEaseMySpace() {
               </div>
             </div>
           ))}
-        <WeekendAtEMS/>
+        {/* <WeekendAtEMS/> */}
         </div>
       </section>
       <Footer />
