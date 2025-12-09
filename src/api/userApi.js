@@ -269,7 +269,7 @@ export const getRentPaymentHistory = async () => {
 
 export const getPropertiesWithPayments = async () => {
   try {
-    const res = await axiosInstance.get("/properties-with-payments");
+    const res = await axiosInstance.get("rent/properties-with-payments");
     return res.data; 
   } catch (err) {
     console.error(
