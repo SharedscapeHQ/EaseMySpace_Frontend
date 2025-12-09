@@ -42,7 +42,7 @@ export const verifyMonthlyRentPayment = async (paymentData) => {
   try {
     const res = await api.post("/verify-payment/monthly", paymentData, { timeout: 60000 });
     return res.data;
-  } catch (err) {
+  } catch (err) { 
     console.error("❌ Failed to verify monthly rent payment:", err.response?.data || err.message);
     throw err;
   }

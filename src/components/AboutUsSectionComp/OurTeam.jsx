@@ -87,7 +87,7 @@ export default function OurTeam() {
       className="font-bold mb-4 heading-font text-gray-500 dark:text-zinc-400 tracking-wider text-shadow"
       itemProp="description"
     >
-      Passionate. Proactive. Expert.
+      Passionate. Proactive. Expert. 
     </p>
   </motion.div>
 

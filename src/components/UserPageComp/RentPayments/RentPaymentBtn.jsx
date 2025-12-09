@@ -3,14 +3,14 @@ import toast from "react-hot-toast";
 import {
   verifyMonthlyRentPayment,
   createMonthlyRentOrder,
-} from "../../../API/userRentPaymentApiGrp/userRentPaymentApi";
+} from "../../../api/userRentPaymentApiGrp/userRentPaymentApi";
 
 export default function RentPayBtn({
   property,
   user,
   payingId,
   setPayingId,
-  fetchProperties,
+  fetchProperties, 
 }) {
   const isCurrentMonthPaid = (payments) => {
     if (!payments?.length) return false;

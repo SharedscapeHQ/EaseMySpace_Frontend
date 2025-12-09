@@ -12,7 +12,7 @@ export default function PayRent() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [payingId, setPayingId] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); 
 
   useEffect(() => {
     const fetchUser = async () => {
