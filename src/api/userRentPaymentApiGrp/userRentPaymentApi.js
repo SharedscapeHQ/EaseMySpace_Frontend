@@ -28,15 +28,33 @@ export const verifyRentPayment = async (paymentData) => {
 };
 
 // ---------------- Monthly Rent Payment ----------------
-export const createMonthlyRentOrder = async ({ amount }) => {
+export const createMonthlyRentOrder = async ({
+  amount,
+  property_id,
+  room_label,
+  occupancy,
+  payment_month,
+  payment_year,
+}) => {
   try {
-    const res = await api.post("/create-order/monthly", { amount });
+    const res = await api.post("/create-order/monthly", {
+      amount,
+      property_id,
+      room_label,
+      occupancy,
+      payment_month,
+      payment_year,
+    });
     return res.data;
   } catch (err) {
-    console.error("❌ Failed to create monthly rent order:", err.response?.data || err.message);
+    console.error(
+      "❌ Failed to create monthly rent order:",
+      err.response?.data || err.message
+    );
     throw err;
   }
 };
+
 
 export const verifyMonthlyRentPayment = async (paymentData) => {
   try {
