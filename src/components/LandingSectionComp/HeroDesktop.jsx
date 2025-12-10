@@ -4,10 +4,10 @@ import { gsap } from "gsap";
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
-// import Hero_vid from "/heroImg/Hero_vid.webm";
-import Hero_vid from "/heroImg/hero_vid_crop.mp4";
+import Hero_vid from "/heroImg/Hero_vid.webm";
+// import Hero_vid from "/heroImg/hero_vid_crop.mp4";
 // import Diwali_vid from "/heroImg/Diwali_vid.mp4";
-// import Poster from "/heroImg/Poster.jpg"; 
+import Poster from "/heroImg/Poster.jpg"; 
 // import EMSChatbot from "../Chats/EMSChatbot";
 
 export default function HeroDesktop() {
@@ -214,10 +214,10 @@ export default function HeroDesktop() {
 
         {/* Right Video */}
         <div className="w-full overflow-hidden rounded-lg h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[70vh] 2xl:h-[90vh]">
-          <video
+           <video
             ref={videoRef}
             src={Hero_vid}
-            // poster={Poster}
+            poster={Poster}
             autoPlay
             muted
             loop
