@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineClose } from "react-icons/ai";
-import { makeRentPayment } from "../../../api/userApi";
-import toast from "react-hot-toast";
+import RentPayBtn from "./RentPayBtn";
+import { SERVICE_CHARGE, getGst } from "./RentPayHelpers"; // import helpers
 
 export default function RentPaymentModal({
   isOpen,
@@ -10,7 +10,6 @@ export default function RentPaymentModal({
   property,
   onPaymentSuccess,
   selectedLocking: parentLocking,
-  displayedRent: parentDisplayedRent,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [selectedOccupancy, setSelectedOccupancy] = useState("");
@@ -22,7 +21,6 @@ export default function RentPaymentModal({
     locking_options: [],
   });
   const [displayedRent, setDisplayedRent] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const pricingOptions = property?.pricingOptions?.length
     ? property.pricingOptions
@@ -45,13 +43,10 @@ export default function RentPaymentModal({
   // Initialize defaults
   useEffect(() => {
     if (!property || !property.pricingOptions?.length) return;
-
     const defaultRoom = property.pricingOptions[0];
     const defaultOcc = defaultRoom.occupancies[0];
-
     setSelectedRoom(defaultRoom);
     setSelectedOccupancy(defaultOcc?.occupancy || "N/A");
-
     const initialLocking = parentLocking || { period: 6, deduction: 0 };
     setSelectedLocking(initialLocking);
   }, [property, parentLocking]);
@@ -76,52 +71,11 @@ export default function RentPaymentModal({
   useEffect(() => {
     const baseRent = pricing.rent || 0;
     const deduction = Number(selectedLocking?.deduction || 0);
-    const updatedRent = baseRent - deduction;
-    setDisplayedRent(updatedRent > 0 ? updatedRent : 0);
+    setDisplayedRent(baseRent - deduction > 0 ? baseRent - deduction : 0);
   }, [pricing, selectedLocking]);
 
-  // 🔹 Service fee calculation
-  const baseServiceFee = 1999;
-  const gst = baseServiceFee * 0.18;
-  const totalServiceFee = baseServiceFee + gst;
-
-  // 🔹 Total payable
-  const totalPayable =
-    (displayedRent || 0) + (pricing.deposit || 0) + totalServiceFee;
-
-  // Handle payment
-  const handleConfirmPay = async () => {
-    if (!selectedRoom || !selectedOccupancy) return;
-
-    setLoading(true);
-    try {
-      const res = await makeRentPayment({
-        property_id: property.id || property._id,
-        room_label: selectedRoom.room_label,
-        occupancy: selectedOccupancy,
-        locking_period: selectedLocking?.period,
-        deduction: selectedLocking?.deduction,
-        amount: displayedRent,
-        deposit: pricing.deposit,
-        service_fee: baseServiceFee,
-        gst: gst,
-        total_amount: totalPayable,
-      });
-
-      if (res.success) {
-        toast.success("Payment successful!");
-        onPaymentSuccess?.(selectedRoom.room_label, selectedOccupancy);
-        onClose();
-      } else {
-        toast.error(res.message || "Payment failed");
-      }
-    } catch (err) {
-      console.error("Payment failed:", err);
-      toast.error("Payment failed, please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const gst = getGst(SERVICE_CHARGE);
+  const totalPayable = displayedRent + pricing.deposit + SERVICE_CHARGE + gst;
 
   return (
     <AnimatePresence>
@@ -138,6 +92,7 @@ export default function RentPaymentModal({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 60, opacity: 0 }}
           >
+            {/* Close Button */}
             <button
               className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
               onClick={onClose}
@@ -145,6 +100,7 @@ export default function RentPaymentModal({
               <AiOutlineClose size={20} />
             </button>
 
+            {/* Modal Title */}
             <h2 className="text-xl font-semibold text-gray-900 mb-4 text-center">
               Confirm Rent Payment
             </h2>
@@ -224,46 +180,47 @@ export default function RentPaymentModal({
               </select>
             </div>
 
-           {/* 🔹 Summary Section */}
-<div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">
-  <p className="text-lg font-semibold text-gray-800">
-    Rent: ₹{displayedRent.toLocaleString()}
-  </p>
-  <p className="text-md text-gray-700">
-    Deposit: ₹{pricing.deposit.toLocaleString()}
-  </p>
-  <hr className="my-2 border-gray-300" />
-  <p className="text-sm text-gray-700">
-    Service Fee: ₹{baseServiceFee.toLocaleString()} <span className="text-xs text-gray-500">(one-time)</span>
-  </p>
-  <p className="text-sm text-gray-700">
-    GST (18%): ₹{gst.toFixed(2)}
-  </p>
-  <hr className="my-2 border-gray-300" />
-  <p className="text-lg font-bold text-gray-900">
-    Total Payable: ₹{totalPayable.toLocaleString()}
-  </p>
-  {selectedLocking?.deduction > 0 && (
-    <p className="text-sm text-green-700">
-      You saved ₹{selectedLocking.deduction.toLocaleString()}
-    </p>
-  )}
-</div>
+            {/* Summary Section */}
+            <div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">
+              <p className="text-lg font-semibold text-gray-800">
+                Rent: ₹{displayedRent.toLocaleString()}
+              </p>
+              <p className="text-md text-gray-700">
+                Deposit: ₹{pricing.deposit.toLocaleString()}
+              </p>
+              <hr className="my-2 border-gray-300" />
+              <p className="text-sm text-gray-700">
+                Service Fee: ₹{SERVICE_CHARGE.toLocaleString()}{" "}
+                <span className="text-xs text-gray-500">(one-time)</span>
+              </p>
+              <p className="text-sm text-gray-700">GST (18%): ₹{gst.toFixed(2)}</p>
+              <hr className="my-2 border-gray-300" />
+              <p className="text-lg font-bold text-gray-900">
+                Total Payable: ₹{totalPayable.toLocaleString()}
+              </p>
+              {selectedLocking?.deduction > 0 && (
+                <p className="text-sm text-green-700">
+                  You saved ₹{selectedLocking.deduction.toLocaleString()}
+                </p>
+              )}
+            </div>
 
-
-            {/* Pay Button */}
+            {/* 🔹 RentPayBtn */}
             <div className="mt-6 flex justify-center">
-              <button
-                disabled={loading || pricing.availability === "booked"}
-                onClick={handleConfirmPay}
-                className={`w-full py-2.5 rounded-lg font-medium transition ${
-                  loading || pricing.availability === "booked"
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-green-600 hover:bg-green-700 text-white"
-                }`}
-              >
-                {loading ? "Processing..." : "Confirm & Pay"}
-              </button>
+              <RentPayBtn
+                property={property}
+                rentDetails={{
+                  rent: displayedRent,
+                  deposit: pricing.deposit,
+                  room_label: selectedRoom?.room_label,
+                  occupancy: selectedOccupancy,
+                  locking_period: selectedLocking?.period,
+                  deduction: selectedLocking?.deduction,
+                }}
+                onSuccess={() =>
+                  onPaymentSuccess?.(selectedRoom?.room_label, selectedOccupancy)
+                }
+              />
             </div>
           </motion.div>
         </motion.div>

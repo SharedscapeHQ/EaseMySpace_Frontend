@@ -7,15 +7,41 @@ const api = axios.create({
 });
 
 // ---------------- Rent Payment ----------------
-export const createRentOrder = async ({ amount }) => {
+export const createRentOrder = async ({
+  amount,
+  property_id,
+  room_label,
+  occupancy,
+  payment_month,
+  payment_year,
+  payment_type = "first",
+  rent,
+  deposit,
+  deduction,
+  locking_period,
+}) => {
   try {
-    const res = await api.post("/create-order", { amount });
+    const res = await api.post("/create-order", {
+      amount,
+      property_id,
+      room_label,
+      occupancy,
+      payment_month,
+      payment_year,
+      payment_type,
+      rent,
+      deposit,
+      deduction,
+      locking_period,
+    });
     return res.data;
   } catch (err) {
     console.error("❌ Failed to create rent order:", err.response?.data || err.message);
     throw err;
   }
 };
+
+
 
 export const verifyRentPayment = async (paymentData) => {
   try {
