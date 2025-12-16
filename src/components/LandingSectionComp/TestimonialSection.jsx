@@ -44,7 +44,7 @@ const initialTestimonials = [
     img: arvind_vishwakarma,
     name: "Arvind Vishwakarma",
     review:
-      "As a Full Stack Developer at EaseMySpace, I really enjoy being part of a team that's passionate about creating seamless solutions and helping people find their perfect space. Highly recommend checking us out!",
+      "As a Full Stack Developer at EaseMySpace™, I really enjoy being part of a team that's passionate about creating seamless solutions and helping people find their perfect space. Highly recommend checking us out!",
     rating: 5,
   },
   {

@@ -12,7 +12,7 @@ const teamMembers = [
     name: "Rakesh Goswami",
     role: "Founder & CEO",
     description:
-      "Chartered Accountant and entrepreneur, Rakesh founded EaseMySpace in 2025 to make finding flats and flatmates in Mumbai simple, safe, and stress-free. He's passionate about creating smarter solutions for urban living.",
+      "Chartered Accountant and entrepreneur, Rakesh founded EaseMySpace™ in 2025 to make finding flats and flatmates in Mumbai simple, safe, and stress-free. He's passionate about creating smarter solutions for urban living.",
     imageSrc: RakeshImg,
     linkedin: "https://www.linkedin.com/in/rakeshgoswami09/",
     email: "rakeshgoswami@easemyspace.in",
@@ -39,7 +39,7 @@ const teamMembers = [
     name: "Arvind Vishwakarma",
     role: "UI/UX & Full Stack Developer",
     description:
-      "A skilled full stack developer and UI/UX designer, managing all technical aspects to create seamless and engaging user experiences at EaseMySpace.",
+      "A skilled full stack developer and UI/UX designer, managing all technical aspects to create seamless and engaging user experiences at EaseMySpace™.",
     imageSrc: ArvindImg,
     linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
     email: "arvind.vishwakrma@easemyspace.in",

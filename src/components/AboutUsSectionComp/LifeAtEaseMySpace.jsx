@@ -15,7 +15,7 @@ const videos = [
     id: 1,
     src: Rakesh_vid,
     title: "Rakesh Goswami",
-    desc: "As the Founder of EaseMySpace, Rakesh envisions a workplace where ambition meets collaboration. His journey reflects the determination to build a culture of growth, innovation, and inclusivity. Through his leadership, he inspires the team to push boundaries and transform ideas into meaningful impact.",
+    desc: "As the Founder of EaseMySpace™, Rakesh envisions a workplace where ambition meets collaboration. His journey reflects the determination to build a culture of growth, innovation, and inclusivity. Through his leadership, he inspires the team to push boundaries and transform ideas into meaningful impact.",
     poster: Rakesh_thumbnail,
     bg: "bg-blue-50", // Founder → Light Blue
   },
@@ -23,7 +23,7 @@ const videos = [
     id: 2,
     src: Yogita_vid,
     title: "Yogita Rathi",
-    desc: "Handling Social Media at EaseMySpace, Yogita brings creativity and strategy together to amplify the brand’s voice. She thrives on connecting with audiences through fresh content and engaging campaigns. Her perspective shows how communication and culture shape the vibrant identity of the company.",
+    desc: "Handling Social Media at EaseMySpace™, Yogita brings creativity and strategy together to amplify the brand’s voice. She thrives on connecting with audiences through fresh content and engaging campaigns. Her perspective shows how communication and culture shape the vibrant identity of the company.",
     poster: Yogita_thumbnail,
     bg: "bg-pink-50", // Social Media → Light Pink
   },
@@ -31,7 +31,7 @@ const videos = [
     id: 3,
     src: Taniya_vid,
     title: "Taniya Sarkar",
-    desc: "As a Business Data Analyst, Taniya blends numbers with insights to guide smarter decisions at EaseMySpace. Her analytical mindset and innovative ideas help transform raw data into actionable strategies. She showcases how curiosity and teamwork fuel continuous improvement in a dynamic workplace.",
+    desc: "As a Business Data Analyst, Taniya blends numbers with insights to guide smarter decisions at EaseMySpace™. Her analytical mindset and innovative ideas help transform raw data into actionable strategies. She showcases how curiosity and teamwork fuel continuous improvement in a dynamic workplace.",
     poster: Taniya_thumbnail,
     bg: "bg-yellow-50", // Analyst → Light Yellow
   },
@@ -86,7 +86,7 @@ export default function LifeAtEaseMySpace() {
             style={{ fontFamily: "heading_font" }}
             className="text-lg lg:text-3xl mb-0 text-black leading-tight"
           >
-            Life at EaseMySpace
+            Life at EaseMySpace™
           </h2>
           <p
             className="text-sm lg:text-lg text-gray-600 mt-2 max-w-2xl"

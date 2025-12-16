@@ -18,17 +18,17 @@ export default function AboutUsHero() {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <h1 className="text-3xl sm:text-5xl font-bold text-zinc-800 dark:text-white leading-tight mb-6">
-          About EaseMySpace
+          About EaseMySpace™
         </h1>
         <p className="text-base sm:text-lg text-zinc-700 dark:text-zinc-300 text-center mb-10">
-          EaseMySpace is a trusted platform in Mumbai for finding{" "}
+          EaseMySpace™ is a trusted platform in Mumbai for finding{" "}
           <strong>verified flatmates</strong>,{" "}
           <strong>shared accommodations</strong>, <strong>PGs</strong>, and{" "}
           <strong>vacant rooms</strong>. Our mission is to simplify urban living
           by connecting compatible flatmates and offering a secure, reliable,
           and efficient rental discovery experience. Whether you are looking for
           a <strong>PG in Mumbai</strong> or want to find the perfect{" "}
-          <strong>shared flat</strong>, EaseMySpace helps you do it faster and
+          <strong>shared flat</strong>, EaseMySpace™ helps you do it faster and
           smarter. As a growing startup, we are committed to expanding our
           services to help more Mumbai residents find their ideal home.
         </p>

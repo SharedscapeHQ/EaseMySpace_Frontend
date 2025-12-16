@@ -67,7 +67,7 @@ export default function MsgFromFounder() {
             Rakesh Goswami
           </h3>
           <p className="text-sm lg:text-base text-gray-700 text-justify dark:text-gray-300">
-            As the Founder of EaseMySpace, Rakesh envisions a workplace where
+            As the Founder of EaseMySpace™, Rakesh envisions a workplace where
             ambition meets collaboration. His journey reflects the determination
             to build a culture of growth, innovation, and inclusivity. Through
             his leadership, he inspires the team to push boundaries and

@@ -33,7 +33,7 @@ const videos = [
     id: 3,
     src: Taniya_vid,
     title: "Taniya Sarkar",
-    desc: "As a Business Data Analyst, Taniya blends numbers with insights to guide smarter decisions at EaseMySpace. Her analytical mindset and innovative ideas help transform raw data into actionable strategies. She showcases how curiosity and teamwork fuel continuous improvement in a dynamic workplace.",
+    desc: "As a Business Data Analyst, Taniya blends numbers with insights to guide smarter decisions at EaseMySpace™. Her analytical mindset and innovative ideas help transform raw data into actionable strategies. She showcases how curiosity and teamwork fuel continuous improvement in a dynamic workplace.",
     poster: Taniya_thumbnail,
     bg: "bg-yellow-50", // Analyst → Light Yellow
   },

@@ -33,7 +33,7 @@ const FeatureSection = () => {
     <section
       style={{ fontFamily: "para_font" }}
       className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
-      aria-label="Key features and advantages of EaseMySpace"
+      aria-label="Key features and advantages of EaseMySpace™"
       role="region"
     >
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">

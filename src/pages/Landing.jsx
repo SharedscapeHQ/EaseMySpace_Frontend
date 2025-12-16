@@ -30,12 +30,12 @@ function Landing() {
   />
 
   {/* Main Page Title */}
-  <title>PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace</title>
+  <title>PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace™</title>
 
   {/* Meta Description */}
   <meta
     name="description"
-    content="Find PGs, shared flats, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu, Andheri West, and other areas. Connect with verified flatmates and list properties hassle-free with EaseMySpace."
+    content="Find PGs, shared flats, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu, Andheri West, and other areas. Connect with verified flatmates and list properties hassle-free with EaseMySpace™."
   />
 
   {/* Meta Keywords */}
@@ -48,7 +48,7 @@ function Landing() {
   <meta property="og:title" content="Find Your Next Home in Mumbai | EaseMySpace" />
   <meta
     property="og:description"
-    content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace."
+    content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace™."
   />
   <meta property="og:image" content="https://easemyspace.in/heroImg/hero.png" />
   <meta property="og:url" content="https://easemyspace.in" />
@@ -58,11 +58,11 @@ function Landing() {
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:title"
-    content="Find PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace"
+    content="Find PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace™"
   />
   <meta
     name="twitter:description"
-    content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace."
+    content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace™."
   />
   <meta name="twitter:image" content="https://easemyspace.in/heroImg/hero.png" />
 </Helmet>

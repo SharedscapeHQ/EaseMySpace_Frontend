@@ -29,7 +29,7 @@ export default function ReferAndEarn() {
 
   const registerUrl = `http://easemyspace.in/register?ref=${referralCode}`;
 
-  const shareText = `Join me on EaseMySpace! Use my referral code: ${referralCode}.
+  const shareText = `Join me on EaseMySpace™! Use my referral code: ${referralCode}.
 - Signup → Earn ₹25
 - Property Listing Approval → Earn ₹100
 - Trial Plan → Earn ₹50
@@ -59,7 +59,7 @@ Sign up here: ${registerUrl}`;
             Refer More, Earn More
           </h2>
           <p className="text-gray-700 leading-relaxed mb-5">
-            Invite your friends to EaseMySpace and unlock exclusive rewards.
+            Invite your friends to EaseMySpace™ and unlock exclusive rewards.
             Share your referral code today and maximize your earnings.
           </p>
 

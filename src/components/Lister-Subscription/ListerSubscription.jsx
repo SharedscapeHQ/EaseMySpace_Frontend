@@ -92,10 +92,10 @@ const badgeColors = {
   return (
     <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-white font-inter">
       <Helmet>
-        <title>Lister Subscription | EaseMySpace</title>
+        <title>Lister Subscription | EaseMySpace™</title>
         <meta
           name="description"
-          content="Choose the Standard Lister plan to access essential property listing services with EaseMySpace."
+          content="Choose the Standard Lister plan to access essential property listing services with EaseMySpace™."
         />
       </Helmet>
 

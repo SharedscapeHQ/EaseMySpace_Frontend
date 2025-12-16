@@ -130,7 +130,7 @@ const [showInvoiceModal, setShowInvoiceModal] = useState(false);
     >
       <Helmet>
         <title>
-          Subscription Plans Of EaseMySpace | Verified PGs, Flats & Flatmates in
+          Subscription Plans Of EaseMySpace™ | Verified PGs, Flats & Flatmates in
           Mumbai
         </title>
         <meta

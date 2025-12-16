@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 
 const faqs = [
   {
-    question: "Is listing a property on EaseMySpace free?",
+    question: "Is listing a property on EaseMySpace™ free?",
     answer:
       "Yes! Listing your property is completely free with no hidden charges. Reach thousands of PG, flat, and flatmate seekers in Mumbai.",
     button: {
@@ -49,7 +49,7 @@ export default function FAQSection() {
     <section
       style={{ fontFamily: "para_font" }}
       className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
-      aria-label="Frequently Asked Questions about EaseMySpace"
+      aria-label="Frequently Asked Questions about EaseMySpace™"
       role="region"
     >
       <Helmet>

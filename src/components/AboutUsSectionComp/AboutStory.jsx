@@ -16,7 +16,7 @@ function AboutStory() {
           "@type": "AboutPage",
           "name": "EaseMySpace - About Us",
           "url": "https://easemyspace.in/about-us",
-          "description": "EaseMySpace, founded in 2025 by Rakesh Goswami, is a Mumbai-based startup helping people find verified flatmates, PGs, shared accommodations, and vacant rooms.",
+          "description": "EaseMySpace™, founded in 2025 by Rakesh Goswami, is a Mumbai-based startup helping people find verified flatmates, PGs, shared accommodations, and vacant rooms.",
           "founder": {
             "@type": "Person",
             "name": "Rakesh Goswami",
@@ -65,7 +65,7 @@ function AboutStory() {
           <span className="font-semibold text-indigo-600 dark:text-indigo-400">
             Rakesh Goswami
           </span>{" "}
-          a young Chartered Accountant and passionate entrepreneur, EaseMySpace
+          a young Chartered Accountant and passionate entrepreneur, EaseMySpace™
           was born out of a simple idea: to make urban living easier.
         </span>
 

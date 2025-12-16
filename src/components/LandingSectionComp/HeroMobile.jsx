@@ -61,7 +61,7 @@ export default function HeroMobile({ properties }) {
           Find your next home with ease
         </h1>
         <p className="sr-only">
-          EaseMySpace helps you find PGs, flatmates, and rental flats across India.
+          EaseMySpace™ helps you find PGs, flatmates, and rental flats across India.
           Browse shared accommodations, paying guest housing, and vacant apartments near you.
         </p>
       </div>

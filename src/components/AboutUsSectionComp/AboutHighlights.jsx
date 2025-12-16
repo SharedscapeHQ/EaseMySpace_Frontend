@@ -7,7 +7,7 @@ export default function AboutHighlights() {
       icon: <FaBullseye />,
       title: "Our Mission",
       description:
-        "At EaseMySpace, we believe a great life begins with a great space. Our mission is to help Mumbai residents find verified shared accommodations and the right flatmates, making city living easier, safer, and more connected.",
+        "At EaseMySpace™, we believe a great life begins with a great space. Our mission is to help Mumbai residents find verified shared accommodations and the right flatmates, making city living easier, safer, and more connected.",
       list: null,
     },
     {
@@ -41,9 +41,9 @@ export default function AboutHighlights() {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AboutPage",
-          "name": "EaseMySpace - About Highlights",
+          "name": "EaseMySpace™ - About Highlights",
           "url": "https://easemyspace.in/about-us",
-          "description": "EaseMySpace helps Mumbai residents find verified flatmates, PGs, shared accommodations, and vacant rooms, offering a trusted and seamless rental experience.",
+          "description": "EaseMySpace™ helps Mumbai residents find verified flatmates, PGs, shared accommodations, and vacant rooms, offering a trusted and seamless rental experience.",
         })}
       </script>
 

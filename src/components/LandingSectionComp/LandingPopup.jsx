@@ -45,7 +45,7 @@ export default function LandingPopup() {
 
             {/* Content */}
             <h2 style={{fontFamily:"heading_font"}} className="text-xl font-bold text-gray-900 mb-2">
-              Welcome to EaseMySpace
+              Welcome to EaseMySpace™
             </h2>
             <p className="text-gray-600 mb-5">
             Hi, you're just a few clicks away from finding/listing your home 

@@ -25,12 +25,12 @@ function AboutUs() {
     <>
       <Helmet>
         {/* Page Title */}
-        <title>About EaseMySpace | Our Story, Team & Careers</title>
+        <title>About EaseMySpace™ | Our Story, Team & Careers</title>
 
         {/* Meta Description */}
         <meta
           name="description"
-          content="Learn about EaseMySpace - India's leading platform to find verified flatmates, PGs, and vacant rooms. Meet our team, explore our story, and discover career opportunities."
+          content="Learn about EaseMySpace™ - India's leading platform to find verified flatmates, PGs, and vacant rooms. Meet our team, explore our story, and discover career opportunities."
         />
 
         {/* Meta Keywords */}
@@ -42,11 +42,11 @@ function AboutUs() {
         {/* Open Graph */}
         <meta
           property="og:title"
-          content="About EaseMySpace | Meet Our Team & Explore Our Story"
+          content="About EaseMySpace™ | Meet Our Team & Explore Our Story"
         />
         <meta
           property="og:description"
-          content="Discover the story behind EaseMySpace, meet our dedicated team, and explore career opportunities at India's top platform for verified flatmates and rental spaces."
+          content="Discover the story behind EaseMySpace™, meet our dedicated team, and explore career opportunities at India's top platform for verified flatmates and rental spaces."
         />
         <meta property="og:image" content="/about-us/hero.png" />
         <meta property="og:url" content="https://easemyspace.in/about-us" />
@@ -56,11 +56,11 @@ function AboutUs() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="About EaseMySpace | Our Story & Team"
+          content="About EaseMySpace™ | Our Story & Team"
         />
         <meta
           name="twitter:description"
-          content="Get to know EaseMySpace: Our story, our team, and how we help you find verified flatmates, PGs, and vacant rooms across India."
+          content="Get to know EaseMySpace™: Our story, our team, and how we help you find verified flatmates, PGs, and vacant rooms across India."
         />
         <meta name="twitter:image" content="/about-us/hero.png" />
       </Helmet>

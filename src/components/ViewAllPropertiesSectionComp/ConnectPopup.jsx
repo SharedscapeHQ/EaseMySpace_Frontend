@@ -64,7 +64,7 @@ export default function ConnectPopup({ name, setIsOpen }) {
         <div className="bg-blue-50 p-6 md:w-1/2 border-r border-gray-200">
           <h3 className="text-gray-800 font-semibold text-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-500" /> {/* Yellow spark */}
-            Why Choose EaseMySpace?
+            Why Choose EaseMySpace™?
           </h3>
           <ul className="space-y-2 text-sm text-gray-600">
             <li className="flex items-center gap-2">

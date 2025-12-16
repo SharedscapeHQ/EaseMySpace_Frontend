@@ -27,10 +27,10 @@ export default function ContactPage() {
 
       {/* SEO Helmet */}
       <Helmet>
-        <title>Contact EaseMySpace | PGs, Flats & Flatmates in Mumbai</title>
+        <title>Contact EaseMySpace™ | PGs, Flats & Flatmates in Mumbai</title>
         <meta
           name="description"
-          content="Contact EaseMySpace for verified PGs, flatmates, and vacant flats in Mumbai. Post your property or find rental options in Andheri, Goregaon, Ghatkopar, and all Mumbai locations."
+          content="Contact EaseMySpace™ for verified PGs, flatmates, and vacant flats in Mumbai. Post your property or find rental options in Andheri, Goregaon, Ghatkopar, and all Mumbai locations."
         />
         <link rel="canonical" href="https://easemyspace.in/contact" />
         <script type="application/ld+json">{`
@@ -69,7 +69,7 @@ export default function ContactPage() {
         >
           <img
             src={heroImg}
-            alt="Contact EaseMySpace for PGs, Flats and Flatmates in Mumbai"
+            alt="Contact EaseMySpace™ for PGs, Flats and Flatmates in Mumbai"
             className="w-full h-full  object-contain"
           />
         </motion.div>

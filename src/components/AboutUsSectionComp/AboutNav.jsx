@@ -116,7 +116,7 @@ export default function AboutNav() {
             Our Team
           </a>
           <Link to="/life-at-ems" className="text-zinc-700  hover:text-blue-600 transition-colors duration-200">
-            Life at EaseMySpace
+            Life at EaseMySpace™
           </Link>
           <Link to="/careers" className="text-zinc-700  hover:text-blue-600 transition-colors duration-200">
             Careers

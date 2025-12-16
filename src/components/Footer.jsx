@@ -71,7 +71,7 @@ export default function Footer() {
         itemProp="logo"
       />
       <p className="text-sm leading-relaxed text-zinc-700 " itemProp="description">
-        EaseMySpace connects users with verified flatmates, rental flats, shared accommodations, and PGs in Mumbai. Find your next home quickly, hassle-free.
+        EaseMySpace™ connects users with verified flatmates, rental flats, shared accommodations, and PGs in Mumbai. Find your next home quickly, hassle-free.
       </p>
       <meta itemProp="name" content="EaseMySpace" />
       <meta itemProp="url" content="https://easemyspace.in" />
@@ -137,7 +137,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className={`w-10 h-10 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center shadow-lg border border-zinc-200  cursor-pointer transition hover:scale-110 hover:-translate-y-2`}
             itemProp="sameAs"
-            aria-label={`Follow EaseMySpace on ${url.split(".")[1]}`}
+            aria-label={`Follow EaseMySpace™ on ${url.split(".")[1]}`}
           >
             <Icon className="text-white text-xl" />
           </a>
@@ -181,7 +181,7 @@ export default function Footer() {
   </div>
 
   <div className="mt-10 pt-4 flex justify-center items-center border-t border-zinc-200  text-center text-sm text-zinc-600 ">
-    © {new Date().getFullYear()} EaseMySpace.in — All rights reserved.
+    © {new Date().getFullYear()} EaseMySpace™ — All rights reserved.
   </div>
 </footer>
 

@@ -186,7 +186,7 @@ export default function BottomNav() {
           <div ref={modalRef} className="bg-white rounded-xl shadow-xl w-full max-w-3xl relative overflow-hidden flex flex-col md:flex-row">
             <button onClick={() => setCallbackOpen(false)} className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg">✕</button>
             <div className="bg-blue-50 p-6 md:w-1/2 border-r border-gray-200 flex flex-col justify-center text-center md:text-left">
-              <h3 className="text-gray-800 font-semibold text-lg mb-4">Why Choose EaseMySpace? ✨</h3>
+              <h3 className="text-gray-800 font-semibold text-lg mb-4">Why Choose EaseMySpace™? ✨</h3>
               <ul className="space-y-2 text-sm text-gray-600 text-left mx-auto md:mx-0 w-fit">
                 <li>✅ Zero Brokerage – Direct Connect with Owners</li>
                 <li>✅ Largest Network of Flatmates & Vacant Rooms</li>

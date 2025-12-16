@@ -177,13 +177,13 @@ const handleSubmit = async (e) => {
     className="text-4xl font-bold mb-4"
     itemProp="title"
   >
-    Join Our Team at EaseMySpace – Careers in Mumbai
+    Join Our Team at EaseMySpace™ – Careers in Mumbai
   </h1>
   <p
     className="max-w-3xl mx-auto text-lg"
     itemProp="description"
   >
-    Be part of EaseMySpace, an innovative startup in Mumbai transforming how people find PGs, flats, and flatmates. Explore exciting career opportunities in IT, development, operations, and marketing with hybrid work, remote work, or work-from-home options.
+    Be part of EaseMySpace™, an innovative startup in Mumbai transforming how people find PGs, flats, and flatmates. Explore exciting career opportunities in IT, development, operations, and marketing with hybrid work, remote work, or work-from-home options.
   </p>
   <meta itemProp="employmentType" content="Full-time" />
   <meta itemProp="jobLocation" content="Mumbai, India" />

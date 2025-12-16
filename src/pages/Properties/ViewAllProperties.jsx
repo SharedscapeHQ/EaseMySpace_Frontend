@@ -168,12 +168,12 @@ export default function ViewAllProperties() {
         <Helmet>
           <title>
             {filters.looking_for === "pg"
-              ? `PGs in ${filters.location || "Mumbai"} | EaseMySpace`
+              ? `PGs in ${filters.location || "Mumbai"} | EaseMySpace™`
               : filters.looking_for === "flatmate"
-              ? `Flatmates in ${filters.location || "Mumbai"} | EaseMySpace`
+              ? `Flatmates in ${filters.location || "Mumbai"} | EaseMySpace™`
               : filters.looking_for === "vacant"
-              ? `Flats for Rent in ${filters.location || "Mumbai"} | EaseMySpace`
-              : `PGs, Flatmates & Flats in ${filters.location || "Mumbai"} | EaseMySpace`}
+              ? `Flats for Rent in ${filters.location || "Mumbai"} | EaseMySpace™`
+              : `PGs, Flatmates & Flats in ${filters.location || "Mumbai"} | EaseMySpace™`}
           </title>
           <meta
             name="description"

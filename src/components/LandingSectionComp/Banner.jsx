@@ -54,7 +54,7 @@ function Banner() {
   return (
     <>
       <Helmet>
-        <title>Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace</title>
+        <title>Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace™</title>
         <meta
           name="description"
           content="Looking for a flatmate or vacant flats in Mumbai? Talk to our experts for verified options in Andheri, Bandra, Juhu and more. Zero brokerage and personalized assistance by EaseMySpace."
@@ -64,20 +64,20 @@ function Banner() {
           content="flatmate in Mumbai, PG in Andheri, flats for rent Mumbai, paying guest Mumbai, shared flats Mumbai"
         />
         {/* Open Graph */}
-        <meta property="og:title" content="Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace" />
+        <meta property="og:title" content="Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace™" />
         <meta
           property="og:description"
-          content="Looking for a flatmate or vacant flats in Mumbai? Get personalized assistance and verified listings with EaseMySpace."
+          content="Looking for a flatmate or vacant flats in Mumbai? Get personalized assistance and verified listings with EaseMySpace™."
         />
         <meta property="og:image" content="/CTA-assets/cta2.png" />
         <meta property="og:url" content="https://easemyspace.in" />
         <meta property="og:type" content="website" />
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace" />
+        <meta name="twitter:title" content="Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace™" />
         <meta
           name="twitter:description"
-          content="Looking for a flatmate or vacant flats in Mumbai? Get personalized assistance and verified listings with EaseMySpace."
+          content="Looking for a flatmate or vacant flats in Mumbai? Get personalized assistance and verified listings with EaseMySpace™."
         />
         <meta name="twitter:image" content="/CTA-assets/cta2.png" />
         {/* Structured Data */}
@@ -172,7 +172,7 @@ function Banner() {
     {/* Left Section */}
     <div className="bg-blue-50 p-6 md:w-1/2 dark:bg-zinc-700 dark:text-white border-r border-zinc-200 dark:border-zinc-800 flex flex-col justify-center text-center md:text-left">
       <h3 className="text-zinc-800 dark:text-zinc-200  font-semibold text-lg mb-4 flex items-center justify-center md:justify-start gap-1">
-        Why Choose EaseMySpace? <IoSparklesOutline className="text-blue-500 dark:text-blue-100 text-lg" />
+        Why Choose EaseMySpace™? <IoSparklesOutline className="text-blue-500 dark:text-blue-100 text-lg" />
       </h3>
 
       <ul className="space-y-2 text-sm text-zinc-600 text-left mx-auto md:mx-0 w-fit">

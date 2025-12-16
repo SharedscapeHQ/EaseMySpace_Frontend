@@ -27,7 +27,7 @@ export default function Loader() {
           textAnchor="middle"
           className="house-text text-xl font-semibold"
         >
-          EaseMySpace
+          EaseMySpace™
         </text>
       </svg>
     </div>

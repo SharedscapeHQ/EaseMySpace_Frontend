@@ -10,7 +10,7 @@ export default function WeekendAtEMS({
   description,
   className = ''
 }) {
-  const defaultDescription = `At EaseMySpace (EMS) we value quality work and the humans who do it. That's
+  const defaultDescription = `At EaseMySpace™ (EMS) we value quality work and the humans who do it. That's
   why we give flexibility and time to refresh — so each teammate can come back
   energized and perform at their best. We work hard, but we also chill: rooftop
   playlists, coffee catch-ups, and relaxing weekend hangouts keep our creativity

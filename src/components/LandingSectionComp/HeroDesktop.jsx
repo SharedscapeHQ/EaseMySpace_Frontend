@@ -140,7 +140,7 @@ export default function HeroDesktop() {
 
           {/* 🔑 SEO hidden intro */}
           <p className="sr-only">
-            EaseMySpace helps you find affordable PGs, flatmates, and rental flats
+            EaseMySpace™ helps you find affordable PGs, flatmates, and rental flats
             across India. Browse shared accommodations, paying guest housing, and
             vacant apartments near you.
           </p>
@@ -186,7 +186,7 @@ export default function HeroDesktop() {
               ref={buttonRef}
               to="/view-properties"
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-transparent bg-blue-600 px-6 py-2 text-white transition-colors duration-300 dark:text-white"
-              aria-label="View all PG, flatmate and rental flat listings on EaseMySpace"
+              aria-label="View all PG, flatmate and rental flat listings on EaseMySpace™"
             >
               <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
                 View All Properties
@@ -224,11 +224,11 @@ export default function HeroDesktop() {
             playsInline
             preload="auto"
             className="w-full h-full object-cover"
-            aria-label="Video showcasing PGs, flatmates and rental flats available on EaseMySpace"
+            aria-label="Video showcasing PGs, flatmates and rental flats available on EaseMySpace™"
           />
           {/* Hidden video description */}
           <p className="sr-only">
-            Watch how EaseMySpace makes it simple to find PGs, flatmates and
+            Watch how EaseMySpace™ makes it simple to find PGs, flatmates and
             furnished rental flats near you.
           </p>
         </div>
