@@ -56,8 +56,7 @@ const [showInvoiceModal, setShowInvoiceModal] = useState(false);
         setUserData(user);
       } catch (err) {
         console.error("❌ Failed to load user:", err);
-        toast.error("Please log in to continue.");
-        window.location.href = "/login";
+       setUserData(null); 
       }
     })();
   }, []);
