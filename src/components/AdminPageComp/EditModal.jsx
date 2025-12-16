@@ -10,9 +10,8 @@ export default function EditModal({
 }) {
   if (!editingProperty) return null;
 
-  const [draggedImage, setDraggedImage] = useState(null); // { img, fromCategory, index }
+  const [draggedImage, setDraggedImage] = useState(null); 
 
-  // ---------------- File Handling ----------------
   const handleFileChange = async (e, type, category = null) => {
     const files = Array.from(e.target.files);
     const base64Files = await Promise.all(
@@ -520,34 +519,35 @@ const handleDropToCategory = (category, dropIndex) => {
         ))}
 
         {/* === Videos Section === */}
-        {(editForm.video || []).length > 0 && (
-          <div className="mt-4">
-            <label className="block text-sm font-medium mb-2">Current Videos</label>
-            <div className="flex flex-wrap gap-3">
-              {editForm.video.map((vid, idx) => (
-                <div
-                  key={idx}
-                  className="relative w-48 h-32 border rounded overflow-hidden"
-                >
-                  <video src={vid} controls className="w-full h-full object-cover" />
-                  <button
-                    onClick={() => handleRemoveVideo(idx)}
-                    className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-            <input
-              type="file"
-              multiple
-              accept="video/*"
-              className="mt-2"
-              onChange={(e) => handleFileChange(e, "video")}
-            />
-          </div>
-        )}
+       <div className="mb-6">
+  <h4 className="font-semibold mb-3 text-indigo-600">Videos</h4>
+  { (editForm.video || []).length > 0 && (
+    <div className="flex flex-wrap gap-3 mb-2">
+      {editForm.video.map((vid, idx) => (
+        <div
+          key={idx}
+          className="relative w-48 h-32 border rounded overflow-hidden"
+        >
+          <video src={vid} controls className="w-full h-full object-cover" />
+          <button
+            onClick={() => handleRemoveVideo(idx)}
+            className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+  <input
+    type="file"
+    multiple
+    accept="video/*"
+    className="mt-2"
+    onChange={(e) => handleFileChange(e, "video")}
+  />
+</div>
+
 
         {/* Newly Listed Position */}
         {editForm.is_newly_listed && (
