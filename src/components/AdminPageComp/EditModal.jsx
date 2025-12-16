@@ -11,33 +11,49 @@ export default function EditModal({
   if (!editingProperty) return null;
 
   const [draggedImage, setDraggedImage] = useState(null); 
+  const [isSaving, setIsSaving] = useState(false);
 
+
+  // ---------------- File Handling ----------------
   const handleFileChange = async (e, type, category = null) => {
-    const files = Array.from(e.target.files);
-    const base64Files = await Promise.all(
-      files.map(
-        (file) =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-          })
-      )
-    );
+  const files = Array.from(e.target.files);
 
-    if (category) {
-      setEditForm((prev) => ({
-        ...prev,
-        [category]: [...(prev[category] || []), ...base64Files],
-      }));
-    } else {
-      setEditForm((prev) => ({
-        ...prev,
-        image: [...(prev.image || []), ...base64Files],
-      }));
-    }
-  };
+  const base64Files = await Promise.all(
+    files.map(
+      (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        })
+    )
+  );
+
+  // ✅ VIDEOS
+  if (type === "video") {
+    setEditForm((prev) => ({
+      ...prev,
+      video_base64: [...(prev.video_base64 || []), ...base64Files],
+    }));
+    return;
+  }
+
+  // ✅ CATEGORY IMAGES
+  if (category) {
+    setEditForm((prev) => ({
+      ...prev,
+      [category]: [...(prev[category] || []), ...base64Files],
+    }));
+    return;
+  }
+
+  // ✅ MAIN IMAGES
+  setEditForm((prev) => ({
+    ...prev,
+    image: [...(prev.image || []), ...base64Files],
+  }));
+};
 
   const handleRemoveImage = (img, idx, category = null) => {
     const target = category || "image";
@@ -53,18 +69,24 @@ export default function EditModal({
     }));
   };
 
-  const handleRemoveVideo = (idx) => {
-    const updated = (editForm.video || []).filter((_, i) => i !== idx);
-    setEditForm((prev) => ({
-      ...prev,
-      video: updated,
-      remove_video_urls: [
-        ...(prev.remove_video_urls || []),
-        ...(editForm.video[idx] ? [editForm.video[idx]] : []),
-      ],
-    }));
-    setEditingProperty((prev) => ({ ...prev, video: updated }));
-  };
+ const handleRemoveVideo = (idx) => {
+  const updated = (editingProperty.video || []).filter((_, i) => i !== idx);
+
+  setEditForm((prev) => ({
+    ...prev,
+    video: updated,
+    remove_video_urls: [
+      ...(prev.remove_video_urls || []),
+      editingProperty.video[idx],
+    ],
+  }));
+
+  setEditingProperty((prev) => ({
+    ...prev,
+    video: updated,
+  }));
+};
+
 
   // ---------------- Pricing Handlers ----------------
   const addRoom = () => {
@@ -193,6 +215,18 @@ const handleDropToCategory = (category, dropIndex) => {
     { key: "hall_images", label: "Hall Images" },
     { key: "additional_images", label: "Additional Images" },
   ];
+
+  const handleSave = async () => {
+  if (isSaving) return;
+
+  try {
+    setIsSaving(true);
+    await handleEditSubmit(); 
+  } finally {
+    setIsSaving(false);
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4">
@@ -518,12 +552,14 @@ const handleDropToCategory = (category, dropIndex) => {
           </div>
         ))}
 
-        {/* === Videos Section === */}
-       <div className="mb-6">
+       {/* === Videos Section === */}
+<div className="mb-6">
   <h4 className="font-semibold mb-3 text-indigo-600">Videos</h4>
-  { (editForm.video || []).length > 0 && (
-    <div className="flex flex-wrap gap-3 mb-2">
-      {editForm.video.map((vid, idx) => (
+
+  {/* EXISTING VIDEOS */}
+  {(editingProperty.video || []).length > 0 && (
+    <div className="flex flex-wrap gap-3 mb-3">
+      {editingProperty.video.map((vid, idx) => (
         <div
           key={idx}
           className="relative w-48 h-32 border rounded overflow-hidden"
@@ -539,11 +575,26 @@ const handleDropToCategory = (category, dropIndex) => {
       ))}
     </div>
   )}
+
+  {/* NEW VIDEOS PREVIEW */}
+  {(editForm.video_base64 || []).length > 0 && (
+    <div className="flex flex-wrap gap-3 mb-3">
+      {editForm.video_base64.map((vid, idx) => (
+        <video
+          key={idx}
+          src={vid}
+          controls
+          className="w-48 h-32 border rounded object-cover"
+        />
+      ))}
+    </div>
+  )}
+
+  {/* UPLOAD INPUT */}
   <input
     type="file"
     multiple
     accept="video/*"
-    className="mt-2"
     onChange={(e) => handleFileChange(e, "video")}
   />
 </div>
@@ -573,12 +624,40 @@ const handleDropToCategory = (category, dropIndex) => {
           >
             Cancel
           </button>
-          <button
-            onClick={handleEditSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Save
-          </button>
+         <button
+  onClick={handleSave}
+  disabled={isSaving}
+  className={`px-4 py-2 rounded flex items-center gap-2 ${
+    isSaving
+      ? "bg-blue-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"
+  } text-white`}
+>
+  {isSaving && (
+    <svg
+      className="animate-spin h-4 w-4 text-white"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
+      />
+    </svg>
+  )}
+  {isSaving ? "Saving..." : "Save"}
+</button>
+
         </div>
       </div>
     </div>
