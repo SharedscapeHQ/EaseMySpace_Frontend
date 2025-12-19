@@ -34,7 +34,7 @@ export default function SalesPersonCardMini({ className = "" }) {
   return (
     <>
       <div
-        className={`w-56 bg-white rounded-2xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition transform hover:-translate-y-1 ${className}`}
+        className={`lg:w-56 w-80 bg-white rounded-2xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition transform hover:-translate-y-1 ${className}`}
         style={{ fontFamily: "para_font" }}
       >
         {/* Top Banner */}

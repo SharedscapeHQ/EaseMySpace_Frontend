@@ -338,7 +338,7 @@ export default function ViewAllProperties() {
         </div>
 
         {/* Listings */}
-<section className="w-full max-w-7xl mx-auto space-y-8 ">
+<section className="w-full max-w-7xl mx-auto space-y-8  ">
   {loading ? (
     <PropertyCardSkeleton />
   ) : paginatedProperties.length === 0 ? (
@@ -346,7 +346,7 @@ export default function ViewAllProperties() {
       No properties match your filters.
     </p>
   ) : (
-    <div className="flex flex-wrap justify-start gap-10">
+<div className="flex flex-wrap justify-center lg:justify-start gap-10">
       {paginatedProperties.map((p, index) => (
         <React.Fragment key={p.id}>
           <div className="flex-shrink-0">

@@ -12,7 +12,7 @@ export default function PropertyMiniCard({ property }) {
     <div className="flex-shrink-0 text-left relative">
       <div className="relative w-44 h-44 rounded-3xl overflow-hidden">
         {/* Like Button positioned above the image */}
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-2 right-2 ">
           <LikeButton propertyId={property.id} initiallyLiked={property.liked} />
         </div>
 

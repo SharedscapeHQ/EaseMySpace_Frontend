@@ -13,7 +13,7 @@ const PropertyCard = ({ p }) => {
   return (
     <div className="text-left  relative">
       {/* Image Wrapper */}
-      <div className="relative w-56 h-56 rounded-3xl overflow-hidden">
+      <div className="relative lg:w-56 lg:h-56 w-80 h-80 rounded-3xl overflow-hidden">
         {/* Like Button */}
         <div className="absolute top-2 right-2 z-10">
           <LikeButton propertyId={p.id} initiallyLiked={p.liked} />
