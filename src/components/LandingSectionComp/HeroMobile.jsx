@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
 import heroImg from "/heroImg/hero.png";
-// import DiwaliImg from "/heroImg/diwali_img.jpg";
 
 export default function HeroMobile({ properties }) {
   const navigate = useNavigate();

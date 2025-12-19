@@ -1,21 +1,17 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import FAQSection from "../components/LandingSectionComp/FAQSection";
-import FeatureSection from "../components/LandingSectionComp/Features";
 import Footer from "../components/Footer";
 import HeroMobile from "../components/LandingSectionComp/HeroMobile";
 import HeroDesktop from "../components/LandingSectionComp/HeroDesktop";
 import NewlyListedProperties from "../components/LandingSectionComp/NewlyListedProperties";
 import RecentAddedProperties from "../components/LandingSectionComp/RecentAddedProperties";
-import TopLocation from "../components/LandingSectionComp/TopLocation";
-import OurQuality from "../components/LandingSectionComp/OurQuality";
 import Banner from "../components/LandingSectionComp/Banner";
-import ExploreSection from "../components/LandingSectionComp/ExploreSection";
 import BottomNav from "../components/LandingSectionComp/BottomNav";
 import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
-import CustomerVidReview from "../components/LandingSectionComp/CustomerVidReview";
 import LandingPopup from "../components/LandingSectionComp/LandingPopup";
-import FunnyQuotes from "../components/LandingSectionComp/FunnyQuotes";
+import AndheriProperties from "../components/LandingSectionComp/AndheriProperties";
+import RecentlyViewedProperties from "../components/LandingSectionComp/RecentlyViewedProperties";
 
 function Landing() {
   return (
@@ -71,17 +67,13 @@ function Landing() {
       <div className="w-full -pt-10 lg:pb-0 pb-9 dark:bg-zinc-900">
         <HeroMobile />
         <HeroDesktop />
-        <FunnyQuotes/>
+        <RecentlyViewedProperties/>
         <NewlyListedProperties />
         <RecentAddedProperties />
+        <AndheriProperties/>
         <Banner />
-        <OurQuality />
-        <TopLocation />
-        <FeatureSection />
-        <ExploreSection />
         <FAQSection />
         <TestimonialSection/>
-        {/* <CustomerVidReview/> */}
         <BottomNav />
         <Footer />
       </div>

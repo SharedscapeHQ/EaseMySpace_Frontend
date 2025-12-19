@@ -1,240 +1,74 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap";
+import HeroSearchBar from "./HeroSearchBar";
+
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
-import Hero_vid from "/heroImg/Hero_vid.webm";
-// import Hero_vid from "/heroImg/hero_vid_crop.mp4";
-// import Diwali_vid from "/heroImg/Diwali_vid.mp4";
-import Poster from "/heroImg/Poster.jpg"; 
-// import EMSChatbot from "../Chats/EMSChatbot";
 
 export default function HeroDesktop() {
-  const videoRef = useRef(null);
-  const headingRef = useRef(null);
-  const cardsRef = useRef([]);
-  const buttonRef = useRef(null);
-  const flipButtonRef = useRef(null);
-
-  const [chatOpen, setChatOpen] = useState(false);
-
-  useEffect(() => {
-    // Try playing video (fix autoplay on mobile)
-    const playVideo = () => {
-      const video = videoRef.current;
-      if (video && video.paused) {
-        video.play().catch((err) => console.log("Autoplay blocked:"));
-      }
-    };
-    playVideo();
-    window.addEventListener("touchstart", playVideo, { once: true });
-    window.addEventListener("click", playVideo, { once: true });
-
-    // Heading animation
-    const heading = headingRef.current;
-    if (heading) {
-      const span = heading.querySelector("span");
-      gsap.fromTo(
-        span,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
-      );
-    }
-
-    // Cards animation
-    gsap.fromTo(
-      cardsRef.current,
-      { y: 40, opacity: 0, scale: 0.95 },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        stagger: 0.15,
-        delay: 0.3,
-      }
-    );
-
-    // Buttons animation
-    [buttonRef.current, flipButtonRef.current].forEach((btn, i) => {
-      if (btn) {
-        gsap.fromTo(
-          btn,
-          { y: 30, opacity: 0, scale: 0.95 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.6,
-            ease: "power3.out",
-            delay: 0.9 + i * 0.1,
-          }
-        );
-      }
-    });
-
-    // Hover animation for cards
-    cardsRef.current.forEach((card) => {
-      if (!card) return;
-      const tl = gsap.timeline({ paused: true });
-      tl.to(card, {
-        yPercent: -10,
-        scale: 1.03,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-      card.addEventListener("mouseenter", () => tl.play());
-      card.addEventListener("mouseleave", () => tl.reverse());
-    });
-
-    return () => {
-      window.removeEventListener("touchstart", playVideo);
-      window.removeEventListener("click", playVideo);
-    };
-  }, []);
-
   const cards = [
-    { title: "PGs", value: "pg", img: pgImg, bg: "bg-blue-200/60" },
-    { title: "Flatmate", value: "flatmate", img: sharedImg, bg: "bg-green-200/60" },
-    { title: "Flat", value: "vacant", img: vacantImg, bg: "bg-purple-200/60" },
+    { title: "PGs", value: "pg", img: pgImg },
+    { title: "Flatmates", value: "flatmate", img: sharedImg },
+    { title: "Vacant Flats", value: "vacant", img: vacantImg },
   ];
 
- return (
-  <>
-    <section
-      className="hidden lg:block w-full bg-white dark:bg-zinc-900 px-6"
-      style={{ height: "calc(100vh - 5rem)" }}
-    >
-      {/* <EMSChatbot
-          isOpen={chatOpen}
-          onClose={() => setChatOpen(false)}
-        /> */}
+  return (
+    <section className="hidden bg-zinc-50 lg:block w-full bg-white dark:bg-zinc-900 px-6 py-7">
+      <div className="max-w-6xl mx-auto text-center">
 
-        {/* Chat Icon Button */}
-        {/* <button
-          onClick={() => setChatOpen(true)}
-          className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl"
-          aria-label="Open EaseMySpace chat"
+        {/* <h1
+          className="text-4xl lg:text-5xl font-semibold text-zinc-800 dark:text-zinc-100 mb-6"
+          style={{ fontFamily: "heading_font" }}
         >
-          💬
-        </button> */}
-      <div className="max-w-7xl mx-auto grid grid-cols-2 gap-12 items-center h-full">
-        {/* Left */}
-        <div>
-          <h1
-            ref={headingRef}
-            style={{ fontFamily: "heading_font" }}
-            className="text-3xl lg:text-5xl text-zinc-800 dark:text-zinc-100 mb-14 overflow-hidden"
-          >
-            <span
-              className="inline-block"
-              style={{
-                paddingLeft: "calc((100% - (3 * 160px + 2 * 1.5rem)) / 2)",
-              }}
-            >
-              Find your next home with ease
-            </span>
-          </h1>
+          Find your next home, without the hassle
+        </h1> */}
 
-          {/* 🔑 SEO hidden intro */}
-          <p className="sr-only">
-            EaseMySpace™ helps you find affordable PGs, flatmates, and rental flats
-            across India. Browse shared accommodations, paying guest housing, and
-            vacant apartments near you.
-          </p>
+        {/* ✅ Search Bar */}
 
-          {/* Property Cards */}
-          <div className="flex gap-6 justify-center mb-12">
-            {cards.map((item, idx) => (
-              <Link
-                key={item.value}
-                to={`/view-properties?looking_for=${item.value}`}
-                ref={(el) => (cardsRef.current[idx] = el)}
-                className="group relative border-2 border-zinc-200 dark:border-zinc-700 px-10 rounded-lg py-3 flex flex-col items-center justify-center gap-3 opacity-0 overflow-hidden"
-                aria-label={`Explore ${item.title} rental properties, PGs and shared flats`}
-              >
-                {/* Hover overlay */}
-                <span
-                  className={`absolute inset-0 ${item.bg} transform scale-y-0 group-hover:scale-y-100 origin-bottom transition-transform duration-300 ease-in-out`}
-                />
-                <div
-                  className={`relative z-10 w-20 h-20 flex items-center justify-center rounded-full mb-2 ${item.bg} group-hover:bg-transparent`}
-                >
-                  <img
-                    src={item.img}
-                    alt={`Find ${item.title} listings, shared accommodations, and rental options`}
-                    className="max-w-[80%] max-h-[80%] object-contain"
-                    loading="eager"
-                  />
-                </div>
-                <span className="relative z-10 text-base font-semibold text-zinc-700 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-zinc-900">
-                  {item.title}
-                </span>
-              </Link>
-            ))}
-          </div>
-
-          {/* Buttons */}
-          <div
-            style={{ fontFamily: "para_font" }}
-            className="text-center flex gap-4 justify-center"
-          >
-            {/* View All */}
+        {/* Property Types */}
+        <div className="grid grid-cols-3 gap-5 max-w-3xl mx-auto mb-10">
+          {cards.map((item) => (
             <Link
-              ref={buttonRef}
-              to="/view-properties"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-transparent bg-blue-600 px-6 py-2 text-white transition-colors duration-300 dark:text-white"
-              aria-label="View all PG, flatmate and rental flat listings on EaseMySpace™"
+              key={item.value}
+              to={`/view-properties?looking_for=${item.value}`}
+              className="group flex flex-col items-center gap-3 hover:-translate-y-1 transition"
             >
-              <span className="relative z-10 transition-colors duration-300 group-hover:text-blue-600">
-                View All Properties
-              </span>
-              <span className="absolute left-0 top-0 h-full w-0 bg-white transition-all duration-300 ease-out group-hover:w-full" />
-            </Link>
+              <div className="w-14 h-14 rounded-full bg-blue-50/70 dark:bg-zinc-700/50 flex items-center justify-center group-hover:scale-110 transition">
+                <img
+  src={item.img}
+  alt={item.title}
+  className="w-9 h-9 object-contain"
+/>
 
-            {/* Add Property */}
-            <Link
-              ref={flipButtonRef}
-              to="/add-properties"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-blue-600 bg-white px-6 py-2 text-blue-600 transition-colors duration-300 dark:bg-zinc-800 dark:border-blue-400 dark:text-blue-400"
-              aria-label="Add your PG, shared flat or rental property listing for free"
-            >
-              <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
-                Add Property{" "}
-                <span className="text-green-700 dark:text-green-400 group-hover:text-green-300">
-                  Free
-                </span>
+              </div>
+              <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
+                {item.title}
               </span>
-              <span className="absolute left-0 top-0 h-full w-0 bg-blue-600 transition-all duration-300 ease-in-out group-hover:w-full" />
             </Link>
-          </div>
+          ))}
+        </div>
+        <HeroSearchBar />
+
+
+        {/* CTAs */}
+        <div className="flex justify-center gap-4">
+          <Link
+            to="/view-properties"
+            className="px-6 py-2 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700"
+          >
+            View Properties
+          </Link>
+
+          <Link
+            to="/add-properties"
+            className="px-6 py-2 rounded-full border border-blue-600 text-blue-600 font-medium hover:bg-blue-50"
+          >
+            Add Property <span className="text-green-600">Free</span>
+          </Link>
         </div>
 
-        {/* Right Video */}
-        <div className="w-full overflow-hidden rounded-lg h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[70vh] 2xl:h-[90vh]">
-           <video
-            ref={videoRef}
-            src={Hero_vid}
-            poster={Poster}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover"
-            aria-label="Video showcasing PGs, flatmates and rental flats available on EaseMySpace™"
-          />
-          {/* Hidden video description */}
-          <p className="sr-only">
-            Watch how EaseMySpace™ makes it simple to find PGs, flatmates and
-            furnished rental flats near you.
-          </p>
-        </div>
       </div>
     </section>
-  </>
-);
-
+  );
 }

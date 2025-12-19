@@ -1,0 +1,138 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import PropertyMiniCard from "./PropertyMiniCard";
+
+
+const parseImages = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+
+  if (typeof raw === "string" && raw.startsWith("{"))
+    return raw
+      .slice(1, -1)
+      .split(",")
+      .map((s) => s.trim().replace(/^"|"$/g, "").replace(/^'|'$/g, ""))
+      .filter(Boolean);
+
+  return [];
+};
+
+
+export default function AndheriProperties() {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchProperties() {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          "https://api.easemyspace.in/api/properties/all"
+        );
+
+        const filtered = res.data
+          .filter(
+            (p) =>
+              p.status === "approved" &&
+              p.location &&
+              p.location.toLowerCase().includes("andheri")
+          )
+          .sort(
+            (a, b) =>
+              (a.newly_listed_position || 9999) -
+              (b.newly_listed_position || 9999)
+          )
+          .map((p) => ({
+            ...p,
+            image: parseImages(p.image),
+            bedroom_images: parseImages(p.bedroom_images),
+            kitchen_images: parseImages(p.kitchen_images),
+            bathroom_images: parseImages(p.bathroom_images),
+            hall_images: parseImages(p.hall_images),
+            additional_images: parseImages(p.additional_images),
+          }));
+
+        setProperties(filtered);
+      } catch (err) {
+        console.error("Failed to fetch Andheri properties", err);
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProperties();
+  }, []);
+
+  /* ---------- Loading ---------- */
+
+  if (loading) {
+    return (
+      <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
+        <h2
+          style={{ fontFamily: "heading_font" }}
+          className="text-lg lg:text-3xl mb-6 text-black"
+        >
+          Properties in Andheri
+        </h2>
+
+        <div className="flex gap-6 overflow-x-auto pb-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-44 h-56 rounded-3xl bg-zinc-200 animate-pulse flex-shrink-0"
+            />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (!properties.length) {
+    return (
+      <p className="text-center text-zinc-500 mt-10">
+        No properties found in Andheri.
+      </p>
+    );
+  }
+
+  /* ---------- UI ---------- */
+
+  return (
+    <div className=" dark:bg-zinc-900 transition-colors">
+      <section
+        className="lg:py-10 pt-10 lg:px-10 px-3 max-w-7xl mx-auto"
+        style={{ fontFamily: "para_font" }}
+      >
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h2
+            style={{ fontFamily: "heading_font" }}
+            className="text-[16px] lg:text-3xl text-black dark:text-white"
+          >
+            Properties in Andheri
+          </h2>
+
+          <Link
+            to="/view-properties?location=andheri"
+            className="text-blue-600 text-[13px] lg:text-base font-medium hover:underline"
+          >
+            View All
+          </Link>
+        </div>
+
+        {/* Cards */}
+        <div
+          ref={scrollRef}
+          className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
+        >
+          {properties.map((property) => (
+            <PropertyMiniCard key={property.id} property={property} />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}

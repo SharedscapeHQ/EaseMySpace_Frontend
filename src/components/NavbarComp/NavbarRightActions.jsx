@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import DarkModeSwitch from "../LandingSectionComp/DarkModeToggle";
+// import DarkModeSwitch from "../LandingSectionComp/DarkModeToggle";
 
 export default function NavbarRightActions() {
   return (

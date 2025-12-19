@@ -177,9 +177,9 @@ export const getReferralTransactions = async () => {
 };
 
 // Save a property
-export const saveProperty = async (propertyId) => {
+export const saveProperty = async ({ propertyId, groupName }) => {
   try {
-    const res = await axiosInstance.post("/save", { propertyId });
+    const res = await axiosInstance.post("/save", { propertyId, groupName });
     return res.data;
   } catch (err) {
     console.error("❌ Error saving property:", err.response?.data || err.message);

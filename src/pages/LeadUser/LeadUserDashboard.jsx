@@ -6,7 +6,7 @@ import SavedProperties from "../../components/LeadUserComp/SavedProperties";
 
 const TABS = {
   PROFILE: "Profile",
-  MY_PLAN: "MyPlan",
+  // MY_PLAN: "MyPlan",
   UNLOCKED_LEADS: "UnlockedLeads",
   SAVED_PROPERTIES: "SavedProperties",
 };

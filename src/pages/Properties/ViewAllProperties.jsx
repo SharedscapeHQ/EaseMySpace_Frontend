@@ -93,7 +93,7 @@ export default function ViewAllProperties() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 19;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
   const paginatedProperties = useMemo(() => {
@@ -338,59 +338,57 @@ export default function ViewAllProperties() {
         </div>
 
         {/* Listings */}
-        <section className="w-full max-w-7xl mx-auto space-y-8 lg:px-0 px-3">
-          {loading ? (
-            <PropertyCardSkeleton />
-          ) : paginatedProperties.length === 0 ? (
-            <p className="text-center text-gray-500 text-lg mt-20">
-              No properties match your filters.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {paginatedProperties.map((p, index) => (
-                <React.Fragment key={p.id}>
-                  <PropertyCard p={p} />
+<section className="w-full max-w-7xl mx-auto space-y-8 ">
+  {loading ? (
+    <PropertyCardSkeleton />
+  ) : paginatedProperties.length === 0 ? (
+    <p className="text-center text-gray-500 text-lg mt-20">
+      No properties match your filters.
+    </p>
+  ) : (
+    <div className="flex flex-wrap justify-start gap-10">
+      {paginatedProperties.map((p, index) => (
+        <React.Fragment key={p.id}>
+          <div className="flex-shrink-0">
+            <PropertyCard p={p} />
+          </div>
 
-                  {/* SalesPersonCard Placement */}
-                  {index === 4 && (
-                    <div className="hidden lg:block w-full h-full">
-                      <SalesPersonCard className="w-full h-full" />
-                    </div>
-                  )}
-                  {index === 2 && (
-                    <div className="block lg:hidden w-full h-full">
-                      <SalesPersonCard className="w-full h-full" />
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
-
-              {paginatedProperties.length < 5 && paginatedProperties.length <= 2 && (
-                <div className="block lg:hidden w-full h-full">
-                  <SalesPersonCard className="w-full h-full" />
-                </div>
-              )}
+          {/* SalesPersonCard Placement */}
+          {index === 8 && (
+            <div className="hidden lg:block flex-shrink-0">
+              <SalesPersonCard />
             </div>
           )}
-
-          {/* Post Requirements Box */}
-          <div className="w-full bg-blue-100 mt-5 flex flex-col md:flex-row items-center justify-between px-4 py-4 rounded-lg shadow-sm">
-            <div className="mb-2 md:mb-0">
-              <div className="text-xs font-semibold text-gray-900">
-                Didn't get what you are searching for?
-              </div>
-              <div className="text-xs text-gray-600 mt-1">
-                Post your requirement and we’ll connect to solve your space issue.
-              </div>
+          {index === 2 && (
+            <div className="block lg:hidden flex-shrink-0">
+              <SalesPersonCard />
             </div>
-            <Link
-              to="/demand-form"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition"
-            >
-              Post Requirements
-            </Link>
-          </div>
-        </section>
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  )}
+
+  {/* Post Requirements Box */}
+  <div className="w-full bg-blue-100 mt-5 flex flex-col md:flex-row items-center justify-between px-4 py-4 rounded-lg shadow-sm">
+    <div className="mb-2 md:mb-0">
+      <div className="text-xs font-semibold text-gray-900">
+        Didn't get what you are searching for?
+      </div>
+      <div className="text-xs text-gray-600 mt-1">
+        Post your requirement and we’ll connect to solve your space issue.
+      </div>
+    </div>
+    <Link
+      to="/demand-form"
+      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition"
+    >
+      Post Requirements
+    </Link>
+  </div>
+</section>
+
+
 
         {/* Pagination */}
         <Pagination

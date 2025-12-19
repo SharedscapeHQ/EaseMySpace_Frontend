@@ -21,7 +21,6 @@ import CancellationRefundPolicy from "./components/FooterSectionComp/Cancellatio
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
 import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import NotFound from "./pages/NotFound";
-// import TidioWidget from "./components/Chats/TidioWidget";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 import SubscriptionPlans from "./components/Subscription/Subscription";
 import UserPropertyDetails from "./components/UserPageComp/UserPropertyDetails";
@@ -41,10 +40,7 @@ import VisitorTracker from "./components/Tracking/VisitorTracker";
 import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtEaseMySpace";
 import ListerSubscription from "./components/Lister-Subscription/ListerSubscription";
 
-// import Maid_Landing from "./pages/Maid_Service/Maid_Landing";
-// import ProfileDetail from "./components/Maid_service_comp/ProfileDetails/ProfileDetails";
-
-/* ───── ScrollToTop – jump instantly to top on route change ───── */
+/* ───── ScrollToTop ───── */
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -55,14 +51,15 @@ function ScrollToTop() {
   return null;
 }
 
-/* ───── Layout – shared UI & global effects ───── */
+/* ───── Layout ───── */
 function Layout({ children }) {
   const location = useLocation();
   const hideNavbar = ["/login", "/register"].includes(location.pathname);
 
   useEffect(() => {
-    const imgs = document.querySelectorAll("img:not([loading])");
-    imgs.forEach((img) => img.setAttribute("loading", "lazy"));
+    document
+      .querySelectorAll("img:not([loading])")
+      .forEach((img) => img.setAttribute("loading", "lazy"));
   }, [location.pathname]);
 
   return (
@@ -82,9 +79,7 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* Public Routes */}
-
-        {/* Flatmate | pgs | Vacant  */}
+        {/* Public */}
         <Route
           path="/"
           element={
@@ -146,6 +141,16 @@ function AnimatedRoutes() {
           }
         />
         <Route
+          path="/jobs/:titleAndId"
+          element={
+            <PageWrapper>
+              <Layout>
+                <JobDetail />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
           path="/life-at-ems"
           element={
             <PageWrapper>
@@ -155,16 +160,6 @@ function AnimatedRoutes() {
             </PageWrapper>
           }
         />
-        <Route
-  path="/jobs/:titleAndId"
-  element={
-    <PageWrapper>
-      <Layout>
-        <JobDetail />
-      </Layout>
-    </PageWrapper>
-  }
-/>
         <Route
           path="/subscription"
           element={
@@ -186,36 +181,6 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/cancellation-refund"
-          element={
-            <PageWrapper>
-              <Layout>
-                <CancellationRefundPolicy />
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/terms-conditions"
-          element={
-            <PageWrapper>
-              <Layout>
-                <TermsAndConditions />
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/privacy-policy"
-          element={
-            <PageWrapper>
-              <Layout>
-                <PolicyPrivacy />
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
           path="/view-properties"
           element={
             <PageWrapper>
@@ -226,7 +191,7 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/blog/"
+          path="/blog"
           element={
             <PageWrapper>
               <Layout>
@@ -236,36 +201,13 @@ function AnimatedRoutes() {
           }
         />
 
-        {/* Maid service */}
-        {/* <Route
-          path="/maid-services"
-          element={
-            <PageWrapper>
-              <Layout>
-                <Maid_Landing />
-              </Layout>
-            </PageWrapper>
-          }
-        /> */}
-        {/* <Route
-          path="/profile/:id"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProfileDetail />
-              </Layout>
-            </PageWrapper>
-          }
-        /> */}
-
-        {/* Protected Routes */}
+        {/* Protected */}
         <Route
           path="/properties/:id"
           element={
             <PageWrapper>
               <Layout>
-                
-                  <PropertyDetail />
+                <PropertyDetail />
               </Layout>
             </PageWrapper>
           }
@@ -277,53 +219,6 @@ function AnimatedRoutes() {
               <Layout>
                 <ProtectedRoute allowedRoles={["user"]}>
                   <UserDashboard />
-                </ProtectedRoute>
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/demand-form"
-          element={
-            <PageWrapper>
-              <ProtectedRoute
-                allowedRoles={["user", "owner", "admin"]}
-                showContentBehindPopup={true}
-              >
-                <RequirementPage />
-              </ProtectedRoute>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/requirement-dashboard"
-          element={
-            <PageWrapper>
-              <ProtectedRoute allowedRoles={["user", "owner", "admin"]}>
-                <RequirementDashboard />
-              </ProtectedRoute>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/rm-dashboard"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProtectedRoute allowedRoles={["rm"]}>
-                  <RMDashboard />
-                </ProtectedRoute>
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/hr-dashboard"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProtectedRoute allowedRoles={["hr"]}>
-                  <HRMDashboard />
                 </ProtectedRoute>
               </Layout>
             </PageWrapper>
@@ -342,25 +237,13 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/dashboard/my-properties/:id"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProtectedRoute allowedRoles={["user"]}>
-                  <UserPropertyDetails />
-                </ProtectedRoute>
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
           path="/add-properties"
           element={
             <PageWrapper>
               <Layout>
                 <ProtectedRoute
                   allowedRoles={["user", "admin", "owner"]}
-                  showContentBehindPopup={true}
+                  showContentBehindPopup
                 >
                   <AddProperty />
                 </ProtectedRoute>
@@ -381,44 +264,6 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/admin/property/:id"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminPropertyDetails />
-                </ProtectedRoute>
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/owner-dashboard"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <OwnerDashboard />
-                </ProtectedRoute>
-              </Layout>
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/owner-dashboard/deleted-property-details/:id"
-          element={
-            <PageWrapper>
-              <Layout>
-                <ProtectedRoute allowedRoles={["owner"]}>
-                  <DeletedPropertyDetails />
-                </ProtectedRoute>
-              </Layout>
-            </PageWrapper>
-          }
-        />
-
-        {/* 404 page */}
-        <Route
           path="*"
           element={
             <PageWrapper>
@@ -438,7 +283,6 @@ export default function App() {
       <VisitorTracker />
       <ScrollToTop />
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
-      {/* <TidioWidget /> */}
       <WhatsAppButton />
       <AnimatedRoutes />
       <AnalyticsTracker />
