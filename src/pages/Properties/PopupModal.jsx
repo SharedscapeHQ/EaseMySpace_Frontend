@@ -14,68 +14,47 @@ const CrossIcon = () => (
   </svg>
 );
 
-// Plans data
 const plans = [
-  // {
-  //   type: "standard",
-  //   title: "EMS Basic Plan",
-  //   subtitle: "Freedom to Find Your Perfect Match",
-  //   description: "Limited Access Plan for Trial Users",
-  //   originalPrice: "₹699",
-  //   price: "₹499",
-  //   gst: "+ GST",
-  //   savings: "Save ₹200!",
-  //   color: "indigo",
-  //   features: [
-  //     { text: "Access to any 2 contact of your choice", included: true },
-  //     { text: "Help in scheduling visit", included: false },
-  //     { text: "Priority Support (Call/WhatsApp)", included: false },
-  //     { text: "100% Verified Listings", included: true },
-  //     { text: "Smart Match Recommendations", included: false },
-  //     { text: "Save Hours - Match Quickly", included: true },
-  //   ],
-  // },
-  // {
-  //     type: "trial",
-  //     title: "Trial Plan",
-  //     description: "7 days validity with essential services",
-  //     originalPrice: "₹599",
-  //     price: "₹399",
-  //     gst: "+ GST",
-  //     savings: "Save ₹200!",
-  //     color: "yellow",
-  //     features: [
-  //       { text: "Up to 1 contact access", included: true },
-  //       { text: "1 Property Owner Contact Unlocks", included: true },
-  //       { text: "Dedicated Relationship Manager", included: true },
-  //       { text: "Accompanied Property Visits (With EMS Executive)", included: true },
-  //       { text: "Up to 1 Video Tours Before Visit", included: true },
-  //       { text: "Relocation Assistance (On-call)", included: true },
-  //       { text: "Post-shifting Support - Standard", included: true },
-  //       { text: "Match Recommendations - Basic", included: true },
-  //     ],
-  //   },
-    {
-     type: "ultimate",
-title: "Ultimate Plan",
-description: "45 days validity with all premium services",
-originalPrice: "₹3,799",
-price: "₹1,299",
-gst: "+18% GST",
-savings: "Save ₹2,500!",
-color: "red",
-      features: [
-  { text: "Up to 20 contact access", included: true },
-  { text: "Personalised Dashboard", included: true },
-  { text: "Post Requirement", included: true },
-  { text: "Re-location assistance (on call)", included: true },
-  { text: "Dedicated Customer Support", included: true },
-  { text: "New listed property alert", included: true },
-  { text: "Post-shifting basic support (If needed)", included: true },
-],
-
-    },
+  {
+    type: "trial",
+    title: "Trial Plan",
+    description: "7 days validity with all premium services",
+    originalPrice: "₹699",
+    price: "₹499",
+    gst: "+18% GST",
+    savings: "Save ₹200!",
+    color: "yellow",
+    features: [
+      { text: "Up to 5 contact access", included: true },
+      { text: "Personalised Dashboard", included: true },
+      { text: "Post Requirement", included: true },
+      { text: "Re-location assistance (on call)", included: true },
+      { text: "Dedicated Customer Support", included: true },
+      { text: "New listed property alert", included: true },
+      { text: "Post-shifting basic support (If needed)", included: true },
+    ],
+  },
+  {
+    type: "ultimate",
+    title: "Ultimate Plan",
+    description: "45 days validity with all premium services",
+    originalPrice: "₹3,799",
+    price: "₹2,999",
+    gst: "+18% GST",
+    savings: "Save ₹800!",
+    color: "red",
+    features: [
+      { text: "Up to 31 contact access", included: true },
+      { text: "Personalised Dashboard", included: true },
+      { text: "Post Requirement", included: true },
+      { text: "Re-location assistance (on call)", included: true },
+      { text: "Dedicated Customer Support", included: true },
+      { text: "New listed property alert", included: true },
+      { text: "Post-shifting basic support (If needed)", included: true },
+    ],
+  },
 ];
+
 
 export default function PopupModal({ onClose }) {
   const [hasPaid, setHasPaid] = useState(false);
