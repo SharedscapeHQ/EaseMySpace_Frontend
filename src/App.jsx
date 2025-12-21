@@ -39,6 +39,7 @@ import BlogPage from "./pages/BlogPage";
 import VisitorTracker from "./components/Tracking/VisitorTracker";
 import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtEaseMySpace";
 import ListerSubscription from "./components/Lister-Subscription/ListerSubscription";
+import PrivacyPolicy from "./components/FooterSectionComp/PolicyPrivacy";
 
 /* ───── ScrollToTop ───── */
 function ScrollToTop() {
@@ -86,6 +87,36 @@ function AnimatedRoutes() {
             <PageWrapper>
               <Layout>
                 <Landing />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/privacy-policy"
+          element={
+            <PageWrapper>
+              <Layout>
+                <PrivacyPolicy />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/terms-conditions"
+          element={
+            <PageWrapper>
+              <Layout>
+                <TermsAndConditions />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/cancellation-refund"
+          element={
+            <PageWrapper>
+              <Layout>
+                <CancellationRefundPolicy />
               </Layout>
             </PageWrapper>
           }

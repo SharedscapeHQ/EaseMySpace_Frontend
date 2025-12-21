@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
+import { FiFilter, FiMapPin } from "react-icons/fi";
+
 import axios from "axios";
 import { Helmet } from "react-helmet";
 
@@ -79,6 +81,10 @@ export default function ViewAllProperties() {
   const [properties, setProperties] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
+  const autocompleteServiceRef = React.useRef(null);
+const sessionTokenRef = React.useRef(null);
+const [locationSuggestions, setLocationSuggestions] = useState([]);
+
 
   const [filters, setFilters] = useState({
     location: qs.get("location") || "",
@@ -90,6 +96,8 @@ export default function ViewAllProperties() {
     looking_for: qs.get("looking_for") || "",
   });
   const [sort, setSort] = useState(qs.get("sort") || "newest");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,6 +134,64 @@ export default function ViewAllProperties() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+  const loadGoogleScript = () => {
+    if (!window.google) {
+      const script = document.createElement("script");
+      script.src =
+        "https://maps.googleapis.com/maps/api/js?key=AIzaSyARyFU8-dg2b25qj4bq8Vhp3K4-LCoL57U&libraries=places";
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = initService;
+    } else {
+      initService();
+    }
+  };
+
+  const initService = () => {
+    autocompleteServiceRef.current =
+      new window.google.maps.places.AutocompleteService();
+    sessionTokenRef.current =
+      new window.google.maps.places.AutocompleteSessionToken();
+  };
+
+  loadGoogleScript();
+}, []);
+
+const fetchLocationSuggestions = (input) => {
+  if (!input || !autocompleteServiceRef.current) {
+    setLocationSuggestions([]);
+    return;
+  }
+
+  autocompleteServiceRef.current.getQueryPredictions(
+    {
+      input,
+      componentRestrictions: { country: "in" },
+      sessionToken: sessionTokenRef.current,
+    },
+    (predictions, status) => {
+      if (
+        status === window.google.maps.places.PlacesServiceStatus.OK &&
+        predictions
+      ) {
+        setLocationSuggestions(predictions);
+      } else {
+        setLocationSuggestions([]);
+      }
+    }
+  );
+};
+
+const handleSelectLocation = (description) => {
+  setFilters((prev) => ({ ...prev, location: description.split(",")[0] }));
+  updateQueryParams(
+    { ...filters, location: description.split(",")[0] },
+    sort
+  );
+  setLocationSuggestions([]);
+};
 
   // ✅ update query params when filters/sort change
   const updateQueryParams = (newFilters, newSort) => {
@@ -194,7 +260,7 @@ export default function ViewAllProperties() {
             {filters.looking_for === "pg" &&
               `Verified PGs in ${filters.location || "Mumbai"}`}
             {filters.looking_for === "flatmate" &&
-              `Flatmates Wanted in ${filters.location || "Mumbai"}`}
+              `Shared Rooms in ${filters.location || "Mumbai"}`}
             {filters.looking_for === "vacant" &&
               `Vacant Flats in ${filters.location || "Mumbai"}`}
             {!filters.looking_for && "PGs, Flats & Flatmates Across Mumbai"}
@@ -210,8 +276,165 @@ export default function ViewAllProperties() {
           </p>
         </section>
 
+        {/* ================= MOBILE FILTER BAR ================= */}
+<div className="lg:hidden sticky top-16 z-30 bg-white border-b px-3 py-2">
+  <div className="flex items-center gap-2">
+    {/* Looking For */}
+    <select
+      name="looking_for"
+      value={filters.looking_for || ""}
+      onChange={handleFilterChange}
+      className="text-xs px-2 py-2 border rounded-md bg-white"
+    >
+      <option value="">Products</option>
+      <option value="pg">PG</option>
+      <option value="flatmate">Flatmate</option>
+      <option value="vacant">Vacant</option>
+    </select>
+
+    {/* Location Search */}
+   <div className="relative flex-1">
+  <IoSearchOutline
+    className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
+    size={16}
+  />
+  <input
+    type="text"
+    name="location"
+    value={filters.location}
+    onChange={(e) => {
+      handleFilterChange(e);
+      fetchLocationSuggestions(e.target.value);
+    }}
+    placeholder="Search location"
+    className="w-full pl-7 pr-2 py-2 text-xs border rounded-md"
+  />
+
+  {/* Suggestions */}
+  {locationSuggestions.length > 0 && (
+    <div className="absolute top-full left-0 mt-1 w-full bg-white border rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+   {locationSuggestions.map((sug) => (
+  <div
+    key={sug.place_id}
+    onClick={() => handleSelectLocation(sug.description)}
+    className="flex items-start gap-2 px-3 py-2 text-xs cursor-pointer hover:bg-zinc-100"
+  >
+    <FiMapPin className="text-zinc-500 mt-[2px] flex-shrink-0" size={14} />
+    <span>{sug.description}</span>
+  </div>
+))}
+
+    </div>
+  )}
+</div>
+
+
+    {/* Filter Icon */}
+    <button
+      onClick={() => setShowMobileFilters(true)}
+      className="p-2 border rounded-md active:scale-95"
+    >
+      <FiFilter size={18} />
+    </button>
+  </div>
+</div>
+
+{/* ================= MOBILE FILTER MODAL ================= */}
+{showMobileFilters && (
+  <div className="fixed inset-0 z-40 bg-black/40 lg:hidden">
+    <div className="absolute bottom-0 w-full bg-white rounded-t-xl p-4 max-h-[85vh] overflow-y-auto">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="font-semibold text-sm">Filters</h3>
+        <button
+          onClick={() => setShowMobileFilters(false)}
+          className="text-sm text-blue-600"
+        >
+          Close
+        </button>
+      </div>
+
+      {/* Occupancy */}
+      <select
+        name="occupancy"
+        value={filters.occupancy}
+        onChange={handleFilterChange}
+        className="w-full mb-3 text-sm px-3 py-2 border rounded-md"
+      >
+        <option value="">Occupancy</option>
+        <option value="single">Single</option>
+        <option value="double">Double</option>
+        <option value="triple">Triple</option>
+      </select>
+
+      {/* BHK */}
+      <select
+        name="bhk"
+        value={filters.bhk}
+        onChange={handleFilterChange}
+        className="w-full mb-3 text-sm px-3 py-2 border rounded-md"
+      >
+        <option value="">BHK</option>
+        <option value="1">1 BHK</option>
+        <option value="1.5">1.5 BHK</option>
+        <option value="2">2 BHK</option>
+        <option value="3">3 BHK</option>
+        <option value="4">4+ BHK</option>
+      </select>
+
+      {/* Gender */}
+      <select
+        name="gender"
+        value={filters.gender}
+        onChange={handleFilterChange}
+        className="w-full mb-3 text-sm px-3 py-2 border rounded-md"
+      >
+        <option value="">Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="any">Any</option>
+      </select>
+
+      {/* Budget */}
+      <div className="flex gap-2 mb-4">
+        <input
+          type="number"
+          name="minPrice"
+          value={filters.minPrice}
+          onChange={handleFilterChange}
+          placeholder="Min ₹"
+          className="w-1/2 px-3 py-2 text-sm border rounded-md"
+        />
+        <input
+          type="number"
+          name="maxPrice"
+          value={filters.maxPrice}
+          onChange={handleFilterChange}
+          placeholder="Max ₹"
+          className="w-1/2 px-3 py-2 text-sm border rounded-md"
+        />
+      </div>
+
+      {/* Sort */}
+      <button
+        onClick={() => handleSortChange("price_desc")}
+        className="w-full mb-2 px-3 py-2 text-sm border rounded-md"
+      >
+        Price: High → Low
+      </button>
+      <button
+        onClick={() => handleSortChange("price_asc")}
+        className="w-full px-3 py-2 text-sm border rounded-md"
+      >
+        Price: Low → High
+      </button>
+    </div>
+  </div>
+)}
+
+<div className="hidden lg:block  sticky top-20 z-20  shadow-sm py-3 rounded-lg w-full max-w-7xl mx-auto mb-6">
+
         {/* Filter Bar */}
-        <div className="sticky top-20 z-20 bg-white border border-gray-200 shadow-sm py-3 rounded-lg w-full max-w-7xl mx-auto mb-6 overflow-x-auto scrollbar-hide">
+        <div className="sticky top-20 z-20 bg-white border border-gray-200 shadow-sm py-3 rounded-lg w-full max-w-7xl mx-auto overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-4 flex-nowrap px-3 min-w-max">
             {/* Looking For */}
             <select
@@ -227,25 +450,41 @@ export default function ViewAllProperties() {
             </select>
 
             {/* Location Search */}
-            <div className="relative">
-              <IoSearchOutline
-                className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
-                size={18}
-              />
-              <input
-                type="text"
-                name="location"
-                value={filters.location}
-                onChange={(e) => {
-                  handleFilterChange(e);
-                  setFiltered(
-                    applyFiltersSort(properties, { ...filters, location: e.target.value }, sort)
-                  );
-                }}
-                placeholder="Search by location"
-                className="w-48 pl-8 pr-3 py-2 text-sm border rounded-md shadow-sm bg-white"
-              />
-            </div>
+           <div className="relative">
+  <IoSearchOutline
+    className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"
+    size={18}
+  />
+  <input
+    type="text"
+    name="location"
+    value={filters.location}
+    onChange={(e) => {
+      handleFilterChange(e);
+      fetchLocationSuggestions(e.target.value);
+    }}
+    placeholder="Search by location"
+    className="w-48 pl-8 pr-3 py-2 text-sm border rounded-md shadow-sm bg-white"
+  />
+
+  {/* Suggestions */}
+  {locationSuggestions.length > 0 && (
+    <div className="absolute top-full left-0 mt-1 w-72 bg-white border rounded-md shadow-lg z-50 max-h-72 overflow-y-auto">
+    {locationSuggestions.map((sug) => (
+  <div
+    key={sug.place_id}
+    onClick={() => handleSelectLocation(sug.description)}
+    className="flex items-start gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-zinc-100"
+  >
+    <FiMapPin className="text-zinc-500 mt-[2px] flex-shrink-0" size={16} />
+    <span className="leading-snug">{sug.description}</span>
+  </div>
+))}
+
+    </div>
+  )}
+</div>
+
 
             {/* Occupancy */}
             <select
@@ -336,9 +575,10 @@ export default function ViewAllProperties() {
             </button>
           </div>
         </div>
+</div>
 
         {/* Listings */}
-<section className="w-full max-w-7xl mx-auto space-y-8  ">
+<section className="w-full max-w-7xl mx-auto space-y-8 mt-5 ">
   {loading ? (
     <PropertyCardSkeleton />
   ) : paginatedProperties.length === 0 ? (

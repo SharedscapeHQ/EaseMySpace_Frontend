@@ -1,166 +1,227 @@
-import React, { useEffect, useState, } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { IoSearchOutline } from "react-icons/io5";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoSearchOutline, IoFilterOutline } from "react-icons/io5";
+import { FiMapPin } from "react-icons/fi";
+
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
-import heroImg from "/heroImg/hero.png";
 
-export default function HeroMobile({ properties }) {
+export default function HeroMobile() {
   const navigate = useNavigate();
-  const [filters, setFilters] = useState({ location: "" });
-  const [filtered, setFiltered] = useState(properties || []);
-  const [scrolled, setScrolled] = useState(false);
+  const inputRef = useRef(null);
 
-  const options = [
-    { title: "PGs", value: "pg", subtitle: "Paying Guest Options", img: pgImg, color:"bg-blue-100/50" },
-    { title: "Flatmate", value: "flatmate", subtitle: "Find a Room Partner", img: sharedImg, color: "bg-green-100/50" },
-    { title: "Flat", value: "vacant", subtitle: "Full Flats for Rent", img: vacantImg, color: "bg-purple-100/50" },
-  ];
+  const [location, setLocation] = useState("");
+  const [bhk, setBhk] = useState("");
+  const [occupancy, setOccupancy] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters({ ...filters, [name]: value });
-    setFiltered(applyFiltersSort(properties, { ...filters, [name]: value }, ""));
-  };
+const [locationDisplay, setLocationDisplay] = useState("");
 
-  const handleSearch = () => {
-    const query = filters.location.trim().toLowerCase();
-    if (!query) return;
 
-    const bhkMatch = query.match(/(\d)\s*bhk/);
-    if (bhkMatch) {
-      navigate(`/view-properties?bhk=${bhkMatch[1]}`);
-    } else {
-      navigate(`/view-properties?location=${encodeURIComponent(query)}`);
-    }
-  };
+  const autocompleteServiceRef = useRef(null);
+  const sessionTokenRef = useRef(null);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleSearch();
-  };
-
+  /* ---------- Load Google Places API ---------- */
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const loadGoogleScript = () => {
+      if (!window.google) {
+        const script = document.createElement("script");
+        script.src =
+          "https://maps.googleapis.com/maps/api/js?key=AIzaSyARyFU8-dg2b25qj4bq8Vhp3K4-LCoL57U&libraries=places";
+        script.async = true;
+        document.body.appendChild(script);
+        script.onload = initService;
+      } else {
+        initService();
+      }
+    };
+
+    const initService = () => {
+      autocompleteServiceRef.current =
+        new window.google.maps.places.AutocompleteService();
+      sessionTokenRef.current =
+        new window.google.maps.places.AutocompleteSessionToken();
+    };
+
+    loadGoogleScript();
   }, []);
 
-  return (
-    <section
-      className="lg:hidden w-full bg-white px-4 py-4 transition-all duration-500 ease-in-out"
-      style={{ height: scrolled ? "74vh" : "100vh" }}
-    >
-      {/* Heading */}
-      <div className="w-full text-left animate-fade-in-down">
-        <h1
-          style={{ fontFamily: "heading_font" }}
-          className="text-3xl sm:text-4xl text-zinc-800 mb-8"
-        >
-          Find your next home with ease
-        </h1>
-        <p className="sr-only">
-          EaseMySpace™ helps you find PGs, flatmates, and rental flats across India.
-          Browse shared accommodations, paying guest housing, and vacant apartments near you.
-        </p>
-      </div>
+  /* ---------- Fetch suggestions ---------- */
+  const fetchSuggestions = (input) => {
+    if (!input || !autocompleteServiceRef.current) {
+      setSuggestions([]);
+      return;
+    }
 
-      {/* Options */}
-      <div className="flex justify-between gap-3 mb-8">
-        {options.map((item, i) => (
-          <Link
+    autocompleteServiceRef.current.getQueryPredictions(
+      {
+        input,
+        componentRestrictions: { country: "in" },
+        sessionToken: sessionTokenRef.current,
+      },
+      (predictions, status) => {
+        if (
+          status === window.google.maps.places.PlacesServiceStatus.OK &&
+          predictions
+        ) {
+          setSuggestions(predictions);
+        } else {
+          setSuggestions([]);
+        }
+      }
+    );
+  };
+
+  const handleSelectSuggestion = (desc) => {
+  setLocationDisplay(desc); 
+  setLocation(desc.split(",")[0]); 
+  setSuggestions([]);
+};
+
+ const handleSearch = () => {
+  if (!location && !bhk && !occupancy) {
+    alert("Please enter a location, BHK, or occupancy to search.");
+    return;
+  }
+
+  const params = new URLSearchParams();
+  if (location) params.append("location", location.trim()); 
+  if (bhk) params.append("bhk", bhk);
+  if (occupancy) params.append("occupancy", occupancy);
+  navigate(`/view-properties?${params.toString()}`);
+};
+
+  const options = [
+    { title: "PGs", value: "pg", img: pgImg, color: "bg-blue-100/60" },
+    { title: "Flatmate", value: "flatmate", img: sharedImg, color: "bg-green-100/60" },
+    { title: "Flat", value: "vacant", img: vacantImg, color: "bg-purple-100/60" },
+  ];
+
+  return (
+    <section className="lg:hidden w-full bg-white px-4 py-4 space-y-4">
+      {/* Property Type */}
+      <div className="flex justify-between gap-3">
+        {options.map((item) => (
+          <div
             key={item.value}
-            to={`/view-properties?looking_for=${item.value}`}
-            className="relative flex flex-col items-center justify-center p-4 rounded-xl shadow-md border border-zinc-50 bg-white w-1/3 transform transition duration-300 ease-in-out hover:scale-105 animate-fade-in"
-            style={{ animationDelay: `${i * 0.2}s` }}
-            aria-label={`Explore ${item.title} listings, shared flats, PG accommodations and rental properties`}
+            className="flex flex-col items-center justify-center rounded-xl bg-white w-1/3 active:scale-95 transition"
           >
-            <div
-              className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center`}
-            >
-              <img
-                src={item.img}
-                alt={`Find ${item.title} properties, PGs, or shared accommodations`}
-                className="w-14 h-14 object-contain"
-                loading="eager"
-              />
+            <div className={`w-14 h-14 rounded-full ${item.color} flex items-center justify-center`}>
+              <img src={item.img} alt={item.title} className="w-9 h-9" />
             </div>
-            <span
-              style={{ fontFamily: "heading_font" }}
-              className="text-sm text-zinc-700 mt-2"
-            >
-              {item.title}
-            </span>
-            <span className="text-xs text-zinc-500 mt-1 text-center">
-              {item.subtitle}
-            </span>
-          </Link>
+            <span className="text-sm text-zinc-700 mt-2 font-medium">{item.title}</span>
+          </div>
         ))}
       </div>
 
-      {/* Hero Image */}
-      <div className="relative w-full h-56 rounded-xl overflow-hidden animate-fade-in-up">
-        <img
-          src={heroImg}
-          alt="Explore PGs, flatmates, and rental flats with EaseMySpace"
-          className="w-full h-[110%] object-cover"
-          loading="eager"
-          fetchPriority="high"
-        />
-        <p className="sr-only">
-          Hero image showing modern rental properties, PG accommodations, and shared flats.
-        </p>
+      {/* Search + Filter */}
+      <div className="flex items-center gap-3 relative">
+        {/* Search Input */}
+        <div className="relative flex-1">
+         <input
+  ref={inputRef}
+  type="text"
+  value={locationDisplay}
+  onChange={(e) => {
+    setLocationDisplay(e.target.value);
+    fetchSuggestions(e.target.value);
+  }}
+  placeholder="Search by location"
+  className="w-full rounded-full py-3 pl-4 pr-12 border border-zinc-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+/>
 
-        {/* Search Bar */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-[90%] animate-fade-in">
-          <div className="relative">
-            <IoSearchOutline className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg" />
-            <input
-              type="text"
-              name="location"
-              value={filters.location}
-              onChange={handleFilterChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Search by location or property"
-              className="w-full bg-white rounded-full py-3 pl-12 pr-4 shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Search PGs, flats, and shared rentals by location or property type"
-            />
+          {/* Suggestions Dropdown */}
+          {suggestions.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-zinc-200 max-h-64 overflow-y-auto z-50">
+              {suggestions.map((s) => (
+                <div
+                  key={s.place_id}
+                  onClick={() => handleSelectSuggestion(s.description)}
+                  className="flex items-center gap-2 px-4 py-3 cursor-pointer hover:bg-zinc-100"
+                >
+                  <FiMapPin className="text-zinc-500" />
+                  <span>{s.description}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Search Button inside input */}
+          <button
+            onClick={handleSearch}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white shadow-md active:scale-95 transition"
+          >
+            <IoSearchOutline size={20} />
+          </button>
+        </div>
+
+        {/* Filters Button */}
+       <button
+  onClick={() => setShowFilters(true)}
+  className="w-10 h-10 flex items-center justify-center rounded-full bg-zinc-100 text-zinc-700 shadow-md active:scale-95 transition"
+>
+  <IoFilterOutline size={20} />
+</button>
+      </div>
+
+      {/* Filters Modal */}
+      {showFilters && (
+        <div className="fixed inset-0 bottom-12 z-50">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowFilters(false)} />
+          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5">
+            <h3 className="text-lg font-semibold mb-4">Filters</h3>
+
+            {/* BHK */}
+            <div className="mb-6">
+              <p className="text-sm font-medium text-zinc-700 mb-3">BHK</p>
+              <div className="grid grid-cols-3 gap-3">
+                {["1 RK","2 RK","1 BHK","1.5 BHK","2 BHK","2.5 BHK","3 BHK","4+ BHK"].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => setBhk(item)}
+                    className={`py-2 rounded-xl text-sm border transition ${
+                      bhk === item ? "bg-blue-500 text-white border-blue-500" : "border-zinc-300 text-zinc-700"
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Occupancy */}
+            <div className="mb-6">
+              <p className="text-sm font-medium text-zinc-700 mb-3">Occupancy</p>
+              <div className="grid grid-cols-3 gap-3">
+                {[{ label: "Single", value: "single" },{ label: "Double", value: "double" },{ label: "Triple+", value: "triple" }].map((item) => (
+                  <button
+                    key={item.value}
+                    onClick={() => setOccupancy(item.value)}
+                    className={`py-2 rounded-xl text-sm border transition ${
+                      occupancy === item.value ? "bg-blue-500 text-white border-blue-500" : "border-zinc-300 text-zinc-700"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Apply */}
+            <button
+              onClick={() => {
+                setShowFilters(false);
+                handleSearch();
+              }}
+              className="w-full rounded-full bg-blue-500 text-white py-3 text-sm font-semibold shadow-md active:scale-95 transition"
+            >
+              Apply Filters
+            </button>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
-
-// Helper function for filtering
-const applyFiltersSort = (list, f, sort) => {
-  let l = [...list];
-  if (f.location.trim())
-    l = l.filter((p) =>
-      p.location.toLowerCase().includes(f.location.toLowerCase())
-    );
-  if (f.gender) l = l.filter((p) => p.gender?.toLowerCase() === f.gender);
-  if (f.occupancy)
-    l = l.filter((p) => p.occupancy?.toLowerCase() === f.occupancy);
-  if (f.bhk) {
-    const want = parseFloat(f.bhk);
-    l = l.filter((p) => {
-      const val = bhkNumber(p.bhk_type);
-      if (val === null) return false;
-      return want === 4 ? val >= 4 : Math.abs(val - want) < 0.01;
-    });
-  }
-  if (f.looking_for) l = l.filter((p) => p.looking_for === f.looking_for);
-  const min = parseInt(f.minPrice, 10);
-  const max = parseInt(f.maxPrice, 10);
-  if (!isNaN(min)) l = l.filter((p) => p.price >= min);
-  if (!isNaN(max)) l = l.filter((p) => p.price <= max);
-  if (sort === "price_asc") l.sort((a, b) => a.price - b.price);
-  else if (sort === "price_desc") l.sort((a, b) => b.price - a.price);
-  return l;
-};
-
-const bhkNumber = (bhk) => {
-  const val = parseFloat(bhk);
-  return isNaN(val) ? null : val;
-};

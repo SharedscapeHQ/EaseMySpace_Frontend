@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { FiArrowRight } from "react-icons/fi";
 import axios from "axios";
 import PropertyMiniCard from "./PropertyMiniCard";
 
@@ -66,12 +67,15 @@ export default function RecentAddedProperties() {
   if (loading) {
     return (
       <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
-        <h2
-          className="text-lg lg:text-3xl mb-6 text-black"
-          style={{ fontFamily: "heading_font" }}
-        >
-          Recently Listed Shared Rooms
-        </h2>
+          <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
+                    Recently Listed Shared Rooms
+                    <Link
+                      to="/view-properties"
+                      className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+                    >
+                      <FiArrowRight className="text-black w-4 h-4" />
+                    </Link>
+                  </h2>
 
         <div className="flex gap-6 overflow-x-auto pb-4">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -103,12 +107,15 @@ export default function RecentAddedProperties() {
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2
-            className="text-[16px] lg:text-3xl text-black dark:text-white"
-            style={{ fontFamily: "heading_font" }}
-          >
-            Recently Listed Shared Rooms
-          </h2>
+          <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
+                    Recently Listed Shared Rooms
+                    <Link
+                      to="/view-properties"
+                      className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+                    >
+                      <FiArrowRight className="text-black w-4 h-4" />
+                    </Link>
+                  </h2>
 
           <Link
             to="/view-properties"

@@ -49,6 +49,15 @@ function RelatedProperties({ currentProperty }) {
     setRelatedProperties(related.slice(0, 6));
   }, [currentProperty, allProperties]);
 
+  const getFirstImage = (p) => {
+  return (
+    p.images?.[0] ||
+    p.bedroom_images?.[0] ||
+    p.hall_images?.[0] ||
+    null
+  );
+};
+
   if (relatedProperties.length === 0) return null;
 
   return (
@@ -70,13 +79,14 @@ function RelatedProperties({ currentProperty }) {
             {/* Image with fixed aspect ratio */}
            <div className="w-full sm:w-56 h-48 sm:h-56 flex-shrink-0 relative p-2">
   <div className="w-full h-full overflow-hidden rounded-xl">
-    {p.images?.[0] ? (
-      <img
-        src={p.images[0]}
-        alt={p.title}
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-      />
-    ) : (
+    {getFirstImage(p) ? (
+  <img
+    src={getFirstImage(p)}
+    alt={p.title}
+    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+  />
+) : (
+
       <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
         No Image
       </div>

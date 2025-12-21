@@ -4,8 +4,8 @@ import RakeshImg from "/TeamImg/Rakesh.png";
 import YogitaImg from "/TeamImg/Yogita.png";
 import TaniyaImg from "/TeamImg/Taniya.png";
 import ArvindImg from "/TeamImg/Arvind.png";
-import DharmendraImg from "/TeamImg/Dharmendra.png";
-import { motion } from "framer-motion";
+import NikhilImg from "/TeamImg/Nikhil.png";
+import { motion } from "framer-motion"; 
 
 const teamMembers = [
   {
@@ -44,15 +44,15 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
     email: "arvind.vishwakrma@easemyspace.in",
   },
-//   {
-//   name: "Dharmendra Mishra",
-//   role: "Sales Executive",
-//   description:
-//     "An experienced sales executive at EaseMySpace, specializing in understanding client needs, presenting tailored space solutions, and building long-term customer relationships to drive business growth.",
-//   imageSrc: DharmendraImg,
-//   linkedin: "https://www.linkedin.com/in/dharmendra-kumar-mishra-8ab557234",
-//   email: "dharmendra.mishra@easemyspace.in",
-// },
+  {
+  name: "Nikhil Hiranandani",
+  role: "Business Consultant",
+  description:
+    "A strategic business consultant, providing expert advice and actionable insights to drive growth, optimize operations, and enhance overall business performance at EaseMySpace™.",
+  imageSrc: NikhilImg,
+  linkedin: "https://www.linkedin.com/in/nikhil-hiranandani/",
+  email: "nikhil.hiranandani@easemyspace.in",
+},
 
 ];
 

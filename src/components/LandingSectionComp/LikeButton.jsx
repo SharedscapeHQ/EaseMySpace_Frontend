@@ -133,7 +133,7 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
 {!showOtpPopup && !showGroupModal && (
   <motion.div
     onClick={handleClick}
-    className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform z-10"
+    className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform z-0"
     whileTap={{ scale: 0.85 }}
   >
     <div className="relative text-[26px]">
