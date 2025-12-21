@@ -102,7 +102,7 @@ export default function RecentAddedProperties() {
   return (
     <div className=" dark:bg-zinc-900 transition-colors">
       <section
-        className="lg:px-10 px-3 max-w-7xl mx-auto"
+        className="lg:px-10 pt-10 lg:py-0 px-3 max-w-7xl mx-auto"
         style={{ fontFamily: "para_font" }}
       >
         {/* Header */}
