@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoSearchOutline, IoFilterOutline } from "react-icons/io5";
 import { FiMapPin } from "react-icons/fi";
+import { Link } from "react-router-dom";
+
 
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
@@ -102,19 +104,30 @@ const [locationDisplay, setLocationDisplay] = useState("");
   return (
     <section className="lg:hidden w-full bg-white px-4 py-4 space-y-4">
       {/* Property Type */}
-      <div className="flex justify-between gap-3">
-        {options.map((item) => (
-          <div
-            key={item.value}
-            className="flex flex-col items-center justify-center rounded-xl bg-white w-1/3 active:scale-95 transition"
-          >
-            <div className={`w-14 h-14 rounded-full ${item.color} flex items-center justify-center`}>
-              <img src={item.img} alt={item.title} className="w-9 h-9" />
-            </div>
-            <span className="text-sm text-zinc-700 mt-2 font-medium">{item.title}</span>
-          </div>
-        ))}
+
+<div className="grid grid-cols-3 gap-3">
+  {options.map((item) => (
+    <Link
+      key={item.value}
+      to={`/view-properties?looking_for=${item.value}`}
+      className="group flex flex-col items-center justify-center rounded-xl bg-white active:scale-95 transition"
+    >
+      <div
+        className={`w-14 h-14 rounded-full ${item.color} flex items-center justify-center group-hover:scale-110 transition`}
+      >
+        <img
+          src={item.img}
+          alt={item.title}
+          className="w-9 h-9 object-contain"
+        />
       </div>
+      <span className="text-sm text-zinc-700 mt-2 font-medium">
+        {item.title}
+      </span>
+    </Link>
+  ))}
+</div>
+
 
       {/* Search + Filter */}
       <div className="flex items-center gap-3 relative">

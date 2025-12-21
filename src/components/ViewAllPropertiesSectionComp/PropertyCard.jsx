@@ -35,7 +35,7 @@ const PropertyCard = ({ p }) => {
   {/* Clickable overlay Link */}
   <Link
     to={`/properties/${p.id}`}
-    className="absolute inset-0 w-full h-full -z-10"
+    className="absolute inset-0 w-full h-full"
   >
     {/* Empty: just overlay for click */}
   </Link>

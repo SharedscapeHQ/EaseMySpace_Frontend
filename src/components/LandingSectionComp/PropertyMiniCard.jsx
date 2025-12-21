@@ -19,7 +19,7 @@ export default function PropertyMiniCard({ property }) {
         {/* Image + verified badge */}
         <Link
           to={`/properties/${property.id}`}
-          className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden -z-10"
+          className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden z-0"
         >
           {img ? (
             <img
