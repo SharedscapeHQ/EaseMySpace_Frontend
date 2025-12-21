@@ -68,7 +68,7 @@ export default function RecentAddedProperties() {
     return (
       <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
           <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
-                    Recently Listed Shared Rooms
+                    Recently Listed
                     <Link
                       to="/view-properties"
                       className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
@@ -108,7 +108,7 @@ export default function RecentAddedProperties() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
-                    Recently Listed Shared Rooms
+                    Recently Listed
                     <Link
                       to="/view-properties"
                       className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
