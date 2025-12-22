@@ -100,7 +100,7 @@ export default function HeroSearchBar() {
   const occupancyOptions = ["Single", "Double", "Triple+"];
 
   return (
-    <div ref={containerRef} className="max-w-4xl mx-auto mb-10 relative group">
+    <div ref={containerRef} className="max-w-4xl mx-auto mb-10 relative group z-20">
       <div
         className={`relative flex items-center h-[66px] rounded-full border border-zinc-200 ${
           active ? "bg-zinc-100" : "bg-white shadow-sm"
@@ -137,7 +137,7 @@ export default function HeroSearchBar() {
               className="text-sm bg-transparent outline-none text-zinc-600 w-full"
             />
             {suggestions.length > 0 && (
-              <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-zinc-200 z-[9999] max-h-96 overflow-y-auto scrollbar-hide w-[400px] lg:w-[500px] p-3">
+              <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-zinc-200 max-h-96 overflow-y-auto scrollbar-hide w-[400px] lg:w-[500px] p-3">
                 {suggestions.map((sug) => (
                   <div
                     key={sug.place_id}
