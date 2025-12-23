@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useRef} from "react";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LikeButton from "../LandingSectionComp/LikeButton";
@@ -16,6 +16,9 @@ const PropertyCard = ({ p }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
 
+  const isSwipingRef = useRef(false);
+
+
   const [touchStartX, setTouchStartX] = useState(0);
 const [touchEndX, setTouchEndX] = useState(0);
 
@@ -30,24 +33,29 @@ const [touchEndX, setTouchEndX] = useState(0);
     setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
   };
 
-  const handleTouchStart = (e) => {
+const handleTouchStart = (e) => {
+  isSwipingRef.current = false;
   setTouchStartX(e.targetTouches[0].clientX);
 };
 
 const handleTouchEnd = (e) => {
-  setTouchEndX(e.changedTouches[0].clientX);
-  handleSwipe();
-};
+  const endX = e.changedTouches[0].clientX;
+  setTouchEndX(endX);
 
-const handleSwipe = () => {
-  const deltaX = touchStartX - touchEndX;
-  if (Math.abs(deltaX) < 50) return;
-  if (deltaX > 0) {
-    setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
-  } else {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  const deltaX = touchStartX - endX;
+
+  if (Math.abs(deltaX) > 50) {
+    isSwipingRef.current = true;
+
+    if (deltaX > 0) {
+      setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
+    } else {
+      setCurrentIndex((prev) => Math.max(prev - 1, 0));
+    }
   }
 };
+
+
 
 
   const maxDots = 5;
@@ -115,7 +123,17 @@ const handleSwipe = () => {
         )}
 
         {/* Clickable overlay Link */}
-        <Link to={`/properties/${p.id}`} className="absolute inset-0 w-full h-full" />
+    <Link
+  to={`/properties/${p.id}`}
+  className="absolute inset-0 w-full h-full"
+  onClick={(e) => {
+    if (isSwipingRef.current) {
+      e.preventDefault();
+    }
+  }}
+/>
+
+
 
         {/* Verified Badge */}
         {p.verified && (
