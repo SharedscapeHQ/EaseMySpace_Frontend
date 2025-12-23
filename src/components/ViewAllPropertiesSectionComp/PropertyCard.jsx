@@ -16,6 +16,10 @@ const PropertyCard = ({ p }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
 
+  const [touchStartX, setTouchStartX] = useState(0);
+const [touchEndX, setTouchEndX] = useState(0);
+
+
   const handlePrev = (e) => {
     e.stopPropagation();
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
@@ -26,7 +30,26 @@ const PropertyCard = ({ p }) => {
     setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
   };
 
-  // Dots logic
+  const handleTouchStart = (e) => {
+  setTouchStartX(e.targetTouches[0].clientX);
+};
+
+const handleTouchEnd = (e) => {
+  setTouchEndX(e.changedTouches[0].clientX);
+  handleSwipe();
+};
+
+const handleSwipe = () => {
+  const deltaX = touchStartX - touchEndX;
+  if (Math.abs(deltaX) < 50) return;
+  if (deltaX > 0) {
+    setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
+  } else {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  }
+};
+
+
   const maxDots = 5;
   const totalDots = images.length;
   let startDot = 0;
@@ -41,30 +64,32 @@ const PropertyCard = ({ p }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Image Wrapper */}
       <div className="relative lg:w-56 lg:h-56 w-80 h-80 rounded-3xl overflow-hidden">
-        {/* Like Button */}
         <div className="absolute top-2 right-2">
           <LikeButton propertyId={p.id} initiallyLiked={p.liked}  />
         </div>
 
-        {/* Sliding Images */}
         {images.length > 0 ? (
-          <div className="w-full h-full overflow-hidden relative">
-            <div
-              className="flex transition-transform duration-500 ease-in-out h-full"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {images.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt={p.title || "Property image"}
-                  className="w-full h-full object-cover flex-shrink-0"
-                />
-              ))}
-            </div>
-          </div>
+        <div
+  className="w-full h-full overflow-hidden relative"
+  onTouchStart={handleTouchStart}
+  onTouchEnd={handleTouchEnd}
+>
+  <div
+    className="flex transition-transform duration-500 ease-in-out h-full"
+    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+  >
+    {images.map((img, idx) => (
+      <img
+        key={idx}
+        src={img}
+        alt={p.title || "Property image"}
+        className="w-full h-full object-cover flex-shrink-0"
+      />
+    ))}
+  </div>
+</div>
+
         ) : (
           <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-400 text-xs">
             No Image
@@ -75,7 +100,7 @@ const PropertyCard = ({ p }) => {
         {hovered && images.length > 1 && currentIndex > 0 && (
           <button
             onClick={handlePrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
+            className=" hidden lg:block absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
           >
             <FaChevronLeft size={16} />
           </button>
@@ -83,7 +108,7 @@ const PropertyCard = ({ p }) => {
         {hovered && images.length > 1 && currentIndex < images.length - 1 && (
           <button
             onClick={handleNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
+            className="hidden lg:block absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
           >
             <FaChevronRight size={16} />
           </button>
