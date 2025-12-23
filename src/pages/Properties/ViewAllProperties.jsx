@@ -431,7 +431,7 @@ const handleSelectLocation = (description) => {
   </div>
 )}
 
-<div className="hidden lg:block  sticky top-20 z-20  shadow-sm py-3 rounded-lg w-full max-w-7xl mx-auto mb-6">
+<div className="hidden lg:block  sticky top-16 z-20  py-3 rounded-lg w-full max-w-7xl mx-auto mb-6">
 
         {/* Filter Bar */}
         <div className="sticky top-20 z-20 bg-white border border-gray-200 shadow-sm py-3 rounded-lg w-full max-w-7xl mx-auto overflow-x-auto scrollbar-hide">
