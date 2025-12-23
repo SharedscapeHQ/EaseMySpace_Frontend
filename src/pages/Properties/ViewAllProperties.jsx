@@ -14,6 +14,7 @@ import PropertyCardSkeleton from "../../components/ViewAllPropertiesSectionComp/
 
 import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import Footer from "../../components/Footer.jsx";
+import DummyCarousel from "../../components/ViewAllPropertiesSectionComp/DummyCarousel.jsx";
 
 // --- helpers ---
 const parseImages = (raw) =>
@@ -277,7 +278,7 @@ const handleSelectLocation = (description) => {
         </section>
 
         {/* ================= MOBILE FILTER BAR ================= */}
-<div className="lg:hidden sticky top-16 z-30 bg-white border-b px-3 py-2">
+<div className="lg:hidden sticky top-[4.6rem] z-30 bg-white border-b px-3 py-2">
   <div className="flex items-center gap-2">
     {/* Looking For */}
     <select
@@ -576,6 +577,8 @@ const handleSelectLocation = (description) => {
           </div>
         </div>
 </div>
+
+{/* <DummyCarousel/> */}
 
         {/* Listings */}
 <section className="w-full max-w-7xl mx-auto space-y-8 mt-5 ">

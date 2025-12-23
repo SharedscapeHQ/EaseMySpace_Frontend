@@ -1,4 +1,4 @@
-import React, { useState , useRef} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LikeButton from "../LandingSectionComp/LikeButton";
@@ -15,49 +15,59 @@ const PropertyCard = ({ p }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const isTouchDevice = useRef(false);
 
-  const isSwipingRef = useRef(false);
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
 
+  const startX = useRef(0);
+  const currentTranslate = useRef(0);
+  const prevTranslate = useRef(0);
+  const isDragging = useRef(false);
 
-  const [touchStartX, setTouchStartX] = useState(0);
-const [touchEndX, setTouchEndX] = useState(0);
+  // Detect touch device
+  useEffect(() => {
+    isTouchDevice.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }, []);
 
-
-  const handlePrev = (e) => {
-    e.stopPropagation();
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  // Mobile swipe handlers
+  const startDrag = (x) => {
+    if (!isTouchDevice.current) return;
+    isDragging.current = true;
+    startX.current = x;
+    trackRef.current.style.transition = "none";
   };
 
-  const handleNext = (e) => {
-    e.stopPropagation();
-    setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
+  const moveDrag = (x) => {
+    if (!isTouchDevice.current || !isDragging.current) return;
+    const diff = x - startX.current;
+    currentTranslate.current = prevTranslate.current + diff;
+    trackRef.current.style.transform = `translateX(${currentTranslate.current}px)`;
   };
 
-const handleTouchStart = (e) => {
-  isSwipingRef.current = false;
-  setTouchStartX(e.targetTouches[0].clientX);
-};
+  const endDrag = () => {
+    if (!isTouchDevice.current || !isDragging.current) return;
+    isDragging.current = false;
+    const movedBy = currentTranslate.current - prevTranslate.current;
 
-const handleTouchEnd = (e) => {
-  const endX = e.changedTouches[0].clientX;
-  setTouchEndX(endX);
-
-  const deltaX = touchStartX - endX;
-
-  if (Math.abs(deltaX) > 50) {
-    isSwipingRef.current = true;
-
-    if (deltaX > 0) {
-      setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1));
-    } else {
-      setCurrentIndex((prev) => Math.max(prev - 1, 0));
+    if (movedBy < -50 && currentIndex < images.length - 1) setCurrentIndex(prev => prev + 1);
+    else if (movedBy > 50 && currentIndex > 0) setCurrentIndex(prev => prev - 1);
+    else {
+      trackRef.current.style.transition = "transform 0.3s ease-out";
+      trackRef.current.style.transform = `translateX(${prevTranslate.current}px)`;
     }
-  }
-};
+  };
 
+  // Update translate when index changes
+  useEffect(() => {
+    if (!trackRef.current || !isTouchDevice.current) return;
+    prevTranslate.current = -currentIndex * (containerRef.current?.offsetWidth || 0);
+    currentTranslate.current = prevTranslate.current;
+    trackRef.current.style.transition = "transform 0.3s ease-out";
+    trackRef.current.style.transform = `translateX(${prevTranslate.current}px)`;
+  }, [currentIndex]);
 
-
-
+  // Dots logic
   const maxDots = 5;
   const totalDots = images.length;
   let startDot = 0;
@@ -74,48 +84,58 @@ const handleTouchEnd = (e) => {
     >
       <div className="relative lg:w-56 lg:h-56 w-80 h-80 rounded-3xl overflow-hidden">
         <div className="absolute top-2 right-2">
-          <LikeButton propertyId={p.id} initiallyLiked={p.liked}  />
+          <LikeButton propertyId={p.id} initiallyLiked={p.liked} />
         </div>
 
         {images.length > 0 ? (
-        <div
-  className="w-full h-full overflow-hidden relative"
-  onTouchStart={handleTouchStart}
-  onTouchEnd={handleTouchEnd}
->
-  <div
-    className="flex transition-transform duration-500 ease-in-out h-full"
-    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-  >
-    {images.map((img, idx) => (
-      <img
-        key={idx}
-        src={img}
-        alt={p.title || "Property image"}
-        className="w-full h-full object-cover flex-shrink-0"
-      />
-    ))}
-  </div>
-</div>
-
+          <div
+            ref={containerRef}
+            className="w-full h-full overflow-hidden relative"
+            // Mobile swipe only
+            onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+            onTouchMove={(e) => {
+              e.preventDefault();
+              moveDrag(e.touches[0].clientX);
+            }}
+            onTouchEnd={endDrag}
+          >
+            <div
+              ref={trackRef}
+              className="flex h-full transition-transform duration-500 ease-in-out"
+              style={{
+                transform: isTouchDevice.current
+                  ? `translateX(-${currentIndex * 100}%)`
+                  : `translateX(-${currentIndex * 100}%)`,
+              }}
+            >
+              {images.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={p.title || "Property image"}
+                  className="w-full h-full object-cover flex-shrink-0"
+                />
+              ))}
+            </div>
+          </div>
         ) : (
           <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-400 text-xs">
             No Image
           </div>
         )}
 
-        {/* Arrows */}
-        {hovered && images.length > 1 && currentIndex > 0 && (
+        {/* Desktop arrows */}
+        {hovered && !isTouchDevice.current && images.length > 1 && currentIndex > 0 && (
           <button
-            onClick={handlePrev}
-            className=" hidden lg:block absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
+            onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
+            className="hidden lg:block absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
           >
             <FaChevronLeft size={16} />
           </button>
         )}
-        {hovered && images.length > 1 && currentIndex < images.length - 1 && (
+        {hovered && !isTouchDevice.current && images.length > 1 && currentIndex < images.length - 1 && (
           <button
-            onClick={handleNext}
+            onClick={() => setCurrentIndex(prev => Math.min(prev + 1, images.length - 1))}
             className="hidden lg:block absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
           >
             <FaChevronRight size={16} />
@@ -123,17 +143,7 @@ const handleTouchEnd = (e) => {
         )}
 
         {/* Clickable overlay Link */}
-    <Link
-  to={`/properties/${p.id}`}
-  className="absolute inset-0 w-full h-full"
-  onClick={(e) => {
-    if (isSwipingRef.current) {
-      e.preventDefault();
-    }
-  }}
-/>
-
-
+        <Link to={`/properties/${p.id}`} className="absolute inset-0 w-full h-full" />
 
         {/* Verified Badge */}
         {p.verified && (
@@ -143,25 +153,23 @@ const handleTouchEnd = (e) => {
         )}
 
         {/* Dots */}
-       {images.length > 1 && (
-  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1 z-20">
-    {visibleDots.map((_, idx) => {
-      const realIndex = startDot + idx;
-      const isActive = realIndex === currentIndex;
-      return (
-       <span
-  key={idx}
-  className={`w-1 h-1 rounded-full transition-transform duration-300 ${
-    isActive ? "bg-white" : "bg-gray-200"
-  }`}
-  style={{ transform: isActive ? "scale(1.5)" : "scale(1)" }}
-/>
-
-      );
-    })}
-  </div>
-)}
-
+        {images.length > 1 && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1 z-0">
+            {visibleDots.map((_, idx) => {
+              const realIndex = startDot + idx;
+              const isActive = realIndex === currentIndex;
+              return (
+                <span
+                  key={idx}
+                  className={`w-1 h-1 rounded-full transition-transform duration-300 ${
+                    isActive ? "bg-white" : "bg-gray-200"
+                  }`}
+                  style={{ transform: isActive ? "scale(1.5)" : "scale(1)" }}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Info */}
