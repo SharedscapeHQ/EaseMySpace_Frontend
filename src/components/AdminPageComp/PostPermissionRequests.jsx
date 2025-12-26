@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FiCheck, FiX, FiUser } from "react-icons/fi";
-import { getAllPostRequests, handlePostRequest } from "../../API/adminApi";
+import { getAllPostRequests, handlePostRequest } from "../../api/adminApi";
 
 export default function PostPermissionRequests() {
   const [loading, setLoading] = useState(false);

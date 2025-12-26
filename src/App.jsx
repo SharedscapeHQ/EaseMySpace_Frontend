@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar";
 import AboutUs from "./pages/AboutUs";
 import AddProperty from "./pages/Properties/AddProperty";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute"; 
 // import AdminPropertyDetails from "./pages/Admin/AdminPropertyDetails";
 import ContactPage from "./pages/ContactPage";
 import PropertyDetail from "./pages/Properties/PropertyDetail";
