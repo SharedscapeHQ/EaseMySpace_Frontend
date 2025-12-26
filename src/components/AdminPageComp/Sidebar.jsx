@@ -17,7 +17,8 @@ import {
   FiChevronRight,
   FiDollarSign,
   FiPhone,
-  FiFlag
+  FiFlag,
+  FiImage,
 } from "react-icons/fi";
 import { LuCrown } from "react-icons/lu";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
@@ -43,86 +44,158 @@ export default function Sidebar({
     }));
   };
 
-const sections = [
-  {
-    title: "User Management",
-    icon: <FiUsers className="text-gray-400" />,
-    items: [
-      { label: "Users", value: "Users", icon: <FiUsers /> },
-      { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
-      { label: "CallBack Requests", value: "Requests", icon: <VscGitPullRequestGoToChanges /> },
-      { label: "Subscribers", value: "UltimateSubscribers", icon: <LuCrown /> },
-    ],
-  },
-  {
-    title: "Property Management",
-    icon: <FiHome className="text-gray-400" />,
-    items: [
-      { label: "Properties", value: "Properties", icon: <FiHome /> },
-      { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
-      { label: "Top Locations", value: "ManageLocations", icon: <FiMapPin /> },
-      { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },
-      { label: "Posted Requirement", value: "PostRequirement", icon: <FiClipboard /> },
-      { label: "Property Reports", value: "PropertyReports", icon: <FiFlag /> },
-      ...(role === "Owner"
-        ? [
-            { label: "Visit Track", value: "VisitTrack", icon: <FiEye /> },
-            { label: "Deleted Properties", value: "DeletedProperties", icon: <FiTrash2 /> },
-          ]
-        : []),
-    ],
-  },
-  ...(role === "Owner"
-    ? [
+  const sections = [
+    {
+      title: "User Management",
+      icon: <FiUsers className="text-gray-400" />,
+      items: [
+        { label: "Users", value: "Users", icon: <FiUsers /> },
+        { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
         {
-          title: "Business & Careers",
-          icon: <FiBriefcase className="text-gray-400" />,
-          items: [
-            { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
-            { label: "RM Assignments", value: "RMAssignments", icon: <FiUsers /> },
-            { label: "Withdrawal Requests", value: "Withdrawals", icon: <FiDownload /> },
-            { label: "Platform Revenue", value: "platformRevenue", icon: <FiDownload /> },
-          ],
+          label: "CallBack Requests",
+          value: "Requests",
+          icon: <VscGitPullRequestGoToChanges />,
         },
         {
-          title: "Landlords & Agents",
-          icon: <FiDollarSign className="text-gray-400" />,
-          items: [
-            { label: "All Accounts", value: "allAccounts", icon: <FiUsers /> },
-            { label: "Rent Payments", value: "RentPayments", icon: <FiDollarSign /> },
-            { label: "Rent Withdrawals", value: "RentWithdrawals", icon: <FiDollarSign /> },
-          ],
+          label: "Subscribers",
+          value: "UltimateSubscribers",
+          icon: <LuCrown />,
         },
-      ]
-    : [
         {
-          title: "Landlords & Agents",
-          icon: <FiDollarSign className="text-gray-400" />,
-          items: [
-            { label: "All Accounts", value: "allAccounts", icon: <FiUsers /> },
-            { label: "Rent Payments", value: "RentPayments", icon: <FiDollarSign /> },
-            { label: "Tally Reports", value: "TallyReports", icon: <FiClipboard /> },
-      { label: "Contact Sales", value: "RequestsLandlord", icon: <VscGitPullRequestGoToChanges /> },
-      { label: "Complaints", value: "ComplaintLandlord", icon: <CiViewList /> },
-          ],
-        }, 
-      ]),
-  {
-    title: "Communication",
-    icon: <FaCommentSms className="text-gray-400" />,
-    items: [
-      {
-        label: "Pending Queries",
-        value: "PendingQueries",
-        icon: <FiMessageCircle />,
-        badge: pendingCount,
-      },
-      { label: "Send SMS", value: "SendSMS", icon: <FaCommentSms /> },
-      // { label: "Marketing", value: "Marketing", icon: <FiStar /> },
-    ],
-  },
-];
-
+          label: "User Posts",
+          value: "UserPosts",
+          icon: <FiImage />,
+        },
+      ],
+    },
+    {
+      title: "Property Management",
+      icon: <FiHome className="text-gray-400" />,
+      items: [
+        { label: "Properties", value: "Properties", icon: <FiHome /> },
+        { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
+        {
+          label: "Top Locations",
+          value: "ManageLocations",
+          icon: <FiMapPin />,
+        },
+        { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },
+        {
+          label: "Posted Requirement",
+          value: "PostRequirement",
+          icon: <FiClipboard />,
+        },
+        {
+          label: "Property Reports",
+          value: "PropertyReports",
+          icon: <FiFlag />,
+        },
+        ...(role === "Owner"
+          ? [
+              { label: "Visit Track", value: "VisitTrack", icon: <FiEye /> },
+              {
+                label: "Deleted Properties",
+                value: "DeletedProperties",
+                icon: <FiTrash2 />,
+              },
+            ]
+          : []),
+      ],
+    },
+    ...(role === "Owner"
+      ? [
+          {
+            title: "Business & Careers",
+            icon: <FiBriefcase className="text-gray-400" />,
+            items: [
+              { label: "Careers", value: "Careers", icon: <FiBriefcase /> },
+              {
+                label: "RM Assignments",
+                value: "RMAssignments",
+                icon: <FiUsers />,
+              },
+              {
+                label: "Withdrawal Requests",
+                value: "Withdrawals",
+                icon: <FiDownload />,
+              },
+              {
+                label: "Platform Revenue",
+                value: "platformRevenue",
+                icon: <FiDownload />,
+              },
+            ],
+          },
+          {
+            title: "Landlords & Agents",
+            icon: <FiDollarSign className="text-gray-400" />,
+            items: [
+              {
+                label: "All Accounts",
+                value: "allAccounts",
+                icon: <FiUsers />,
+              },
+              {
+                label: "Rent Payments",
+                value: "RentPayments",
+                icon: <FiDollarSign />,
+              },
+              {
+                label: "Rent Withdrawals",
+                value: "RentWithdrawals",
+                icon: <FiDollarSign />,
+              },
+            ],
+          },
+        ]
+      : [
+          {
+            title: "Landlords & Agents",
+            icon: <FiDollarSign className="text-gray-400" />,
+            items: [
+              {
+                label: "All Accounts",
+                value: "allAccounts",
+                icon: <FiUsers />,
+              },
+              {
+                label: "Rent Payments",
+                value: "RentPayments",
+                icon: <FiDollarSign />,
+              },
+              {
+                label: "Tally Reports",
+                value: "TallyReports",
+                icon: <FiClipboard />,
+              },
+              {
+                label: "Contact Sales",
+                value: "RequestsLandlord",
+                icon: <VscGitPullRequestGoToChanges />,
+              },
+              {
+                label: "Complaints",
+                value: "ComplaintLandlord",
+                icon: <CiViewList />,
+              },
+            ],
+          },
+        ]),
+    {
+      title: "Communication",
+      icon: <FaCommentSms className="text-gray-400" />,
+      items: [
+        {
+          label: "Pending Queries",
+          value: "PendingQueries",
+          icon: <FiMessageCircle />,
+          badge: pendingCount,
+        },
+        { label: "Send SMS", value: "SendSMS", icon: <FaCommentSms /> },
+        // { label: "Marketing", value: "Marketing", icon: <FiStar /> },
+      ],
+    },
+  ];
 
   const handleTabClick = (value) => {
     setActiveTab(value);

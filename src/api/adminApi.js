@@ -148,3 +148,13 @@ export const getAllPropertyReports = () => {
 export const resolvePropertyReport = (id, data) => {
   return adminAxios.patch(`/property-reports/${id}/resolve`, data);
 };
+
+export const getAllPostRequests = () => {
+  return adminAxios.get("/post-requests");
+};
+
+export const handlePostRequest = (id, action) => {
+  return adminAxios.patch(`/post-requests/${id}/action`, {
+    action, 
+  });
+};

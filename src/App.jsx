@@ -12,14 +12,13 @@ import AboutUs from "./pages/AboutUs";
 import AddProperty from "./pages/Properties/AddProperty";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminPropertyDetails from "./pages/Admin/AdminPropertyDetails";
+// import AdminPropertyDetails from "./pages/Admin/AdminPropertyDetails";
 import ContactPage from "./pages/ContactPage";
 import PropertyDetail from "./pages/Properties/PropertyDetail";
 import OwnerDashboard from "./pages/Owner/OwnerDashboard";
 import UserDashboard from "./pages/User/UserDashboard";
 import CancellationRefundPolicy from "./components/FooterSectionComp/CancellationRefundPolicy";
 import TermsAndConditions from "./components/FooterSectionComp/TermsAndConditions";
-import PolicyPrivacy from "./components/FooterSectionComp/PolicyPrivacy";
 import NotFound from "./pages/NotFound";
 import DeletedPropertyDetails from "./pages/Owner/DeletedPropertyDetails";
 import SubscriptionPlans from "./components/Subscription/Subscription";
@@ -256,6 +255,53 @@ function AnimatedRoutes() {
           }
         />
         <Route
+          path="/demand-form"
+          element={
+            <PageWrapper>
+              <ProtectedRoute
+                allowedRoles={["user", "owner", "admin"]}
+                showContentBehindPopup={true}
+              >
+                <RequirementPage />
+              </ProtectedRoute>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/requirement-dashboard"
+          element={
+            <PageWrapper>
+              <ProtectedRoute allowedRoles={["user", "owner", "admin"]}>
+                <RequirementDashboard />
+              </ProtectedRoute>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/rm-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["rm"]}>
+                  <RMDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/hr-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["hr"]}>
+                  <HRMDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
           path="/lead-dashboard"
           element={
             <PageWrapper>
@@ -289,6 +335,31 @@ function AnimatedRoutes() {
               <Layout>
                 <ProtectedRoute allowedRoles={["admin"]}>
                   <AdminDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+
+        <Route
+          path="/owner-dashboard"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["owner"]}>
+                  <OwnerDashboard />
+                </ProtectedRoute>
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/owner-dashboard/deleted-property-details/:id"
+          element={
+            <PageWrapper>
+              <Layout>
+                <ProtectedRoute allowedRoles={["owner"]}>
+                  <DeletedPropertyDetails />
                 </ProtectedRoute>
               </Layout>
             </PageWrapper>

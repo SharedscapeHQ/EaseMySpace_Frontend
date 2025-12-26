@@ -38,6 +38,7 @@ import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLan
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
 import MyProfile from "../../components/UserPageComp/MyProfile";
+import PostPermissionRequests from "../../components/AdminPageComp/PostPermissionRequests";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -581,6 +582,7 @@ const openEditModal = (property) => {
                     {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
                     {activeTab === "PropertyReports" && <ManagePropertyReport />}
                     {activeTab === "MyProfile" && <MyProfile />}
+                    {activeTab === "UserPosts" && <PostPermissionRequests />}
                     
           
 
