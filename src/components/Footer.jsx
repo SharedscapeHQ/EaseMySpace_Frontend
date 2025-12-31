@@ -76,7 +76,7 @@ export default function Footer() {
       <meta itemProp="name" content="EaseMySpace" />
       <meta itemProp="url" content="https://easemyspace.in" />
       <meta itemProp="founder" content="EaseMySpace Team" />
-      <meta itemProp="address" content="WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400030" />
+      <meta itemProp="address" content="WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400030" /> 
     </div>
 
     {/* Quick Links Section */}

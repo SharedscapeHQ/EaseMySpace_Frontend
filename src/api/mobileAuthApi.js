@@ -5,7 +5,7 @@ const api = axios.create({
   withCredentials: true,
   headers: {
   "x-platform": "web",
-}
+} 
 });
 
 

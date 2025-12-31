@@ -46,7 +46,7 @@ export default function ContactPage() {
               "streetAddress": "WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli",
               "addressLocality": "Mumbai",
               "addressRegion": "Maharashtra",
-              "postalCode": "400030",
+              "postalCode": "400030", 
               "addressCountry": "IN"
             },
             "contactPoint": {

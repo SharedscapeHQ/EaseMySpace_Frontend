@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"; 
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { sendOtp, verifyOtp } from "../../API/mobileAuthApi";
+import { sendOtp, verifyOtp } from "../../api/mobileAuthApi";
 
 
 export default function OtpPopup({ onVerified, onClose }) {
