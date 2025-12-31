@@ -424,7 +424,7 @@ const handleVerifyOtp = async () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-sm mb-1">One-time Service Fee <span className='text-zinc'><button
+                  <p className="text-gray-500 text-sm mb-1">One-time Service Fee<span className='text-zinc'><button
   onClick={() => setShowPlanPopup(true)}
   className="text-sm text-blue-600 underline mt-2"
 >

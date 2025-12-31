@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom"; // ✅ Correct import
+import { Link } from "react-router-dom"; 
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { sendOtp, verifyOtp } from "../../API/mobileAuthApi";
+
 
 export default function OtpPopup({ onVerified, onClose }) {
   const [firstName, setFirstName] = useState("");
@@ -33,36 +35,62 @@ export default function OtpPopup({ onVerified, onClose }) {
     return false;
   };
 
-  const sendOtp = () => {
-    if (!firstName) return toast.error("Enter your first name");
-    if (!/^\d{10}$/.test(phone))
-      return toast.error("Enter valid 10 digit mobile number");
-    if (isFakePhoneNumber(phone))
-      return toast.error("Please enter a valid mobile number");
+ const sendOtpHandler = async () => {
+  if (!firstName) return toast.error("Enter your first name");
+  if (!/^\d{10}$/.test(phone))
+    return toast.error("Enter valid 10 digit mobile number");
+  if (isFakePhoneNumber(phone))
+    return toast.error("Please enter a valid mobile number");
 
+  try {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast.error("Failed to send OTP. Please try again later.");
-    }, 800);
-  };
 
-  const verifyOtp = () => {
-    if (!/^\d{6}$/.test(otp))
-      return toast.error("OTP must be 6 digits");
+    await sendOtp(phone); 
 
+    toast.success("OTP sent successfully");
+    setOtpSent(true);
+    setResendTimer(30);
+
+  } catch (err) {
+    toast.error(
+      err.response?.data?.message || "Failed to send OTP"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+const verifyOtpHandler = async () => {
+  if (!/^\d{4}$/.test(otp)) return toast.error("OTP must be 4 digits");
+
+  try {
     setLoading(true);
-    setTimeout(() => {
-      localStorage.setItem("otp_verified", "true");
-      localStorage.setItem("user_verified_mobile", phone);
-      localStorage.setItem("user_name", firstName);
 
-      toast.success("Logged in successfully");
-      onVerified?.(phone);
-      onClose?.();
-      setLoading(false);
-    }, 800);
-  };
+    const res = await verifyOtp({ phone, otp, firstName });
+    const { user, accessToken } = res.data;
+
+    // Save login
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("otp_verified", "true");
+
+    // ✅ Dispatch a custom event for Navbar to catch
+    window.dispatchEvent(new Event("auth-change"));
+
+    toast.success("Logged in successfully");
+
+    // Inform parent
+    onVerified?.(user, accessToken);
+    onClose?.();
+
+  } catch (err) {
+    toast.error(err.response?.data?.message || "OTP verification failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
@@ -83,7 +111,7 @@ export default function OtpPopup({ onVerified, onClose }) {
         <div className="w-full h-px bg-gray-200" />
 
         <h3 className="text-2xl font-bold text-gray-900 text-left">
-          Welcome to EaseMySpace
+          Welcome to EaseMySpace 
         </h3>
 
         {!otpSent ? (
@@ -113,24 +141,26 @@ export default function OtpPopup({ onVerified, onClose }) {
               </a>
             </p>
 
-            <button
-              onClick={sendOtp}
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
-            >
-              {loading ? "Sending OTP..." : "Continue"}
-            </button>
+          <button
+  onClick={sendOtpHandler}
+  disabled={loading}
+  className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
+>
+  {loading ? "Sending OTP..." : "Continue"}
+</button>
+
+
           </>
         ) : (
           <>
             <p className="text-sm text-gray-600">
-              We have sent a 6-digit OTP on your WhatsApp number. Please check.
+              We have sent a 4-digit OTP on your WhatsApp number. Please check.
             </p>
 
             <input
               placeholder="Enter OTP"
               value={otp}
-              maxLength={6}
+              maxLength={4}
               onChange={(e) =>
                 /^\d*$/.test(e.target.value) && setOtp(e.target.value)
               }
@@ -138,20 +168,21 @@ export default function OtpPopup({ onVerified, onClose }) {
             />
 
             <button
-              onClick={verifyOtp}
+              onClick={verifyOtpHandler}
               disabled={loading}
               className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
             >
               {loading ? "Verifying..." : "Verify OTP"}
             </button>
 
-            <button
-              disabled={resendTimer > 0}
-              onClick={sendOtp}
-              className="text-sm text-blue-600 self-end disabled:text-gray-400"
-            >
-              {resendTimer ? `Resend in ${resendTimer}s` : "Resend OTP"}
-            </button>
+          <button
+  disabled={resendTimer > 0}
+  onClick={sendOtpHandler}
+  className="text-sm text-blue-600 self-end disabled:text-gray-400"
+>
+  {resendTimer ? `Resend in ${resendTimer}s` : "Resend OTP"}
+</button>
+
           </>
         )}
 
