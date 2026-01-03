@@ -246,7 +246,7 @@ const handleDropToCategory = (category, dropIndex) => {
                 "bhk_type",
                 "BHK Type",
                 "select",
-                ["1 BHK", "1.5 BHK", "2 BHK", "2.5 BHK", "3 BHK", "4 BHK"],
+                ["1 RK","2 RK","1 BHK", "1.5 BHK", "2 BHK", "2.5 BHK", "3 BHK", "4 BHK"],
               ],
               ["looking_for", "Looking For", "select", ["flatmate", "vacant", "pg"]],
               ["gender", "Gender", "select", ["male", "female", "Any"]],
