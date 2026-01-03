@@ -13,6 +13,7 @@ import {
   FiChevronRight,
   FiFileText,
   FiDollarSign,
+  FiTrash2
 } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { TfiWallet } from "react-icons/tfi";
@@ -102,6 +103,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
           ],
         },
         { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> },
+        { label: "Delete Account", value: "DeleteAccount", icon: <FiTrash2 /> },
       ],
     },
   ];

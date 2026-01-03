@@ -15,7 +15,8 @@ import {
   FaUserShield,
   FaMapMarkerAlt,
   FaBriefcase,
-  FaUsers
+  FaUsers,
+  FaTrashAlt
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import brandImg from "/navbar-assets/brand-logo.png";
@@ -76,7 +77,11 @@ export default function Footer() {
       <meta itemProp="name" content="EaseMySpace" />
       <meta itemProp="url" content="https://easemyspace.in" />
       <meta itemProp="founder" content="EaseMySpace Team" />
-      <meta itemProp="address" content="WeWork, 1st Floor, 264–265, Dr Annie Besant Rd, Worli, Mumbai 400030" /> 
+      <meta
+  itemProp="address"
+  content="WeWork Vaswani Chambers, Plot 264/265, Dr Annie Besant Road, Worli Shivaji Nagar, Worli Colony, Mumbai, Maharashtra 400030"
+/>
+
     </div>
 
     {/* Quick Links Section */}
@@ -111,6 +116,11 @@ export default function Footer() {
             { label: "Cancellation & Refund Policy", to: "/cancellation-refund", icon: FaUndoAlt },
             { label: "Terms & Conditions", to: "/terms-conditions", icon: FaFileContract },
             { label: "Privacy Policy ", to: "/privacy-policy", icon: FaUserShield },
+             {
+      label: "Account Deletion",
+      to: "/account-deletion",
+      icon: FaTrashAlt, 
+    },
           ].map(({ label, to, icon: Icon }) => (
             <li key={to}>
               <Link
@@ -162,11 +172,13 @@ export default function Footer() {
 
         <div className="flex items-center gap-2 ">
           <FaMapMarkerAlt className="text-blue-500  w-5 h-5 mt-1" />
-          <span>
-            WeWork, 1st Floor, 264–265,<br />
-            Dr Annie Besant Rd,<br />
-            Worli, Mumbai 400030
-          </span>
+         <span>
+  WeWork Vaswani Chambers, Plot 264/265,<br />
+  Dr Annie Besant Road,<br />
+  Worli Shivaji Nagar, Worli Colony,<br />
+  Mumbai 400030
+</span>
+
         </div>
       </div>
     </div>

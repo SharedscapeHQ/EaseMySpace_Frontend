@@ -39,6 +39,7 @@ import VisitorTracker from "./components/Tracking/VisitorTracker";
 import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtEaseMySpace";
 import ListerSubscription from "./components/Lister-Subscription/ListerSubscription";
 import PrivacyPolicy from "./components/FooterSectionComp/PolicyPrivacy";
+import AccountDeletion from "./pages/AccountDeletion";
 
 /* ───── ScrollToTop ───── */
 function ScrollToTop() {
@@ -116,6 +117,16 @@ function AnimatedRoutes() {
             <PageWrapper>
               <Layout>
                 <CancellationRefundPolicy />
+              </Layout>
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/account-deletion"
+          element={
+            <PageWrapper>
+              <Layout>
+                <AccountDeletion />
               </Layout>
             </PageWrapper>
           }

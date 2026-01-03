@@ -31,6 +31,7 @@ import ListerPlanDetails from "../../components/UserPageComp/ListerPlanDetails";
 import { FiClock } from "react-icons/fi";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import MyProfile from "../../components/UserPageComp/MyProfile";
+import DeleteAccount from "../../components/UserPageComp/DeleteAccount";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -48,6 +49,7 @@ const TAB_TITLES = {
   DownloadReceipt: "Download Rent Receipts",
   Agreement: "Rental Agreement",
   MyProfile: "My Profile",
+  DeleteAccount: "Delete Account",
 };
 
 function LoadingMessage({ message }) {
@@ -251,6 +253,8 @@ useEffect(() => {
             {activeTab === "DedicatedRM" && user && <DedicatedRM userId={user.id} />}
             {activeTab === "SavedProperties" && <SavedProperties />}
             {activeTab === "MyProfile" && <MyProfile />}
+            {activeTab === "DeleteAccount" && <DeleteAccount />}
+
 
             {["PayRent", "DownloadReceipt", "Agreement"].includes(activeTab) &&
               !isOccupant && (

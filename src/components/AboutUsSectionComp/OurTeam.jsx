@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import TeamCard from "./TeamCard";
-import RakeshImg from "/TeamImg/Rakesh.png";
-import YogitaImg from "/TeamImg/Yogita.png";
-import TaniyaImg from "/TeamImg/Taniya.png";
-import ArvindImg from "/TeamImg/Arvind.png";
+import RakeshImg from "/TeamImg/RakeshG.png";
+import YogitaImg from "/TeamImg/YogitaR.png";
+import TaniyaImg from "/TeamImg/TaniyaS.png";
+import ArvindImg from "/TeamImg/ArvindV.png";
 import NikhilImg from "/TeamImg/Nikhil.png";
 import { motion } from "framer-motion"; 
 
