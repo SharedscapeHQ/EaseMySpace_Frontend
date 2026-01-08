@@ -66,7 +66,7 @@ function Layout({ children }) {
   return (
     <>
       {!hideNavbar && <Navbar />}
-      <main className={hideNavbar ? "" : "pt-20"}>{children}</main>
+      <main className={hideNavbar ? "" : "pt-0"}>{children}</main>
     </>
   );
 }

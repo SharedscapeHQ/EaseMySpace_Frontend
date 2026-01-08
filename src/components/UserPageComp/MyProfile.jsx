@@ -151,16 +151,17 @@ export default function MyProfile() {
             <input disabled value={formData.firstName} className="p-3 border rounded-md bg-gray-100" />
             <input disabled value={formData.lastName} className="p-3 border rounded-md bg-gray-100" />
 
-            <select
-              disabled={!isEditing}
-              value={formData.gender}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-              className="p-3 border rounded-md disabled:bg-gray-100"
-            >
-              <option>Male</option>
-              <option>Female</option>
-              <option>Others</option>
-            </select>
+          <select
+  disabled={!isEditing}
+  value={formData.gender}
+  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+  className="p-3 border rounded-md disabled:bg-gray-100"
+>
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+  <option value="other">Other</option>
+</select>
+
 
             <div>
               <input
