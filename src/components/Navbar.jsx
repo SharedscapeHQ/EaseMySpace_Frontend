@@ -103,7 +103,7 @@ export default function Navbar() {
         className="fixed top-0 w-full flex flex-col z-40"
         style={{ height: `calc(5rem + ${bannerHeight}px)` }} 
       >
-        <InstallAppBanner onHeightChange={setBannerHeight} />
+        {/* <InstallAppBanner onHeightChange={setBannerHeight} /> */}
 
         <div className="w-full h-[5rem] bg-white dark:bg-zinc-200 flex items-center justify-between px-3 md:px-8 lg:shadow-sm">
           <div className="flex items-center gap-3">
