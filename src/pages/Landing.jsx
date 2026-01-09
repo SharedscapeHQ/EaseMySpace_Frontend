@@ -12,6 +12,7 @@ import TestimonialSection from "../components/LandingSectionComp/TestimonialSect
 import LandingPopup from "../components/LandingSectionComp/LandingPopup";
 import AndheriProperties from "../components/LandingSectionComp/AndheriProperties";
 import RecentlyViewedProperties from "../components/LandingSectionComp/RecentlyViewedProperties";
+import AppDownloadSection from "../components/LandingSectionComp/AppDownloadSection";
 
 function Landing() {
   return (
@@ -74,6 +75,7 @@ function Landing() {
         <Banner />
         <FAQSection />
         <TestimonialSection/>
+        <AppDownloadSection/>
         <BottomNav />
         <Footer />
       </div>
