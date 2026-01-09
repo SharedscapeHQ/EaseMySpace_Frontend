@@ -98,7 +98,7 @@ export default function Navbar() {
   }, [profileOpen]);
 
   return (
-    <header style={{ fontFamily: "para_font" }}>
+    <header style={{ fontFamily: "para_font" }}> 
       <nav
         className="fixed top-0 w-full flex flex-col z-40"
         style={{ height: `calc(5rem + ${bannerHeight}px)` }} 

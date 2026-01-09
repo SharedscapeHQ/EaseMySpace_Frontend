@@ -22,7 +22,7 @@ export default function InstallAppBanner({ onClose, onHeightChange }) {
     if (visible) {
       const height = document.getElementById("install-banner")?.offsetHeight || 48;
       setBannerHeight(height);
-      onHeightChange?.(height);
+      onHeightChange?.(height); 
     } else {
       onHeightChange?.(0);
     }

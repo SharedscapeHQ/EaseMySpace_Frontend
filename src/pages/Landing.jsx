@@ -44,7 +44,7 @@ function Landing() {
   {/* Open Graph / Social Sharing */}
   <meta property="og:title" content="Find Your Next Home in Mumbai | EaseMySpace" />
   <meta
-    property="og:description"
+    property="og:description" 
     content="Search PGs, flatmates, and vacant flats in Mumbai easily. Explore properties in Andheri, Bandra, Juhu and more with EaseMySpace™."
   />
   <meta property="og:image" content="https://easemyspace.in/heroImg/hero.png" />
