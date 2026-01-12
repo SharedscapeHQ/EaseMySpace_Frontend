@@ -23,12 +23,17 @@ function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    let value = e.target.value;
 
     // Prevent spaces for firstName and lastName
-    if ((name === "firstName" || name === "lastName") && value.includes(" ")) {
-      return;
-    }
+  if ((name === "firstName" || name === "lastName" || name === "password") && value.includes(" ")) {
+    return;
+  }
+
+   if (name === "email") {
+    value = value.toLowerCase();
+  }
 
     setForm({ ...form, [name]: value });
   };
