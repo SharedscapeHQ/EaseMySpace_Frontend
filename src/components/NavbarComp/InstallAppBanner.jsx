@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const ANDROID_PLAY_URL =
-  "https://play.google.com/store/apps/details?id=com.arvind.x777.myexpoapp";
+  "https://play.google.com/store/apps/details?id=com.easemyspace.app";
 
 export default function InstallAppBanner({ onClose, onHeightChange }) {
   const [visible, setVisible] = useState(false);

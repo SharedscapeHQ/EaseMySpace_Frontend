@@ -10,7 +10,7 @@ import androidPhone from "/app_assets/android-phone/android_portrait.png";
 import iphonePhone from "/app_assets/iphone/iphone-portrait.png";
 
 const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=com.arvind.x777.myexpoapp";
+  "https://play.google.com/store/apps/details?id=com.easemyspace.app";
 
 export default function AppDownloadSection() {
   return (
