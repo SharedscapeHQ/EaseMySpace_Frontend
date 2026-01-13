@@ -40,6 +40,7 @@ import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtE
 import ListerSubscription from "./components/Lister-Subscription/ListerSubscription";
 import PrivacyPolicy from "./components/FooterSectionComp/PolicyPrivacy";
 import AccountDeletion from "./pages/AccountDeletion";
+import OpenApp from "./pages/OpenApp"
 
 /* ───── ScrollToTop ───── */
 function ScrollToTop() {
@@ -80,7 +81,19 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+
         {/* Public */}
+
+        <Route
+  path="/open-app"
+  element={
+    <PageWrapper>
+      {/* <Layout> */}
+        <OpenApp />
+      {/* </Layout> */}
+    </PageWrapper>
+  }
+/>
         <Route
           path="/"
           element={
