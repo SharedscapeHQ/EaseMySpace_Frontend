@@ -9,12 +9,12 @@ import RecentAddedProperties from "../components/LandingSectionComp/RecentAddedP
 import Banner from "../components/LandingSectionComp/Banner";
 import BottomNav from "../components/LandingSectionComp/BottomNav";
 import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
-import LandingPopup from "../components/LandingSectionComp/LandingPopup";
 import AndheriProperties from "../components/LandingSectionComp/AndheriProperties";
 import RecentlyViewedProperties from "../components/LandingSectionComp/RecentlyViewedProperties";
 import AppDownloadSection from "../components/LandingSectionComp/AppDownloadSection";
 
 function Landing() {
+
   return (
     <>
       <Helmet>
@@ -64,7 +64,6 @@ function Landing() {
   <meta name="twitter:image" content="https://easemyspace.in/heroImg/hero.png" />
 </Helmet>
 
- <LandingPopup />
       <div className="w-full -pt-10 lg:pb-0 pb-9 dark:bg-zinc-900">
         <HeroMobile />
         <HeroDesktop />

@@ -41,6 +41,7 @@ import ListerSubscription from "./components/Lister-Subscription/ListerSubscript
 import PrivacyPolicy from "./components/FooterSectionComp/PolicyPrivacy";
 import AccountDeletion from "./pages/AccountDeletion";
 import OpenApp from "./pages/OpenApp"
+import GlobalPopups from "./pages/GlobalPopups";
 
 /* ───── ScrollToTop ───── */
 function ScrollToTop() {
@@ -410,6 +411,7 @@ export default function App() {
       <ScrollToTop />
       <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
       <WhatsAppButton />
+      <GlobalPopups />
       <AnimatedRoutes />
       <AnalyticsTracker />
     </BrowserRouter>
