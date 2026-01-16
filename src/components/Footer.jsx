@@ -18,6 +18,10 @@ import {
   FaUsers,
   FaTrashAlt
 } from "react-icons/fa";
+import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
+import AppleBadge from "/app_assets/AppleStoreButton.png";
+import { FaApple } from "react-icons/fa";
+import { QRCodeCanvas } from "qrcode.react";
 import { FaXTwitter } from "react-icons/fa6";
 import brandImg from "/navbar-assets/brand-logo.png";
 
@@ -74,6 +78,56 @@ export default function Footer() {
       <p className="text-sm leading-relaxed text-zinc-700 " itemProp="description">
         EaseMySpace™ connects users with verified flatmates, rental flats, shared accommodations, and PGs in Mumbai. Find your next home quickly, hassle-free.
       </p>
+    {/* App Download Section */}
+<div className="mt-6 flex items-center gap-6">
+
+  {/* Buttons */}
+  <div className="flex flex-col gap-4">
+
+    {/* Play Store */}
+    <a
+      href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img
+        src={playBadge}
+        alt="Get it on Google Play"
+        className="h-10"
+      />
+    </a>
+
+    {/* Apple Store (Disabled) */}
+    <div className="relative w-fit cursor-not-allowed">
+      <img
+        src={AppleBadge}
+        alt="Download on the App Store"
+        className="h-10 grayscale opacity-60"
+      />
+
+      {/* Coming Soon Tag (full opacity) */}
+      <span className="absolute -top-3 -right-2 bg-black text-white text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap">
+        Coming Soon
+      </span>
+    </div>
+
+  </div>
+
+  {/* QR Code */}
+  <div className="hidden sm:flex flex-col items-center bg-gray-50 border rounded-lg p-2 shadow-sm">
+    <QRCodeCanvas
+      value="https://play.google.com/store/apps/details?id=com.easemyspace.app"
+      size={80}
+    />
+    <span className="text-[11px] text-gray-500 mt-1 whitespace-nowrap">
+      Scan to get the app
+    </span>
+  </div>
+
+</div>
+
+
+
       <meta itemProp="name" content="EaseMySpace" />
       <meta itemProp="url" content="https://easemyspace.in" />
       <meta itemProp="founder" content="EaseMySpace Team" />

@@ -11,7 +11,6 @@ import BottomNav from "../components/LandingSectionComp/BottomNav";
 import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
 import AndheriProperties from "../components/LandingSectionComp/AndheriProperties";
 import RecentlyViewedProperties from "../components/LandingSectionComp/RecentlyViewedProperties";
-import AppDownloadSection from "../components/LandingSectionComp/AppDownloadSection";
 
 function Landing() {
 
@@ -74,7 +73,6 @@ function Landing() {
         <Banner />
         <FAQSection />
         <TestimonialSection/>
-        <AppDownloadSection/>
         <BottomNav />
         <Footer />
       </div>
