@@ -39,7 +39,7 @@ export default function GlobalPopups() {
       console.log("Showing AppInstallPopup now"); // 🔹 check if app install timer fires
       setShowAppInstall(true);
       sessionStorage.setItem("appInstallPopupShown", "true");
-    }, 20000);
+    }, 15000);
 
     window.__appInstallTimer = appTimer;
   }
