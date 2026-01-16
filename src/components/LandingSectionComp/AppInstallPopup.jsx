@@ -34,25 +34,30 @@ export default function AppInstallPopup({ onClose }) {
               Enjoy a faster and smoother experience on your phone
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-5">
-              <div className="flex flex-col items-center">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    src={playBadge}
-                    alt="Get it on Google Play"
-                    className="h-12 w-auto"
-                  />
-                </a>
-              </div>
+           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-5">
+  {/* Android */}
+  <div className="flex flex-col items-center">
+    <span className="text-xs text-gray-500 mb-1">Android</span>
+    <a
+      href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img
+        src={playBadge}
+        alt="Get it on Google Play"
+        className="h-12 w-auto"
+      />
+    </a>
+  </div>
 
-              <div className="flex flex-col items-center">
-                <span className="text-gray-400 text-sm">Coming Soon</span>
-              </div>
-            </div>
+  {/* iOS */}
+  <div className="flex flex-col items-center">
+    <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
+    <span className="text-gray-400 text-sm">Coming Soon</span>
+  </div>
+</div>
+
           </motion.div>
         </motion.div>
       )}
