@@ -18,27 +18,27 @@ export default function ListerSubscription() {
   const [invoiceUrl, setInvoiceUrl] = useState(null);
 
   const plans = [
-    {
-  id: "basic",
-  type: "Basic",
-  title: "Basic Lister",
-  description: "Best for owners who want to list a single property at an affordable price.",
-  originalPrice: "₹799",
-  price: "₹299",
-  numericPrice: 299,
-  savings: "Save ₹500!",
-  gst: "+18% GST",
-  duration: "30 Days",
-  color: "orange",
+//     {
+//   id: "basic",
+//   type: "Basic",
+//   title: "Basic Lister",
+//   description: "Best for owners who want to list a single property at an affordable price.",
+//   originalPrice: "₹799",
+//   price: "₹299",
+//   numericPrice: 299,
+//   savings: "Save ₹500!",
+//   gst: "+18% GST",
+//   duration: "30 Days",
+//   color: "orange",
 
-  features: [
-    { text: "1 property listing", included: true },
-    { text: "Unlimited edits & updates", included: true },
-    { text: "WhatsApp lead notifications", included: true },
-    { text: "Standard visibility", included: true },
-    { text: "Basic support", included: true },
-  ],
-},
+//   features: [
+//     { text: "1 property listing", included: true },
+//     { text: "Unlimited edits & updates", included: true },
+//     { text: "WhatsApp lead notifications", included: true },
+//     { text: "Standard visibility", included: true },
+//     { text: "Basic support", included: true },
+//   ],
+// },
     {
       id: "standard",
     type: "Standard",
