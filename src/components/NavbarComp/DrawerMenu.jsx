@@ -11,6 +11,9 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
+import AppleBadge from "/app_assets/AppleStoreButton.png";
+
 
 export default function DrawerMenu({ open, setOpen }) {
   const [showSubmenu, setShowSubmenu] = useState(false);
@@ -147,12 +150,39 @@ export default function DrawerMenu({ open, setOpen }) {
         </ul>
 
         {/* Footer */}
-        <div
-          className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200 dark:border-zinc-700 dark:text-zinc-300"
-          style={{ fontFamily: "heading_font" }}
-        >
-          Making Urban Living Easy
-        </div>
+       <div className="mt-auto pt-6 border-t border-zinc-200 dark:border-zinc-700">
+  <div className="flex items-center justify-around gap-4">
+    {/* Android */}
+    <div className="flex flex-col items-center">
+      <span className="text-xs text-gray-500 mb-1">Android</span>
+      <a
+        href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          src={playBadge}
+          alt="Get it on Google Play"
+          className="h-10 w-auto"
+        />
+      </a>
+    </div>
+
+  {/* iOS */}
+<div className="flex flex-col items-center">
+  <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
+
+  {/* App Store badge (coming soon – no link yet) */}
+  <img
+    src={AppleBadge}
+    alt="Download on the App Store"
+    className="h-10 w-auto opacity-60"
+  />
+</div>
+
+  </div>
+</div>
+
       </aside>
     </div>
   );

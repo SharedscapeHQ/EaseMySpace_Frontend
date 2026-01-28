@@ -2,6 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX } from "react-icons/fi";
 import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
+import AppleBadge from "/app_assets/AppleStoreButton.png";
 
 export default function AppInstallPopup({ onClose }) {
   return (
@@ -52,10 +53,18 @@ export default function AppInstallPopup({ onClose }) {
   </div>
 
   {/* iOS */}
-  <div className="flex flex-col items-center">
-    <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
-    <span className="text-gray-400 text-sm">Coming Soon</span>
-  </div>
+ {/* iOS */}
+<div className="flex flex-col items-center">
+  <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
+
+  {/* App Store badge (disabled look) */}
+  <img
+    src={AppleBadge}
+    alt="Download on the App Store"
+    className="h-12 w-auto opacity-60"
+  />
+</div>
+
 </div>
 
           </motion.div>
