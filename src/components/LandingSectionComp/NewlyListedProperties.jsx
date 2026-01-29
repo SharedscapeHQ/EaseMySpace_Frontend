@@ -34,6 +34,7 @@ export default function NewlyListedProperties() {
       setLoading(true);
       try {
         const { data } = await newlyListedProperties();
+         console.log("Raw API Data:", data);
 
         const filtered = data
           .filter((p) => p.is_newly_listed && p.status === "approved")
@@ -44,12 +45,7 @@ export default function NewlyListedProperties() {
           )
           .map((p) => ({
             ...p,
-            image: parseImages(p.image),
-            bedroom_images: parseImages(p.bedroom_images),
-            kitchen_images: parseImages(p.kitchen_images),
-            bathroom_images: parseImages(p.bathroom_images),
-            hall_images: parseImages(p.hall_images),
-            additional_images: parseImages(p.additional_images),
+           image: p.bedroom_image ? [p.bedroom_image] : [],
           }));
 
         setNewlyListed(filtered);

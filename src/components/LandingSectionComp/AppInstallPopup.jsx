@@ -52,7 +52,6 @@ export default function AppInstallPopup({ onClose }) {
     </a>
   </div>
 
-  {/* iOS */}
  {/* iOS */}
 <div className="flex flex-col items-center">
   <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
