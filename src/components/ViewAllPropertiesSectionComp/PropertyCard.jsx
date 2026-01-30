@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LikeButton from "../LandingSectionComp/LikeButton";
+import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 const PropertyCard = ({ p }) => {
   const images = [
@@ -24,6 +25,10 @@ const PropertyCard = ({ p }) => {
   const currentTranslate = useRef(0);
   const prevTranslate = useRef(0);
   const isDragging = useRef(false);
+
+  // Get formatted location using the hook
+  const { displayLocation, loading } = useFormattedLocation(p.location, p.pincode);
+  const formattedLocation = loading ? "Loading..." : displayLocation || p.location || "Unknown";
 
   // Detect touch device
   useEffect(() => {
@@ -91,7 +96,6 @@ const PropertyCard = ({ p }) => {
           <div
             ref={containerRef}
             className="w-full h-full overflow-hidden relative"
-            // Mobile swipe only
             onTouchStart={(e) => startDrag(e.touches[0].clientX)}
             onTouchMove={(e) => {
               e.preventDefault();
@@ -103,9 +107,7 @@ const PropertyCard = ({ p }) => {
               ref={trackRef}
               className="flex h-full transition-transform duration-500 ease-in-out"
               style={{
-                transform: isTouchDevice.current
-                  ? `translateX(-${currentIndex * 100}%)`
-                  : `translateX(-${currentIndex * 100}%)`,
+                transform: `translateX(-${currentIndex * 100}%)`,
               }}
             >
               {images.map((img, idx) => (
@@ -175,7 +177,7 @@ const PropertyCard = ({ p }) => {
       {/* Info */}
       <Link to={`/properties/${p.id}`}>
         <div className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white">
-          {p.location ? p.location.split(" ").slice(-2).join(" ") : "Unknown"}
+          {formattedLocation}
         </div>
         <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
           {p.bhk_type || "-"} | {p.looking_for || "-"}

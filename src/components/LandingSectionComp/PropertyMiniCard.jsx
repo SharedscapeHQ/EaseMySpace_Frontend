@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import LikeButton from "./LikeButton";
+import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
+
 
 export default function PropertyMiniCard({ property }) {
+
+  const { displayLocation, loading } = useFormattedLocation(
+  property.location,
+  property.pincode
+);
   const img =
     property.image?.[0] ||
     property.bedroom_images?.[0] ||
@@ -45,11 +52,13 @@ export default function PropertyMiniCard({ property }) {
       {/* Info with link */}
     <Link to={`/properties/${property.id}`}>
   {/* Location */}
-  <div className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white">
-    {property.location
-      ? property.location.split(" ").slice(-2).join(" ")
-      : "Unknown"}
-  </div>
+ <div className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white">
+  {loading
+    ? "Loading..."
+    : displayLocation || property.location || property.pincode || "Unknown"}
+</div>
+
+
 
   {/* BHK | Looking For */}
   <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import RentPaymentModal from "./RentPayment/RentPaymentModal";
 import { getCurrentUser } from "../../api/authApi";
 import { useNavigate } from "react-router-dom";
+import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
+
 
 export default function EssentialDetailsSub({ property }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -163,6 +165,12 @@ export default function EssentialDetailsSub({ property }) {
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
   };
 
+  const { displayLocation, loading: locationLoading } = useFormattedLocation(
+  property.location,
+  property.pincode
+);
+
+
   return (
     <>
       <div className="mt-6 flex flex-col lg:flex-row gap-6">
@@ -174,7 +182,12 @@ export default function EssentialDetailsSub({ property }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { label: "BHK Type", value: property.bhk_type || "Unavailable" },
-              { label: "Location", value: property.location || "Unavailable" },
+              {
+  label: "Location",
+  value: locationLoading
+    ? "Loading..."
+    : displayLocation || property.location || property.pincode || "Unavailable",
+},
               { label: "Looking For", value: property.looking_for || "Unavailable" },
               { label: "Gender Preference", value: property.gender || "Unavailable" },
             ].map((item, idx) => (

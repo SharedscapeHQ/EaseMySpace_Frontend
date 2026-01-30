@@ -326,7 +326,12 @@ const enrich = (row) => {
           </div>
 
           <PropertyAmenities amenities={property.amenities} property={property} />
-          <PropertyMap address={property.location} title={property.title} />
+          <PropertyMap
+  location={property.location} 
+  pincode={property.pincode}   
+  title={property.title}
+/>
+
         </div>
 
         <RelatedProperties currentProperty={property} />

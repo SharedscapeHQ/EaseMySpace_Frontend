@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 export default function EssentialDetails({ property }) {
   const pricingOptions = property.pricingOptions?.length
@@ -23,11 +24,15 @@ export default function EssentialDetails({ property }) {
 
   // Get price/deposit for selected occupancy
   const currentData = selected.occupancies.find(
-    (o) => o.occupancy === selected.occupancy
+    (o) => o.occupancy === selected.occupancy,
   ) || { price: "N/A", deposit: "N/A" };
 
-  useEffect(() => {
-  }, [roomsWithLabels]);
+  useEffect(() => {}, [roomsWithLabels]);
+
+  const { displayLocation, loading: locationLoading } = useFormattedLocation(
+    property.location,
+    property.pincode,
+  );
 
   return (
     <div className="mt-6 flex flex-col lg:flex-row gap-6">
@@ -36,9 +41,24 @@ export default function EssentialDetails({ property }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             { label: "BHK Type", value: property.bhk_type || "Unavailable" },
-            { label: "Location", value: property.location || "Unavailable" },
-            { label: "Looking For", value: property.looking_for || "Unavailable" },
-            { label: "Gender preference", value: property.gender || "Unavailable" },
+            {
+              label: "Location",
+              value: locationLoading
+                ? "Loading..."
+                : displayLocation ||
+                  property.location ||
+                  property.pincode ||
+                  "Unavailable",
+            },
+
+            {
+              label: "Looking For",
+              value: property.looking_for || "Unavailable",
+            },
+            {
+              label: "Gender preference",
+              value: property.gender || "Unavailable",
+            },
           ].map((item, idx) => (
             <div
               key={idx}
@@ -65,7 +85,10 @@ export default function EssentialDetails({ property }) {
               <button
                 key={room.id || room.room_label}
                 onClick={() =>
-                  setSelected({ ...room, occupancy: room.occupancies[0].occupancy })
+                  setSelected({
+                    ...room,
+                    occupancy: room.occupancies[0].occupancy,
+                  })
                 }
                 className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-sm sm:text-base font-semibold border transition-colors ${
                   selected.room_label === room.room_label
@@ -86,7 +109,9 @@ export default function EssentialDetails({ property }) {
             {selected.occupancyOptions.map((occ) => (
               <button
                 key={occ}
-                onClick={() => setSelected((prev) => ({ ...prev, occupancy: occ }))}
+                onClick={() =>
+                  setSelected((prev) => ({ ...prev, occupancy: occ }))
+                }
                 className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-sm sm:text-base font-semibold border transition-colors ${
                   selected.occupancy === occ
                     ? "bg-indigo-600 text-white border-indigo-600"
@@ -104,13 +129,17 @@ export default function EssentialDetails({ property }) {
           <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200 shadow-sm">
             <span className="text-gray-700 text-sm font-medium">Rent</span>
             <span className="font-bold text-gray-900 text-lg mt-1">
-              {currentData.price ? `₹${Number(currentData.price).toLocaleString()}/mo` : "N/A"}
+              {currentData.price
+                ? `₹${Number(currentData.price).toLocaleString()}/mo`
+                : "N/A"}
             </span>
           </div>
           <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200 shadow-sm">
             <span className="text-gray-700 text-sm font-medium">Deposit</span>
             <span className="font-bold text-gray-900 text-lg mt-1">
-              {currentData.deposit ? `₹${Number(currentData.deposit).toLocaleString()}` : "N/A"}
+              {currentData.deposit
+                ? `₹${Number(currentData.deposit).toLocaleString()}`
+                : "N/A"}
             </span>
           </div>
         </div>

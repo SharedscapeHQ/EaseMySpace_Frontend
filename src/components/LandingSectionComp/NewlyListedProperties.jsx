@@ -4,23 +4,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { newlyListedProperties } from "../../api/propertiesApi";
 import PropertyMiniCard from "./PropertyMiniCard";
 
-/* ---------- Helpers ---------- */
 
-const parseImages = (raw) => {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-
-  if (typeof raw === "string" && raw.startsWith("{"))
-    return raw
-      .slice(1, -1)
-      .split(",")
-      .map((s) =>
-        s.trim().replace(/^"|"$/g, "").replace(/^'|'$/g, "")
-      )
-      .filter(Boolean);
-
-  return [];
-};
 
 /* ---------- Component ---------- */
 
