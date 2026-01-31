@@ -18,8 +18,6 @@ export default function NewlyListedProperties() {
       setLoading(true);
       try {
         const { data } = await newlyListedProperties();
-         console.log("Raw API Data:", data);
-
         const filtered = data
           .filter((p) => p.is_newly_listed && p.status === "approved")
           .sort(

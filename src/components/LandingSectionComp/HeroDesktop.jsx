@@ -10,7 +10,7 @@ export default function HeroDesktop() {
   const cards = [
     { title: "PGs", value: "pg", img: pgImg },
     { title: "Flatmates", value: "flatmate", img: sharedImg },
-    { title: "Vacant Flats", value: "vacant", img: vacantImg },
+    { title: "Flats", value: "vacant", img: vacantImg },
   ];
 
   return (

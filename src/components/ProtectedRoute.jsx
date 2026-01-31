@@ -11,41 +11,41 @@ export default function ProtectedRoute({
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const controller = new AbortController();
+useEffect(() => {
+  const controller = new AbortController();
 
-   const checkAuth = async () => {
-  try {
-    const { data } = await axios.get(
-      "https://api.easemyspace.in/api/auth/me",
-      { withCredentials: true, signal: controller.signal }
-    );
-    const normalizedAllowed = Array.isArray(allowedRoles)
-      ? allowedRoles.map((r) => String(r).toLowerCase().trim())
-      : [String(allowedRoles).toLowerCase().trim()];
+  const checkAuth = async () => {
+    try {
+      // ✅ FAST CHECK FIRST
+      const { data } = await axios.get(
+        "https://api.easemyspace.in/api/auth/check",
+        { withCredentials: true, signal: controller.signal }
+      );
+      const normalizedAllowed = Array.isArray(allowedRoles)
+        ? allowedRoles.map((r) => String(r).toLowerCase().trim())
+        : [String(allowedRoles).toLowerCase().trim()];
 
-    const userRole = String(data.role || "").toLowerCase().trim();
+      const userRole = String(data.role || "").toLowerCase().trim();
 
-    if (!normalizedAllowed.includes(userRole)) {
+      if (!normalizedAllowed.includes(userRole)) {
+        setShowModal(true);
+        setIsAuthorized(false);
+      } else {
+        setIsAuthorized(true);
+      }
+    } catch (err) {
+      if (err.name === "CanceledError") return;
+
+      console.error("ProtectedRoute: Auth check failed", err);
       setShowModal(true);
       setIsAuthorized(false);
-    } else {
-      setIsAuthorized(true);
     }
-  } catch (err) {
-  if (err.name === "CanceledError") {
-    return;
-  }
-  console.error("ProtectedRoute: Auth check failed", err);
-  setShowModal(true);
-  setIsAuthorized(false);
-}
-};
+  };
 
+  checkAuth();
+  return () => controller.abort();
+}, [allowedRoles]);
 
-    checkAuth();
-    return () => controller.abort();
-  }, [allowedRoles]);
 
   const handleCancel = () => {
     setShowModal(false);

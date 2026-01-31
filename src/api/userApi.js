@@ -15,6 +15,14 @@ export const getUserProperties = async () => {
   return res.data;
 };
 
+export const updatePropertyAddress = async (propertyId, data) => {
+  const res = await axiosInstance.patch(
+    `/update-address/${propertyId}`,
+    data
+  );
+  return res.data;
+};
+
 // ✅ API to submit a query for a property
 export const submitQuery = async (propertyId, message) => {
   const res = await axiosInstance.post("/edit-query", {

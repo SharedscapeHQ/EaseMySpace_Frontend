@@ -98,7 +98,7 @@ const [locationDisplay, setLocationDisplay] = useState("");
   const options = [
     { title: "PGs", value: "pg", img: pgImg, color: "bg-blue-100/60" },
     { title: "Flatmate", value: "flatmate", img: sharedImg, color: "bg-green-100/60" },
-    { title: "Flat", value: "vacant", img: vacantImg, color: "bg-purple-100/60" },
+    { title: "Flats", value: "vacant", img: vacantImg, color: "bg-purple-100/60" },
   ];
 
   return (

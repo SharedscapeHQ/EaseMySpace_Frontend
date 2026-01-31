@@ -1,8 +1,17 @@
 import React from "react";
 import dayjs from "dayjs";
 import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
+import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
+
+
 
 export default function RecentlyViewed({ property }) {
+
+  const { displayLocation, loading } = useFormattedLocation(
+  property.location,
+  property.pincode
+);
+
   return (
     <div
       key={property.id}
@@ -11,12 +20,12 @@ export default function RecentlyViewed({ property }) {
     >
       {/* Image Section */}
       <div className="relative w-full h-44">
-        {property.image ? (
+        {property.bedroom_images ? (
           <img
             src={
-              Array.isArray(property.image)
-                ? property.image[0]
-                : property.image
+              Array.isArray(property.bedroom_images)
+                ? property.bedroom_images[0]
+                : property.bedroom_images
             }
             alt={property.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
@@ -61,9 +70,15 @@ export default function RecentlyViewed({ property }) {
           <p className="font-bold text-black text-base">
             ₹ {Number(property.price || 0).toLocaleString()}/month
           </p>
-          <p className="text-gray-600 text-sm">
-            {property.bhk_type} in {property.location || "Unknown location"}
-          </p>
+        <p className="text-gray-600 text-sm">
+  {property.bhk_type} in{" "}
+  {loading ? (
+    <span className="inline-block h-4 w-28 bg-gray-200 rounded animate-pulse align-middle" />
+  ) : (
+    displayLocation || "Unknown location"
+  )}
+</p>
+
         </div>
 
        

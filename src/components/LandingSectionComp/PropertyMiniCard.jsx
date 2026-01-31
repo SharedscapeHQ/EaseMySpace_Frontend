@@ -16,7 +16,8 @@ export default function PropertyMiniCard({ property }) {
     null;
 
   return (
-    <div className="flex-shrink-0 text-left relative">
+<div className="flex-shrink-0 text-left relative w-44">
+
       <div className="relative w-44 h-44 rounded-3xl overflow-hidden">
         {/* Like Button positioned above the image */}
         <div className="absolute top-2 right-2 ">
@@ -52,11 +53,13 @@ export default function PropertyMiniCard({ property }) {
       {/* Info with link */}
     <Link to={`/properties/${property.id}`}>
   {/* Location */}
- <div className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white">
+ <div className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white
+                line-clamp-2">
   {loading
     ? "Loading..."
     : displayLocation || property.location || property.pincode || "Unknown"}
 </div>
+
 
 
 

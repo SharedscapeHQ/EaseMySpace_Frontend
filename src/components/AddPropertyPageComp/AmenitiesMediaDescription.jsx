@@ -27,21 +27,19 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
     });
 
   const handleFileChange = async (e, type) => {
-  const files = Array.from(e.target.files);
-  try {
-    const base64s = await Promise.all(files.map(toBase64));
-    setFormData((prev) => ({
-      ...prev,
-      [`${type}_base64`]: [...(prev[`${type}_base64`] || []), ...base64s],
-    }));
-    e.target.value = "";
-  } catch {
-    alert(`Failed to process ${type} file(s)`);
-  }
-};
+    const files = Array.from(e.target.files);
+    try {
+      const base64s = await Promise.all(files.map(toBase64));
+      setFormData((prev) => ({
+        ...prev,
+        [`${type}_base64`]: [...(prev[`${type}_base64`] || []), ...base64s],
+      }));
+      e.target.value = "";
+    } catch {
+      alert(`Failed to process ${type} file(s)`);
+    }
+  };
 
-
-  // ✅ Render separate file inputs for each image category
   const imageCategories = [
     { label: "Bedroom Images", key: "bedroom_images" },
     { label: "Kitchen Images", key: "kitchen_images" },
@@ -54,7 +52,9 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
     <>
       {/* Amenities */}
       <div className="border-t pt-4">
-        <h2 className="font-bold mb-2 text-indigo-600">Amenities</h2>
+        <h2 className="font-bold mb-2 text-indigo-600">
+          Amenities <span className="text-red-500">*</span>
+        </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
           {amenityOptions.map((amenity) => (
             <label
@@ -131,7 +131,9 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
 
       {/* Description */}
       <div className="border-t pt-4">
-        <label className="font-semibold block mb-1">Short Description</label>
+        <label className="font-semibold block mb-1">
+         Description <span className="text-red-500">*</span>
+        </label>
         <textarea
           name="description"
           value={formData.description}
@@ -144,17 +146,18 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
         />
       </div>
 
-      {/* Media Upload */}
-     <div className="border-t pt-4">
+     {/* Media Upload */}
+<div className="border-t pt-4">
   <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
-
-  {/* Responsive Grid: 1 column on mobile, 2 on desktop */}
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {/* Separate Image Uploads */}
     {imageCategories.map((cat) => (
       <div className="mb-2" key={cat.key}>
-        <label className="block font-semibold mb-1">{cat.label}</label>
-
+        <label className="block font-semibold mb-1">
+          {cat.label}{" "}
+          {cat.key !== "additional_images" && (
+            <span className="text-red-500">*</span>
+          )}
+        </label>
         <input
           type="file"
           multiple
@@ -162,7 +165,6 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
           onChange={(e) => handleFileChange(e, cat.key)}
           className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
         />
-
         {formData[`${cat.key}_base64`]?.length > 0 && (
           <p className="text-green-600 flex items-center mt-1 gap-2">
             <FaCheckCircle />
@@ -174,8 +176,9 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
 
     {/* Videos */}
     <div className="mb-2">
-      <label className="block font-semibold mb-1">Videos</label>
-
+      <label className="block font-semibold mb-1">
+        Videos
+      </label>
       <input
         type="file"
         multiple
@@ -183,7 +186,6 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
         onChange={(e) => handleFileChange(e, "video")}
         className="w-full file:px-4 file:py-2 file:bg-indigo-100 file:text-indigo-700 file:rounded-lg"
       />
-
       {formData.video_base64.length > 0 && (
         <p className="text-green-600 flex items-center mt-1 gap-2">
           <FaCheckCircle />

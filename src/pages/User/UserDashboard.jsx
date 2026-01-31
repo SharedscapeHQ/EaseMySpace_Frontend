@@ -124,17 +124,17 @@ export default function UserDashboard() {
     if (activeTab === "RecentlyViewed") fetchRecentlyViewed();
   }, [activeTab]);
 
-useEffect(() => {
-  async function fetchOccupantStatus() {
-    try {
-      const isOccupant = await checkIfOccupant();
-      setIsOccupant(isOccupant);
-    } catch (err) {
-      console.error("Failed to check occupant status", err);
+  useEffect(() => {
+    async function fetchOccupantStatus() {
+      try {
+        const isOccupant = await checkIfOccupant();
+        setIsOccupant(isOccupant);
+      } catch (err) {
+        console.error("Failed to check occupant status", err);
+      }
     }
-  }
-  fetchOccupantStatus();
-}, []);
+    fetchOccupantStatus();
+  }, []);
 
   const fetchProperties = async () => {
     setLoading(true);
@@ -222,6 +222,13 @@ useEffect(() => {
                       key={property._id}
                       property={property}
                       onRaiseQuery={() => setSelectedProperty(property)}
+                      onAddressUpdated={(updated) => {
+                        setProperties((prev) =>
+                          prev.map((p) =>
+                            p._id === property._id ? { ...p, ...updated } : p,
+                          ),
+                        );
+                      }}
                     />
                   ))}
                 </div>
@@ -250,11 +257,12 @@ useEffect(() => {
             {activeTab === "UnlockedContacts" && <UnlockedCards />}
             {activeTab === "MyBookings" && <MyBookings />}
             {activeTab === "Chat" && <UserChat />}
-            {activeTab === "DedicatedRM" && user && <DedicatedRM userId={user.id} />}
+            {activeTab === "DedicatedRM" && user && (
+              <DedicatedRM userId={user.id} />
+            )}
             {activeTab === "SavedProperties" && <SavedProperties />}
             {activeTab === "MyProfile" && <MyProfile />}
             {activeTab === "DeleteAccount" && <DeleteAccount />}
-
 
             {["PayRent", "DownloadReceipt", "Agreement"].includes(activeTab) &&
               !isOccupant && (
@@ -262,7 +270,9 @@ useEffect(() => {
               )}
 
             {activeTab === "PayRent" && isOccupant && <PayRent />}
-            {activeTab === "DownloadReceipt" && isOccupant && <DownloadReceipt />}
+            {activeTab === "DownloadReceipt" && isOccupant && (
+              <DownloadReceipt />
+            )}
             {activeTab === "Agreement" && isOccupant && <Agreement />}
           </>
         )}
