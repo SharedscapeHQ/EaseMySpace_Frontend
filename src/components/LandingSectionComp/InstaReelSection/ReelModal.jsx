@@ -67,7 +67,7 @@ export function ReelModal({
           className="
     text-black bg-white rounded-full transition-all
     p-2 md:p-3
-    hover:bg-transparent md:hover:bg-white/80
+    hover:bg-white md:hover:bg-white/80
   "
         >
           <FiX className="w-4 h-4 md:w-6 md:h-6" />
@@ -82,7 +82,7 @@ export function ReelModal({
     absolute z-[100] text-black bg-white rounded-full transition-opacity duration-300
     left-4 md:left-10
     p-2 md:p-4
-    hover:bg-transparent md:hover:bg-white/80
+    hover:bg-white md:hover:bg-white/80
     ${isAnimating ? "opacity-0" : "opacity-100"}
   `}
         >
@@ -98,7 +98,7 @@ export function ReelModal({
     absolute z-[100] text-black bg-white rounded-full transition-opacity duration-300
     right-4 md:right-10
     p-2 md:p-4
-    hover:bg-transparent md:hover:bg-white/80
+    hover:bg-white md:hover:bg-white/80
     ${isAnimating ? "opacity-0" : "opacity-100"}
   `}
         >
@@ -149,7 +149,7 @@ export function ReelModal({
     absolute z-[60] text-black bg-white rounded-full backdrop-blur-md transition-colors
     top-3 right-3 md:top-4 md:right-4
     p-2 md:p-3
-    hover:bg-transparent md:hover:bg-white/80
+    hover:bg-white md:hover:bg-white/80
   `}
 >
   {muted ? (
