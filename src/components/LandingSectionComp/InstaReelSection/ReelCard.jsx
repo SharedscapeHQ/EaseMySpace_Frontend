@@ -6,7 +6,7 @@ export function ReelCard({ reel, onClick }) {
     >
       <video
         src={reel.src}
-        className="w-full h-full object-contain bg-black"
+        className="w-full h-full object-cover bg-black"
         autoPlay
         loop
         muted
