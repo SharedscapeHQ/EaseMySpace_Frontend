@@ -11,6 +11,7 @@ import BottomNav from "../components/LandingSectionComp/BottomNav";
 import TestimonialSection from "../components/LandingSectionComp/TestimonialSection";
 import AndheriProperties from "../components/LandingSectionComp/AndheriProperties";
 import RecentlyViewedProperties from "../components/LandingSectionComp/RecentlyViewedProperties";
+import InstaReelsSection from "../components/LandingSectionComp/InstaReelSection/InstaReelsSection";
 
 function Landing() {
 
@@ -72,6 +73,7 @@ function Landing() {
         <AndheriProperties/>
         <Banner />
         <FAQSection />
+        <InstaReelsSection />
         <TestimonialSection/>
         <BottomNav />
         <Footer />
