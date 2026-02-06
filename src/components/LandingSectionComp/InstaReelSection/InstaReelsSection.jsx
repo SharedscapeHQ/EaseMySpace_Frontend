@@ -52,7 +52,7 @@ function InstaReelsSection() {
 
   return (
     <>
-      <section className="w-full py-10">
+      <section className="w-full py-10 pt-20">
         <div className="max-w-7xl lg:px-10 px-3 mx-auto">
           <div className="mb-6">
             <h2
