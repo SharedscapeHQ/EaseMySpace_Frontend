@@ -72,8 +72,8 @@ function Landing() {
         <RecentAddedProperties />
         <AndheriProperties/>
         <Banner />
-        <FAQSection />
         <InstaReelsSection />
+        <FAQSection />
         <TestimonialSection/>
         <BottomNav />
         <Footer />

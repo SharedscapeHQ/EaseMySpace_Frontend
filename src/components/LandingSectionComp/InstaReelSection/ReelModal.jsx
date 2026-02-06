@@ -7,7 +7,14 @@ import {
   FiVolume2,
 } from "react-icons/fi";
 
-export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext }) {
+export function ReelModal({
+  reel,
+  prevReel,
+  nextReel,
+  onClose,
+  onPrev,
+  onNext,
+}) {
   const [muted, setMuted] = useState(true);
   const [direction, setDirection] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -57,9 +64,13 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
       <div className="absolute top-6 right-6 z-[100]">
         <button
           onClick={onClose}
-          className="text-white bg-black p-3 rounded-full hover:bg-white/20 transition-all"
+          className="
+    text-black bg-white rounded-full transition-all
+    p-2 md:p-3
+    hover:bg-transparent md:hover:bg-white/80
+  "
         >
-          <FiX size={24} />
+          <FiX className="w-4 h-4 md:w-6 md:h-6" />
         </button>
       </div>
 
@@ -67,11 +78,15 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
         <button
           onClick={() => handleNav("prev")}
           disabled={isAnimating}
-          className={`absolute left-10 z-[100] text-white bg-black hover:bg-white/20 p-4 rounded-full transition-opacity duration-300 ${
-            isAnimating ? "opacity-0" : "opacity-100"
-          }`}
+          className={`
+    absolute z-[100] text-black bg-white rounded-full transition-opacity duration-300
+    left-4 md:left-10
+    p-2 md:p-4
+    hover:bg-transparent md:hover:bg-white/80
+    ${isAnimating ? "opacity-0" : "opacity-100"}
+  `}
         >
-          <FiChevronLeft size={30} />
+          <FiChevronLeft className="w-4 h-4 md:w-[30px] md:h-[30px]" />
         </button>
       )}
 
@@ -79,11 +94,15 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
         <button
           onClick={() => handleNav("next")}
           disabled={isAnimating}
-          className={`absolute right-10 z-[100] text-white bg-black hover:bg-white/20 p-4 rounded-full transition-opacity duration-300 ${
-            isAnimating ? "opacity-0" : "opacity-100"
-          }`}
+          className={`
+    absolute z-[100] text-black bg-white rounded-full transition-opacity duration-300
+    right-4 md:right-10
+    p-2 md:p-4
+    hover:bg-transparent md:hover:bg-white/80
+    ${isAnimating ? "opacity-0" : "opacity-100"}
+  `}
         >
-          <FiChevronRight size={30} />
+          <FiChevronRight className="w-4 h-4 md:w-[30px] md:h-[30px]" />
         </button>
       )}
 
@@ -95,7 +114,7 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
       >
         {displayReels.prev ? (
           <div
-            className={`shrink-0 rounded-2xl overflow-hidden bg-zinc-900 transition-all duration-500 ${
+            className={`hidden md:block shrink-0 rounded-2xl overflow-hidden bg-zinc-900 transition-all duration-500 ${
               direction === 1 ? "scale-100" : "scale-75"
             }`}
             style={{
@@ -112,31 +131,34 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
             />
           </div>
         ) : (
-          <div
-            style={{
-              width: CARD_WIDTH,
-              height: "85vh",
-              marginRight: GAP,
-            }}
-            className="shrink-0 opacity-0 pointer-events-none"
-          />
+          <div className="shrink-0 opacity-0 pointer-events-none w-0 md:w-[420px] md:h-[85vh] md:ml-[10px]" />
         )}
 
         <div
           className={`relative shrink-0 rounded-2xl overflow-hidden bg-zinc-900 shadow-2xl transition-all duration-500 ${
             direction === 0 ? "scale-100" : "scale-75"
-          }`}
-          style={{ width: CARD_WIDTH, height: "85vh" }}
+          }
+  w-[75vw] h-[65vh] md:w-[420px] md:h-[85vh]`}
         >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setMuted(!muted);
-            }}
-            className="absolute top-4 right-4 z-[60] p-3 bg-black hover:bg-white/20 text-white rounded-full backdrop-blur-md  transition-colors"
-          >
-            {muted ? <FiVolumeX size={20} /> : <FiVolume2 size={20} />}
-          </button>
+         <button
+  onClick={(e) => {
+    e.stopPropagation();
+    setMuted(!muted);
+  }}
+  className={`
+    absolute z-[60] text-black bg-white rounded-full backdrop-blur-md transition-colors
+    top-3 right-3 md:top-4 md:right-4
+    p-2 md:p-3
+    hover:bg-transparent md:hover:bg-white/80
+  `}
+>
+  {muted ? (
+    <FiVolumeX className="w-4 h-4 md:w-5 md:h-5" />
+  ) : (
+    <FiVolume2 className="w-4 h-4 md:w-5 md:h-5" />
+  )}
+</button>
+
 
           <video
             key={displayReels.curr.id}
@@ -151,7 +173,7 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
 
         {displayReels.next ? (
           <div
-            className={`shrink-0 rounded-2xl overflow-hidden bg-zinc-900 transition-all duration-500 ${
+            className={`hidden md:block shrink-0 rounded-2xl overflow-hidden bg-zinc-900 transition-all duration-500 ${
               direction === -1 ? "scale-100" : "scale-75"
             }`}
             style={{
@@ -168,14 +190,7 @@ export function ReelModal({ reel, prevReel, nextReel, onClose, onPrev, onNext })
             />
           </div>
         ) : (
-          <div
-            style={{
-              width: CARD_WIDTH,
-              height: "85vh",
-              marginLeft: GAP,
-            }}
-            className="shrink-0 opacity-0 pointer-events-none"
-          />
+          <div className="shrink-0 opacity-0 pointer-events-none w-0 md:w-[420px] md:h-[85vh] md:mr-[10px]" />
         )}
       </div>
     </div>

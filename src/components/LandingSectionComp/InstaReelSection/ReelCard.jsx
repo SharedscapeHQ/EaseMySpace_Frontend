@@ -14,7 +14,7 @@ export function ReelCard({ reel, onClick }) {
       />
 
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 flex items-end">
-        <p className="text-white text-sm font-medium line-clamp-2">
+        <p className="text-white text-sm font-medium line-clamp-2 text-left">
           {reel.title}
         </p>
       </div>

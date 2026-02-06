@@ -6,38 +6,40 @@ import Instareels2 from "/Insta-reels/Rapid_Fire_Clip2.mp4";
 import Instareels3 from "/Insta-reels/Rapid_Fire_Clip3.mp4";
 import Woman_broker_issue1 from "/Insta-reels/Women_Broker_Issue_Clip1.mp4";
 import Woman_broker_issue2 from "/Insta-reels/Women_Broker_Issue_Clip2.mp4";
-
-
+import QA_CLip1 from "/Insta-reels/Q&A_Clip1.mp4";
 
 const reels = [
   {
     id: 1,
     src: Instareels1,
-    title: "Do you face issues finding flats?",
+    title: "Listing vs Reality",
   },
   {
     id: 2,
     src: Instareels2,
-    title: "Is PG hunting in Mumbai hard?",
+    title: "Every Renter’s Nightmare ",
   },
   {
     id: 3,
     src: Instareels3,
-    title: "High rent & low transparency?",
+    title: "Smart Budget, Easy Flat Hunt",
   },
   {
     id: 4,
     src: Woman_broker_issue1,
-    title: "Finding the right flatmate?",
+    title: "Flat Visit or Money Trap?",
   },
   {
     id: 5,
     src: Woman_broker_issue2,
-    title: "What renters struggle with most",
+    title: "Rude Broker Experience",
   },
-  
+  {
+    id: 6,
+    src: QA_CLip1,
+    title: "Mumbai Home Hunt Struggles",
+  },
 ];
-
 
 function InstaReelsSection() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -53,8 +55,11 @@ function InstaReelsSection() {
       <section className="w-full py-10">
         <div className="max-w-7xl lg:px-10 px-3 mx-auto">
           <div className="mb-6">
-            <h2 className="text-2xl md:text-3xl font-semibold">
-              Unfiltered Stories from Real People
+            <h2
+              style={{ fontFamily: "heading_font" }}
+              className="text-lg sm:text-3xl mb-5 text-left"
+            >
+              Real Renting Stories
             </h2>
           </div>
 
