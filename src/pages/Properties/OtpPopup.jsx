@@ -11,6 +11,7 @@ export default function OtpPopup({ onVerified, onClose }) {
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
+  const [consentChecked, setConsentChecked] = useState(false);
 
   useEffect(() => {
     if (!resendTimer) return;
@@ -36,6 +37,7 @@ export default function OtpPopup({ onVerified, onClose }) {
   };
 
  const sendOtpHandler = async () => {
+  if (!consentChecked) return toast.error("You must accept the Privacy Policy");
   if (!firstName) return toast.error("Enter your first name");
   if (!/^\d{10}$/.test(phone))
     return toast.error("Enter valid 10 digit mobile number");
@@ -166,6 +168,27 @@ const verifyOtpHandler = async () => {
               }
               className="w-full border rounded-xl px-4 py-3 focus:outline-none"
             />
+
+              <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="consent"
+                checked={consentChecked}
+                onChange={(e) => setConsentChecked(e.target.checked)}
+                className="w-4 h-4"
+              />
+              <label htmlFor="consent" className="text-sm text-gray-600">
+                I agree to the{" "}
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Privacy Policy
+                </a>
+              </label>
+            </div>
 
             <button
               onClick={verifyOtpHandler}
