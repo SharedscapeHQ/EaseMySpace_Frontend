@@ -31,7 +31,7 @@ export default function AboutHighlights() {
 
   return (
     <section
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="bg-white dark:bg-zinc-900 py-24 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
       itemScope
       itemType="https://schema.org/AboutPage"
@@ -49,7 +49,7 @@ export default function AboutHighlights() {
 
       <div className="max-w-7xl mx-auto mb-10">
         <h2
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
           className="text-lg lg:text-3xl mb-0 text-black dark:text-white leading-tight"
           itemProp="headline"
         >

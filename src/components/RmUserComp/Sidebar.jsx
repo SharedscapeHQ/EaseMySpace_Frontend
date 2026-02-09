@@ -93,7 +93,7 @@ export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
       <aside className="hidden lg:flex fixed top-20 left-0 z-30 w-64 bg-white shadow-lg border-r h-[calc(100vh-5rem)] flex-col">
         {/* HEADER */}
         <div className="p-6 border-b flex items-center justify-between">
-          <h2 className="text-xl font-bold text-indigo-700">RM Panel</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700">RM Panel</h2>
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 text-red-600 hover:text-red-700 transition px-3 py-1 rounded-md border border-red-200"

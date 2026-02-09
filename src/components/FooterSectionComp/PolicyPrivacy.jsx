@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white py-12 px-4">
       <div className="max-w-4xl mx-auto bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-zinc-200">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-zinc-800 mb-4">
+        <h2 style={{ fontFamily: "para_font" }} className="text-3xl sm:text-4xl font-bold text-center text-zinc-800 mb-4">
           Privacy Policy
         </h2>
         <p className="text-sm text-gray-500 text-center mb-10">

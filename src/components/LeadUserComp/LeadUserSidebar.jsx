@@ -44,7 +44,7 @@ export default function LeadUserSidebar({ activeTab, setActiveTab, handleLogout 
       {/* Desktop Sidebar */}
      <aside className="hidden lg:flex fixed top-20 left-0 h-[calc(100vh-4rem)] w-64 bg-white shadow-md border-r flex-col">
   <div className="flex items-center justify-between p-6 border-b border-gray-200">
-    <h2 className="text-xl font-bold text-indigo-700">User Panel</h2>
+    <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700">User Panel</h2>
     <button onClick={handleLogout} className="text-red-600 hover:text-red-700 transition">
       <FiLogOut className="text-xl" />
     </button>

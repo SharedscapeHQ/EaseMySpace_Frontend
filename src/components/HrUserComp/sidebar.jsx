@@ -30,10 +30,10 @@ export default function HRDashboardSidebar({ activeTab, setActiveTab }) {
     <>
       {/* Mobile Header */}
       <div
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
         className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-50"
       >
-        <h2 className="text-xl font-bold text-pink-600">HR Panel</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-pink-600">HR Panel</h2>
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogout}
@@ -52,7 +52,7 @@ export default function HRDashboardSidebar({ activeTab, setActiveTab }) {
 
       {/* Sidebar */}
       <aside
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
         className={`${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } fixed top-0 left-0 z-40 w-64 bg-gradient-to-b from-white via-gray-50 to-gray-100 shadow-lg border-r min-h-screen transform transition-transform duration-300 ease-in-out
@@ -60,7 +60,7 @@ export default function HRDashboardSidebar({ activeTab, setActiveTab }) {
       >
         {/* Desktop Header */}
         <div className="p-6 border-b hidden lg:flex items-center justify-between">
-          <h2 style={{ fontFamily: "heading_font" }} className="text-xl text-pink-600">
+          <h2 style={{ fontFamily: "universal_font" }} className="text-xl text-pink-600">
             HR Panel
           </h2>
           <button

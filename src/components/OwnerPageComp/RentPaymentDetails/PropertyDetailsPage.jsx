@@ -19,7 +19,7 @@ export default function PropertyDetailsPage({
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6 text-center">Properties</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-indigo-700 mb-6 text-center">Properties</h2>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3 mb-8 justify-center">

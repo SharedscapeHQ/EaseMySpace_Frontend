@@ -99,7 +99,7 @@ export default function MyProfile() {
       <div className="w-full bg-white rounded-xl shadow-sm border">
 
         <div className="flex items-center justify-between border-b px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-700">Profile Overview</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-700">Profile Overview</h2>
 
           <button
             disabled={isSaving}

@@ -65,7 +65,7 @@ export default function ReportsList() {
 
   return (
     <div className="max-w-5xl mx-auto mt-6">
-      <h1 className="text-2xl font-semibold mb-4 text-gray-800">Property Reports</h1>
+      <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-4 text-gray-800">Property Reports</h1>
       <div className="grid gap-4">
         {reports.map((r) => (
           <div

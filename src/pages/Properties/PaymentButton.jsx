@@ -229,7 +229,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
             >
               &times;
             </button>
-            <h2 className="text-xl font-bold mb-4 text-center">
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold mb-4 text-center">
               Choose Your Plan
             </h2>
             <div className="space-y-4">
@@ -274,7 +274,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
             >
               ✕
             </button>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">
               Login Required
             </h2>
             <p className="text-sm text-gray-600 mb-6 text-center">

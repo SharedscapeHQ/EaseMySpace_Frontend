@@ -101,7 +101,7 @@ export default function RentPaymentModal({
             </button>
 
             {/* Modal Title */}
-            <h2 className="text-xl font-semibold text-gray-900 mb-4 text-center">
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-900 mb-4 text-center">
               Confirm Rent Payment
             </h2>
 

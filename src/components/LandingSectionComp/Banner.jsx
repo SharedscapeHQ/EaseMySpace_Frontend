@@ -112,7 +112,7 @@ function Banner() {
 
       {/* Banner Section */}
       <div
-  style={{ fontFamily: "para_font" }}
+  style={{ fontFamily: "universal_font" }}
   className="flex justify-between items-center bg-blue-200 dark:bg-zinc-600 gap-6 px-3 lg:px-10 border-2 border-transparent dark:border-zinc-700 rounded-2xl py-5 lg:max-w-7xl mx-auto overflow-hidden relative transition-colors duration-300"
 >
   <img
@@ -122,10 +122,10 @@ function Banner() {
   />
 
   <div className="flex flex-col items-center text-center gap-4 flex-1 z-10">
-    <h1 className="text-lg md:text-xl font-medium text-zinc-900 dark:text-white">
+    <h1 style={{ fontFamily: "para_font" }} className="text-lg md:text-xl font-medium text-zinc-900 dark:text-white">
       Looking for a flatmate or have a room to rent in Mumbai?
     </h1>
-    <h2 className="text-sm text-zinc-700 dark:text-zinc-300 max-w-md mx-auto">
+    <h2 style={{ fontFamily: "para_font" }} className="text-sm text-zinc-700 dark:text-zinc-300 max-w-md mx-auto">
       Talk to our experts for complete guidance and get the best verified options tailored to your needs
     </h2>
 
@@ -205,7 +205,7 @@ function Banner() {
     <div className="p-6 md:w-1/2 dark:bg-zinc-900 dark:text-white flex flex-col justify-center items-center text-center">
       {!submitted ? (
         <>
-          <h2 className="text-xl font-semibold text-zinc-800 dark:text-white mb-2">
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-zinc-800 dark:text-white mb-2">
             How can we help you?
           </h2>
           <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4">

@@ -13,7 +13,7 @@ export default function AppInstallPopup({ onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          style={{ fontFamily: "para_font" }}
+          style={{ fontFamily: "universal_font" }}
         >
           <motion.div
             className="bg-white rounded-3xl text-center shadow-2xl max-w-md w-[90%] p-6 relative"
@@ -28,7 +28,7 @@ export default function AppInstallPopup({ onClose }) {
               <FiX size={24} />
             </button>
 
-            <h2 className="text-2xl text-gray-900 mb-2">
+            <h2 style={{ fontFamily: "para_font" }} className="text-2xl text-gray-900 mb-2">
               Get the EaseMySpace App
             </h2>
             <p className="text-gray-600 mb-5 text-sm">

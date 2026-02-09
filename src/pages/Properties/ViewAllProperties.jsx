@@ -229,7 +229,7 @@ const handleSelectLocation = (description) => {
     <>
       <div
         className="w-full pb-5 bg-zinc-100 dark:bg-zinc-900  min-h-screen lg:py-5 py-3"
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
       >
         {/* Helmet for SEO */}
         <Helmet>
@@ -255,7 +255,7 @@ const handleSelectLocation = (description) => {
         {/* Header */}
         <section className="w-full text-center  mb-6 px-2">
           <h1
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-lg lg:text-3xl font-semibold text-black dark:text-white"
           >
             {filters.looking_for === "pg" &&

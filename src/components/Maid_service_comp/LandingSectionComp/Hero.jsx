@@ -8,7 +8,7 @@ export default function Hero() {
         
         {/* Left Content */}
         <div className="flex-1 text-center lg:text-left">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-pink-700 leading-tight mb-4">
+          <h1 style={{ fontFamily: "para_font" }} className="text-4xl sm:text-5xl font-extrabold text-pink-700 leading-tight mb-4">
             Reliable Maid & Cook Services in Mumbai
           </h1>
           <p className="text-lg sm:text-xl text-gray-700 mb-6">

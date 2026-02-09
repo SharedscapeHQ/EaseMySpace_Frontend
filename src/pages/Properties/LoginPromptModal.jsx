@@ -22,7 +22,7 @@ export default function LoginPromptModal({ onClose, onAction, onSkip }) {
 
 
       <div>
-        <h2 className="text-lg font-bold text-gray-800">
+        <h2 style={{ fontFamily: "para_font" }} className="text-lg font-bold text-gray-800">
           Unlock Your Dashboard
         </h2>
         <p className="mt-1 text-sm text-gray-500">

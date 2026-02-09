@@ -36,7 +36,7 @@ function AboutStory() {
   {/* Section Heading */}
   <div className="mb-8 text-left">
     <h2
-      style={{ fontFamily: "heading_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="text-lg lg:text-3xl mb-0 text-black dark:text-white leading-tight"
     >
       <span itemProp="headline">Our Story</span>

@@ -414,7 +414,7 @@ const handleVerifyOtp = async () => {
             <div className="flex flex-col justify-between gap-5 w-full lg:w-[24rem]">
               <div className="w-full h-auto bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-2">Owner's Contact</h2>
+                  <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">Owner's Contact</h2>
                   <div className="text-gray-700 text-base">
                     {hasPaid ? (
                       <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
@@ -482,7 +482,7 @@ const handleVerifyOtp = async () => {
 
           {/* Description */}
           <div>
-            <h2 className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
             {showFullDesc || isLoggedIn ? (
   <p className="text-gray-700 leading-relaxed whitespace-pre-line">{property.description}</p>
 ) : (
@@ -578,7 +578,7 @@ const handleVerifyOtp = async () => {
 
          
 <div>
-  <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
+  <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     {/* Known Amenities */}
     {knownAmenities.map((amenity, idx) => {
@@ -669,7 +669,7 @@ function PopupModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-white rounded-xl max-w-2xl w-full p-6 relative overflow-y-auto max-h-[90vh] shadow-xl">
         <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-500 font-bold">×</button>
-        <h2 className="text-2xl font-bold text-center text-indigo-700 mb-2">What’s Included in <span className="text-black"> ₹1299</span></h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center text-indigo-700 mb-2">What’s Included in <span className="text-black"> ₹1299</span></h2>
         <p className="text-center text-gray-600 mb-4">Unlock everything you need to find your perfect flatmate — with one simple fee.</p>
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-sm">

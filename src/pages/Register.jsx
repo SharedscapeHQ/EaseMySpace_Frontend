@@ -108,7 +108,7 @@ function Register() {
           sm:p-8 sm:max-w-md
           xs:p-6 xs:max-w-full xs:mx-2"
       >
-        <h1 className="text-2xl font-bold text-center text-blue-500">
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center text-blue-500">
           Register
         </h1>
 

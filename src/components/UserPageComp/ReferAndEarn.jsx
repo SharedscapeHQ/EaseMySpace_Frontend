@@ -55,7 +55,7 @@ Sign up here: ${registerUrl}`;
       <div className="flex flex-col lg:flex-row gap-6 bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
         {/* Left Column: Referral Info */}
         <div className="lg:w-2/3 px-6 py-6 space-y-4">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+          <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-gray-900 mb-3">
             Refer More, Earn More
           </h2>
           <p className="text-gray-700 leading-relaxed mb-5">

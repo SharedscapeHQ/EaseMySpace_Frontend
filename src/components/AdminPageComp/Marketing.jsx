@@ -99,7 +99,7 @@ export default function Marketing() {
 
   return (
     <div className="p-6 space-y-8">
-      <h2 className="text-2xl font-bold text-indigo-700">📢 Marketing Panel</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700">📢 Marketing Panel</h2>
 
       <div className="bg-white rounded-xl shadow-md p-6 border">
         <h3 className="text-lg font-semibold text-gray-800 mb-6">Send WhatsApp</h3>

@@ -66,7 +66,7 @@ export default function PopupModal({ onClose }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
         className="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative scrollbar-hide"
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
       >
         <button
           onClick={onClose}
@@ -80,7 +80,7 @@ export default function PopupModal({ onClose }) {
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-2xl lg:text-3xl font-bold text-zinc-900"
           >
             Choose Your Plan
@@ -150,7 +150,7 @@ const PlanCard = ({
 
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
         <div className="lg:w-1/3">
-          <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-1">
+          <h2 style={{ fontFamily: "universal_font" }} className="text-xl mb-1">
             {title}
           </h2>
           <p className="text-sm mb-1">{subtitle}</p>

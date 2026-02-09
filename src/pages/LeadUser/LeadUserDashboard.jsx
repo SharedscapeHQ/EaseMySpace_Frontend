@@ -23,7 +23,7 @@ export default function LeadUserDashboard() {
   };
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="min-h-screen bg-gray-100 lg:flex">
+    <div style={{ fontFamily: "universal_font" }} className="min-h-screen bg-gray-100 lg:flex">
       <LeadUserSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}

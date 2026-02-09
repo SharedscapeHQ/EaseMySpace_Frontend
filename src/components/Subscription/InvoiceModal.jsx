@@ -30,7 +30,7 @@ export default function InvoiceModal({ isOpen, onClose, invoiceUrl }) {
               <IoClose size={26} />
             </button>
 
-            <h2 className="text-2xl font-extrabold mb-3 text-gray-900">
+            <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-extrabold mb-3 text-gray-900">
               Payment Successful
             </h2>
             <p className="mb-6 text-gray-600">

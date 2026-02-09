@@ -47,7 +47,7 @@ export default function FAQSection() {
 
   return (
     <section
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
       aria-label="Frequently Asked Questions about EaseMySpace™"
       role="region"
@@ -73,7 +73,7 @@ export default function FAQSection() {
 
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">
        <h2
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
           className="text-lg sm:text-3xl mb-5 text-left"
         >
   FAQs on PGs, Flats & Flatmates in Mumbai

@@ -54,13 +54,13 @@ export default function BlogPage() {
         <header className="text-center mb-12">
           <h1
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-800 mb-4"
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
           >
             Flatmates, PGs & Rentals in Mumbai
           </h1>
           <p
             className="text-zinc-600 max-w-3xl mx-auto text-base sm:text-lg"
-            style={{ fontFamily: "para_font" }}
+            style={{ fontFamily: "universal_font" }}
           >
             Discover verified flatmates, shared rooms, PGs, and rental flats in prime Mumbai locations like
             Andheri, Goregaon, Powai, Chandivali, Thane, Dadar, and South Mumbai. Affordable options for
@@ -90,7 +90,7 @@ export default function BlogPage() {
             >
               <Link to={cat.url} className="block h-full p-6">
                 <div className="flex justify-center mb-5">{cat.icon}</div>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 text-zinc-800 text-center">
+                <h2 style={{ fontFamily: "para_font" }} className="text-lg sm:text-xl font-bold mb-3 text-zinc-800 text-center">
                   {cat.title}
                 </h2>
                 <p className="text-zinc-600 text-sm sm:text-base mb-6 text-center">{cat.description}</p>

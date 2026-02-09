@@ -49,7 +49,7 @@ if (res.data.success) {
     <div className="p-6 bg-white rounded-xl shadow-md">
       <h2
         className="text-xl font-semibold mb-4 flex items-center gap-2"
-        style={{ fontFamily: "heading_font" }}
+        style={{ fontFamily: "universal_font" }}
       >
         <FiDownload className="text-blue-600" />
         Withdrawal Requests

@@ -55,7 +55,7 @@ export default function BookingPopup({ profile, selectedPlan, selectedDate, sele
           ✕
         </button>
 
-        <h2 className="text-2xl font-semibold text-pink-600 mb-4 text-center">Booking Summary</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold text-pink-600 mb-4 text-center">Booking Summary</h2>
 
         <div className="space-y-2 text-gray-700 dark:text-gray-300">
           <p><strong>Name:</strong> {profile.first_name} {profile.last_name}</p>

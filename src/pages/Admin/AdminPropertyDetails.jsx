@@ -88,13 +88,13 @@ export default function AdminPropertyDetails() {
 
   return (
     <div className="pt-24 px-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-extrabold text-indigo-900 mb-6">
+      <h1 style={{ fontFamily: "para_font" }} className="text-3xl font-extrabold text-indigo-900 mb-6">
         Admin Property Management
       </h1>
 
       {/* Pending Section */}
       <section className="mb-10">
-        <h2 className="text-2xl font-bold text-yellow-600 mb-4">Pending Properties</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-yellow-600 mb-4">Pending Properties</h2>
         {pending.length === 0 ? (
           <p className="text-gray-500">No pending properties.</p>
         ) : (
@@ -106,7 +106,7 @@ export default function AdminPropertyDetails() {
 
       {/* Approved Section */}
       <section>
-        <h2 className="text-2xl font-bold text-green-700 mb-4">Approved Properties</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-green-700 mb-4">Approved Properties</h2>
         {approved.length === 0 ? (
           <p className="text-gray-500">No approved properties.</p>
         ) : (

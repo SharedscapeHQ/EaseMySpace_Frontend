@@ -8,7 +8,7 @@ function FlipUINavbar({ onPostRequirementClick }) {
 
   return (
     <div
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="bg-white fixed w-full border-b border-zinc-200 shadow-sm px-6 sm:px-16 flex items-center justify-between z-50 h-16"
     >
       {/* Brand Section */}

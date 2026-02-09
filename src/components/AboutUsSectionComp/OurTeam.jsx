@@ -65,7 +65,7 @@ export default function OurTeam() {
 
   return (
    <section
-  style={{ fontFamily: "para_font" }}
+  style={{ fontFamily: "universal_font" }}
   className="py-5 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
   itemScope
   itemType="https://schema.org/Organization"
@@ -77,7 +77,7 @@ export default function OurTeam() {
     className="w-full mb-6"
   >
     <h2
-      style={{ fontFamily: "heading_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="text-lg lg:text-3xl mb-0 dark:text-white text-black leading-tight"
       itemProp="employee"
     >

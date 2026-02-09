@@ -12,7 +12,7 @@ export default function LandingPopup({ onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          style={{ fontFamily: "para_font" }}
+          style={{ fontFamily: "universal_font" }}
         >
           <motion.div
             className="bg-white rounded-2xl text-center shadow-2xl max-w-md w-[90%] p-6 relative"
@@ -27,7 +27,7 @@ export default function LandingPopup({ onClose }) {
               <FiX size={24} />
             </button>
 
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Welcome to EaseMySpace™</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-gray-900 mb-2">Welcome to EaseMySpace™</h2>
             <p className="text-gray-600 mb-5">
               Hi, you're just a few clicks away from finding/listing your home
             </p>

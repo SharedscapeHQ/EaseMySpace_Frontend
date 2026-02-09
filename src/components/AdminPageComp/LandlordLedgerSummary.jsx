@@ -36,7 +36,7 @@ export default function LandlordLedgerSummary() {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">
+        <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800">
           Landlords & Agents Ledger Summary
         </h2>
         <button

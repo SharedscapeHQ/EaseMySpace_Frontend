@@ -22,7 +22,7 @@ export default function ProfileHeader({ profile }) {
 
       {/* Profile Details */}
       <div className="flex-1 space-y-4 z-10">
-        <h2 className="text-3xl font-bold text-pink-600">{profile.first_name} {profile.last_name}</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-pink-600">{profile.first_name} {profile.last_name}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 dark:text-gray-300">
           <p>

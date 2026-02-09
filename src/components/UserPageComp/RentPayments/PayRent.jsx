@@ -168,7 +168,7 @@ export default function PayRent() {
       })}
 
       <div className="mt-12">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Overall Payment History</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-gray-800 mb-4">Overall Payment History</h2>
         <PaymentHistory payments={properties.flatMap((p) => p.payments || [])} />
       </div>
     </div>

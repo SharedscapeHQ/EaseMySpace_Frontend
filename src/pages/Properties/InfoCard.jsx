@@ -197,13 +197,13 @@ export default function ContactCard({
   return (
     <div
       className="flex justify-between flex-col w-full lg:w-[23rem]"
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
     >
       {/* Contact Card */}
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full">
         <h2
           className="text-lg text-gray-900 flex items-center gap-2 mb-4"
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
         >
           <FaUserCircle className="text-indigo-600 text-2xl" />
           {!user || (!hasPaid && wallet <= 0)
@@ -290,7 +290,7 @@ export default function ContactCard({
       >
         ✕
       </button>
-      <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+      <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">
         Login Required
       </h2>
       <p className="text-sm text-gray-600 mb-6 text-center">
@@ -387,7 +387,7 @@ export default function ContactCard({
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
         <h2
           className="text-lg flex items-center gap-2 mb-3"
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
         >
           {!existingBookingDateTime && (
             <FaCalendarAlt className="text-indigo-600" />
@@ -493,7 +493,7 @@ export default function ContactCard({
       {showConfirmPopup && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-80 text-center shadow-lg">
-            <h2 className="text-lg mb-3 text-gray-800">Confirm Unlock</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg mb-3 text-gray-800">Confirm Unlock</h2>
             <p className="text-sm text-gray-700 mb-4">
               {unlockType === "referral" ? (
                 <>
@@ -539,7 +539,7 @@ export default function ContactCard({
       {showBookingConfirmPopup && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-80 text-center shadow-lg">
-            <h2 className="text-lg mb-3 text-gray-800">Confirm Booking</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg mb-3 text-gray-800">Confirm Booking</h2>
             <p className="text-sm text-gray-700 mb-4">
               Scheduling this booking will consume{" "}
               <strong>

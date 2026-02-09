@@ -102,7 +102,7 @@ export default function ComplaintsTable() {
         </button>
       </div>
 
-      <h2 className="text-lg font-semibold mb-4">All Complaints</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold mb-4">All Complaints</h2>
 
       <table className="min-w-full text-sm text-gray-800 border-collapse">
         <thead className="bg-gray-100 text-gray-700 text-sm border-b">

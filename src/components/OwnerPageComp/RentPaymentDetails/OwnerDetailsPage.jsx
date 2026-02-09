@@ -13,7 +13,7 @@ export default function OwnerDetailsPage({ owner, property, onBack, onViewTenant
       </button>
 
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 space-y-6 hover:shadow-xl transition">
-        <h2 className="text-2xl font-bold text-indigo-700 flex items-center gap-2">
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700 flex items-center gap-2">
           <FiUser /> Owner Details
         </h2>
 

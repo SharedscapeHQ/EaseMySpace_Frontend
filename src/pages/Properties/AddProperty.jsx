@@ -137,7 +137,7 @@ const handleSubmit = async (e) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-3xl font-bold text-indigo-700 flex items-center gap-3 mb-6">
+        <h1 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-indigo-700 flex items-center gap-3 mb-6">
           <FaHome /> Add Property Details
         </h1>
 
@@ -181,7 +181,7 @@ const handleSubmit = async (e) => {
                 className="bg-white shadow-2xl rounded-xl p-6 max-w-sm w-full border-l-4 border-blue-600"
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h2 className="text-lg text-blue-600 font-bold">
+                  <h2 style={{ fontFamily: "para_font" }} className="text-lg text-blue-600 font-bold">
                     Property Submitted!
                   </h2>
                   <button

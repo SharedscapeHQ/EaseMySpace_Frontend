@@ -45,7 +45,7 @@ export default function BookingSchedule() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-indigo-700">All Bookings</h1>
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700">All Bookings</h1>
        <div className="flex flex-col w-40">
   <label className="text-sm text-gray-600 mb-1">Date Filter</label>
   <div className="relative">

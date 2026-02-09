@@ -24,13 +24,13 @@ export default function MsgFromFounder() {
 
   return (
     <section
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="lg:px-10  max-w-7xl mx-auto lg:pt-3 pt-7"
     >
       {/* Heading */}
       <div className="mb-6 text-left">
         <h2
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
           className="text-lg lg:text-3xl mb-0 text-black pl-3 lg:pl-0 dark:text-white leading-tight"
         >
           Message from the Founder
@@ -61,7 +61,7 @@ export default function MsgFromFounder() {
         {/* Text */}
         <div className="w-full lg:w-1/2 text-left">
           <h3
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-lg lg:text-2xl text-black dark:text-white mb-3"
           >
             Rakesh Goswami

@@ -38,7 +38,7 @@ export default function DrawerMenu({ open, setOpen }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-blue-600 dark:text-blue-400 text-2xl font-bold tracking-wide">
+          <h2 style={{ fontFamily: "para_font" }} className="text-blue-600 dark:text-blue-400 text-2xl font-bold tracking-wide">
             Explore
           </h2>
           <button

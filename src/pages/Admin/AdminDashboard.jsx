@@ -334,7 +334,7 @@ const openEditModal = (property) => {
         <div className="p-6">
       {activeTab === "Users" && (
   <section className="mt-6">
-    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Users</h2>
+    <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-6 text-gray-800">Users</h2>
 
     {loadingUsers ? (
       <p className="text-gray-500">Loading users...</p>
@@ -434,7 +434,7 @@ const openEditModal = (property) => {
 
           {activeTab === "Leads" && (
             <section>
-              <h2 className="text-xl font-semibold mb-4">Leads</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">Leads</h2>
               {loadingLeads ? (
                 <p>Loading leads...</p>
               ) : (
@@ -457,7 +457,7 @@ const openEditModal = (property) => {
           {activeTab === "Properties" && (
             <section>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h2 className="text-xl font-semibold">Properties</h2>
+                <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold">Properties</h2>
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                   <div className="relative w-full sm:w-64">
@@ -502,7 +502,7 @@ const openEditModal = (property) => {
           {activeTab === "NewlyListed" && (
             <section>
               <h2
-                style={{ fontFamily: "heading_font" }}
+                style={{ fontFamily: "universal_font" }}
                 className="text-xl mb-4"
               >
                 Featured Listing
@@ -542,7 +542,7 @@ const openEditModal = (property) => {
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (
             <section>
-              <h2 className="text-xl font-semibold mb-4">
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">
                 Pending Edit Queries
               </h2>
               {loadingQueries ? (

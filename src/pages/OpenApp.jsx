@@ -15,7 +15,7 @@ export default function OpenApp() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2>Opening EaseMySpace App…</h2>
+      <h2 style={{ fontFamily: "para_font" }}>Opening EaseMySpace App…</h2>
     </div>
   );
 }

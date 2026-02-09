@@ -54,7 +54,7 @@ const handleResolve = async (id) => {
   );
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="p-4 sm:p-6 max-w-6xl mx-auto space-y-6">
+    <div style={{ fontFamily: "universal_font" }} className="p-4 sm:p-6 max-w-6xl mx-auto space-y-6">
       {/* Filter Buttons */}
       <div className="flex flex-wrap gap-3 mb-4">
         {[

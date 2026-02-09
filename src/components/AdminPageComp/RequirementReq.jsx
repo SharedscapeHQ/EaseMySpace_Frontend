@@ -33,9 +33,9 @@ function RequirementReq() {
   });
 
   return (
-    <div className="max-w-5xl mx-auto p-6" style={{ fontFamily: "para_font" }}>
+    <div className="max-w-5xl mx-auto p-6" style={{ fontFamily: "universal_font" }}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl" style={{ fontFamily: "heading_font" }}>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl" style={{ fontFamily: "universal_font" }}>
           Posted Requirements
         </h2>
 
@@ -87,23 +87,23 @@ function RequirementReq() {
                 style={{ color: "#4B5563", fontSize: "0.9rem" }}
               >
                 <p>
-                  <span style={{ fontFamily: "heading_font" }}>Location:</span>{" "}
+                  <span style={{ fontFamily: "universal_font" }}>Location:</span>{" "}
                   {req.location}
                 </p>
                 <p>
-                  <span style={{ fontFamily: "heading_font" }}>Budget:</span> ₹
+                  <span style={{ fontFamily: "universal_font" }}>Budget:</span> ₹
                   {req.budget_min} – ₹{req.budget_max}
                 </p>
                 <p>
-                  <span style={{ fontFamily: "heading_font" }}>BHK:</span>{" "}
+                  <span style={{ fontFamily: "universal_font" }}>BHK:</span>{" "}
                   {req.bhk}
                 </p>
                 <p>
-                  <span style={{ fontFamily: "heading_font" }}>Move In:</span>{" "}
+                  <span style={{ fontFamily: "universal_font" }}>Move In:</span>{" "}
                   {req.move_in}
                 </p>
                 <p>
-                  <span style={{ fontFamily: "heading_font" }}>Urgency:</span>{" "}
+                  <span style={{ fontFamily: "universal_font" }}>Urgency:</span>{" "}
                   {req.urgency}
                 </p>
 

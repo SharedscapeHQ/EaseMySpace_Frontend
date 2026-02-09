@@ -233,7 +233,7 @@ function UserPropertyDetails() {
             <div className="flex flex-col justify-between gap-5 w-full lg:w-[24rem]">
               <div className="w-full h-auto bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-2">Your Listed Property Contact</h2>
+                  <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">Your Listed Property Contact</h2>
                   <div className="text-gray-700 text-base">
                     <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
                   </div>
@@ -285,7 +285,7 @@ function UserPropertyDetails() {
 
           {/* Description */}
           <div>
-            <h2 className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
             <p className="text-gray-700 leading-relaxed whitespace-pre-line">{property.description}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               <InfoItem label="Rent" value={`₹${property.price || 'N/A'}`} />
@@ -299,7 +299,7 @@ function UserPropertyDetails() {
 
           {/* Amenities */}
           <div>
-            <h2 className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {knownAmenities.map((amenity, idx) => {
                 const isAvailable = property.amenities?.some((item) =>

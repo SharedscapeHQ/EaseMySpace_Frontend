@@ -198,7 +198,7 @@ export default function BottomNav() {
             <div className="p-6 md:w-1/2 flex flex-col justify-center items-center text-center">
               {!submitted ? (
                 <>
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">How can we help you?</h2>
+                  <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-800 mb-2">How can we help you?</h2>
                   <p className="text-sm text-gray-600 mb-4">Speak with a space solution expert.</p>
                   <form onSubmit={handleSubmit} className="space-y-3 w-full max-w-sm">
                     <input type="text" name="name" placeholder="*Enter your name" value={formData.name} onChange={handleChange} required className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"/>

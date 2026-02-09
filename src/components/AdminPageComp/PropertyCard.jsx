@@ -29,7 +29,7 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
 
   return (
     <div
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
     >
       {/* Property Image */}
@@ -46,7 +46,7 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
       <div className="p-5">
         <div className="flex items-center justify-between">
           <h3
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-zinc-800 text-xs md:text-base truncate"
           >
             {property.title}
@@ -62,7 +62,7 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
 
         {/* Pricing */}
         {hasPricing ? (
-          <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base">
+          <p style={{ fontFamily: "universal_font" }} className="text-zinc-800 text-xs md:text-base">
             ₹ {firstPrice}/mo{" "}
             {multiplePricing && <span className="text-gray-500 text-xs">(multiple options)</span>}
           </p>

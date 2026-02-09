@@ -35,7 +35,7 @@ export default function SalesPersonCardMini({ className = "" }) {
     <>
       <div
         className={`lg:w-56 w-80 bg-white rounded-2xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition transform hover:-translate-y-1 ${className}`}
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
       >
         {/* Top Banner */}
         <div className="flex flex-col items-center justify-center px-2 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 h-28 rounded-t-2xl">
@@ -46,7 +46,7 @@ export default function SalesPersonCardMini({ className = "" }) {
               className=" object-contain"
             />
           </div>
-          <h2 className="mt-1 text-sm font-semibold text-white text-center truncate w-full">{name}</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="mt-1 text-sm font-semibold text-white text-center truncate w-full">{name}</h2>
           <p className="text-[10px] text-white">{showRealPhone ? phone : maskPhone(phone)}</p>
           <p className="text-[10px] font-medium text-white">{role}</p>
         </div>

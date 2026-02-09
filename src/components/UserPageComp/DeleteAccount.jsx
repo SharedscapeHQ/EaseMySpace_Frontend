@@ -43,7 +43,7 @@ ${user?.firstName || "User"}
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <FiTrash2 className="text-3xl text-red-600" />
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800">
           Delete Account
         </h1>
       </div>

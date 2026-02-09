@@ -203,7 +203,7 @@ const enrich = (row) => {
         />
       )}
 
-      <main style={{ fontFamily: "para_font" }} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
+      <main style={{ fontFamily: "universal_font" }} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
         <div className="flex flex-col p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
           <div className="flex items-center justify-between flex-wrap">
   {/* Left side */}
@@ -317,7 +317,7 @@ const enrich = (row) => {
 
 
           <div className="bg-white rounded-xl border p-6">
-            <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">
+            <h2 style={{ fontFamily: "universal_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">
               Property Description
             </h2>
             <p className="text-gray-700 text-sm lg:text-md leading-relaxed whitespace-pre-line">

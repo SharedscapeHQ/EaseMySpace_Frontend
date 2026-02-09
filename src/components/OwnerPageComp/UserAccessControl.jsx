@@ -63,7 +63,7 @@ export default function UserAccessControl() {
     <section>
       {/* Header: Filter + Search */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
-        <h2 className="text-xl font-semibold">Users</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold">Users</h2>
         <div className="flex gap-2 flex-wrap">
           {/* Role Filter */}
           <select

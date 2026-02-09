@@ -60,7 +60,7 @@ const icons = [
 export default function Footer() {
   return (
 <footer
-  style={{ fontFamily: "para_font" }}
+  style={{ fontFamily: "universal_font" }}
   className="bg-white dark:bg-zinc-200 border-t border-zinc-200  py-10 overflow-x-hidden text-zinc-800 "
   itemScope
   itemType="https://schema.org/Organization"

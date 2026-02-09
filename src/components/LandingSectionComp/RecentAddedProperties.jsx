@@ -29,45 +29,61 @@ export default function RecentAddedProperties() {
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
 
-  useEffect(() => {
-    async function fetchRecent() {
-      setLoading(true);
-      try {
-        const res = await axios.get(
-          "https://api.easemyspace.in/api/properties/all"
-        );
+useEffect(() => {
+  async function fetchRecent() {
+    const CACHE_KEY = "recent_added_properties";
+    const CACHE_TIME_KEY = "recent_added_properties_time";
+    const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
-        const sorted = res.data
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .slice(0, 8)
-          .map((p) => ({
-            ...p,
-            image: parseImages(p.image),
-            bedroom_images: parseImages(p.bedroom_images),
-            kitchen_images: parseImages(p.kitchen_images),
-            bathroom_images: parseImages(p.bathroom_images),
-            hall_images: parseImages(p.hall_images),
-            additional_images: parseImages(p.additional_images),
-          }));
+    const cachedData = sessionStorage.getItem(CACHE_KEY);
+    const cachedTime = sessionStorage.getItem(CACHE_TIME_KEY);
 
-        setRecentProperties(sorted);
-      } catch (err) {
-        console.error(err);
-        setRecentProperties([]);
-      } finally {
-        setLoading(false);
-      }
+    if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_DURATION) {
+      setRecentProperties(JSON.parse(cachedData));
+      setLoading(false);
+      return;
     }
 
-    fetchRecent();
-  }, []);
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        "https://api.easemyspace.in/api/properties/all"
+      );
+
+      const sorted = res.data
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 8)
+        .map((p) => ({
+          ...p,
+          image: parseImages(p.image),
+          bedroom_images: parseImages(p.bedroom_images),
+          kitchen_images: parseImages(p.kitchen_images),
+          bathroom_images: parseImages(p.bathroom_images),
+          hall_images: parseImages(p.hall_images),
+          additional_images: parseImages(p.additional_images),
+        }));
+
+      setRecentProperties(sorted);
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify(sorted));
+      sessionStorage.setItem(CACHE_TIME_KEY, Date.now());
+    } catch (err) {
+      console.error("Failed to fetch recent properties", err);
+      setRecentProperties([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchRecent();
+}, []);
+
 
   /* ---------- Loading ---------- */
 
   if (loading) {
     return (
       <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
-          <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
+          <h2 style={{ fontFamily: "para_font" }} className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
                     Recently Listed
                     <Link
                       to="/view-properties"
@@ -103,11 +119,11 @@ export default function RecentAddedProperties() {
     <div className=" dark:bg-zinc-900 transition-colors">
       <section
         className="lg:px-10 pt-10 lg:py-0 px-3 max-w-7xl mx-auto"
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
+          <h2 style={{ fontFamily: "para_font" }} className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
                     Recently Listed
                     <Link
                       to="/view-properties"

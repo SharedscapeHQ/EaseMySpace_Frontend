@@ -176,7 +176,7 @@ export default function EssentialDetailsSub({ property }) {
       <div className="mt-6 flex flex-col lg:flex-row gap-6">
         {/* Property Details */}
         <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center pb-3">
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-800 mb-6 text-center pb-3">
             Property Details
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -333,7 +333,7 @@ export default function EssentialDetailsSub({ property }) {
       {showLoginPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">Login Required</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">Login Required</h2>
             <p className="text-sm text-gray-600 mb-6 text-center">Please login to continue with booking.</p>
             <div className="flex gap-4">
               <button

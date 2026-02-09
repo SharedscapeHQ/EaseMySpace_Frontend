@@ -77,13 +77,13 @@ export default function LifeAtEaseMySpace() {
   return (
     <>
       <section
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
         className="lg:px-10 px-3 max-w-7xl mx-auto py-10"
       >
         {/* Heading */}
         <div className="mb-6 text-left">
           <h2
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-lg lg:text-3xl mb-0 text-black leading-tight"
           >
             Life at EaseMySpace™
@@ -122,7 +122,7 @@ export default function LifeAtEaseMySpace() {
               {/* Text */}
               <div className="w-full lg:w-1/2 text-left">
                 <h3
-                  style={{ fontFamily: "heading_font" }}
+                  style={{ fontFamily: "universal_font" }}
                   className="text-lg lg:text-2xl text-black mb-3"
                 >
                   {video.title}

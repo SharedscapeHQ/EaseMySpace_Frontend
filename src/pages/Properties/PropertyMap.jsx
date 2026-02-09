@@ -14,10 +14,10 @@ export default function PropertyMap({ location, pincode, title }) {
   return (
     <section className="w-full">
       <div className="border rounded-xl lg:p-6 p-2 shadow-md bg-white">
-        <h2 className="flex items-center text-[16px] lg:text-xl mb-3">
-          <span style={{ fontFamily: "heading_font" }}>Location</span>
+        <h2 style={{ fontFamily: "para_font" }} className="flex items-center text-[16px] lg:text-xl mb-3">
+          <span style={{ fontFamily: "universal_font" }}>Location</span>
           <span
-            style={{ fontFamily: "para_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-xs lg:text-sm text-gray-600 ml-2 truncate"
           >
             {loading ? "Loading..." : mapAddress}

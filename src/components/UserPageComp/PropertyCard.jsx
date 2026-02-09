@@ -27,7 +27,7 @@ const PropertyCard = ({ property, onRaiseQuery, onAddressUpdated }) => {
   return (
     <>
       <div
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
         onClick={handleClick}
         className="min-w-[270px] max-w-[340px] group bg-white dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-600 flex-shrink-0 overflow-hidden relative cursor-pointer shadow-md hover:shadow-lg"
       >

@@ -6,7 +6,7 @@ const PricingSection = ({ formData, setFormData }) => {
 
   return (
     <div className="pt-6">
-      <h2 className="font-bold mb-6 text-indigo-600 text-2xl tracking-tight">
+      <h2 style={{ fontFamily: "para_font" }} className="font-bold mb-6 text-indigo-600 text-2xl tracking-tight">
          Rent per Room
       </h2>
 

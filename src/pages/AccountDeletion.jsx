@@ -9,7 +9,7 @@ export default function AccountDeletion() {
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <FiTrash2 className="text-3xl text-red-600" />
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800">
             Delete Your EaseMySpace Account
           </h1>
         </div>
@@ -35,7 +35,7 @@ export default function AccountDeletion() {
 
         {/* How to delete */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
+          <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">
             How to request account deletion
           </h2>
           <ol className="list-decimal list-inside text-sm text-gray-700 space-y-2">
@@ -58,7 +58,7 @@ export default function AccountDeletion() {
 
         {/* Data info */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
+          <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">
             Data that will be deleted
           </h2>
           <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
@@ -72,7 +72,7 @@ export default function AccountDeletion() {
 
         {/* Retention */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
+          <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">
             Data retention
           </h2>
           <p className="text-sm text-gray-700">

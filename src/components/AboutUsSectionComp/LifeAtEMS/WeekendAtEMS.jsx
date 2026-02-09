@@ -19,7 +19,7 @@ export default function WeekendAtEMS({
   return (
     <section style={{fontFamily:"para_font"}} className={` p-6 bg-gradient-to-r from-slate-100 via-white to-slate-100 rounded-2xl shadow-lg ${className}`}>
       <header className="flex flex-col items-center text-center gap-3 mb-6 animate-fadeIn">
-        <h3  style={{ fontFamily: "heading_font" }}
+        <h3  style={{ fontFamily: "universal_font" }}
         className="text-lg lg:text-3xl text-black leading-tight">Weekends at EMS</h3>
         <p className="text-sm text-slate-500">Chill. Recharge. Create.</p>
 

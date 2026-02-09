@@ -64,7 +64,7 @@ export default function PostPermissionRequests() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+      <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800 mb-6">
         Post Permission Requests
       </h1>
 

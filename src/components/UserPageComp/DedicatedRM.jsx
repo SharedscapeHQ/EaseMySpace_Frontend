@@ -24,14 +24,14 @@ export default function DedicatedRM({ userId }) {
 
   if (loading)
     return (
-      <p className="text-gray-500 text-center mt-20 text-lg" style={{ fontFamily: "para_font" }}>
+      <p className="text-gray-500 text-center mt-20 text-lg" style={{ fontFamily: "universal_font" }}>
         Loading your dedicated RM...
       </p>
     );
 
   if (!rm)
     return (
-      <p className="text-gray-500 text-center mt-20 text-lg" style={{ fontFamily: "para_font" }}>
+      <p className="text-gray-500 text-center mt-20 text-lg" style={{ fontFamily: "universal_font" }}>
         No RM has been assigned to you yet.
       </p>
     );
@@ -43,7 +43,7 @@ export default function DedicatedRM({ userId }) {
       <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto">
         {/* Left Column: RM Card */}
         <div className="lg:w-2/3 bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
-          <div className="px-6 py-6 space-y-6" style={{ fontFamily: "para_font" }}>
+          <div className="px-6 py-6 space-y-6" style={{ fontFamily: "universal_font" }}>
             <p className="text-gray-600">
               Reach out to your Relationship Manager directly for personalized support, guidance, or queries regarding your account and properties.
             </p>
@@ -80,7 +80,7 @@ export default function DedicatedRM({ userId }) {
         </div>
 
         {/* Right Column: General Content / CTA */}
-        <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between rounded-tr-2xl rounded-br-2xl" style={{ fontFamily: "para_font" }}>
+        <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between rounded-tr-2xl rounded-br-2xl" style={{ fontFamily: "universal_font" }}>
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-indigo-700">Make the Most of Your RM</h3>
             <p className="text-gray-700 text-sm">

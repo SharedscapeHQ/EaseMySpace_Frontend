@@ -122,13 +122,13 @@ const TestimonialSection = () => {
 
   return (
     <section
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
       aria-label="Customer testimonials"
     >
       <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
         <h2
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
           className="text-lg sm:text-3xl mb-5 text-left"
         >
           Google Reviews of our customers

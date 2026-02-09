@@ -16,7 +16,7 @@ export default function BalanceCard({
           <p className="text-gray-500 text-sm">Wallet Balance</p>
           <h1
             className="text-4xl font-extrabold text-gray-900 flex items-center gap-2"
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
           >
             <FaRupeeSign /> {balance}
           </h1>

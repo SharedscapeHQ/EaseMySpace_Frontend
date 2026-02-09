@@ -190,7 +190,7 @@ export default function UserDashboard() {
       />
       <main className="flex-1 p-4 sm:p-6 lg:p-10 pt-20 lg:ml-64 transition-all duration-300">
         <h2
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
           className="text-2xl lg:text-3xl text-black mb-8 flex items-center gap-4"
         >
           {TAB_TITLES[activeTab] || ""}

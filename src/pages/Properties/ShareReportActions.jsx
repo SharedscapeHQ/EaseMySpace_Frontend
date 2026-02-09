@@ -157,7 +157,7 @@ export default function ShareReportActions({ propertyId }) {
               transition={{ duration: 0.25, type: "spring" }}
               className="bg-white w-80 rounded-2xl shadow-xl p-6 border"
             >
-              <h2 className="text-lg font-semibold mb-2 text-gray-900">
+              <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold mb-2 text-gray-900">
                 Report Property
               </h2>
               <p className="text-xs text-gray-500 mb-4">

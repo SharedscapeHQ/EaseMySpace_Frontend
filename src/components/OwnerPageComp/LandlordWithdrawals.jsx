@@ -39,7 +39,7 @@ export default function LandlordWithdrawals() {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4 flex items-center gap-2">
         <FiDollarSign className="text-green-600" />
         Rent Withdrawals
       </h2>

@@ -78,7 +78,7 @@ export default function MatchesPage({ userRequirement }) {
   return (
     <div className="bg-gradient-to-b from-zinc-50 max-w-7xl lg:px-20 px-3 to-white pt-16 min-h-screen p-6 font-sans">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Your Matches</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-gray-800 mb-2">Your Matches</h2>
         <p className="text-gray-600 mb-6">Curated by EMS Algorithm</p>
 
         {filteredMatches.length === 0 && (

@@ -32,7 +32,7 @@ return (
     {/* Heading */}
     <div className="mb-6 text-center px-4">
       <h2
-        style={{ fontFamily: "heading_font" }}
+        style={{ fontFamily: "universal_font" }}
         className="text-lg lg:text-3xl text-black leading-tight"
       >
         Life at EaseMySpace™

@@ -138,7 +138,7 @@ export default function PaymentButtonSubs({ planName, onPaymentSuccess  }) {
       {isPaying &&
         ReactDOM.createPortal(
           <div
-            style={{ fontFamily: "para_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm"
           >
             <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
@@ -170,7 +170,7 @@ export default function PaymentButtonSubs({ planName, onPaymentSuccess  }) {
         )}
 
       <button
-        style={{ fontFamily: "para_font" }}
+        style={{ fontFamily: "universal_font" }}
         className={`mt-4 w-1/2 py-3 px-2 text-md rounded-xl whitespace-nowrap transition-all ${
           isPaying ? "opacity-60 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"
         }`}

@@ -71,7 +71,7 @@ export default function TenantOwnerDetailsPage({ data, onBack }) {
         <FiArrowLeftCircle size={22} /> Back to Properties
       </button>
 
-      <h1 className="text-3xl font-bold text-center mb-10 text-indigo-700">
+      <h1 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-center mb-10 text-indigo-700">
         Tenant Overview
       </h1>
 
@@ -91,7 +91,7 @@ export default function TenantOwnerDetailsPage({ data, onBack }) {
             >
               {/* Property Information */}
               <div className="mb-6">
-                <h2 className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-2">
+                <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-2">
                   <FiHome className="text-indigo-500" /> Property Information
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-2 text-sm text-gray-700">
@@ -104,7 +104,7 @@ export default function TenantOwnerDetailsPage({ data, onBack }) {
 
               {/* Owner Information */}
               <div className="mb-6 border-t border-gray-200 pt-4">
-                <h2 className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-2">
+                <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-2">
                   <FiUser className="text-indigo-500" /> Owner Information
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm text-gray-700">
@@ -117,7 +117,7 @@ export default function TenantOwnerDetailsPage({ data, onBack }) {
 
               {/* Tenant Information */}
               <div className="mb-6 border-t border-gray-200 pt-4">
-                <h2 className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-2">
+                <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-2">
                   <FiUser className="text-indigo-500" /> Tenant Information
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm text-gray-700">
@@ -137,7 +137,7 @@ export default function TenantOwnerDetailsPage({ data, onBack }) {
 
               {/* Transactions Table */}
               <div className="border-t border-gray-200 pt-4">
-                <h2 className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-3 justify-between">
+                <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-indigo-700 flex items-center gap-2 mb-3 justify-between">
                   💳 Tenant Payment Transactions
                   <button
                     onClick={() => setExpandedIndex(isExpanded ? null : i)}

@@ -32,7 +32,7 @@ export default function RMAssignments() {
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
         RM Assignment History
       </h2>
 

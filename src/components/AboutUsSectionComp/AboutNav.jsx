@@ -81,7 +81,7 @@ export default function AboutNav() {
   }, [profileOpen]);
 
   return (
-    <header style={{ fontFamily: "para_font" }}>
+    <header style={{ fontFamily: "universal_font" }}>
       <nav className="fixed top-0 w-full h-[5rem] flex items-center justify-between px-3 md:px-8 bg-white dark:bg-zinc-200 shadow-sm z-50">
         {/* Logo & Hamburger */}
         <div className="flex items-center gap-3">
@@ -145,7 +145,7 @@ export default function AboutNav() {
       <DrawerMenu open={open} setOpen={setOpen}>
         {/* Keep your existing drawer content inside */}
         <div className="flex flex-col px-6 py-6">
-          <h2 className="text-blue-600 text-2xl font-bold tracking-wide mb-6">Explore</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-blue-600 text-2xl font-bold tracking-wide mb-6">Explore</h2>
           <ul className="space-y-3 text-zinc-800 font-medium text-base">
             <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">Main</p>
             {[
@@ -181,7 +181,7 @@ export default function AboutNav() {
               </Link>
             </li>
           </ul>
-          <div className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200" style={{ fontFamily: "heading_font" }}>
+          <div className="mt-auto text-xs lg:text-lg pt-6 border-t border-zinc-200" style={{ fontFamily: "universal_font" }}>
             Making Urban Living Easy
           </div>
         </div>

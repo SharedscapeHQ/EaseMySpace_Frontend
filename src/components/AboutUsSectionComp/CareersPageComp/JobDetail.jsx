@@ -133,7 +133,7 @@ export default function JobDetail() {
 
       <div className="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-8 flex flex-col lg:flex-row gap-10">
         <div className="lg:w-[60%] space-y-6">
-          <h1 className="text-4xl capitalize font-bold text-gray-900">
+          <h1 style={{ fontFamily: "para_font" }} className="text-4xl capitalize font-bold text-gray-900">
             {job.role}
           </h1>
 
@@ -159,7 +159,7 @@ export default function JobDetail() {
         </div>
 
         <div className="bg-gray-100 lg:w-[45%] p-6 rounded-lg shadow-inner">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900">
+          <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-6 text-gray-900">
             Apply for this job
           </h2>
 
@@ -217,7 +217,7 @@ function MetaTag({ icon, text, color }) {
 function Section({ title, content }) {
   return (
     <>
-      <h2 className="text-2xl font-semibold">{title}</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold">{title}</h2>
       <p>{content}</p>
     </>
   );
@@ -226,7 +226,7 @@ function Section({ title, content }) {
 function ListSection({ title, items }) {
   return (
     <>
-      <h2 className="text-2xl font-semibold mt-4">{title}</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mt-4">{title}</h2>
       <ul className="list-disc pl-6">
         {items.map((item, idx) => (
           <li key={idx} className="flex items-start gap-2 mt-1"><FaCheckCircle className="text-green-500 mt-1" /> {item}</li>

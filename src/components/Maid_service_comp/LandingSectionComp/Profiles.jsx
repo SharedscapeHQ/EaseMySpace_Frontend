@@ -23,7 +23,7 @@ export default function Profiles() {
   return (
     <section className="lg:py-10 pt-10 rounded-2xl lg:px-10 px-3 max-w-7xl mx-auto relative bg-zinc-50 dark:bg-zinc-900 transition-colors duration-300">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-[16px] lg:text-3xl text-left text-black dark:text-white">
+        <h2 style={{ fontFamily: "para_font" }} className="text-[16px] lg:text-3xl text-left text-black dark:text-white">
           Maids & Cooks Profiles
         </h2>
       </div>

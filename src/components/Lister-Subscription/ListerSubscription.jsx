@@ -100,7 +100,7 @@ export default function ListerSubscription() {
 
   return (
     <div
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="min-h-screen bg-white font-inter"
     >
       <Helmet>
@@ -116,7 +116,7 @@ export default function ListerSubscription() {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          style={{ fontFamily: "heading_font" }}
+          style={{ fontFamily: "universal_font" }}
           className="text-2xl lg:text-4xl lg:mt-5 text-zinc-900"
         >
           Lister Subscription
@@ -148,7 +148,7 @@ export default function ListerSubscription() {
             {/* Mobile Layout */}
             <div className="flex flex-col gap-2 lg:hidden">
               <h2
-                style={{ fontFamily: "heading_font" }}
+                style={{ fontFamily: "universal_font" }}
                 className="text-lg font-semibold"
               >
                 {plan.title}
@@ -172,7 +172,7 @@ export default function ListerSubscription() {
             <div className="hidden lg:flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
               <div className="lg:w-1/3">
                 <h2
-                  style={{ fontFamily: "heading_font" }}
+                  style={{ fontFamily: "universal_font" }}
                   className="text-xl mb-1"
                 >
                   {plan.title}
@@ -234,7 +234,7 @@ export default function ListerSubscription() {
             >
               Close
             </button>
-            <h2 style={{ fontFamily: "heading_font" }} className="text-xl mb-2">
+            <h2 style={{ fontFamily: "universal_font" }} className="text-xl mb-2">
               {selectedPlan.title}
             </h2>
             <p className="text-sm italic mb-4">{selectedPlan.description}</p>

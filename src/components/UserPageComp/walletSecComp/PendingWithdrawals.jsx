@@ -4,7 +4,7 @@ export default function PendingWithdrawals({ pending }) {
       {/* Header */}
       <h3
         className="text-xl font-semibold mb-4 flex items-center gap-2"
-        style={{ fontFamily: "heading_font" }}
+        style={{ fontFamily: "universal_font" }}
       >
         Pending Withdrawals
       </h3>

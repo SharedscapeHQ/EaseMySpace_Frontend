@@ -225,7 +225,7 @@ export default function AssignedUsers() {
 return (
   <div className="p-4 sm:p-6 max-w-7xl mx-auto">
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-      <h2 className="text-xl sm:text-3xl font-bold text-gray-800">
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl sm:text-3xl font-bold text-gray-800">
         Assigned Users
       </h2>
 

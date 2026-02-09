@@ -144,7 +144,7 @@ useEffect(() => {
           </div>
           <div className="p-4 flex flex-col gap-1 z-10 relative lg:group-hover:text-white transition-colors duration-300">
             <h3 className="font-semibold text-md truncate">{p.bhk_type || p.title}</h3>
-            <p className="font-bold text-xs lg:text-base whitespace-nowrap" style={{ fontFamily: "heading_font" }}>
+            <p className="font-bold text-xs lg:text-base whitespace-nowrap" style={{ fontFamily: "universal_font" }}>
               ₹ {Number(p.price).toLocaleString()}/mo
             </p>
             <p className="text-gray-600 lg:group-hover:text-white text-xs truncate">{p.location}</p>
@@ -159,9 +159,9 @@ useEffect(() => {
 
   return (
     <div className="bg-zinc-50 pb-5">
-      <section className="lg:px-10 px-3 rounded-2xl max-w-7xl mx-auto relative" style={{ fontFamily: "para_font" }}>
+      <section className="lg:px-10 px-3 rounded-2xl max-w-7xl mx-auto relative" style={{ fontFamily: "universal_font" }}>
         <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
-          <h2 className="text-[16px] lg:text-3xl text-left text-black" style={{ fontFamily: "heading_font" }}>
+          <h2 style={{ fontFamily: "para_font" }} className="text-[16px] lg:text-3xl text-left text-black" style={{ fontFamily: "universal_font" }}>
             {headingText}
           </h2>
 

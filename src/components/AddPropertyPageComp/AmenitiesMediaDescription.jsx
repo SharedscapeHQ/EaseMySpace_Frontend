@@ -52,7 +52,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
     <>
       {/* Amenities */}
       <div className="border-t pt-4">
-        <h2 className="font-bold mb-2 text-indigo-600">
+        <h2 style={{ fontFamily: "para_font" }} className="font-bold mb-2 text-indigo-600">
           Amenities <span className="text-red-500">*</span>
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
@@ -148,7 +148,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
 
      {/* Media Upload */}
 <div className="border-t pt-4">
-  <h2 className="font-bold mb-2 text-indigo-600">Media Upload</h2>
+  <h2 style={{ fontFamily: "para_font" }} className="font-bold mb-2 text-indigo-600">Media Upload</h2>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {imageCategories.map((cat) => (
       <div className="mb-2" key={cat.key}>

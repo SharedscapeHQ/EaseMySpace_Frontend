@@ -28,7 +28,7 @@ export default function AllMaidBookings() {
 
   return (
     <div className="p-6 space-y-6">
-      <h2 className="text-2xl font-bold text-pink-600 mb-6">All Maid Bookings</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-pink-600 mb-6">All Maid Bookings</h2>
       {bookings.length === 0 ? (
         <p className="text-gray-500">No bookings available.</p>
       ) : (

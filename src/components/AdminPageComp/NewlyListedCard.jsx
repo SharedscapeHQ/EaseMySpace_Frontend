@@ -57,7 +57,7 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
   const firstPrice = getFirstPrice();
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="bg-white rounded-xl border hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+    <div style={{ fontFamily: "universal_font" }} className="bg-white rounded-xl border hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
       {/* Image */}
       <div className="relative h-44 md:h-48">
         <img
@@ -75,7 +75,7 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
       {/* Details */}
       <div className="p-4">
         <div className="flex justify-between items-center">
-          <h3 style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base truncate">
+          <h3 style={{ fontFamily: "universal_font" }} className="text-zinc-800 text-xs md:text-base truncate">
             {property.title}
           </h3>
           {property.verified && (
@@ -86,7 +86,7 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
         </div>
 
         {/* Price */}
-        <p style={{ fontFamily: "heading_font" }} className="text-zinc-800 text-xs md:text-base">
+        <p style={{ fontFamily: "universal_font" }} className="text-zinc-800 text-xs md:text-base">
           {firstPrice ? `₹ ${firstPrice}/mo` : "Price not available"}
         </p>
         <p className="text-gray-600 text-sm">{property.location}</p>

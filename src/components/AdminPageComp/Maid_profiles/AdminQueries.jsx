@@ -34,7 +34,7 @@ export default function AdminQueries() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <h2 className="text-2xl font-bold text-pink-600">Admin Queries</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-pink-600">Admin Queries</h2>
 
       {loading ? (
         <p className="text-gray-500">Loading queries...</p>

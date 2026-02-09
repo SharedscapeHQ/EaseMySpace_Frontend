@@ -17,7 +17,7 @@ export default function LoginPopup({ isOpen, onClose, onLoginClick }) {
           ✕
         </button>
 
-        <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+        <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">
           Login Required
         </h2>
 

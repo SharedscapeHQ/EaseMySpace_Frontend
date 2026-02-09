@@ -37,7 +37,7 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
     />
   ) : (
     <div
-      style={{ fontFamily: "heading_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="w-7 h-7 ml-1 sm:w-8 text-xl sm:h-8 rounded-full flex items-center justify-center font-bold text-white 
                  bg-gradient-to-br from-blue-500 to-indigo-600 
                  shadow-lg border-2 border-white 

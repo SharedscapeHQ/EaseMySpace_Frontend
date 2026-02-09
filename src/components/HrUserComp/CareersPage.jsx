@@ -196,8 +196,8 @@ export default function CareersPage() {
   );
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="p-6 max-w-6xl mx-auto">
-      <h1 style={{ fontFamily: "heading_font" }} className="text-3xl text-zinc-800 mb-6">
+    <div style={{ fontFamily: "universal_font" }} className="p-6 max-w-6xl mx-auto">
+      <h1 style={{ fontFamily: "universal_font" }} className="text-3xl text-zinc-800 mb-6">
         Careers
       </h1>
 
@@ -208,7 +208,7 @@ export default function CareersPage() {
         transition={{ duration: 0.4 }}
         className="bg-white rounded-xl p-6 mb-6 shadow-lg border"
       >
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-700 mb-4">
           {editJob ? "Edit Job" : "Add New Job"}
         </h2>
 

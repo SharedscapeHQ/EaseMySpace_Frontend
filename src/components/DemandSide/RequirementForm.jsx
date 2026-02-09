@@ -117,7 +117,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
 
   return (
     <main
-      style={{ fontFamily: "para_font" }}
+      style={{ fontFamily: "universal_font" }}
       className="max-w-7xl pt-16 mx-auto space-y-2 font-sans"
     >
       {/* Section 1 */}
@@ -125,7 +125,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
         <div className="flex items-center gap-3">
           <div className="text-blue-600 text-lg">1</div>
           <h2
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-sm lg:text-xl text-gray-900"
           >
             Tell us what you need
@@ -240,7 +240,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
         <div className="flex items-center gap-3">
           <div className="text-blue-600 text-lg">2</div>
           <h2
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-sm lg:text-xl text-gray-900"
           >
             Your lifestyle preferences (Optional)
@@ -317,7 +317,7 @@ export default function RequirementForm({ onSubmit, initialData }) {
         <div className="flex items-center gap-3">
           <div className="text-blue-600 text-lg">3</div>
           <h2
-            style={{ fontFamily: "heading_font" }}
+            style={{ fontFamily: "universal_font" }}
             className="text-sm lg:text-xl text-gray-900"
           >
             Contact & Verification

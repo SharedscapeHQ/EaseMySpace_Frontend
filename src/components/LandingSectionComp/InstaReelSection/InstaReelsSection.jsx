@@ -56,7 +56,7 @@ function InstaReelsSection() {
         <div className="max-w-7xl lg:px-10 px-3 mx-auto">
           <div className="mb-6">
             <h2
-              style={{ fontFamily: "heading_font" }}
+              style={{ fontFamily: "universal_font" }}
               className="text-lg sm:text-3xl mb-5 text-left"
             >
               Real Renting Stories

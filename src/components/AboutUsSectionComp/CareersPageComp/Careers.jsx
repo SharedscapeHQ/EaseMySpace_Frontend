@@ -173,7 +173,7 @@ const handleSubmit = async (e) => {
   itemType="https://schema.org/JobPosting"
 >
   <h1
-    style={{ fontFamily: "heading_font" }}
+    style={{ fontFamily: "universal_font" }}
     className="text-4xl font-bold mb-4"
     itemProp="title"
   >
@@ -194,7 +194,7 @@ const handleSubmit = async (e) => {
 
       {/* Open Positions */}
       <section className="py-12 px-6 lg:px-20">
-        <h2 className="text-2xl font-semibold mb-8">Open Positions</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-8">Open Positions</h2>
         {loading ? (
           <p className="text-gray-600">Loading job openings...</p>
         ) : error ? (
@@ -231,7 +231,7 @@ const handleSubmit = async (e) => {
       {/* Perks & Benefits + Form */}
       <section className="bg-white py-16 px-6 lg:px-20 border-t border-gray-200">
         <div className="mx-auto mb-12">
-          <h2 style={{ fontFamily: "heading_font" }} className="text-[16px] lg:text-3xl text-left text-black">
+          <h2 style={{ fontFamily: "universal_font" }} className="text-[16px] lg:text-3xl text-left text-black">
             We’re Always Looking for Great Talent
           </h2>
         </div>
@@ -239,7 +239,7 @@ const handleSubmit = async (e) => {
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
           {/* Left - Perks */}
           <div>
-            <h2 className="text-2xl font-semibold mb-6">Perks & Benefits</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-6">Perks & Benefits</h2>
             <ul className="space-y-4">
               {perks.map((perk, i) => (
                 <li key={i} className="flex items-start gap-3">

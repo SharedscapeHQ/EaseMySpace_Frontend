@@ -90,7 +90,7 @@ export default function ConnectPopup({ name, setIsOpen }) {
         <div className="p-6 md:w-1/2 flex flex-col justify-center">
           {!submitted ? (
             <>
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-800 mb-2">
                 How can we help you?
               </h2>
               <p className="text-sm text-gray-600 mb-4">

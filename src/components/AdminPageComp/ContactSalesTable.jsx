@@ -93,7 +93,7 @@ export default function ContactSalesTable() {
         ))}
       </div>
 
-      <h2 className="text-lg font-semibold mb-4">Contact Sales Requests</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold mb-4">Contact Sales Requests</h2>
 
       <table className="min-w-full text-sm text-gray-800 border-collapse">
         <thead className="bg-gray-100 text-gray-700 text-sm border-b">

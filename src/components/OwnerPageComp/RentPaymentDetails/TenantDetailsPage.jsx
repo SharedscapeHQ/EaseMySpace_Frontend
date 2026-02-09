@@ -21,7 +21,7 @@ export default function TenantDetailsPage({ tenants, property, onBack }) {
       </button>
 
       {/* Header */}
-      <h2 className="text-2xl font-bold text-indigo-700 flex items-center gap-2 mb-6">
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700 flex items-center gap-2 mb-6">
         <FiUsers /> Tenants of {property?.title || "-"}
       </h2>
 

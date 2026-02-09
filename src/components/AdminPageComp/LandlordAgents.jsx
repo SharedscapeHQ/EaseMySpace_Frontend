@@ -174,7 +174,7 @@ export default function LandlordAgents() {
                       setExpandedUserId(isExpanded ? null : user.id)
                     }
                   >
-                    <h2 className="text-lg font-semibold text-blue-700 flex items-center gap-1">
+                    <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-blue-700 flex items-center gap-1">
                       {user.firstName} {user.lastName}
                       {isExpanded ? (
                         <FiChevronUp className="text-gray-500" />

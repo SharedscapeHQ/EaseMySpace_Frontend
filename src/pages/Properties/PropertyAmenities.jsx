@@ -76,9 +76,9 @@ function PropertyAmenities({ amenities, property }) {
   const mobileLimited = allAmenities.slice(0, 6);
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="bg-white rounded-xl border p-6">
+    <div style={{ fontFamily: "universal_font" }} className="bg-white rounded-xl border p-6">
       <h2
-        style={{ fontFamily: "heading_font" }}
+        style={{ fontFamily: "universal_font" }}
         className="text-[16px] lg:text-xl text-left text-black mb-3"
       >
         Amenities
@@ -123,7 +123,7 @@ function PropertyAmenities({ amenities, property }) {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-11/12 max-h-[80vh] overflow-y-auto shadow-lg">
             <h3
-              style={{ fontFamily: "heading_font" }}
+              style={{ fontFamily: "universal_font" }}
               className="text-lg font-semibold mb-4"
             >
               All Amenities

@@ -124,7 +124,7 @@ function Login() {
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white rounded-xl shadow-xl p-8 flex flex-col gap-6"
       >
-        <h1 className="text-2xl font-bold text-center text-blue-500">
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center text-blue-500">
           {showForgot ? "Forgot Password" : "Login"}
         </h1>
 

@@ -66,7 +66,7 @@ export default function RequirementDashboard() {
           <section className="grid gap-12">
             <div className="grid md:grid-cols-[2fr,1fr] gap-10">
               <div className="grid gap-6">
-                <h2 className="lg:text-3xl text-xl font-bold text-gray-900">
+                <h2 style={{ fontFamily: "para_font" }} className="lg:text-3xl text-xl font-bold text-gray-900">
                   My Posted Requirement
                 </h2>
                 <p className="text-gray-600 lg:text-sm text-xs mt-1">

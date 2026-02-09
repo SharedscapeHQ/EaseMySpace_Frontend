@@ -23,7 +23,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div style={{ fontFamily: "para_font" }} className="flex flex-col lg:flex-row items-center justify-center px-6 md:px-16 py-2 gap-8">
+    <div style={{ fontFamily: "universal_font" }} className="flex flex-col lg:flex-row items-center justify-center px-6 md:px-16 py-2 gap-8">
 
       {/* SEO Helmet */}
       <Helmet>
@@ -81,21 +81,21 @@ export default function ContactPage() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="bg-blue-600 text-white rounded-lg p-6 md:p-8 shadow-2xl flex-shrink-0 w-full max-w-md"
         >
-          <h1 className="text-2xl md:text-3xl font-extrabold uppercase tracking-wide drop-shadow-md text-center">
+          <h1 style={{ fontFamily: "para_font" }} className="text-2xl md:text-3xl font-extrabold uppercase tracking-wide drop-shadow-md text-center">
             Contact Us
           </h1>
           <div className="mt-4 space-y-2 text-sm md:text-base font-medium text-center">
             <div>
-  <span style={{ fontFamily: "heading_font" }}>Address :</span>{" "}
+  <span style={{ fontFamily: "universal_font" }}>Address :</span>{" "}
   WeWork Vaswani Chambers, Plot 264/265, Dr Annie Besant Road,
   Worli Shivaji Nagar, Worli Colony, Mumbai 400030
 </div>
 
             <div>
-              <span style={{ fontFamily: "heading_font" }}>Phone:</span> +91 9004463371
+              <span style={{ fontFamily: "universal_font" }}>Phone:</span> +91 9004463371
             </div>
             <div>
-              <span style={{ fontFamily: "heading_font" }}>Email:</span> support@easemyspace.in
+              <span style={{ fontFamily: "universal_font" }}>Email:</span> support@easemyspace.in
             </div>
           </div>
         </motion.aside>
@@ -109,7 +109,7 @@ export default function ContactPage() {
         className="lg:w-1/2 flex items-center justify-center w-full"
       >
         <div className="w-full max-w-md bg-white rounded-2xl p-8 border border-gray-200 shadow-xl flex flex-col justify-between">
-          <h2 className="text-3xl font-extrabold text-blue-600 pb-8 text-center">
+          <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-extrabold text-blue-600 pb-8 text-center">
             Get in Touch
           </h2>
 
