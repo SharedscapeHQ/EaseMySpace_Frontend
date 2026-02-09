@@ -135,6 +135,27 @@ const verifyOtpHandler = async () => {
               className="w-full border rounded-xl px-4 py-3 focus:outline-none"
             />
 
+            <div className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        id="consent"
+        checked={consentChecked}
+        onChange={(e) => setConsentChecked(e.target.checked)}
+        className="w-4 h-4"
+      />
+      <label htmlFor="consent" className="text-sm text-gray-600">
+        I agree to the{" "}
+        <a
+          href="/privacy-policy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          Privacy Policy
+        </a>
+      </label>
+    </div>
+
             <p className="text-xs text-gray-500 leading-relaxed">
               We will send an OTP to your WhatsApp number. Please ensure this
               number is registered on WhatsApp. Do not share OTP with anyone.{" "}
@@ -150,6 +171,8 @@ const verifyOtpHandler = async () => {
 >
   {loading ? "Sending OTP..." : "Continue"}
 </button>
+
+
 
 
           </>
@@ -169,27 +192,7 @@ const verifyOtpHandler = async () => {
               className="w-full border rounded-xl px-4 py-3 focus:outline-none"
             />
 
-              <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="consent"
-                checked={consentChecked}
-                onChange={(e) => setConsentChecked(e.target.checked)}
-                className="w-4 h-4"
-              />
-              <label htmlFor="consent" className="text-sm text-gray-600">
-                I agree to the{" "}
-                <a
-                  href="/privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  Privacy Policy
-                </a>
-              </label>
-            </div>
-
+           
             <button
               onClick={verifyOtpHandler}
               disabled={loading}
