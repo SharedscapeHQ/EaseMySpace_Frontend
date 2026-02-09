@@ -42,6 +42,7 @@ import PrivacyPolicy from "./components/FooterSectionComp/PolicyPrivacy";
 import AccountDeletion from "./pages/AccountDeletion";
 import OpenApp from "./pages/OpenApp"
 import GlobalPopups from "./pages/GlobalPopups";
+import AppRedirect from "./components/AppRedirect";
 
 /* ───── ScrollToTop ───── */
 function ScrollToTop() {
@@ -92,6 +93,14 @@ function AnimatedRoutes() {
       {/* <Layout> */}
         <OpenApp />
       {/* </Layout> */}
+    </PageWrapper>
+  }
+/>
+        <Route
+  path="/app-redirect"
+  element={
+    <PageWrapper>
+        <AppRedirect />
     </PageWrapper>
   }
 />

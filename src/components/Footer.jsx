@@ -114,15 +114,16 @@ export default function Footer() {
   </div>
 
   {/* QR Code */}
-  <div className="hidden sm:flex flex-col items-center bg-gray-50 border rounded-lg p-2 shadow-sm">
-    <QRCodeCanvas
-      value="https://play.google.com/store/apps/details?id=com.easemyspace.app"
-      size={80}
-    />
-    <span className="text-[11px] text-gray-500 mt-1 whitespace-nowrap">
-      Scan to get the app
-    </span>
-  </div>
+ <div className="hidden sm:flex flex-col items-center bg-gray-50 border rounded-lg p-2 shadow-sm">
+  <QRCodeCanvas
+    value="https://easemyspace.in/app-redirect" 
+    size={80}
+  />
+  <span className="text-[11px] text-gray-500 mt-1 whitespace-nowrap">
+    Scan to get the app
+  </span>
+</div>
+
 
 </div>
 
