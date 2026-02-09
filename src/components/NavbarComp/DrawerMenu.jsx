@@ -150,8 +150,9 @@ export default function DrawerMenu({ open, setOpen }) {
         </ul>
 
         {/* Footer */}
-       <div className="mt-auto pt-6 border-t border-zinc-200 dark:border-zinc-700">
+     <div className="mt-auto pt-6 border-t border-zinc-200 dark:border-zinc-700">
   <div className="flex items-center justify-around gap-4">
+    
     {/* Android */}
     <div className="flex flex-col items-center">
       <span className="text-xs text-gray-500 mb-1">Android</span>
@@ -168,17 +169,21 @@ export default function DrawerMenu({ open, setOpen }) {
       </a>
     </div>
 
-  {/* iOS */}
-<div className="flex flex-col items-center">
-  <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
-
-  {/* App Store badge (coming soon – no link yet) */}
-  <img
-    src={AppleBadge}
-    alt="Download on the App Store"
-    className="h-10 w-auto opacity-60"
-  />
-</div>
+    {/* iOS */}
+    <div className="flex flex-col items-center">
+      <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
+      <a
+        href="https://apps.apple.com/us/app/easemyspace/id6758399361"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          src={AppleBadge}
+          alt="Download on the App Store"
+          className="h-10 w-auto"
+        />
+      </a>
+    </div>
 
   </div>
 </div>

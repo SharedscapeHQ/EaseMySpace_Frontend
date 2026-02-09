@@ -34,8 +34,7 @@ export default function AppInstallPopup({ onClose }) {
             <p className="text-gray-600 mb-5 text-sm">
               Enjoy a faster and smoother experience on your phone
             </p>
-
-           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-5">
+<div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-5">
   {/* Android */}
   <div className="flex flex-col items-center">
     <span className="text-xs text-gray-500 mb-1">Android</span>
@@ -52,18 +51,21 @@ export default function AppInstallPopup({ onClose }) {
     </a>
   </div>
 
- {/* iOS */}
-<div className="flex flex-col items-center">
-  <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
-
-  {/* App Store badge (disabled look) */}
-  <img
-    src={AppleBadge}
-    alt="Download on the App Store"
-    className="h-12 w-auto opacity-60"
-  />
-</div>
-
+  {/* iOS */}
+  <div className="flex flex-col items-center">
+    <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
+    <a
+      href="https://apps.apple.com/us/app/easemyspace/id6758399361"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img
+        src={AppleBadge}
+        alt="Download on the App Store"
+        className="h-12 w-auto"
+      />
+    </a>
+  </div>
 </div>
 
           </motion.div>

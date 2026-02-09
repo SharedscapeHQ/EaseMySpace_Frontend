@@ -97,19 +97,19 @@ export default function Footer() {
       />
     </a>
 
-    {/* Apple Store (Disabled) */}
-    <div className="relative w-fit cursor-not-allowed">
-      <img
-        src={AppleBadge}
-        alt="Download on the App Store"
-        className="h-10 grayscale opacity-60"
-      />
+   {/* Apple Store (Live) */}
+<a
+  href="https://apps.apple.com/us/app/easemyspace/id6758399361"
+  target="_blank"
+  rel="noreferrer"
+>
+  <img
+    src={AppleBadge}
+    alt="Download on the App Store"
+    className="h-10"
+  />
+</a>
 
-      {/* Coming Soon Tag (full opacity) */}
-      <span className="absolute -top-3 -right-2 bg-black text-white text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap">
-        Coming Soon
-      </span>
-    </div>
 
   </div>
 
