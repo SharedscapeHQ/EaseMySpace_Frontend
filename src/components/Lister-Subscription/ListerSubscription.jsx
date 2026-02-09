@@ -55,14 +55,14 @@ export default function ListerSubscription() {
       title: "Standard Lister",
       description: "Access all essential services for property owners.",
       originalPrice: "₹2,999",
-      price: "₹1,299",
-      numericPrice: 1299,
-      savings: "Save ₹1,700!",
+      price: "₹499",
+      numericPrice: 499,
+      savings: "Save ₹2,500!",
       gst: "+18% GST",
       duration: "45 Days",
       color: "indigo",
       features: [
-        { text: "Up to 3 property listings", included: true },
+        { text: "Up to 1 property listings", included: true },
         { text: "Unlimited edits & updates", included: true },
         { text: "WhatsApp lead notifications", included: true },
         { text: "Standard visibility", included: true },
@@ -147,10 +147,7 @@ export default function ListerSubscription() {
 
             {/* Mobile Layout */}
             <div className="flex flex-col gap-2 lg:hidden">
-              <h2
-                style={{ fontFamily: "para_font" }}
-                className="text-lg "
-              >
+              <h2 style={{ fontFamily: "para_font" }} className="text-lg ">
                 {plan.title}
               </h2>
               <p className="line-through text-zinc-500 text-base">
@@ -186,9 +183,7 @@ export default function ListerSubscription() {
                     {plan.price}{" "}
                     <span className="text-xl font-normal">{plan.gst}</span>
                   </p>
-                  <p className="text-green-500  text-sm">
-                    {plan.savings}
-                  </p>
+                  <p className="text-green-500  text-sm">{plan.savings}</p>
                 </div>
               </div>
               <div className="lg:w-2/3 flex flex-col justify-start">
