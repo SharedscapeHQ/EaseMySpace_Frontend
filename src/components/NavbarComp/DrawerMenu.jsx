@@ -173,7 +173,7 @@ export default function DrawerMenu({ open, setOpen }) {
     <div className="flex flex-col items-center">
       <span className="text-xs text-gray-500 mb-1">iOS (Apple)</span>
       <a
-        href="https://apps.apple.com/us/app/easemyspace/id6758399361"
+        href="https://apps.apple.com/in/app/easemyspace/id6758399361"
         target="_blank"
         rel="noreferrer"
       >

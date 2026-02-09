@@ -99,7 +99,7 @@ export default function Footer() {
 
    {/* Apple Store (Live) */}
 <a
-  href="https://apps.apple.com/us/app/easemyspace/id6758399361"
+  href="https://apps.apple.com/in/app/easemyspace/id6758399361"
   target="_blank"
   rel="noreferrer"
 >
