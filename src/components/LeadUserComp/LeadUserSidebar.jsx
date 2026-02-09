@@ -11,7 +11,7 @@ export default function LeadUserSidebar({ activeTab, setActiveTab, handleLogout 
   const handleTabClick = (value) => setActiveTab(value);
 
   const baseBtnClasses = "flex items-center gap-2 px-4 py-2 rounded transition";
-  const activeClasses = "bg-indigo-100 text-indigo-700 font-semibold";
+  const activeClasses = "bg-indigo-100 text-indigo-700 ";
   const inactiveClasses = "hover:bg-gray-100 text-gray-700";
 
   return (
@@ -24,7 +24,7 @@ export default function LeadUserSidebar({ activeTab, setActiveTab, handleLogout 
               key={value}
               onClick={() => handleTabClick(value)}
               className={`flex items-center gap-2 px-5 py-3 flex-shrink-0 border-b-2 transition-colors ${
-                activeTab === value ? "border-indigo-600 text-indigo-700 font-semibold" : "border-transparent text-gray-700"
+                activeTab === value ? "border-indigo-600 text-indigo-700 " : "border-transparent text-gray-700"
               }`}
             >
               <span className="text-lg">{icon}</span>
@@ -44,7 +44,7 @@ export default function LeadUserSidebar({ activeTab, setActiveTab, handleLogout 
       {/* Desktop Sidebar */}
      <aside className="hidden lg:flex fixed top-20 left-0 h-[calc(100vh-4rem)] w-64 bg-white shadow-md border-r flex-col">
   <div className="flex items-center justify-between p-6 border-b border-gray-200">
-    <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700">User Panel</h2>
+    <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700">User Panel</h2>
     <button onClick={handleLogout} className="text-red-600 hover:text-red-700 transition">
       <FiLogOut className="text-xl" />
     </button>

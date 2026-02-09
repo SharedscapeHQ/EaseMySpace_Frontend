@@ -184,7 +184,7 @@ const [locationDisplay, setLocationDisplay] = useState("");
         <div className="fixed inset-0 bottom-12 z-50">
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowFilters(false)} />
           <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5">
-            <h3 className="text-lg font-semibold mb-4">Filters</h3>
+            <h3 className="text-lg  mb-4">Filters</h3>
 
             {/* BHK */}
             <div className="mb-6">
@@ -228,7 +228,7 @@ const [locationDisplay, setLocationDisplay] = useState("");
                 setShowFilters(false);
                 handleSearch();
               }}
-              className="w-full rounded-full bg-blue-500 text-white py-3 text-sm font-semibold shadow-md active:scale-95 transition"
+              className="w-full rounded-full bg-blue-500 text-white py-3 text-sm  shadow-md active:scale-95 transition"
             >
               Apply Filters
             </button>

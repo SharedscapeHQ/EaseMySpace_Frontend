@@ -27,7 +27,7 @@ export default function LandingPopup({ onClose }) {
               <FiX size={24} />
             </button>
 
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-gray-900 mb-2">Welcome to EaseMySpace™</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-900 mb-2">Welcome to EaseMySpace™</h2>
             <p className="text-gray-600 mb-5">
               Hi, you're just a few clicks away from finding/listing your home
             </p>

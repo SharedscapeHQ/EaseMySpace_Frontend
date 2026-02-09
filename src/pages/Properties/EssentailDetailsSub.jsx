@@ -176,7 +176,7 @@ export default function EssentialDetailsSub({ property }) {
       <div className="mt-6 flex flex-col lg:flex-row gap-6">
         {/* Property Details */}
         <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-800 mb-6 text-center pb-3">
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-800 mb-6 text-center pb-3">
             Property Details
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -196,7 +196,7 @@ export default function EssentialDetailsSub({ property }) {
                 className="flex flex-col items-center justify-center text-center px-6 py-5 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:shadow transition-shadow duration-150"
               >
                 <span className="text-sm text-gray-500 font-medium capitalize">{item.label}</span>
-                <span className="text-base text-gray-900 font-semibold mt-1 capitalize">{item.value}</span>
+                <span className="text-base text-gray-900  mt-1 capitalize">{item.value}</span>
               </div>
             ))}
           </div>
@@ -205,7 +205,7 @@ export default function EssentialDetailsSub({ property }) {
         {/* Booking Section */}
         <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-start space-y-4 relative">
           <span
-            className={`absolute top-4 right-4 px-2 py-1 rounded-full text-sm font-semibold ${
+            className={`absolute top-4 right-4 px-2 py-1 rounded-full text-sm  ${
               currentData.availability === "booked"
                 ? "bg-yellow-100 text-yellow-800"
                 : "bg-green-100 text-green-800"
@@ -214,7 +214,7 @@ export default function EssentialDetailsSub({ property }) {
             {currentData.availability === "booked" ? "Booked" : "Available"}
           </span>
 
-          <div className="absolute top-16 right-4 bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+          <div className="absolute top-16 right-4 bg-blue-100 text-blue-700 text-xs  px-3 py-1 rounded-full shadow-sm">
             Filled: {currentData.filled_count}/{totalCapacity}
           </div>
 
@@ -233,7 +233,7 @@ export default function EssentialDetailsSub({ property }) {
                           ?.occupancy || room.occupancyOptions[0].occupancy,
                     })
                   }
-                  className={`px-3 py-1 rounded-full text-sm font-semibold border cursor-pointer ${
+                  className={`px-3 py-1 rounded-full text-sm  border cursor-pointer ${
                     selected.room_label === room.room_label
                       ? "bg-black text-white border-black"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
@@ -253,7 +253,7 @@ export default function EssentialDetailsSub({ property }) {
                 <div
                   key={occ.occupancy}
                   onClick={() => setSelected((prev) => ({ ...prev, occupancy: occ.occupancy }))}
-                  className={`px-3 py-1 rounded-full text-sm font-semibold border cursor-pointer ${
+                  className={`px-3 py-1 rounded-full text-sm  border cursor-pointer ${
                     selected.occupancy === occ.occupancy
                       ? "bg-indigo-600 text-white border-indigo-600"
                       : occ.availability === "booked"
@@ -296,11 +296,11 @@ export default function EssentialDetailsSub({ property }) {
           <div className="w-full flex flex-col sm:flex-row gap-3">
             <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
               <span className="text-gray-700 text-sm font-medium">Rent</span>
-              <span className="font-bold text-gray-900 text-lg mt-1">₹{displayedRent.toLocaleString()}</span>
+              <span className=" text-gray-900 text-lg mt-1">₹{displayedRent.toLocaleString()}</span>
             </div>
             <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
               <span className="text-gray-700 text-sm font-medium">Deposit</span>
-              <span className="font-bold text-gray-900 text-lg mt-1">₹{Number(currentData.deposit).toLocaleString()}</span>
+              <span className=" text-gray-900 text-lg mt-1">₹{Number(currentData.deposit).toLocaleString()}</span>
             </div>
           </div>
 
@@ -308,7 +308,7 @@ export default function EssentialDetailsSub({ property }) {
           <button
             onClick={handleBookNowClick}
             disabled={currentData.availability === "booked"}
-            className={`mt-4 w-full font-semibold py-2.5 rounded-lg transition ${
+            className={`mt-4 w-full  py-2.5 rounded-lg transition ${
               currentData.availability === "booked"
                 ? "bg-green-400 text-white cursor-not-allowed"
                 : "bg-green-600 text-white hover:bg-green-700"
@@ -333,7 +333,7 @@ export default function EssentialDetailsSub({ property }) {
       {showLoginPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
-            <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">Login Required</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800 mb-4 text-center">Login Required</h2>
             <p className="text-sm text-gray-600 mb-6 text-center">Please login to continue with booking.</p>
             <div className="flex gap-4">
               <button

@@ -102,19 +102,19 @@ export default function ComplaintsTable() {
         </button>
       </div>
 
-      <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold mb-4">All Complaints</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-lg  mb-4">All Complaints</h2>
 
       <table className="min-w-full text-sm text-gray-800 border-collapse">
         <thead className="bg-gray-100 text-gray-700 text-sm border-b">
           <tr>
-            <th className="px-4 py-3 text-left font-semibold">User</th>
-            <th className="px-4 py-3 text-left font-semibold">Subject</th>
-            <th className="px-4 py-3 text-left font-semibold">Complaint</th>
-            <th className="px-4 py-3 text-left font-semibold">Created At</th>
-            <th className="px-4 py-3 text-left font-semibold">Resolved By</th>
-            <th className="px-4 py-3 text-left font-semibold">Resolved At</th>
-            <th className="px-4 py-3 text-left font-semibold">Status</th>
-            <th className="px-4 py-3 text-left font-semibold">Action</th>
+            <th className="px-4 py-3 text-left ">User</th>
+            <th className="px-4 py-3 text-left ">Subject</th>
+            <th className="px-4 py-3 text-left ">Complaint</th>
+            <th className="px-4 py-3 text-left ">Created At</th>
+            <th className="px-4 py-3 text-left ">Resolved By</th>
+            <th className="px-4 py-3 text-left ">Resolved At</th>
+            <th className="px-4 py-3 text-left ">Status</th>
+            <th className="px-4 py-3 text-left ">Action</th>
           </tr>
         </thead>
 
@@ -141,7 +141,7 @@ export default function ComplaintsTable() {
                 </td>
 
                 {/* SUBJECT */}
-                <td className="px-4 py-4 font-semibold text-gray-900">
+                <td className="px-4 py-4  text-gray-900">
                   {c.subject || "—"}
                 </td>
 

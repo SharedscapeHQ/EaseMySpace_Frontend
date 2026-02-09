@@ -105,7 +105,7 @@ export default function PayRent() {
                   />
                 </div>
                 <div className="bg-gray-50 px-6 py-5 border-t border-gray-100 space-y-2">
-                  <h4 className="text-lg font-semibold text-gray-800 flex justify-between items-center">
+                  <h4 className="text-lg  text-gray-800 flex justify-between items-center">
                     {property.property_name || "Unnamed Property"}
                     <a
                       href={`/properties/${property.property_id}`}
@@ -134,7 +134,7 @@ export default function PayRent() {
                 <div className="bg-green-50 border border-green-200 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
                   <AiOutlineCheckCircle className="text-green-600 text-3xl" />
                   <div>
-                    <p className="font-semibold text-green-700">Deposit Paid</p>
+                    <p className=" text-green-700">Deposit Paid</p>
                     <p className="text-gray-700 text-sm">Amount: ₹{initialDeposit}</p>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export default function PayRent() {
                     ? "✅ Rent for this month is paid."
                     : "⚠️ Rent for this month is due."}
                   <div className="text-sm mt-1">
-                    <span className="font-semibold">Next due date:</span> {nextDueDate}
+                    <span className="">Next due date:</span> {nextDueDate}
                   </div>
                 </div>
 
@@ -168,7 +168,7 @@ export default function PayRent() {
       })}
 
       <div className="mt-12">
-        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-gray-800 mb-4">Overall Payment History</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-800 mb-4">Overall Payment History</h2>
         <PaymentHistory payments={properties.flatMap((p) => p.payments || [])} />
       </div>
     </div>

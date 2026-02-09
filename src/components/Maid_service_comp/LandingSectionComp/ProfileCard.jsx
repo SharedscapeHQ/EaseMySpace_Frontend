@@ -6,7 +6,7 @@ export default function ProfileCard({ profile }) {
     <div className="relative flex-none w-64 bg-white dark:bg-zinc-800 rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
       {/* KYC Badge */}
       {profile.kyc_status && (
-        <span className="absolute top-2 left-2 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg z-10">
+        <span className="absolute top-2 left-2 bg-green-500 text-white text-xs  px-3 py-1 rounded-full shadow-lg z-10">
           KYC Verified
         </span>
       )}
@@ -18,7 +18,7 @@ export default function ProfileCard({ profile }) {
       />
 
       <div className="p-4 text-center">
-        <h3 className="text-xl font-semibold text-pink-600 truncate">
+        <h3 className="text-xl  text-pink-600 truncate">
           {profile.first_name} {profile.last_name}
         </h3>
         <p className="text-gray-600 dark:text-gray-300">{profile.age} years old</p>

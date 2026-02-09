@@ -24,7 +24,7 @@ const RaiseQueryModal = ({ isOpen, onClose, property, onSubmit }) => {
           ×
         </button>
 
-        <h3 className="text-xl font-bold mb-4">Raise a Query</h3>
+        <h3 className="text-xl  mb-4">Raise a Query</h3>
         <p className="mb-2 text-gray-600 text-sm">
           Property: <strong>{property.title}</strong>
         </p>

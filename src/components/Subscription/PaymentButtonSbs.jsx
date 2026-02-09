@@ -162,7 +162,7 @@ export default function PaymentButtonSubs({ planName, onPaymentSuccess  }) {
                   d="M4 12a 8 8 0 018-8v8H4z"
                 ></path>
               </svg>
-              <p className="text-indigo-600 font-semibold text-lg">Processing your payment...</p>
+              <p className="text-indigo-600  text-lg">Processing your payment...</p>
               <p className="text-sm text-gray-600 mt-2">Please do not refresh or close the page</p>
             </div>
           </div>,

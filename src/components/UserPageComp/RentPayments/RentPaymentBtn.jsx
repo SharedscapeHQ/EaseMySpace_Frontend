@@ -124,7 +124,7 @@ export default function RentPayBtn({
     <button
       onClick={handlePayRent}
       disabled={payingId === property.property_id}
-      className={`w-full py-3 rounded-xl text-white font-semibold shadow-sm transition-colors duration-300 ${
+      className={`w-full py-3 rounded-xl text-white  shadow-sm transition-colors duration-300 ${
         currentMonthPaid
           ? "bg-indigo-600 hover:bg-indigo-700"
           : "bg-yellow-600 hover:bg-yellow-700"

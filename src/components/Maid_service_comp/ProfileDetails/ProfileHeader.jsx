@@ -6,7 +6,7 @@ export default function ProfileHeader({ profile }) {
 
       {/* KYC Badge at top-left */}
       {profile.kyc_status && (
-        <div className="absolute top-4 left-4 z-20 bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+        <div className="absolute top-4 left-4 z-20 bg-green-500 text-white text-sm  px-3 py-1 rounded-full shadow-md whitespace-nowrap">
           KYC Verified
         </div>
       )}
@@ -22,7 +22,7 @@ export default function ProfileHeader({ profile }) {
 
       {/* Profile Details */}
       <div className="flex-1 space-y-4 z-10">
-        <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-pink-600">{profile.first_name} {profile.last_name}</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-3xl  text-pink-600">{profile.first_name} {profile.last_name}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 dark:text-gray-300">
           <p>

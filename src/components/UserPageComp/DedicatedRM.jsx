@@ -49,7 +49,7 @@ export default function DedicatedRM({ userId }) {
             </p>
 
             <div className="bg-indigo-50 p-5 rounded-lg shadow-sm space-y-4">
-              <h3 className="text-2xl font-semibold text-indigo-800">{rm.name}</h3>
+              <h3 className="text-2xl  text-indigo-800">{rm.name}</h3>
               <div className="space-y-2 text-gray-700">
                 <p className="flex items-center gap-2">
                   <FiPhone className="text-indigo-500" /> 
@@ -64,13 +64,13 @@ export default function DedicatedRM({ userId }) {
               <div className="flex flex-col sm:flex-row gap-3 mt-4">
                 <a
                   href={`tel:${rm.phone}`}
-                  className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-md transition w-full sm:w-auto"
+                  className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white  px-4 py-2 rounded-md transition w-full sm:w-auto"
                 >
                   Call Now <FiPhone />
                 </a>
                 <a
                   href={`mailto:${rm.email}`}
-                  className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md transition w-full sm:w-auto"
+                  className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white  px-4 py-2 rounded-md transition w-full sm:w-auto"
                 >
                   Email <FiMail />
                 </a>
@@ -82,7 +82,7 @@ export default function DedicatedRM({ userId }) {
         {/* Right Column: General Content / CTA */}
         <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between rounded-tr-2xl rounded-br-2xl" style={{ fontFamily: "universal_font" }}>
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-indigo-700">Make the Most of Your RM</h3>
+            <h3 className="text-xl  text-indigo-700">Make the Most of Your RM</h3>
             <p className="text-gray-700 text-sm">
               Your Relationship Manager is here to help you:
             </p>
@@ -96,7 +96,7 @@ export default function DedicatedRM({ userId }) {
           <div className="mt-6">
             <Link
               to="/subscription"
-              className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition w-full"
+              className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white  px-4 py-2 rounded-md transition w-full"
             >
               Upgrade / Extend Plan <FiArrowRightCircle />
             </Link>

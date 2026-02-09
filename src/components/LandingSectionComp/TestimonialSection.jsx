@@ -162,13 +162,13 @@ const TestimonialSection = () => {
                   />
                 ) : (
                   <div
-                    className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-3xl mb-3 mx-auto ${getRandomBg()}`}
+                    className={`w-14 h-14 rounded-full flex items-center justify-center text-white  text-3xl mb-3 mx-auto ${getRandomBg()}`}
                   >
                     {testimonial.name.charAt(0)}
                   </div>
                 )}
 
-                <h3 className="font-bold text-lg text-zinc-900 dark:text-white mb-2 text-center">
+                <h3 className=" text-lg text-zinc-900 dark:text-white mb-2 text-center">
                   {testimonial.name}
                 </h3>
 

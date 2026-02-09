@@ -108,7 +108,7 @@ function Register() {
           sm:p-8 sm:max-w-md
           xs:p-6 xs:max-w-full xs:mx-2"
       >
-        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center text-blue-500">
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl  text-center text-blue-500">
           Register
         </h1>
 
@@ -164,7 +164,7 @@ function Register() {
         />
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-          <label className="font-semibold text-gray-700 whitespace-nowrap">
+          <label className=" text-gray-700 whitespace-nowrap">
             Gender
           </label>
           <div className="flex flex-wrap gap-3">
@@ -213,7 +213,7 @@ function Register() {
 
         <button
           type="submit"
-          className="relative group px-6 w-full sm:w-[100px] h-[50px] py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold overflow-hidden shadow-lg transition-all duration-200 ease-in-out self-center"
+          className="relative group px-6 w-full sm:w-[100px] h-[50px] py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg  overflow-hidden shadow-lg transition-all duration-200 ease-in-out self-center"
         >
           <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 group-hover:-translate-x-full">
             Submit

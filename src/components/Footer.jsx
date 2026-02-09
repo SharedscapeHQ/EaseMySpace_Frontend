@@ -141,7 +141,7 @@ export default function Footer() {
     {/* Quick Links Section */}
     <nav className="grid grid-cols-2 gap-6 text-sm font-medium" aria-label="Footer Navigation">
       <div>
-        <h3 className="text-base font-semibold mb-3 text-zinc-900 ">Quick Links</h3>
+        <h3 className="text-base  mb-3 text-zinc-900 ">Quick Links</h3>
         <ul className="space-y-3">
           {[
             { label: "Home ", to: "/", icon: FaHome },
@@ -164,7 +164,7 @@ export default function Footer() {
         </ul>
       </div>
       <div>
-        <h3 className="text-base font-semibold mb-3 text-zinc-900 ">Legal & Policies</h3>
+        <h3 className="text-base  mb-3 text-zinc-900 ">Legal & Policies</h3>
         <ul className="space-y-3">
           {[
             { label: "Cancellation & Refund Policy", to: "/cancellation-refund", icon: FaUndoAlt },

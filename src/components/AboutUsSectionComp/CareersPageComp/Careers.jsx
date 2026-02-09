@@ -174,7 +174,7 @@ const handleSubmit = async (e) => {
 >
   <h1
     style={{ fontFamily: "para_font" }}
-    className="text-4xl font-bold mb-4"
+    className="text-4xl  mb-4"
     itemProp="title"
   >
     Join Our Team at EaseMySpace™ – Careers in Mumbai
@@ -194,7 +194,7 @@ const handleSubmit = async (e) => {
 
       {/* Open Positions */}
       <section className="py-12 px-6 lg:px-20">
-        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-8">Open Positions</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl  mb-8">Open Positions</h2>
         {loading ? (
           <p className="text-gray-600">Loading job openings...</p>
         ) : error ? (
@@ -207,7 +207,7 @@ const handleSubmit = async (e) => {
                 className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between hover:shadow-xl transition"
               >
                 <div>
-                  <h3 className="text-lg font-bold text-gray-800">{job.role}</h3>
+                  <h3 className="text-lg  text-gray-800">{job.role}</h3>
                   <p className="text-sm text-blue-600 mt-1">{job.dept}</p>
                   <p className="text-gray-600 text-sm mt-3 line-clamp-3">{job.description}</p>
                 </div>
@@ -239,7 +239,7 @@ const handleSubmit = async (e) => {
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
           {/* Left - Perks */}
           <div>
-            <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-6">Perks & Benefits</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-2xl  mb-6">Perks & Benefits</h2>
             <ul className="space-y-4">
               {perks.map((perk, i) => (
                 <li key={i} className="flex items-start gap-3">

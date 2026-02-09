@@ -21,7 +21,7 @@ export default function TenantDetailsPage({ tenants, property, onBack }) {
       </button>
 
       {/* Header */}
-      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700 flex items-center gap-2 mb-6">
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-indigo-700 flex items-center gap-2 mb-6">
         <FiUsers /> Tenants of {property?.title || "-"}
       </h2>
 
@@ -36,7 +36,7 @@ export default function TenantDetailsPage({ tenants, property, onBack }) {
             >
               {/* Header: Room + Status */}
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                <h3 className="text-xl  text-gray-800 flex items-center gap-2">
                   <FiHome /> {t.room_label || "Room"} ({t.occupancy || "—"})
                 </h3>
                 <span
@@ -64,9 +64,9 @@ export default function TenantDetailsPage({ tenants, property, onBack }) {
                 {/* Payment Summary */}
                 <div className="flex flex-col gap-1">
                   <span className="font-medium">Rent Amount:</span>
-                  <p className="text-lg font-semibold text-indigo-700">₹{t.payment?.amount || 0}</p>
+                  <p className="text-lg  text-indigo-700">₹{t.payment?.amount || 0}</p>
                   <span className="font-medium">Deposit:</span>
-                  <p className="text-lg font-semibold text-indigo-700">₹{t.payment?.deposit || 0}</p>
+                  <p className="text-lg  text-indigo-700">₹{t.payment?.deposit || 0}</p>
                   <span className="font-medium">Last Payment:</span>
                   <p>{formatDate(t.payment?.paid_on)}</p>
                 </div>

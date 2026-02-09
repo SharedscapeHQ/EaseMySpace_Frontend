@@ -33,7 +33,7 @@ export default function HRDashboardSidebar({ activeTab, setActiveTab }) {
         style={{ fontFamily: "universal_font" }}
         className="lg:hidden flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-50"
       >
-        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-pink-600">HR Panel</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-pink-600">HR Panel</h2>
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogout}
@@ -82,7 +82,7 @@ export default function HRDashboardSidebar({ activeTab, setActiveTab }) {
                   ? "bg-pink-100 text-pink-700 shadow-inner"
                   : "hover:bg-pink-50 hover:text-pink-700 text-gray-700"
               }`}
-              style={activeTab === value ? { fontFamily: "heading_font" } : {}}
+              style={activeTab === value ? { fontFamily: "para_font" } : {}}
             >
               <span className="text-lg">{icon}</span>
               <span className="truncate">{label}</span>

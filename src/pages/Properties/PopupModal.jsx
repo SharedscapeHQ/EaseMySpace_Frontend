@@ -70,7 +70,7 @@ export default function PopupModal({ onClose }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold"
+          className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl "
         >
           &times;
         </button>
@@ -81,7 +81,7 @@ export default function PopupModal({ onClose }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             style={{ fontFamily: "universal_font" }}
-            className="text-2xl lg:text-3xl font-bold text-zinc-900"
+            className="text-2xl lg:text-3xl  text-zinc-900"
           >
             Choose Your Plan
           </motion.h1>
@@ -160,7 +160,7 @@ const PlanCard = ({
             <p className={`text-2xl font-extrabold text-${badgeColor}-500`}>
               {price} <span className="text-base font-normal">{gst}</span>
             </p>
-            <p className="text-green-500 font-semibold text-xs">{savings}</p>
+            <p className="text-green-500  text-xs">{savings}</p>
           </div>
         </div>
 

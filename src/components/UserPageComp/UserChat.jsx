@@ -205,7 +205,7 @@ export default function OwnerChats() {
 
   return (
     <div className="p-4">
-      <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold mb-4">
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
         Chats for {user?.firstName || "Owner"}
       </h2>
       {!conversations || Object.keys(conversations).length === 0 ? (
@@ -224,7 +224,7 @@ export default function OwnerChats() {
 
           return (
             <div key={otherId} className="mb-6 border rounded p-2 bg-gray-100">
-              <h3 className="font-semibold mb-2">
+              <h3 className=" mb-2">
                 Chat with {senderName}{" "}
                 <span
                   className={`ml-2 text-xs font-medium ${

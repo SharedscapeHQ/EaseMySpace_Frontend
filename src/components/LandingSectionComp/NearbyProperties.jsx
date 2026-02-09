@@ -143,8 +143,8 @@ useEffect(() => {
             </div>
           </div>
           <div className="p-4 flex flex-col gap-1 z-10 relative lg:group-hover:text-white transition-colors duration-300">
-            <h3 className="font-semibold text-md truncate">{p.bhk_type || p.title}</h3>
-            <p className="font-bold text-xs lg:text-base whitespace-nowrap" style={{ fontFamily: "universal_font" }}>
+            <h3 className=" text-md truncate">{p.bhk_type || p.title}</h3>
+            <p className=" text-xs lg:text-base whitespace-nowrap" style={{ fontFamily: "universal_font" }}>
               ₹ {Number(p.price).toLocaleString()}/mo
             </p>
             <p className="text-gray-600 lg:group-hover:text-white text-xs truncate">{p.location}</p>

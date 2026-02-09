@@ -13,7 +13,7 @@ export default function RecentTransactions({ transactions }) {
   return (
     <div className="bg-white shadow-md rounded-2xl p-6 h-full">
       <h2
-        className="text-xl font-semibold mb-4 flex items-center gap-2"
+        className="text-xl  mb-4 flex items-center gap-2"
         style={{ fontFamily: "para_font" }}
       >
         <FiTrendingUp className="text-blue-600" />
@@ -45,7 +45,7 @@ export default function RecentTransactions({ transactions }) {
                     {new Date(txn.created_at).toLocaleString()}
                   </p>
                 </div>
-                <span className={`font-semibold ${color}`}>
+                <span className={` ${color}`}>
                   {sign}₹{amount}
                 </span> 
               </li>

@@ -145,7 +145,7 @@ export default function AboutNav() {
       <DrawerMenu open={open} setOpen={setOpen}>
         {/* Keep your existing drawer content inside */}
         <div className="flex flex-col px-6 py-6">
-          <h2 style={{ fontFamily: "para_font" }} className="text-blue-600 text-2xl font-bold tracking-wide mb-6">Explore</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-blue-600 text-2xl  tracking-wide mb-6">Explore</h2>
           <ul className="space-y-3 text-zinc-800 font-medium text-base">
             <p className="text-xs text-zinc-400 uppercase tracking-wide mb-1 mt-2">Main</p>
             {[

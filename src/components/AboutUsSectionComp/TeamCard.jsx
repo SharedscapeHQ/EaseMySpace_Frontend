@@ -36,7 +36,7 @@ export default function TeamCard({
 
       {/* Bottom Overlay for Name and Role */}
       <div className="absolute bottom-0 w-full bg-black/60 text-white px-4 py-3 z-10">
-        <h3 className="text-lg font-semibold">{name}</h3>
+        <h3 className="text-lg ">{name}</h3>
         <p className="text-sm text-gray-300">{role}</p>
       </div>
 
@@ -52,13 +52,13 @@ export default function TeamCard({
         {/* Close button for mobile */}
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-black text-lg font-bold rounded-full md:hidden"
+          className="absolute top-3 right-3 text-black text-lg  rounded-full md:hidden"
         >
           ✕
         </button>
 
         <div className="text-center lg:text-left">
-          <h4 className="text-lg font-bold mb-2">{name}</h4>
+          <h4 className="text-lg  mb-2">{name}</h4>
           <p className="text-sm text-zinc-800 whitespace-pre-line">{description}</p>
         </div>
 

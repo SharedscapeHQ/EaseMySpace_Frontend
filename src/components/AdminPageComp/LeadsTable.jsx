@@ -180,12 +180,12 @@ export default function LeadsTable({ leads }) {
         <table className="min-w-full text-sm text-gray-800">
           <thead className="bg-indigo-50 text-gray-700 text-sm">
             <tr>
-              <th className="px-5 py-3 text-left font-semibold">Phone</th>
-              <th className="px-5 py-3 text-left font-semibold">First Seen</th>
-              <th className="px-5 py-3 text-left font-semibold">Last Verified</th>
-              <th className="px-5 py-3 text-left font-semibold">Follow-up</th>
-              <th className="px-5 py-3 text-left font-semibold">Followed By</th>
-              <th className="px-5 py-3 text-left font-semibold">Remark</th>
+              <th className="px-5 py-3 text-left ">Phone</th>
+              <th className="px-5 py-3 text-left ">First Seen</th>
+              <th className="px-5 py-3 text-left ">Last Verified</th>
+              <th className="px-5 py-3 text-left ">Follow-up</th>
+              <th className="px-5 py-3 text-left ">Followed By</th>
+              <th className="px-5 py-3 text-left ">Remark</th>
             </tr>
           </thead>
           <tbody>
@@ -193,7 +193,7 @@ export default function LeadsTable({ leads }) {
               <tr key={lead.id} className="even:bg-gray-50 border-b align-top">
                 <td
                   className={`px-5 py-3 ${
-                    isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""
+                    isFlaggedPhone(lead.phone) ? "text-red-600 " : ""
                   }`}
                 >
                   {lead.phone}

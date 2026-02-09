@@ -36,7 +36,7 @@ export default function MyQueries() {
        <div className="flex flex-col items-center justify-center py-10 space-y-4">
 
   {/* Heading */}
-  <h3 className="text-xl font-semibold text-gray-700">
+  <h3 className="text-xl  text-gray-700">
     No Queries Submitted
   </h3>
 
@@ -60,7 +60,7 @@ export default function MyQueries() {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <h3 className="text-lg  text-gray-800 flex items-center gap-2">
                   <FaBuilding className="text-indigo-500" /> {q.property_title}
                 </h3>
                 <span

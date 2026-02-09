@@ -188,9 +188,9 @@ function UserPropertyDetails() {
 
           {/* Title and tags */}
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="text-xl font-semibold text-gray-800">Your Listed Property</div>
+            <div className="text-xl  text-gray-800">Your Listed Property</div>
             {property.verified && (
-              <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+              <span className="bg-green-500 text-white text-xs  px-2 py-1 rounded-full flex items-center gap-1">
                 <FiCheckCircle className="text-sm" /> Verified
               </span>
             )}
@@ -223,7 +223,7 @@ function UserPropertyDetails() {
                 ) : (
                   <div className="w-full h-full bg-gray-300" />
                 )}
-                <div className="absolute inset-0 bg-black/60 text-white flex items-center justify-center text-center px-2 font-semibold text-sm sm:text-base">
+                <div className="absolute inset-0 bg-black/60 text-white flex items-center justify-center text-center px-2  text-sm sm:text-base">
                   {property.video ? `📹 Video + ${property.images.length} Images` : `${property.images.length} Images`}
                 </div>
               </div>
@@ -233,7 +233,7 @@ function UserPropertyDetails() {
             <div className="flex flex-col justify-between gap-5 w-full lg:w-[24rem]">
               <div className="w-full h-auto bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
                 <div>
-                  <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">Your Listed Property Contact</h2>
+                  <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800 mb-2">Your Listed Property Contact</h2>
                   <div className="text-gray-700 text-base">
                     <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
                   </div>
@@ -248,7 +248,7 @@ function UserPropertyDetails() {
         <span className="text-blue-600 text-xl">📍</span>
       </div>
       <div className="flex flex-col">
-        <span className="font-semibold text-gray-800">In {property.location || 'Unknown Location'}</span>
+        <span className=" text-gray-800">In {property.location || 'Unknown Location'}</span>
         <span className="text-sm text-gray-700">
           <span className="text-green-500 font-medium">{property.distance_from_station || 'N/A'}</span>
         </span>
@@ -271,7 +271,7 @@ function UserPropertyDetails() {
         <span className="text-yellow-500 text-xl">📋</span>
       </div>
       <div className="flex flex-col">
-        <span className="font-semibold text-gray-800">Listing Status</span>
+        <span className=" text-gray-800">Listing Status</span>
         <span className="text-sm text-gray-700">
           <span className="text-indigo-600 font-medium">{property.status || 'Not Available'}</span>
         </span>
@@ -285,7 +285,7 @@ function UserPropertyDetails() {
 
           {/* Description */}
           <div>
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700 mb-3">Property Description</h2>
             <p className="text-gray-700 leading-relaxed whitespace-pre-line">{property.description}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               <InfoItem label="Rent" value={`₹${property.price || 'N/A'}`} />
@@ -299,7 +299,7 @@ function UserPropertyDetails() {
 
           {/* Amenities */}
           <div>
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700 mt-8 mb-3">Amenities</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {knownAmenities.map((amenity, idx) => {
                 const isAvailable = property.amenities?.some((item) =>

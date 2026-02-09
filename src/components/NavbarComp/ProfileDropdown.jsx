@@ -15,9 +15,9 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
       >
         {user && (
           <span 
-  className="hidden capitalize sm:inline text-sm font-semibold tracking-wide"
+  className="hidden capitalize sm:inline text-sm  tracking-wide"
   style={{ 
-    fontFamily: "heading_font",
+    fontFamily: "para_font",
     background: "linear-gradient(to right, #3b82f6, #6366f1)",
     WebkitBackgroundClip: "text",
     color: "transparent"
@@ -38,7 +38,7 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
   ) : (
     <div
       style={{ fontFamily: "universal_font" }}
-      className="w-7 h-7 ml-1 sm:w-8 text-xl sm:h-8 rounded-full flex items-center justify-center font-bold text-white 
+      className="w-7 h-7 ml-1 sm:w-8 text-xl sm:h-8 rounded-full flex items-center justify-center  text-white 
                  bg-gradient-to-br from-blue-500 to-indigo-600 
                  shadow-lg border-2 border-white 
                  transition-transform duration-300 transform hover:scale-110"
@@ -61,7 +61,7 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
             transition={{ duration: 0.2 }}
             className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 rounded-xl shadow-xl z-50 border"
           >
-            <div className="px-4 py-2 text-blue-600 font-semibold text-sm border-b">
+            <div className="px-4 py-2 text-blue-600  text-sm border-b">
               {user ? "My Account" : "LOGIN / REGISTER"}
             </div>
             <div className="flex flex-col px-4 py-2 text-sm text-zinc-800 dark:text-white font-medium space-y-2">

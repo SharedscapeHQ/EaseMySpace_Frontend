@@ -192,7 +192,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                 d="M4 12a8 8 0 018-8v8H4z"
               ></path>
             </svg>
-            <p className="text-indigo-600 font-semibold text-lg">
+            <p className="text-indigo-600  text-lg">
               Processing your payment...
             </p>
             <p className="text-sm text-gray-600 mt-2">
@@ -229,7 +229,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
             >
               &times;
             </button>
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold mb-4 text-center">
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4 text-center">
               Choose Your Plan
             </h2>
             <div className="space-y-4">
@@ -248,7 +248,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
                   >
                     {plan.label}
                   </span>
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className="text-lg  text-gray-800">
                     {plan.label} - ₹{plan.amount} + GST
                   </h3>
                   <p className="text-sm text-gray-700">{plan.description}</p>
@@ -274,7 +274,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
             >
               ✕
             </button>
-            <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800 mb-4 text-center">
               Login Required
             </h2>
             <p className="text-sm text-gray-600 mb-6 text-center">

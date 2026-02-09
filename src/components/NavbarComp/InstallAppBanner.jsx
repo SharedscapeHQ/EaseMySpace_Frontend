@@ -60,7 +60,7 @@ export default function InstallAppBanner({ onClose, onHeightChange }) {
           />
 
           <div className="leading-tight truncate">
-            <div className="text-xs font-semibold text-gray-900">Get the app</div>
+            <div className="text-xs  text-gray-900">Get the app</div>
             <div className="text-[8px] text-gray-500 truncate">
               Easiest way to access all features at your fingertips
             </div>
@@ -72,7 +72,7 @@ export default function InstallAppBanner({ onClose, onHeightChange }) {
           href={ANDROID_PLAY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-3 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-md whitespace-nowrap"
+          className="ml-3 bg-green-600 hover:bg-green-700 text-white text-xs  px-4 py-2 rounded-md whitespace-nowrap"
         >
           Install
         </a>

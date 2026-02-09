@@ -118,7 +118,7 @@ export default function ContactPage() {
               initial={{ y: -16, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -16, opacity: 0 }}
-              className="mb-4 bg-green-500 text-white px-5 py-3 rounded-xl text-center font-semibold shadow-md"
+              className="mb-4 bg-green-500 text-white px-5 py-3 rounded-xl text-center  shadow-md"
             >
               Thank you! Your message has been sent.
             </motion.div>

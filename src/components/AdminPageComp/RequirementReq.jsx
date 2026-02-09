@@ -65,7 +65,7 @@ function RequirementReq() {
             >
               <h3
                 className="text-lg mb-2"
-                style={{ fontFamily: "heading_font", color: "#111827" }}
+                style={{ fontFamily: "para_font", color: "#111827" }}
               >
                 {req.firstName} {req.lastName}{" "}
                 <span style={{ fontSize: "0.85rem", color: "#6B7280" }}>
@@ -111,7 +111,7 @@ function RequirementReq() {
                   <div className="mt-2">
                     <p
                       style={{
-                        fontFamily: "heading_font",
+                        fontFamily: "para_font",
                         marginBottom: "0.25rem",
                       }}
                     >

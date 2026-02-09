@@ -334,7 +334,7 @@ const openEditModal = (property) => {
         <div className="p-6">
       {activeTab === "Users" && (
   <section className="mt-6">
-    <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-semibold mb-6 text-gray-800">Users</h2>
+    <h2 style={{ fontFamily: "para_font" }} className="text-2xl  mb-6 text-gray-800">Users</h2>
 
     {loadingUsers ? (
       <p className="text-gray-500">Loading users...</p>
@@ -343,14 +343,14 @@ const openEditModal = (property) => {
         <table className="min-w-full divide-y divide-gray-200 text-left">
           <thead className="bg-indigo-50">
             <tr>
-              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
                 Contact
               </th>
              
-              <th className="px-6 py-3 text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
                 Referred By
               </th>
             </tr>
@@ -412,7 +412,7 @@ const openEditModal = (property) => {
     {modalUser && (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
-          <h3 className="text-lg font-semibold mb-4">Referrer Details</h3>
+          <h3 className="text-lg  mb-4">Referrer Details</h3>
           <p><strong>Name:</strong> {modalUser.firstName} {modalUser.lastName}</p>
           <p><strong>Email:</strong> {modalUser.email}</p>
           <p><strong>Phone:</strong> {modalUser.phone}</p>
@@ -434,7 +434,7 @@ const openEditModal = (property) => {
 
           {activeTab === "Leads" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">Leads</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Leads</h2>
               {loadingLeads ? (
                 <p>Loading leads...</p>
               ) : (
@@ -457,7 +457,7 @@ const openEditModal = (property) => {
           {activeTab === "Properties" && (
             <section>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold">Properties</h2>
+                <h2 style={{ fontFamily: "para_font" }} className="text-xl ">Properties</h2>
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                   <div className="relative w-full sm:w-64">
@@ -542,7 +542,7 @@ const openEditModal = (property) => {
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
                 Pending Edit Queries
               </h2>
               {loadingQueries ? (

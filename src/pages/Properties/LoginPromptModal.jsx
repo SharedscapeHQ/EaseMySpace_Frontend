@@ -22,7 +22,7 @@ export default function LoginPromptModal({ onClose, onAction, onSkip }) {
 
 
       <div>
-        <h2 style={{ fontFamily: "para_font" }} className="text-lg font-bold text-gray-800">
+        <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800">
           Unlock Your Dashboard
         </h2>
         <p className="mt-1 text-sm text-gray-500">
@@ -49,14 +49,14 @@ export default function LoginPromptModal({ onClose, onAction, onSkip }) {
     <div className="flex gap-3">
       <button
         onClick={onAction}
-        className="flex-1 rounded-lg bg-blue-600 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+        className="flex-1 rounded-lg bg-blue-600 py-2 text-sm  text-white transition hover:bg-blue-700"
       >
         Login
       </button>
 
       <button
         onClick={onSkip || onClose}
-        className="flex-1 rounded-lg bg-gray-100 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-200"
+        className="flex-1 rounded-lg bg-gray-100 py-2 text-sm  text-gray-700 transition hover:bg-gray-200"
       >
         Skip
       </button>

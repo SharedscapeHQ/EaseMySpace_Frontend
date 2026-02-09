@@ -86,7 +86,7 @@ export default function MaidProfiles() {
           />
           <div className="p-4 flex-1 flex flex-col justify-between">
             <div>
-              <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800">
+              <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800">
                 {maid.first_name} {maid.last_name}, {maid.age}
               </h2>
               <p className="text-sm text-gray-600 mt-1">Skills: {maid.skills}</p>

@@ -64,7 +64,7 @@ export default function PostPermissionRequests() {
 
   return (
     <div className="p-6">
-      <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800 mb-6">
+      <h1 style={{ fontFamily: "para_font" }} className="text-2xl  text-gray-800 mb-6">
         Post Permission Requests
       </h1>
 
@@ -77,16 +77,16 @@ export default function PostPermissionRequests() {
           <table className="min-w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-4 py-3 text-left text-xs  text-gray-600 uppercase">
                   User
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-4 py-3 text-left text-xs  text-gray-600 uppercase">
                   Phone
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-4 py-3 text-left text-xs  text-gray-600 uppercase">
                   Requested On
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase">
+                <th className="px-4 py-3 text-center text-xs  text-gray-600 uppercase">
                   Action
                 </th>
               </tr>
@@ -100,7 +100,7 @@ export default function PostPermissionRequests() {
                       <FiUser />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-800">{user.firstName}</p>
+                      <p className=" text-gray-800">{user.firstName}</p>
                     </div>
                   </td>
 

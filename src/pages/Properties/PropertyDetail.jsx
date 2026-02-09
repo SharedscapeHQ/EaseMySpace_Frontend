@@ -208,7 +208,7 @@ const enrich = (row) => {
           <div className="flex items-center justify-between flex-wrap">
   {/* Left side */}
   <div className="flex items-center gap-2 flex-wrap">
-    <div className="text-base lg:text-2xl font-semibold text-gray-800">
+    <div className="text-base lg:text-2xl  text-gray-800">
       {generateTitle(property.title)}
     </div>
     {property.verified && (

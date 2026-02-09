@@ -3,7 +3,7 @@ export default function PendingWithdrawals({ pending }) {
     <div className="bg-white shadow-md rounded-2xl p-6 h-full">
       {/* Header */}
       <h3
-        className="text-xl font-semibold mb-4 flex items-center gap-2"
+        className="text-xl  mb-4 flex items-center gap-2"
         style={{ fontFamily: "universal_font" }}
       >
         Pending Withdrawals
@@ -25,7 +25,7 @@ export default function PendingWithdrawals({ pending }) {
                   {new Date(req.created_at).toLocaleString()}
                 </p>
               </div>
-              <span className="font-semibold text-gray-800">
+              <span className=" text-gray-800">
                 ₹{req.amount}
               </span>
             </li>

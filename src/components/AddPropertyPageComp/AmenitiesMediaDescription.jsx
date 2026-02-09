@@ -52,7 +52,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
     <>
       {/* Amenities */}
       <div className="border-t pt-4">
-        <h2 style={{ fontFamily: "para_font" }} className="font-bold mb-2 text-indigo-600">
+        <h2 style={{ fontFamily: "para_font" }} className=" mb-2 text-indigo-600">
           Amenities <span className="text-red-500">*</span>
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
@@ -120,7 +120,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
                     amenities: prev.amenities.filter((a) => a !== amenity),
                   }))
                 }
-                className="font-bold text-xs text-indigo-600 hover:text-indigo-900"
+                className=" text-xs text-indigo-600 hover:text-indigo-900"
               >
                 ×
               </button>
@@ -131,7 +131,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
 
       {/* Description */}
       <div className="border-t pt-4">
-        <label className="font-semibold block mb-1">
+        <label className=" block mb-1">
          Description <span className="text-red-500">*</span>
         </label>
         <textarea
@@ -148,11 +148,11 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
 
      {/* Media Upload */}
 <div className="border-t pt-4">
-  <h2 style={{ fontFamily: "para_font" }} className="font-bold mb-2 text-indigo-600">Media Upload</h2>
+  <h2 style={{ fontFamily: "para_font" }} className=" mb-2 text-indigo-600">Media Upload</h2>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {imageCategories.map((cat) => (
       <div className="mb-2" key={cat.key}>
-        <label className="block font-semibold mb-1">
+        <label className="block  mb-1">
           {cat.label}{" "}
           {cat.key !== "additional_images" && (
             <span className="text-red-500">*</span>
@@ -176,7 +176,7 @@ const AmenitiesMediaDescription = ({ formData, setFormData }) => {
 
     {/* Videos */}
     <div className="mb-2">
-      <label className="block font-semibold mb-1">
+      <label className="block  mb-1">
         Videos
       </label>
       <input

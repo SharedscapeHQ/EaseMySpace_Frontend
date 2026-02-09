@@ -137,7 +137,7 @@ const handleSubmit = async (e) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-indigo-700 flex items-center gap-3 mb-6">
+        <h1 style={{ fontFamily: "para_font" }} className="text-3xl  text-indigo-700 flex items-center gap-3 mb-6">
           <FaHome /> Add Property Details
         </h1>
 
@@ -152,7 +152,7 @@ const handleSubmit = async (e) => {
           type="submit"
           disabled={uploading}
           whileTap={{ scale: 0.97 }}
-          className={`w-1/2 py-3 font-semibold rounded-xl transition duration-300 ${
+          className={`w-1/2 py-3  rounded-xl transition duration-300 ${
             uploading
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-indigo-600 text-white hover:bg-indigo-700"
@@ -181,12 +181,12 @@ const handleSubmit = async (e) => {
                 className="bg-white shadow-2xl rounded-xl p-6 max-w-sm w-full border-l-4 border-blue-600"
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h2 style={{ fontFamily: "para_font" }} className="text-lg text-blue-600 font-bold">
+                  <h2 style={{ fontFamily: "para_font" }} className="text-lg text-blue-600 ">
                     Property Submitted!
                   </h2>
                   <button
                     onClick={() => setShowPopup(false)}
-                    className="text-gray-400 hover:text-gray-600 font-bold text-xl"
+                    className="text-gray-400 hover:text-gray-600  text-xl"
                   >
                     ×
                   </button>

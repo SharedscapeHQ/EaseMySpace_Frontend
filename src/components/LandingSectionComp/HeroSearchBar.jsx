@@ -125,7 +125,7 @@ export default function HeroSearchBar() {
         {/* LOCATION */}
         <div onClick={() => setActive("location")} className={sectionClass("location")}>
           <div className="flex flex-col items-start w-full relative">
-            <span className="text-xs font-semibold text-zinc-800">Location</span>
+            <span className="text-xs  text-zinc-800">Location</span>
             <input
               value={location}
               onChange={(e) => {
@@ -162,7 +162,7 @@ export default function HeroSearchBar() {
         {/* BHK */}
       <div className={sectionClass("bhk")}>
   <div className="flex flex-col items-start w-full relative">
-    <span className="text-xs font-semibold text-zinc-800 mb-1">BHK</span>
+    <span className="text-xs  text-zinc-800 mb-1">BHK</span>
 
     {/* Selected value aligned left */}
     <div
@@ -199,7 +199,7 @@ export default function HeroSearchBar() {
         {/* OCCUPANCY + SEARCH */}
       <div className={`${sectionClass("occupancy")} flex items-center justify-between`}>
   <div className="flex flex-col items-start w-full relative">
-    <span className="text-xs font-semibold text-zinc-800 mb-1">Looking For?</span>
+    <span className="text-xs  text-zinc-800 mb-1">Looking For?</span>
 
     {/* Selected value aligned left, no border */}
     <div

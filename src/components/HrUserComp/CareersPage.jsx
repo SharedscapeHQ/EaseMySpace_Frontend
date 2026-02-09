@@ -51,7 +51,7 @@ function TagsInput({ tags, setTags, placeholder }) {
           <span>{tag}</span>
           <button
             type="button"
-            className="text-indigo-500 font-bold"
+            className="text-indigo-500 "
             onClick={() => setTags(tags.filter((_, i) => i !== idx))}
           >
             ×
@@ -94,7 +94,7 @@ function ConfirmModal({ show, onConfirm, onCancel }) {
             transition={{ duration: 0.25 }}
           >
             <div className="bg-white rounded-xl shadow-2xl p-6 w-80 text-center">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <h3 className="text-lg  text-gray-800 mb-2">
                 Confirm Delete
               </h3>
               <p className="text-gray-600 mb-4">
@@ -208,7 +208,7 @@ export default function CareersPage() {
         transition={{ duration: 0.4 }}
         className="bg-white rounded-xl p-6 mb-6 shadow-lg border"
       >
-        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-700 mb-4">
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-700 mb-4">
           {editJob ? "Edit Job" : "Add New Job"}
         </h2>
 

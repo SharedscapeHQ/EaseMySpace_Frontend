@@ -106,7 +106,7 @@ export default function RentPayBtn({ property, rentDetails, onSuccess }) {
     <button
       onClick={handlePay}
       disabled={loading}
-      className={`mt-4 w-full font-semibold py-2.5 rounded-lg transition ${
+      className={`mt-4 w-full  py-2.5 rounded-lg transition ${
         loading
           ? "bg-gray-400 cursor-not-allowed"
           : "bg-green-600 hover:bg-green-700 text-white"

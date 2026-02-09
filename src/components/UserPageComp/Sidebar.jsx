@@ -130,7 +130,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
             <button
               key={group.label}
               onClick={() => toggleMobileGroup(group.label)}
-              className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-md transition-all
+              className={`flex items-center gap-2 px-3 py-2 text-xs  rounded-md transition-all
               ${
                 mobileExpandedGroup === group.label
                   ? "bg-indigo-100 text-indigo-700 border border-indigo-300"
@@ -211,7 +211,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
       {/* ===== Desktop Sidebar ===== */}
       <aside className="hidden lg:flex fixed top-20 left-0 h-[calc(100vh-4rem)] w-64 bg-white shadow-lg border-r flex-col">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700">User Panel</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700">User Panel</h2>
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 text-red-600 hover:text-red-700 transition px-3 py-1 rounded-md border border-red-200"
@@ -225,7 +225,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
             <div key={group.label} className="border-b pb-2">
               <button
                 onClick={() => toggleGroup(group.label)}
-                className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wide hover:text-indigo-600 transition"
+                className="flex items-center justify-between w-full px-2 py-2 text-xs  text-gray-600 uppercase tracking-wide hover:text-indigo-600 transition"
               >
                 <div className="flex items-center gap-2">
                   {group.icon}
@@ -249,7 +249,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
                       }
                       className={`flex items-center justify-between w-full text-left px-4 py-2 rounded-md transition ${
                         activeTab === value
-                          ? "bg-indigo-100 text-indigo-700 font-semibold"
+                          ? "bg-indigo-100 text-indigo-700 "
                           : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
@@ -275,7 +275,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
                             onClick={() => handleTabClick(subValue)}
                             className={`flex items-center w-full text-left px-3 py-1.5 rounded-md text-sm transition ${
                               activeTab === subValue
-                                ? "bg-indigo-100 text-indigo-700 font-semibold"
+                                ? "bg-indigo-100 text-indigo-700 "
                                 : "hover:bg-gray-100 text-gray-700"
                             }`}
                           >

@@ -63,7 +63,7 @@ return (
     <Link to={`/properties/${property.id}`}>
       {/* Location (bold → para_font) */}
       <div
-        className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white line-clamp-2"
+        className="mt-2 text-[12px]  text-zinc-900 dark:text-white line-clamp-2"
         style={{ fontFamily: "universal_font" }}
       >
         {loading

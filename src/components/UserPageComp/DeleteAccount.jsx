@@ -43,7 +43,7 @@ ${user?.firstName || "User"}
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <FiTrash2 className="text-3xl text-red-600" />
-        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800">
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl  text-gray-800">
           Delete Account
         </h1>
       </div>
@@ -52,7 +52,7 @@ ${user?.firstName || "User"}
       <div className="flex gap-3 bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
         <FiAlertTriangle className="text-red-600 text-xl mt-1" />
         <div className="text-sm text-red-700">
-          <p className="font-semibold mb-1">This action is permanent</p>
+          <p className=" mb-1">This action is permanent</p>
           <p>
             Deleting your EaseMySpace account will permanently remove your
             profile, bookings, wallet balance, chat history, and all associated
@@ -108,7 +108,7 @@ ${user?.firstName || "User"}
         <button
           onClick={handleEmailRedirect}
           disabled={!canProceed}
-          className={`inline-flex items-center gap-2 font-semibold
+          className={`inline-flex items-center gap-2 
             ${
               canProceed
                 ? "text-indigo-600 hover:underline"
@@ -125,7 +125,7 @@ ${user?.firstName || "User"}
       <button
         onClick={handleEmailRedirect}
         disabled={!canProceed}
-        className={`w-full py-3 rounded-lg font-semibold transition-all
+        className={`w-full py-3 rounded-lg  transition-all
           ${
             canProceed
               ? "bg-red-600 text-white hover:bg-red-700"

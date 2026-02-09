@@ -135,7 +135,7 @@ return (
           >
             <div className="flex justify-between items-start">
               <div className="space-y-1">
-                <p className="font-semibold text-gray-800">{r.property}</p>
+                <p className=" text-gray-800">{r.property}</p>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium text-gray-700">Tenant:</span> {r.tenant}
                 </p>

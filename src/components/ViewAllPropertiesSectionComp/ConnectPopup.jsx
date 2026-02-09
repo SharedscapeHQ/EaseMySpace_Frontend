@@ -62,7 +62,7 @@ export default function ConnectPopup({ name, setIsOpen }) {
 
         {/* Left panel */}
         <div className="bg-blue-50 p-6 md:w-1/2 border-r border-gray-200">
-          <h3 className="text-gray-800 font-semibold text-lg mb-4 flex items-center gap-2">
+          <h3 className="text-gray-800  text-lg mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-500" /> {/* Yellow spark */}
             Why Choose EaseMySpace™?
           </h3>
@@ -90,7 +90,7 @@ export default function ConnectPopup({ name, setIsOpen }) {
         <div className="p-6 md:w-1/2 flex flex-col justify-center">
           {!submitted ? (
             <>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-800 mb-2">
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-800 mb-2">
                 How can we help you?
               </h2>
               <p className="text-sm text-gray-600 mb-4">

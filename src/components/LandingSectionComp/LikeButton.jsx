@@ -187,7 +187,7 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
       {showGroupModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm relative">
-            <h2 style={{ fontFamily: "para_font" }} className="text-lg font-bold mb-4">Select or Create Group</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg  mb-4">Select or Create Group</h2>
 
             {/* Existing Groups */}
             {groups.length > 0 && (

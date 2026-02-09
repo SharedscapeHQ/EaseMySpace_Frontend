@@ -73,7 +73,7 @@ export default function AboutHighlights() {
             <div className="flex items-center gap-4 mb-4">
               <div className="text-xl">{item.icon}</div>
               <h3
-                className="font-bold text-zinc-900 text-base sm:text-lg"
+                className=" text-zinc-900 text-base sm:text-lg"
                 itemProp="name"
               >
                 {item.title}

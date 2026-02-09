@@ -24,7 +24,7 @@ export default function PricingOptions({ plans, selectedPlan, onSelectPlan, onBo
 
   return (
     <div className="bg-pink-50 dark:bg-zinc-700 p-6 border-t border-pink-100 dark:border-zinc-600">
-      <h3 className="text-xl font-semibold text-pink-600 mb-4">Select Service Plan</h3>
+      <h3 className="text-xl  text-pink-600 mb-4">Select Service Plan</h3>
 
       {/* Pricing Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -38,7 +38,7 @@ export default function PricingOptions({ plans, selectedPlan, onSelectPlan, onBo
                 : "border-pink-100 dark:border-zinc-700 bg-white dark:bg-zinc-800"
             }`}
           >
-            <p className="text-lg font-semibold text-gray-800 dark:text-white">₹{plan.price}</p>
+            <p className="text-lg  text-gray-800 dark:text-white">₹{plan.price}</p>
             <p className="text-sm text-gray-500">{plan.period}</p>
           </div>
         ))}
@@ -72,7 +72,7 @@ export default function PricingOptions({ plans, selectedPlan, onSelectPlan, onBo
       <div className="text-center mt-6">
         <button
           onClick={handleBook}
-          className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg"
+          className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-xl  transition-all shadow-md hover:shadow-lg"
         >
           Book Now
         </button>

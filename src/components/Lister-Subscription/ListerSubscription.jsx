@@ -149,7 +149,7 @@ export default function ListerSubscription() {
             <div className="flex flex-col gap-2 lg:hidden">
               <h2
                 style={{ fontFamily: "para_font" }}
-                className="text-lg font-semibold"
+                className="text-lg "
               >
                 {plan.title}
               </h2>
@@ -186,7 +186,7 @@ export default function ListerSubscription() {
                     {plan.price}{" "}
                     <span className="text-xl font-normal">{plan.gst}</span>
                   </p>
-                  <p className="text-green-500 font-semibold text-sm">
+                  <p className="text-green-500  text-sm">
                     {plan.savings}
                   </p>
                 </div>
@@ -229,7 +229,7 @@ export default function ListerSubscription() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             <button
-              className="text-right w-full mb-4 text-gray-500 font-bold"
+              className="text-right w-full mb-4 text-gray-500 "
               onClick={() => setSelectedPlan(null)}
             >
               Close
@@ -238,7 +238,7 @@ export default function ListerSubscription() {
               {selectedPlan.title}
             </h2>
             <p className="text-sm italic mb-4">{selectedPlan.description}</p>
-            <p className="text-2xl font-bold text-zinc-900 mb-2">
+            <p className="text-2xl  text-zinc-900 mb-2">
               {selectedPlan.price}{" "}
               <span className="text-xs">{selectedPlan.gst}</span>
             </p>

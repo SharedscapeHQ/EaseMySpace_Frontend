@@ -219,7 +219,7 @@ export default function Sidebar({
               <div key={title} className="relative flex-shrink-0">
                 <button
                   onClick={() => toggleSection(title)}
-                  className={`flex flex-col items-center px-4 py-2 text-sm font-semibold whitespace-nowrap ${
+                  className={`flex flex-col items-center px-4 py-2 text-sm  whitespace-nowrap ${
                     openSections[title] ? "text-indigo-700" : "text-gray-600"
                   }`}
                 >
@@ -244,7 +244,7 @@ export default function Sidebar({
                         <span className="text-lg">{icon}</span>
                         <span>{label}</span>
                         {badge > 0 && (
-                          <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                          <span className="bg-red-500 text-white text-xs  px-2 py-0.5 rounded-full">
                             {badge}
                           </span>
                         )}
@@ -260,7 +260,7 @@ export default function Sidebar({
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex fixed top-20 left-0 z-30 w-64 bg-white shadow-lg border-r h-[calc(100vh-5rem)] flex-col">
         <div className="p-6 border-b flex items-center justify-between flex-shrink-0">
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700">{role} Panel</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700">{role} Panel</h2>
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 text-red-600 hover:text-red-700 transition px-3 py-1 rounded-md border border-red-200"
@@ -280,7 +280,7 @@ export default function Sidebar({
                       [title]: !prev[title],
                     }))
                   }
-                  className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wide hover:text-indigo-600 transition"
+                  className="flex items-center justify-between w-full px-2 py-2 text-xs  text-gray-600 uppercase tracking-wide hover:text-indigo-600 transition"
                 >
                   <div className="flex items-center gap-2">
                     {icon}
@@ -302,7 +302,7 @@ export default function Sidebar({
                       onClick={() => handleTabClick(value)}
                       className={`flex items-center justify-between w-full text-left px-4 py-2 rounded-md transition ${
                         activeTab === value
-                          ? "bg-indigo-100 text-indigo-700 font-semibold"
+                          ? "bg-indigo-100 text-indigo-700 "
                           : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
@@ -311,7 +311,7 @@ export default function Sidebar({
                         <span className="truncate">{label}</span>
                       </div>
                       {badge > 0 && (
-                        <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        <span className="bg-red-500 text-white text-xs  px-2 py-0.5 rounded-full">
                           {badge}
                         </span>
                       )}

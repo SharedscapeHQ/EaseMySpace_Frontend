@@ -70,7 +70,7 @@ export default function ListerPlanDetails() {
           <FiHome className="text-indigo-500 text-xl" />
           <div>
             <p className="text-gray-800 font-medium">Plan Name</p>
-            <p className="font-semibold capitalize text-gray-700">
+            <p className=" capitalize text-gray-700">
               {plan.plan_name?.replace("_", " ")}
             </p>
           </div>
@@ -82,14 +82,14 @@ export default function ListerPlanDetails() {
             <FiCheckCircle className="text-green-500 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Property Limit</p>
-              <p className="font-semibold text-gray-700">{plan.property_limit}</p>
+              <p className=" text-gray-700">{plan.property_limit}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg shadow-sm">
             <FiCheckCircle className="text-yellow-600 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Used Properties</p>
-              <p className="font-semibold text-gray-700">{plan.used_properties}</p>
+              <p className=" text-gray-700">{plan.used_properties}</p>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function ListerPlanDetails() {
             <FiCalendar className="text-blue-500 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Start Date</p>
-              <p className="font-semibold text-gray-700">
+              <p className=" text-gray-700">
                 {startDate.toLocaleDateString("en-IN")}
               </p>
             </div>
@@ -110,7 +110,7 @@ export default function ListerPlanDetails() {
             <FiCalendar className="text-red-500 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">End Date</p>
-              <p className="font-semibold text-gray-700">
+              <p className=" text-gray-700">
                 {isValidEndDate
                   ? endDate.toLocaleDateString("en-IN")
                   : "Invalid date"}
@@ -135,7 +135,7 @@ export default function ListerPlanDetails() {
           <div>
             <p className="text-gray-800 font-medium">Status</p>
             <p
-              className={`font-semibold capitalize ${
+              className={` capitalize ${
                 plan.status === "active" ? "text-green-600" : "text-red-600"
               }`}
             >
@@ -148,7 +148,7 @@ export default function ListerPlanDetails() {
           <div className="mt-6 text-left">
             <button
               onClick={() => navigate("/subscriptions")}
-              className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-md transition"
+              className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white  px-4 py-2 rounded-md transition"
             >
               <FiArrowRightCircle /> Extend / Upgrade Plan
             </button>
@@ -159,7 +159,7 @@ export default function ListerPlanDetails() {
       {/* Right Section */}
       <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between">
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-indigo-700">Grow Your Listings</h3>
+          <h3 className="text-xl  text-indigo-700">Grow Your Listings</h3>
           <p className="text-gray-700 text-sm">
             Manage your properties easily and reach more tenants by upgrading your
             lister plan.
@@ -174,7 +174,7 @@ export default function ListerPlanDetails() {
         <div className="mt-6">
           <Link
             to="/lister-subscription"
-            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition w-full"
+            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white  px-4 py-2 rounded-md transition w-full"
           >
             View / Upgrade Plans <FiArrowRightCircle />
           </Link>

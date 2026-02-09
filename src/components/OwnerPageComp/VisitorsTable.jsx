@@ -113,19 +113,19 @@ export default function VisitorsTable() {
             <table className="min-w-full text-sm text-gray-800">
               <thead className="bg-indigo-50 text-gray-700 text-sm">
                 <tr>
-                  <th className="px-5 py-3 text-left font-semibold">
+                  <th className="px-5 py-3 text-left ">
                     <FaGlobe className="inline mr-1" /> IP
                   </th>
-                  <th className="px-5 py-3 text-left font-semibold">
+                  <th className="px-5 py-3 text-left ">
                     <FaMapMarkerAlt className="inline mr-1" /> Location
                   </th>
-                  <th className="px-5 py-3 text-left font-semibold">
+                  <th className="px-5 py-3 text-left ">
                     Status
                   </th>
-                  <th className="px-5 py-3 text-left font-semibold">
+                  <th className="px-5 py-3 text-left ">
                     <FaClock className="inline mr-1" /> First Seen
                   </th>
-                  <th className="px-5 py-3 text-left font-semibold">Last Seen</th>
+                  <th className="px-5 py-3 text-left ">Last Seen</th>
                 </tr>
               </thead>
               <tbody>

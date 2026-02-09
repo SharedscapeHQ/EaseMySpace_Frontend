@@ -58,7 +58,7 @@ useEffect(() => {
 
   if (isAuthorized === null) {
     return (
-      <div className="pt-20 text-center text-indigo-600 font-semibold">
+      <div className="pt-20 text-center text-indigo-600 ">
         Verifying access...
       </div>
     );
@@ -70,7 +70,7 @@ useEffect(() => {
   <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden">
     
 
-    <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800 mb-2 text-center">Oops! You're not logged in</h2>
+    <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-gray-800 mb-2 text-center">Oops! You're not logged in</h2>
     <p className="text-sm text-gray-600 mb-6 text-center">
       Sign in with your account to unlock this page.
     </p>
@@ -108,7 +108,7 @@ useEffect(() => {
   <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden">
     
 
-    <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-gray-800 mb-2 text-center">Oops! You're not logged in</h2>
+    <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-gray-800 mb-2 text-center">Oops! You're not logged in</h2>
     <p className="text-sm text-gray-600 mb-6 text-center">
       Sign in with your account to unlock this page.
     </p>

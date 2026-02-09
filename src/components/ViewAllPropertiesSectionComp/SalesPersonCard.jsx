@@ -46,7 +46,7 @@ export default function SalesPersonCardMini({ className = "" }) {
               className=" object-contain"
             />
           </div>
-          <h2 style={{ fontFamily: "para_font" }} className="mt-1 text-sm font-semibold text-white text-center truncate w-full">{name}</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="mt-1 text-sm  text-white text-center truncate w-full">{name}</h2>
           <p className="text-[10px] text-white">{showRealPhone ? phone : maskPhone(phone)}</p>
           <p className="text-[10px] font-medium text-white">{role}</p>
         </div>

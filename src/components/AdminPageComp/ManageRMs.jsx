@@ -150,7 +150,7 @@ export default function ManageRMs() {
             className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition duration-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0"
           >
             <div className="flex-1">
-              <p style={{fontFamily:"heading_font"}} className=" text-lg text-gray-800">{rm.name}</p>
+              <p style={{fontFamily:"para_font"}} className=" text-lg text-gray-800">{rm.name}</p>
               <p className="text-gray-600">{rm.email}</p>
               <p className="text-gray-500">{rm.phone}</p>
               {rm.created_at && (

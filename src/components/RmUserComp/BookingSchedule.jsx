@@ -45,7 +45,7 @@ export default function BookingSchedule() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700">All Bookings</h1>
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl  text-indigo-700">All Bookings</h1>
        <div className="flex flex-col w-40">
   <label className="text-sm text-gray-600 mb-1">Date Filter</label>
   <div className="relative">
@@ -124,7 +124,7 @@ export default function BookingSchedule() {
                       className="border-b hover:bg-gray-50 transition"
                     >
                       <td className="px-4 py-3">
-                        <div className="font-semibold">
+                        <div className="">
                           {booking.firstName} {booking.lastName}
                         </div>
                         <div className="text-sm text-gray-600">{booking.email}</div>
@@ -182,7 +182,7 @@ export default function BookingSchedule() {
                   key={booking.booking_id || index}
                   className="border rounded-lg shadow-sm bg-white p-4"
                 >
-                  <div className="font-semibold text-indigo-700">
+                  <div className=" text-indigo-700">
                     {booking.firstName} {booking.lastName}
                   </div>
                   <div className="text-sm text-gray-600">{booking.email}</div>

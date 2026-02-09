@@ -101,7 +101,7 @@ export default function LandlordAgents() {
 
   const statusBadge = (isVerified) => (
     <span
-      className={`px-3 py-1 rounded-full text-sm font-semibold ${
+      className={`px-3 py-1 rounded-full text-sm  ${
         isVerified
           ? "bg-green-100 text-green-700"
           : "bg-yellow-100 text-yellow-700"
@@ -174,7 +174,7 @@ export default function LandlordAgents() {
                       setExpandedUserId(isExpanded ? null : user.id)
                     }
                   >
-                    <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-blue-700 flex items-center gap-1">
+                    <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-blue-700 flex items-center gap-1">
                       {user.firstName} {user.lastName}
                       {isExpanded ? (
                         <FiChevronUp className="text-gray-500" />
@@ -215,7 +215,7 @@ export default function LandlordAgents() {
                         {manager ? (
                           <>
                             <p>
-                              <span className="font-semibold text-blue-700">
+                              <span className=" text-blue-700">
                                 Assigned Manager:
                               </span>{" "}
                               {manager.name}
@@ -237,7 +237,7 @@ export default function LandlordAgents() {
 
                     {/* KYC Documents */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-600 uppercase mb-2">
+                      <p className="text-xs  text-gray-600 uppercase mb-2">
                         KYC Documents
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -276,7 +276,7 @@ export default function LandlordAgents() {
           <div className="relative max-w-4xl w-full px-4">
             <button
               onClick={() => setPreviewImage(null)}
-              className="absolute top-2 right-2 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold hover:bg-gray-200"
+              className="absolute top-2 right-2 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center text-xl  hover:bg-gray-200"
             >
               ×
             </button>

@@ -231,11 +231,11 @@ const handleDropToCategory = (category, dropIndex) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4">
       <div className="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-2xl font-bold mb-6 text-center">Edit Property</h3>
+        <h3 className="text-2xl  mb-6 text-center">Edit Property</h3>
 
         {/* === Basic Info === */}
         <div className="mb-6">
-          <h4 className="font-semibold mb-3 text-indigo-600">Basic Info</h4>
+          <h4 className=" mb-3 text-indigo-600">Basic Info</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               ["title", "Title"],
@@ -294,7 +294,7 @@ const handleDropToCategory = (category, dropIndex) => {
 
         {/* === Rent per Room & Occupancy === */}
         <div className="mb-6 border-t pt-4">
-          <h4 className="font-semibold mb-3 text-indigo-600">
+          <h4 className=" mb-3 text-indigo-600">
             Rent & Deposit per Room & Occupancy
           </h4>
 
@@ -398,7 +398,7 @@ const handleDropToCategory = (category, dropIndex) => {
 
         {/* === Amenities === */}
         <div className="mb-6">
-          <h4 className="font-semibold mb-3 text-indigo-600">Amenities</h4>
+          <h4 className=" mb-3 text-indigo-600">Amenities</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {[
               "wifi",
@@ -461,7 +461,7 @@ const handleDropToCategory = (category, dropIndex) => {
 
         {/* === Description === */}
         <div className="mb-6">
-          <h4 className="font-semibold mb-2 text-indigo-600">Description</h4>
+          <h4 className=" mb-2 text-indigo-600">Description</h4>
           <textarea
             name="description"
             value={editForm.description || ""}
@@ -521,7 +521,7 @@ const handleDropToCategory = (category, dropIndex) => {
 
         {/* === Main Images Section === */}
         <div className="mb-6">
-          <h4 className="font-semibold mb-3 text-indigo-600">Current Images</h4>
+          <h4 className=" mb-3 text-indigo-600">Current Images</h4>
           {renderImages(editForm.image || [], null)}
           <input
             type="file"
@@ -540,7 +540,7 @@ const handleDropToCategory = (category, dropIndex) => {
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDropToCategory(key)}
           >
-            <h5 className="font-semibold mb-2">{label}</h5>
+            <h5 className=" mb-2">{label}</h5>
             {renderImages(editForm[key] || [], key)}
             <input
               type="file"
@@ -554,7 +554,7 @@ const handleDropToCategory = (category, dropIndex) => {
 
        {/* === Videos Section === */}
 <div className="mb-6">
-  <h4 className="font-semibold mb-3 text-indigo-600">Videos</h4>
+  <h4 className=" mb-3 text-indigo-600">Videos</h4>
 
   {/* EXISTING VIDEOS */}
   {(editingProperty.video || []).length > 0 && (

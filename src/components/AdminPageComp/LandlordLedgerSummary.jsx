@@ -36,7 +36,7 @@ export default function LandlordLedgerSummary() {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200">
       <div className="flex items-center justify-between mb-4">
-        <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800">
+        <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800">
           Landlords & Agents Ledger Summary
         </h2>
         <button
@@ -76,7 +76,7 @@ export default function LandlordLedgerSummary() {
                   <td className="px-4 py-2 border text-right text-red-600">
                     ₹{item.service_charge?.toLocaleString() || 0}
                   </td>
-                  <td className="px-4 py-2 border text-right font-semibold text-green-600">
+                  <td className="px-4 py-2 border text-right  text-green-600">
                     ₹{item.current_balance?.toLocaleString() || 0}
                   </td>
                 </tr>

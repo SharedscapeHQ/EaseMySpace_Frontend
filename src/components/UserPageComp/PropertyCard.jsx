@@ -54,7 +54,7 @@ const PropertyCard = ({ property, onRaiseQuery, onAddressUpdated }) => {
         </div>
 
         <div className="p-4 flex flex-col gap-2">
-          <h3 className="font-semibold truncate">{property.title}</h3>
+          <h3 className=" truncate">{property.title}</h3>
 
           <p className="flex items-center gap-1 text-sm">
             <FaRupeeSign /> {Number(property.price || 0).toLocaleString()}/mo
@@ -205,7 +205,7 @@ const UpdateAddressModal = ({ property, onClose, onAddressUpdated }) => {
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
       <div className="bg-white rounded-2xl w-full max-w-md p-6">
-        <h3 className="text-lg font-semibold mb-4">Update Address</h3>
+        <h3 className="text-lg  mb-4">Update Address</h3>
 
         <label className="text-sm font-medium">Location</label>
         <input

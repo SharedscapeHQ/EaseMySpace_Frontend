@@ -173,18 +173,18 @@ export default function LeadsTable() {
         <table className="min-w-full text-sm text-gray-800">
           <thead className="bg-indigo-50 text-gray-700 text-sm">
             <tr>
-              <th className="px-5 py-3 text-left font-semibold">Phone</th>
-              <th className="px-5 py-3 text-left font-semibold">First Seen</th>
-              <th className="px-5 py-3 text-left font-semibold">Last Verified</th>
-              <th className="px-5 py-3 text-left font-semibold">Follow-up</th>
-              <th className="px-5 py-3 text-left font-semibold">Followed By</th>
-              <th className="px-5 py-3 text-left font-semibold">Remark</th>
+              <th className="px-5 py-3 text-left ">Phone</th>
+              <th className="px-5 py-3 text-left ">First Seen</th>
+              <th className="px-5 py-3 text-left ">Last Verified</th>
+              <th className="px-5 py-3 text-left ">Follow-up</th>
+              <th className="px-5 py-3 text-left ">Followed By</th>
+              <th className="px-5 py-3 text-left ">Remark</th>
             </tr>
           </thead>
           <tbody>
             {filteredLeads.map((lead) => (
               <tr key={lead.id} className="even:bg-gray-50 border-b align-top">
-                <td className={`px-5 py-3 ${isFlaggedPhone(lead.phone) ? "text-red-600 font-bold" : ""}`}>
+                <td className={`px-5 py-3 ${isFlaggedPhone(lead.phone) ? "text-red-600 " : ""}`}>
                   {lead.phone}
                 </td>
                 <td className="px-5 py-3">{formatDate(lead.first_seen)}</td>
@@ -235,7 +235,7 @@ export default function LeadsTable() {
       <div className="sm:hidden flex flex-col divide-y">
         {filteredLeads.map((lead) => (
           <div key={lead.id} className="p-4 space-y-2">
-            <p className={`font-semibold ${isFlaggedPhone(lead.phone) ? "text-red-600" : "text-gray-800"}`}>
+            <p className={` ${isFlaggedPhone(lead.phone) ? "text-red-600" : "text-gray-800"}`}>
               📞 {lead.phone}
             </p>
             <p className="text-xs text-gray-600">First Seen: {formatDate(lead.first_seen)}</p>

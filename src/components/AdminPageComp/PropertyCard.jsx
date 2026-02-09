@@ -120,7 +120,7 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
             >
               <FiX className="w-5 h-5" />
             </button>
-            <h3 className="text-lg font-semibold mb-4">Confirm Approval</h3>
+            <h3 className="text-lg  mb-4">Confirm Approval</h3>
             <p className="mb-4 text-gray-700">
               Are you sure you want to approve this property?
             </p>

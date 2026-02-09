@@ -17,7 +17,7 @@ export default function AboutUsHero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <h1 style={{ fontFamily: "para_font" }} className="text-3xl sm:text-5xl font-bold text-zinc-800 dark:text-white leading-tight mb-6">
+        <h1 style={{ fontFamily: "para_font" }} className="text-3xl sm:text-5xl text-zinc-800 dark:text-white leading-tight mb-6">
           About EaseMySpace™
         </h1>
         <p className="text-base sm:text-lg text-zinc-700 dark:text-zinc-300 text-center mb-10">

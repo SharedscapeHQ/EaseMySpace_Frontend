@@ -46,7 +46,7 @@ export default function InvoiceModal({ isOpen, onClose, invoiceUrl }) {
                 invoiceUrl
                   ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-xl"
                   : "bg-gray-300 cursor-not-allowed"
-              } text-white px-8 py-3 rounded-xl shadow-lg transition font-semibold`}
+              } text-white px-8 py-3 rounded-xl shadow-lg transition `}
             >
               {invoiceUrl ? "Download Invoice" : "Invoice Not Ready"}
             </motion.button>

@@ -76,7 +76,7 @@ export default function EditMaidModal({ maid, isOpen, onClose, onSave }) {
 
   const renderImage = (label, field) => (
     <div className="flex flex-col items-center">
-      <label className="block font-semibold mb-1">{label}</label>
+      <label className="block  mb-1">{label}</label>
       {form[field] ? (
         <>
           <img
@@ -105,7 +105,7 @@ export default function EditMaidModal({ maid, isOpen, onClose, onSave }) {
       {/* Modal */}
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
         <div className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg overflow-y-auto max-h-[90vh]">
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">Edit Maid Profile</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Edit Maid Profile</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
 
             {/* Name */}
@@ -212,7 +212,7 @@ export default function EditMaidModal({ maid, isOpen, onClose, onSave }) {
 
             {/* Added By */}
             <div className="mb-3">
-              <label className="block font-semibold mb-1">Added By</label>
+              <label className="block  mb-1">Added By</label>
               <p className="text-gray-800">
                 {form.added_by_name} ({form.added_by_email}) - {form.added_by_phone}
               </p>

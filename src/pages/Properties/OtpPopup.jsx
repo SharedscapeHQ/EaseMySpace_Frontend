@@ -110,7 +110,7 @@ const verifyOtpHandler = async () => {
 
         <div className="w-full h-px bg-gray-200" />
 
-        <h3 className="text-2xl font-bold text-gray-900 text-left">
+        <h3 className="text-2xl  text-gray-900 text-left">
           Welcome to EaseMySpace 
         </h3>
 
@@ -194,7 +194,7 @@ const verifyOtpHandler = async () => {
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-blue-600  hover:underline"
             >
               Login
             </Link>
@@ -202,7 +202,7 @@ const verifyOtpHandler = async () => {
           <div>
             <Link
               to="/register"
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-blue-600  hover:underline"
               >
               Register
             </Link>

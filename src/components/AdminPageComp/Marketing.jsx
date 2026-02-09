@@ -99,10 +99,10 @@ export default function Marketing() {
 
   return (
     <div className="p-6 space-y-8">
-      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-indigo-700">📢 Marketing Panel</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-indigo-700">📢 Marketing Panel</h2>
 
       <div className="bg-white rounded-xl shadow-md p-6 border">
-        <h3 className="text-lg font-semibold text-gray-800 mb-6">Send WhatsApp</h3>
+        <h3 className="text-lg  text-gray-800 mb-6">Send WhatsApp</h3>
 
         <div className="flex flex-col md:flex-row md:space-x-6">
           {/* Left column */}
@@ -116,7 +116,7 @@ export default function Marketing() {
                   {num.slice(-10)}
                   <button
                     onClick={() => removeNumber(num)}
-                    className="ml-2 font-bold hover:text-red-600"
+                    className="ml-2  hover:text-red-600"
                   >
                     ×
                   </button>
@@ -173,7 +173,7 @@ export default function Marketing() {
 
             {/* Logs */}
             <div className="mt-4 border rounded-md p-2 bg-gray-50">
-              <h4 className="font-semibold text-gray-700 mb-2">Message History</h4>
+              <h4 className=" text-gray-700 mb-2">Message History</h4>
               {logs.length === 0 ? (
                 <p className="text-gray-500 text-sm">No logs yet.</p>
               ) : (
@@ -223,7 +223,7 @@ export default function Marketing() {
             ))}
             <button
               onClick={() => setShowPopup(false)}
-              className="bg-white text-indigo-600 rounded-full w-6 h-6 flex items-center justify-center font-bold self-end mt-1 hover:bg-gray-200"
+              className="bg-white text-indigo-600 rounded-full w-6 h-6 flex items-center justify-center  self-end mt-1 hover:bg-gray-200"
             >
               ×
             </button>

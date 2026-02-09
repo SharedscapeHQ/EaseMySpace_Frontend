@@ -55,7 +55,7 @@ Sign up here: ${registerUrl}`;
       <div className="flex flex-col lg:flex-row gap-6 bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
         {/* Left Column: Referral Info */}
         <div className="lg:w-2/3 px-6 py-6 space-y-4">
-          <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-gray-900 mb-3">
+          <h2 style={{ fontFamily: "para_font" }} className="text-3xl  text-gray-900 mb-3">
             Refer More, Earn More
           </h2>
           <p className="text-gray-700 leading-relaxed mb-5">
@@ -104,7 +104,7 @@ Sign up here: ${registerUrl}`;
 
         {/* Right Column: Share Options / CTA */}
         <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between">
-          <h3 className="text-xl font-bold text-indigo-700 mb-3">
+          <h3 className="text-xl  text-indigo-700 mb-3">
             Share Your Code
           </h3>
           <div className="flex flex-col gap-3">
@@ -155,34 +155,34 @@ Sign up here: ${registerUrl}`;
 
       {/* Tutorial Section */}
       <div className="bg-white shadow-md border border-gray-200 rounded-2xl px-6 py-8">
-        <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+        <h3 className="text-2xl  text-gray-900 mb-4 text-center">
           How It Works
         </h3>
         <div className="grid md:grid-cols-4 gap-6 text-center">
           <div className="p-4">
             <FaUserPlus className="mx-auto text-indigo-600 text-3xl mb-3" />
-            <h4 className="font-semibold text-gray-800">1. Share Code</h4>
+            <h4 className=" text-gray-800">1. Share Code</h4>
             <p className="text-sm text-gray-600">
               Invite friends with your unique code.
             </p>
           </div>
           <div className="p-4">
             <FaUserPlus className="mx-auto text-indigo-600 text-3xl mb-3" />
-            <h4 className="font-semibold text-gray-800">2. Signup</h4>
+            <h4 className=" text-gray-800">2. Signup</h4>
             <p className="text-sm text-gray-600">
               Friend signs up → you earn ₹25.
             </p>
           </div>
           <div className="p-4">
             <FaHome className="mx-auto text-indigo-600 text-3xl mb-3" />
-            <h4 className="font-semibold text-gray-800">3. Property Approval</h4>
+            <h4 className=" text-gray-800">3. Property Approval</h4>
             <p className="text-sm text-gray-600">
               When admin approves → you earn ₹100.
             </p>
           </div>
           <div className="p-4">
             <FaCrown className="mx-auto text-indigo-600 text-3xl mb-3" />
-            <h4 className="font-semibold text-gray-800">4. Subscription Purchase</h4>
+            <h4 className=" text-gray-800">4. Subscription Purchase</h4>
             <p className="text-sm text-gray-600">
               Earn ₹50 (Trial) or ₹150 (Ultimate).
             </p>

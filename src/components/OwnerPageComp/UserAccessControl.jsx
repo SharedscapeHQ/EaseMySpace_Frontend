@@ -63,7 +63,7 @@ export default function UserAccessControl() {
     <section>
       {/* Header: Filter + Search */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
-        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold">Users</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl ">Users</h2>
         <div className="flex gap-2 flex-wrap">
           {/* Role Filter */}
           <select
@@ -148,7 +148,7 @@ export default function UserAccessControl() {
                   {/* Role */}
                   <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
                     <span
-                      className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold capitalize ${
+                      className={`inline-flex px-3 py-1 rounded-full text-sm  capitalize ${
                         u.role === "admin"
                           ? "bg-red-100 text-red-700"
                           : u.role === "owner"
@@ -212,7 +212,7 @@ export default function UserAccessControl() {
       </button>
 
       {/* Header */}
-      <h3 className="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">
+      <h3 className="text-2xl  mb-6 text-gray-800 border-b pb-2">
         Referee Details
       </h3>
 

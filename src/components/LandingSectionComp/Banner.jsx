@@ -171,7 +171,7 @@ function Banner() {
 
     {/* Left Section */}
     <div className="bg-blue-50 p-6 md:w-1/2 dark:bg-zinc-700 dark:text-white border-r border-zinc-200 dark:border-zinc-800 flex flex-col justify-center text-center md:text-left">
-      <h3 className="text-zinc-800 dark:text-zinc-200  font-semibold text-lg mb-4 flex items-center justify-center md:justify-start gap-1">
+      <h3 className="text-zinc-800 dark:text-zinc-200   text-lg mb-4 flex items-center justify-center md:justify-start gap-1">
         Why Choose EaseMySpace™? <IoSparklesOutline className="text-blue-500 dark:text-blue-100 text-lg" />
       </h3>
 
@@ -205,7 +205,7 @@ function Banner() {
     <div className="p-6 md:w-1/2 dark:bg-zinc-900 dark:text-white flex flex-col justify-center items-center text-center">
       {!submitted ? (
         <>
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-zinc-800 dark:text-white mb-2">
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-zinc-800 dark:text-white mb-2">
             How can we help you?
           </h2>
           <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4">

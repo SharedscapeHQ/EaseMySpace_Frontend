@@ -18,7 +18,7 @@ export default function NavbarRightActions() {
     href="https://property.easemyspace.in/"
   target="_blank"
   rel="noopener noreferrer"
-    className="inline-block text-center px-4 py-2 rounded-full border-2 border-blue-500 font-bold lg:text-base text-xs text-blue-600 bg-white hover:bg-blue-600 hover:text-white transition-all duration-200 shadow-md"
+    className="inline-block text-center px-4 py-2 rounded-full border-2 border-blue-500  lg:text-base text-xs text-blue-600 bg-white hover:bg-blue-600 hover:text-white transition-all duration-200 shadow-md"
   >
     Become a Partner
   </a>

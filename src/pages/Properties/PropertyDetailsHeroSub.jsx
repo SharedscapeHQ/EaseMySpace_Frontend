@@ -70,7 +70,7 @@ function PropertyHeaderSection({ property, setLightboxIdx }) {
                 alt="more"
                 className="w-full h-full object-cover brightness-50"
               />
-              <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
+              <div className="absolute inset-0 flex items-center justify-center text-white  text-sm sm:text-base">
                 +{property.images.length - 3}
               </div>
             </div>

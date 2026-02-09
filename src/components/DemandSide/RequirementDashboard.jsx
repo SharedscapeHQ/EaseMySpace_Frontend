@@ -66,7 +66,7 @@ export default function RequirementDashboard() {
           <section className="grid gap-12">
             <div className="grid md:grid-cols-[2fr,1fr] gap-10">
               <div className="grid gap-6">
-                <h2 style={{ fontFamily: "para_font" }} className="lg:text-3xl text-xl font-bold text-gray-900">
+                <h2 style={{ fontFamily: "para_font" }} className="lg:text-3xl text-xl  text-gray-900">
                   My Posted Requirement
                 </h2>
                 <p className="text-gray-600 lg:text-sm text-xs mt-1">
@@ -76,33 +76,33 @@ export default function RequirementDashboard() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="p-4 px-6 rounded-lg bg-white border border-zinc-200">
                     <div className="text-xs text-gray-500 mb-1">Location</div>
-                    <div className="font-semibold text-gray-700">
+                    <div className=" text-gray-700">
                       {data.location}
                     </div>
                   </div>
 
                   <div className="p-4 px-6 rounded-lg bg-white border border-zinc-200">
                     <div className="text-xs text-gray-500 mb-1">Budget</div>
-                    <div className="font-semibold text-gray-700">
+                    <div className=" text-gray-700">
                       ₹{data.budget_min} – ₹{data.budget_max}
                     </div>
                   </div>
 
                   <div className="p-4 px-6 rounded-lg bg-white border border-zinc-200">
                     <div className="text-xs text-gray-500 mb-1">BHK</div>
-                    <div className="font-semibold text-gray-700">{data.bhk}</div>
+                    <div className=" text-gray-700">{data.bhk}</div>
                   </div>
 
                   <div className="p-4 px-6 rounded-lg bg-white border border-zinc-200">
                     <div className="text-xs text-gray-500 mb-1">Move-in</div>
-                    <div className="font-semibold text-gray-700">
+                    <div className=" text-gray-700">
                       {data.moveIn}
                     </div>
                   </div>
 
                   <div className="p-4 px-6 rounded-lg bg-white border border-zinc-200 md:col-span-2">
                     <div className="text-xs text-gray-500 mb-1">Preferences</div>
-                    <div className="font-semibold flex flex-wrap gap-3 mt-2">
+                    <div className=" flex flex-wrap gap-3 mt-2">
                       {data.lifestyle?.pureVeg && <Pill>Pure Veg</Pill>}
                       {data.lifestyle?.furnished && <Pill>Furnished</Pill>}
                       {data.lifestyle?.petFriendly && (
@@ -118,14 +118,14 @@ export default function RequirementDashboard() {
     onClick={() =>
       navigate("/demand-form", { state: { initialData: data } })
     }
-    className="flex-1 lg:text-base text-xs whitespace-nowrap bg-white text-blue-600 px-5 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white border-2 border-blue-600 transition"
+    className="flex-1 lg:text-base text-xs whitespace-nowrap bg-white text-blue-600 px-5 py-3 rounded-lg  hover:bg-blue-600 hover:text-white border-2 border-blue-600 transition"
   >
     Edit Requirement
   </button>
 
   <button
     onClick={() => setView("matches")}
-    className="flex-1 lg:text-base text-xs whitespace-nowrap bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+    className="flex-1 lg:text-base text-xs whitespace-nowrap bg-blue-600 text-white px-5 py-3 rounded-lg  hover:bg-blue-700 transition"
   >
     Track Matches
   </button>
@@ -134,7 +134,7 @@ export default function RequirementDashboard() {
               </div>
 
               <aside className="h-fit flex flex-col justify-start">
-                <h3 className="text-lg font-semibold mb-4">What happens next?</h3>
+                <h3 className="text-lg  mb-4">What happens next?</h3>
                 <ul className="text-sm list-disc pl-6 space-y-2 text-gray-700">
                   <li>Trusted EMS agents receive your requirement.</li>
                   <li>They submit available flats that fit your brief.</li>

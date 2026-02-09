@@ -63,7 +63,7 @@ export default function MyPlanDetails() {
           <FiZap className="text-indigo-500 text-xl" />
           <div>
             <p className="text-gray-800 font-medium">Plan Name</p>
-            <p className="font-semibold capitalize text-gray-700">{plan.plan_name}</p>
+            <p className=" capitalize text-gray-700">{plan.plan_name}</p>
           </div>
         </div>
 
@@ -73,14 +73,14 @@ export default function MyPlanDetails() {
             <FiCheckCircle className="text-green-500 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Contact Limit</p>
-              <p className="font-semibold text-gray-700">{plan.contact_limit}</p>
+              <p className=" text-gray-700">{plan.contact_limit}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg shadow-sm">
             <FiCheckCircle className="text-yellow-600 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Used Contacts</p>
-              <p className="font-semibold text-gray-700">{plan.used_contacts}</p>
+              <p className=" text-gray-700">{plan.used_contacts}</p>
             </div>
           </div>
         </div>
@@ -91,14 +91,14 @@ export default function MyPlanDetails() {
             <FiBriefcase className="text-purple-500 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Booking Limit</p>
-              <p className="font-semibold text-gray-700">{plan.booking_limit}</p>
+              <p className=" text-gray-700">{plan.booking_limit}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 bg-pink-50 rounded-lg shadow-sm">
             <FiBriefcase className="text-pink-500 text-xl" />
             <div>
               <p className="text-gray-800 font-medium">Used Bookings</p>
-              <p className="font-semibold text-gray-700">{plan.used_bookings}</p>
+              <p className=" text-gray-700">{plan.used_bookings}</p>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function MyPlanDetails() {
           <FiCalendar className="text-blue-500 text-xl" />
           <div>
             <p className="text-gray-800 font-medium">Start Date</p>
-            <p className="font-semibold text-gray-700">{startDate.toLocaleDateString("en-IN")}</p>
+            <p className=" text-gray-700">{startDate.toLocaleDateString("en-IN")}</p>
           </div>
         </div>
 
@@ -116,7 +116,7 @@ export default function MyPlanDetails() {
           <FiCalendar className="text-red-500 text-xl" />
           <div>
             <p className="text-gray-800 font-medium">End Date</p>
-            <p className="font-semibold text-gray-700">{isValidEndDate ? endDate.toLocaleDateString("en-IN") : "Invalid date"}</p>
+            <p className=" text-gray-700">{isValidEndDate ? endDate.toLocaleDateString("en-IN") : "Invalid date"}</p>
           </div>
           {isExpiringSoon && (
             <span className="absolute right-4 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-yellow-200 text-yellow-800 text-sm rounded font-medium animate-pulse">
@@ -129,7 +129,7 @@ export default function MyPlanDetails() {
           <div className="mt-6 text-left">
             <button
               onClick={() => navigate("/subscription")}
-              className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-md transition"
+              className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white  px-4 py-2 rounded-md transition"
             >
               <FiArrowRightCircle /> Upgrade / Extend Plan
             </button>
@@ -140,7 +140,7 @@ export default function MyPlanDetails() {
       {/* Right Column: General Content / CTA */}
       <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between">
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-indigo-700">Maximize Your Subscription</h3>
+          <h3 className="text-xl  text-indigo-700">Maximize Your Subscription</h3>
           <p className="text-gray-700 text-sm">
             Explore more properties, increase your contacts, and manage bookings efficiently.
             Upgrade your plan to unlock premium features and get priority support.
@@ -155,7 +155,7 @@ export default function MyPlanDetails() {
         <div className="mt-6">
           <Link
             to="/subscription"
-            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition w-full"
+            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white  px-4 py-2 rounded-md transition w-full"
           >
             View / Upgrade Plans <FiArrowRightCircle />
           </Link>

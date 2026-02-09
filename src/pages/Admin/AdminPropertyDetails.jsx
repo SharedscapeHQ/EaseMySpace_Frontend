@@ -56,9 +56,9 @@ export default function AdminPropertyDetails() {
 
   const renderPropertyCard = (property) => (
     <div key={property.id} className="p-4 border rounded shadow bg-white">
-      <h3 className="text-lg font-bold text-indigo-800">{property.title}</h3>
+      <h3 className="text-lg  text-indigo-800">{property.title}</h3>
       <p className="text-sm text-gray-600 mb-2">{property.location}</p>
-      <p className="text-gray-800 font-semibold mb-2">
+      <p className="text-gray-800  mb-2">
         ₹{property.price.toLocaleString()}
       </p>
       <div className="flex gap-2 mb-2">
@@ -94,7 +94,7 @@ export default function AdminPropertyDetails() {
 
       {/* Pending Section */}
       <section className="mb-10">
-        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-yellow-600 mb-4">Pending Properties</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-yellow-600 mb-4">Pending Properties</h2>
         {pending.length === 0 ? (
           <p className="text-gray-500">No pending properties.</p>
         ) : (
@@ -106,7 +106,7 @@ export default function AdminPropertyDetails() {
 
       {/* Approved Section */}
       <section>
-        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-green-700 mb-4">Approved Properties</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-green-700 mb-4">Approved Properties</h2>
         {approved.length === 0 ? (
           <p className="text-gray-500">No approved properties.</p>
         ) : (

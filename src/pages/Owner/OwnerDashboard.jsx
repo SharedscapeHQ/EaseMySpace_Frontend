@@ -327,7 +327,7 @@ export default function OwnerDashboard() {
 
           {activeTab === "Leads" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">Leads</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Leads</h2>
               {loadingLeads ? (
                 <p>Loading leads...</p>
               ) : (
@@ -364,7 +364,7 @@ export default function OwnerDashboard() {
           {activeTab === "Properties" && (
             <section>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold">Properties</h2>
+                <h2 style={{ fontFamily: "para_font" }} className="text-xl ">Properties</h2>
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                   <div className="relative w-full sm:w-64">
@@ -448,7 +448,7 @@ export default function OwnerDashboard() {
 
           {activeTab === "ManageLocations" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
                 Manage Top Locations
               </h2>
               <ManageTopLocations />
@@ -458,7 +458,7 @@ export default function OwnerDashboard() {
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
                 Pending Edit Queries
               </h2>
               {loadingQueries ? (
@@ -471,7 +471,7 @@ export default function OwnerDashboard() {
 
           {activeTab === "DeletedProperties" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">Deleted Properties</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Deleted Properties</h2>
               {loadingDeletedProps ? (
                 <p>Loading deleted properties...</p>
               ) : (

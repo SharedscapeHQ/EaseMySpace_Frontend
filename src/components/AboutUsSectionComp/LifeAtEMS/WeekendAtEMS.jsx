@@ -51,7 +51,7 @@ export default function WeekendAtEMS({
         <p className="text-slate-700">{description || defaultDescription}</p>
 
         <div className="mt-4 p-4 rounded-lg bg-slate-50 border border-slate-100 shadow-inner">
-          <h4 className="text-lg font-semibold">Why we do it</h4>
+          <h4 className="text-lg ">Why we do it</h4>
           <ul className="mt-2 ml-4 list-disc text-slate-700">
             <li>Flexibility to choose how and when you recharge.</li>
             <li>Short, regular breaks so people return energized.</li>

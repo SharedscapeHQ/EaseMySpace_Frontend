@@ -97,7 +97,7 @@ const handleResolve = async (id) => {
           <div className="flex-1 space-y-3">
   {/* User Name */}
   <div>
-    <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Name</p>
+    <p className="text-xs  text-blue-600 uppercase tracking-wide">Name</p>
     <p className="text-sm font-medium text-gray-900">
       {query.user_first_name} {query.user_last_name}
     </p>
@@ -105,7 +105,7 @@ const handleResolve = async (id) => {
 
   {/* Submitted On */}
   <div>
-    <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Submitted On</p>
+    <p className="text-xs  text-blue-600 uppercase tracking-wide">Submitted On</p>
     <p className="text-sm text-gray-900">
       {new Date(query.created_at).toLocaleString()}
     </p>
@@ -113,7 +113,7 @@ const handleResolve = async (id) => {
 
   {/* Message */}
   <div>
-    <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Message</p>
+    <p className="text-xs  text-blue-600 uppercase tracking-wide">Message</p>
     <p className="text-sm text-gray-900 break-words whitespace-normal">
       {query.message}
     </p>
@@ -123,7 +123,7 @@ const handleResolve = async (id) => {
 {query.resolved && (
   <div className="grid grid-cols-2 gap-4">
     <div>
-      <p className="text-xs font-bold text-green-600 uppercase tracking-wide">
+      <p className="text-xs  text-green-600 uppercase tracking-wide">
         Resolved By
       </p>
       <p className="text-sm text-gray-900">
@@ -132,7 +132,7 @@ const handleResolve = async (id) => {
     </div>
     {query.resolved_on && (
       <div>
-        <p className="text-xs font-bold text-green-600 uppercase tracking-wide">
+        <p className="text-xs  text-green-600 uppercase tracking-wide">
           Resolved On
         </p>
         <p className="text-sm text-gray-900">

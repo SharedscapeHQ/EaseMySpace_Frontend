@@ -161,7 +161,7 @@ const fetchCurrentLocation = () => {
       key={name}
       className="mb-6"
     >
-      <label className="block text-sm font-semibold text-gray-700 mb-2 ">
+      <label className="block text-sm  text-gray-700 mb-2 ">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <Listbox value={formData[name] || ""} onChange={(value) => setFormData((prev) => ({ ...prev, [name]: value }))}>
@@ -208,7 +208,7 @@ const fetchCurrentLocation = () => {
                     {({ selected }) => (
                       <>
                         <span
-                          className={`block truncate ${selected ? "font-semibold text-indigo-600" : "font-normal"}`}
+                          className={`block truncate ${selected ? " text-indigo-600" : "font-normal"}`}
                         >
                           {displayLabel}
                         </span>
@@ -248,7 +248,7 @@ const fetchCurrentLocation = () => {
             className="mb-6 relative"
           >
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm  text-gray-700">
                 {label} {required && <span className="text-red-500">*</span>}
               </label>
               {key === "location" && (

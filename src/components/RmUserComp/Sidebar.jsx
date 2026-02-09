@@ -50,7 +50,7 @@ export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
         onClick={() => setActiveTab(value)}
         className={`flex items-center justify-between w-full text-left px-4 py-2 rounded-md transition ${
           activeTab === value
-            ? "bg-indigo-100 text-indigo-700 font-semibold"
+            ? "bg-indigo-100 text-indigo-700 "
             : "hover:bg-gray-100 text-gray-700"
         }`}
       >
@@ -93,7 +93,7 @@ export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
       <aside className="hidden lg:flex fixed top-20 left-0 z-30 w-64 bg-white shadow-lg border-r h-[calc(100vh-5rem)] flex-col">
         {/* HEADER */}
         <div className="p-6 border-b flex items-center justify-between">
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700">RM Panel</h2>
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700">RM Panel</h2>
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 text-red-600 hover:text-red-700 transition px-3 py-1 rounded-md border border-red-200"
@@ -109,7 +109,7 @@ export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
           <div className="border-b pb-2">
             <button
               onClick={() => toggleSection("General")}
-              className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wide hover:text-indigo-600"
+              className="flex items-center justify-between w-full px-2 py-2 text-xs  text-gray-600 uppercase tracking-wide hover:text-indigo-600"
             >
               <div className="flex items-center gap-2">
                 <FiUsers className="text-gray-400" />
@@ -131,7 +131,7 @@ export default function RMDashboardSidebar({ activeTab, setActiveTab }) {
           <div className="border-b pb-2">
             <button
               onClick={() => toggleSection("Landlords")}
-              className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wide hover:text-indigo-600"
+              className="flex items-center justify-between w-full px-2 py-2 text-xs  text-gray-600 uppercase tracking-wide hover:text-indigo-600"
             >
               <div className="flex items-center gap-2">
                 <FiDollarSign className="text-gray-400" />

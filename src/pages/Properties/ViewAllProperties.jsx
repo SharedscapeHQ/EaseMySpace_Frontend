@@ -256,7 +256,7 @@ const handleSelectLocation = (description) => {
         <section className="w-full text-center  mb-6 px-2">
           <h1
             style={{ fontFamily: "para_font" }}
-            className="text-lg lg:text-3xl font-semibold text-black dark:text-white"
+            className="text-lg lg:text-3xl  text-black dark:text-white"
           >
             {filters.looking_for === "pg" &&
               `Verified PGs in ${filters.location || "Mumbai"}`}
@@ -345,7 +345,7 @@ const handleSelectLocation = (description) => {
   <div className="fixed inset-0 z-40 bg-black/40 lg:hidden">
     <div className="absolute bottom-0 w-full bg-white rounded-t-xl p-4 max-h-[85vh] overflow-y-auto">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold text-sm">Filters</h3>
+        <h3 className=" text-sm">Filters</h3>
         <button
           onClick={() => setShowMobileFilters(false)}
           className="text-sm text-blue-600"
@@ -615,7 +615,7 @@ const handleSelectLocation = (description) => {
   {/* Post Requirements Box */}
   <div className="w-full bg-blue-100 mt-5 flex flex-col md:flex-row items-center justify-between px-4 py-4 rounded-lg shadow-sm">
     <div className="mb-2 md:mb-0">
-      <div className="text-xs font-semibold text-gray-900">
+      <div className="text-xs  text-gray-900">
         Didn't get what you are searching for?
       </div>
       <div className="text-xs text-gray-600 mt-1">

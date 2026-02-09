@@ -21,7 +21,7 @@ export default function BalanceCard({
             <FaRupeeSign /> {balance}
           </h1>
           <p className="text-xs text-gray-500 mt-1">
-            Minimum withdrawal: <span className="font-semibold">₹500</span>
+            Minimum withdrawal: <span className="">₹500</span>
           </p>
         </div>
 

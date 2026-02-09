@@ -84,7 +84,7 @@ export default function OurTeam() {
       Meet our Team
     </h2>
     <p
-      className="font-bold mb-4 heading-font text-gray-500 dark:text-zinc-400 tracking-wider text-shadow"
+      className=" mb-4 heading-font text-gray-500 dark:text-zinc-400 tracking-wider text-shadow"
       itemProp="description"
     >
       Passionate. Proactive. Expert. 

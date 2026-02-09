@@ -28,7 +28,7 @@ export default function AssignedUsers() {
 
   return (
     <div className="p-6">
-      <h1 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-indigo-700 mb-4">Bookings Schedule</h1>
+      <h1 style={{ fontFamily: "para_font" }} className="text-3xl  text-indigo-700 mb-4">Bookings Schedule</h1>
       <p className="text-gray-600 mb-6">
         Bookings Assigned to you
       </p>
@@ -42,7 +42,7 @@ export default function AssignedUsers() {
               key={i}
               className="border rounded-xl p-5 shadow-md bg-white hover:shadow-lg transition-shadow duration-300"
             >
-              <h2 style={{ fontFamily: "para_font" }} className="font-semibold text-xl text-indigo-600 mb-1">
+              <h2 style={{ fontFamily: "para_font" }} className=" text-xl text-indigo-600 mb-1">
                 {user.firstName} {user.lastName}
               </h2>
               <p className="text-gray-500 mb-1">{user.email} | {user.phone}</p>

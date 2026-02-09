@@ -87,7 +87,7 @@ export default function UnlockedCards() {
             <p className="text-zinc-800 text-sm">Owner's Contact</p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-lg">
+                <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600  text-lg">
                   {p.title?.charAt(0) || "U"}
                 </div>
                 <span className="font-medium text-sm text-gray-700">
@@ -104,7 +104,7 @@ export default function UnlockedCards() {
 
             {/* Rent Info */}
             <div className="text-center">
-              <p className="font-bold text-black text-base">
+              <p className=" text-black text-base">
                 ₹ {Number(p.price || 0).toLocaleString()}/month
               </p>
               <p className="text-gray-600 text-sm">

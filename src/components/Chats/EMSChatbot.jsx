@@ -85,8 +85,8 @@ export default function EMSChatbot({ isOpen, onClose }) {
         >
           {/* Header */}
           <div className="bg-indigo-600 text-white p-4 flex justify-between items-center">
-            <span className="font-semibold text-lg">EaseMySpace Chat</span>
-            <button onClick={onClose} className="text-white text-xl font-bold">
+            <span className=" text-lg">EaseMySpace Chat</span>
+            <button onClick={onClose} className="text-white text-xl ">
               ✕
             </button>
           </div>
@@ -128,7 +128,7 @@ export default function EMSChatbot({ isOpen, onClose }) {
                           )}
                         </div>
                         <div className="p-3 flex flex-col gap-1">
-                          <h4 className="text-sm font-semibold text-gray-800">
+                          <h4 className="text-sm  text-gray-800">
                             {p.location || "Unknown"}
                           </h4>
                           <p className="text-xs text-gray-600">

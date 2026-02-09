@@ -101,7 +101,7 @@ export default function RentPaymentModal({
             </button>
 
             {/* Modal Title */}
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-gray-900 mb-4 text-center">
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-900 mb-4 text-center">
               Confirm Rent Payment
             </h2>
 
@@ -182,7 +182,7 @@ export default function RentPaymentModal({
 
             {/* Summary Section */}
             <div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">
-              <p className="text-lg font-semibold text-gray-800">
+              <p className="text-lg  text-gray-800">
                 Rent: ₹{displayedRent.toLocaleString()}
               </p>
               <p className="text-md text-gray-700">
@@ -195,7 +195,7 @@ export default function RentPaymentModal({
               </p>
               <p className="text-sm text-gray-700">GST (18%): ₹{gst.toFixed(2)}</p>
               <hr className="my-2 border-gray-300" />
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-lg  text-gray-900">
                 Total Payable: ₹{totalPayable.toLocaleString()}
               </p>
               {selectedLocking?.deduction > 0 && (

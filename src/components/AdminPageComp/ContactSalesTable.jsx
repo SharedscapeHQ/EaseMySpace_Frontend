@@ -93,18 +93,18 @@ export default function ContactSalesTable() {
         ))}
       </div>
 
-      <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold mb-4">Contact Sales Requests</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-lg  mb-4">Contact Sales Requests</h2>
 
       <table className="min-w-full text-sm text-gray-800 border-collapse">
         <thead className="bg-gray-100 text-gray-700 text-sm border-b">
           <tr>
-            <th className="px-4 py-3 text-left font-semibold">Name</th>
-            <th className="px-4 py-3 text-left font-semibold">Email</th>
-            <th className="px-4 py-3 text-left font-semibold">Phone</th>
-            <th className="px-4 py-3 text-left font-semibold">Created At</th>
-            <th className="px-4 py-3 text-left font-semibold">Status</th>
-            <th className="px-4 py-3 text-left font-semibold">Remark</th>
-            <th className="px-4 py-3 text-left font-semibold">Action</th>
+            <th className="px-4 py-3 text-left ">Name</th>
+            <th className="px-4 py-3 text-left ">Email</th>
+            <th className="px-4 py-3 text-left ">Phone</th>
+            <th className="px-4 py-3 text-left ">Created At</th>
+            <th className="px-4 py-3 text-left ">Status</th>
+            <th className="px-4 py-3 text-left ">Remark</th>
+            <th className="px-4 py-3 text-left ">Action</th>
           </tr>
         </thead>
 

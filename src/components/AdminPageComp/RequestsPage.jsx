@@ -159,7 +159,7 @@ export default function RequestsTable() {
         ) : (
           filteredRequests.map((req) => (
             <div key={req.id} className="p-4">
-              <p className="font-semibold">{req.name || "—"}</p>
+              <p className="">{req.name || "—"}</p>
               <p className="text-sm text-gray-600">{req.email || "—"}</p>
               <p className="text-sm text-gray-600">{req.phone || "—"}</p>
               <p className="text-xs mt-1">{formatDate(req.created_at)}</p>
@@ -214,12 +214,12 @@ export default function RequestsTable() {
         <table className="min-w-full text-sm text-gray-800">
           <thead className="bg-indigo-50 text-gray-700 text-sm">
             <tr>
-              <th className="px-5 py-3 text-left font-semibold">Name</th>
-              <th className="px-5 py-3 text-left font-semibold">Contact</th>
-              <th className="px-5 py-3 text-left font-semibold">Date & Time</th>
-              <th className="px-5 py-3 text-left font-semibold">Follow-up</th>
-              <th className="px-5 py-3 text-left font-semibold">Followed By</th>
-              <th className="px-5 py-3 text-left font-semibold">Remark</th>
+              <th className="px-5 py-3 text-left ">Name</th>
+              <th className="px-5 py-3 text-left ">Contact</th>
+              <th className="px-5 py-3 text-left ">Date & Time</th>
+              <th className="px-5 py-3 text-left ">Follow-up</th>
+              <th className="px-5 py-3 text-left ">Followed By</th>
+              <th className="px-5 py-3 text-left ">Remark</th>
             </tr>
           </thead>
           <tbody>

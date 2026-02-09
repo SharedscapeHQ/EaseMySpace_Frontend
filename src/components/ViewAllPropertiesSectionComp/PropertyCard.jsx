@@ -176,7 +176,7 @@ const PropertyCard = ({ p }) => {
 
       {/* Info */}
       <Link to={`/properties/${p.id}`}>
-        <div className="mt-2 text-[12px] font-semibold text-zinc-900 dark:text-white">
+        <div className="mt-2 text-[12px]  text-zinc-900 dark:text-white">
           {formattedLocation}
         </div>
         <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">

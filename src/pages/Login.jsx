@@ -124,7 +124,7 @@ function Login() {
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white rounded-xl shadow-xl p-8 flex flex-col gap-6"
       >
-        <h1 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center text-blue-500">
+        <h1 style={{ fontFamily: "para_font" }} className="text-2xl  text-center text-blue-500">
           {showForgot ? "Forgot Password" : "Login"}
         </h1>
 
@@ -176,7 +176,7 @@ function Login() {
 
             <button
               type="submit"
-              className="relative group px-6 w-[200px] mt-5 h-[50px] left-1/2 -translate-x-1/2 py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg font-semibold overflow-hidden shadow-lg transition-all duration-200 ease-in-out"
+              className="relative group px-6 w-[200px] mt-5 h-[50px] left-1/2 -translate-x-1/2 py-2 bg-blue-400 hover:bg-zinc-800 text-zinc-800 hover:text-blue-200 rounded-lg  overflow-hidden shadow-lg transition-all duration-200 ease-in-out"
             >
               <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 group-hover:-translate-x-full">
                 Login

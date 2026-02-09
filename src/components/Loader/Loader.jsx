@@ -25,7 +25,7 @@ export default function Loader() {
           x="100"
           y="180"
           textAnchor="middle"
-          className="house-text text-xl font-semibold"
+          className="house-text text-xl "
         >
           EaseMySpace™
         </text>

@@ -124,7 +124,7 @@ function PropertyAmenities({ amenities, property }) {
           <div className="bg-white rounded-xl p-6 w-11/12 max-h-[80vh] overflow-y-auto shadow-lg">
             <h3
               style={{ fontFamily: "universal_font" }}
-              className="text-lg font-semibold mb-4"
+              className="text-lg  mb-4"
             >
               All Amenities
             </h3>

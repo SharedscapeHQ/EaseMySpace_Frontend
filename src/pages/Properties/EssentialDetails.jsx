@@ -67,7 +67,7 @@ export default function EssentialDetails({ property }) {
               <span className="text-sm lg:text-base text-gray-500 font-medium capitalize">
                 {item.label}
               </span>
-              <span className="text-sm lg:text-base text-gray-900 font-semibold mt-1 capitalize">
+              <span className="text-sm lg:text-base text-gray-900  mt-1 capitalize">
                 {item.value}
               </span>
             </div>
@@ -90,7 +90,7 @@ export default function EssentialDetails({ property }) {
                     occupancy: room.occupancies[0].occupancy,
                   })
                 }
-                className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-sm sm:text-base font-semibold border transition-colors ${
+                className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-sm sm:text-base  border transition-colors ${
                   selected.room_label === room.room_label
                     ? "bg-black text-white border-black"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
@@ -112,7 +112,7 @@ export default function EssentialDetails({ property }) {
                 onClick={() =>
                   setSelected((prev) => ({ ...prev, occupancy: occ }))
                 }
-                className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-sm sm:text-base font-semibold border transition-colors ${
+                className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-sm sm:text-base  border transition-colors ${
                   selected.occupancy === occ
                     ? "bg-indigo-600 text-white border-indigo-600"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
@@ -128,7 +128,7 @@ export default function EssentialDetails({ property }) {
         <div className="w-full flex flex-col sm:flex-row gap-3 mt-2">
           <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200 shadow-sm">
             <span className="text-gray-700 text-sm font-medium">Rent</span>
-            <span className="font-bold text-gray-900 text-lg mt-1">
+            <span className=" text-gray-900 text-lg mt-1">
               {currentData.price
                 ? `₹${Number(currentData.price).toLocaleString()}/mo`
                 : "N/A"}
@@ -136,7 +136,7 @@ export default function EssentialDetails({ property }) {
           </div>
           <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200 shadow-sm">
             <span className="text-gray-700 text-sm font-medium">Deposit</span>
-            <span className="font-bold text-gray-900 text-lg mt-1">
+            <span className=" text-gray-900 text-lg mt-1">
               {currentData.deposit
                 ? `₹${Number(currentData.deposit).toLocaleString()}`
                 : "N/A"}

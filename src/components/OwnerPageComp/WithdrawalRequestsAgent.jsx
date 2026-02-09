@@ -38,7 +38,7 @@ export default function WithdrawalRequestsAgent() {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
-      <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4 flex items-center gap-2">
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4 flex items-center gap-2">
         <FiDownload className="text-blue-600" />
         Withdrawal Requests
       </h2>
@@ -73,7 +73,7 @@ export default function WithdrawalRequestsAgent() {
                       ? w.details?.upi
                       : `${w.details?.account || ""} (${w.details?.ifsc || ""})`}
                   </td>
-                  <td className="p-2 font-semibold">₹{w.amount}</td>
+                  <td className="p-2 ">₹{w.amount}</td>
                   <td
                     className={`p-2 font-medium ${
                       w.status === "approved"

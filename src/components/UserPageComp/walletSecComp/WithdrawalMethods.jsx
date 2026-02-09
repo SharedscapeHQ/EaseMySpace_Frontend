@@ -56,7 +56,7 @@ export default function WithdrawalMethods({
 
   return (
     <div className="bg-white shadow-md rounded-2xl p-6">
-      <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold mb-4">Withdrawal Methods</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Withdrawal Methods</h2>
       <ul className="space-y-4">
         {methods.map((method) => (
           <li

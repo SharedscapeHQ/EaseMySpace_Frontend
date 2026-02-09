@@ -107,7 +107,7 @@ export default function Agreement() {
             className="border rounded-2xl p-5 bg-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center"
           >
             <div>
-              <p className="font-semibold text-gray-800">{property.property_name}</p>
+              <p className=" text-gray-800">{property.property_name}</p>
               <p className="text-gray-600 text-sm">{property.address}</p>
               <p className="text-gray-600 text-sm">
                 Tenant: {property.tenant_name || "N/A"}

@@ -38,7 +38,7 @@ export default function DrawerMenu({ open, setOpen }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 style={{ fontFamily: "para_font" }} className="text-blue-600 dark:text-blue-400 text-2xl font-bold tracking-wide">
+          <h2 style={{ fontFamily: "para_font" }} className="text-blue-600 dark:text-blue-400 text-2xl  tracking-wide">
             Explore
           </h2>
           <button
@@ -100,7 +100,7 @@ export default function DrawerMenu({ open, setOpen }) {
                 <span className="text-lg text-yellow-700 dark:text-yellow-200 group-hover:scale-110 transition-transform duration-200">
                   <FaRegCreditCard />
                 </span>
-                <span className="truncate font-semibold">
+                <span className="truncate ">
                   EMS Subscription Plans
                 </span>
               </div>

@@ -84,7 +84,7 @@ function SavedPropertyCard({ property }) {
         <p className="text-zinc-800 dark:text-zinc-200 text-sm">Owner's Contact</p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-semibold text-lg">
+            <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300  text-lg">
               {property.title?.charAt(0) || "U"}
             </div>
             <span className="font-medium text-sm text-gray-700 dark:text-gray-300">
@@ -100,7 +100,7 @@ function SavedPropertyCard({ property }) {
 
         {/* Rent Info */}
         <div className="text-center">
-          <p className="font-bold text-black dark:text-white text-base">
+          <p className=" text-black dark:text-white text-base">
             ₹ {Number(property.price || 0).toLocaleString()}/month
           </p>
           <p className="text-gray-600 dark:text-gray-300 text-sm">

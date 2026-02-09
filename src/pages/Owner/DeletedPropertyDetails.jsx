@@ -364,7 +364,7 @@ const handleVerifyOtp = async () => {
       <main className="w-full min-h-screen bg-[#f2f2f2] py-5 px-4 sm:px-6 md:px-8">
         <div className="flex flex-col bg-white p-5 rounded-2xl gap-4 max-w-6xl mx-auto">
           <div className="flex items-center gap-2 flex-wrap">
-  <div className="text-xl font-semibold text-gray-800">
+  <div className="text-xl  text-gray-800">
   {generateTitle(property.title)}{" "}
   <span className="text-sm text-red-600 font-normal">
     {property.deleted_by_owner_code ? `(Deleted by: ${property.deleted_by_owner_code})` : ""}
@@ -372,7 +372,7 @@ const handleVerifyOtp = async () => {
 </div>
 
   {property.verified && (
-    <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+    <span className="bg-green-500 text-white text-xs  px-2 py-1 rounded-full flex items-center gap-1">
   <FiCheckCircle className="text-sm" />
   Verified
 </span>
@@ -405,7 +405,7 @@ const handleVerifyOtp = async () => {
                 ) : (
                   <div className="w-full h-full bg-gray-300" />
                 )}
-                <div className="absolute inset-0 bg-black/60 text-white flex items-center justify-center text-center px-2 font-semibold text-sm sm:text-base">
+                <div className="absolute inset-0 bg-black/60 text-white flex items-center justify-center text-center px-2  text-sm sm:text-base">
                   {property.video ? `📹 Video + ${property.images.length} Images` : `${property.images.length} Images`}
                 </div>
               </div>
@@ -414,7 +414,7 @@ const handleVerifyOtp = async () => {
             <div className="flex flex-col justify-between gap-5 w-full lg:w-[24rem]">
               <div className="w-full h-auto bg-white border border-zinc-200 rounded-2xl overflow-hidden p-6 shadow-lg flex flex-col justify-between">
                 <div>
-                  <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-2">Owner's Contact</h2>
+                  <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800 mb-2">Owner's Contact</h2>
                   <div className="text-gray-700 text-base">
                     {hasPaid ? (
                       <span className="font-medium">📞 {property.owner_phone || 'Unavailable'}</span>
@@ -432,7 +432,7 @@ const handleVerifyOtp = async () => {
 </button></span></p>
                 </div>
                 <button
-                  className={`mt-4 w-1/2 py-3 px-2 text-md font-semibold rounded-xl whitespace-nowrap transition-all ${hasPaid
+                  className={`mt-4 w-1/2 py-3 px-2 text-md  rounded-xl whitespace-nowrap transition-all ${hasPaid
                     ? 'bg-green-600 text-white cursor-default'
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}
@@ -461,7 +461,7 @@ const handleVerifyOtp = async () => {
                       <span className="text-blue-600 text-xl">📍</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-semibold text-gray-800">In {property.location || 'Unknown Location'}</span>
+                      <span className=" text-gray-800">In {property.location || 'Unknown Location'}</span>
                       <span className="text-sm text-gray-700">
                         <span className="text-green-500 font-medium">{property.distance_from_station || 'N/A'}</span>
                       </span>
@@ -482,7 +482,7 @@ const handleVerifyOtp = async () => {
 
           {/* Description */}
           <div>
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mb-3">Property Description</h2>
+            <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700 mb-3">Property Description</h2>
             {showFullDesc || isLoggedIn ? (
   <p className="text-gray-700 leading-relaxed whitespace-pre-line">{property.description}</p>
 ) : (
@@ -514,7 +514,7 @@ const handleVerifyOtp = async () => {
       >
         ×
       </button>
-      <h3 className="text-lg font-semibold text-gray-800 mb-3">Verify to {otpPopupPurpose}</h3>
+      <h3 className="text-lg  text-gray-800 mb-3">Verify to {otpPopupPurpose}</h3>
 
       <input
         type="text"
@@ -578,7 +578,7 @@ const handleVerifyOtp = async () => {
 
          
 <div>
-  <h2 style={{ fontFamily: "para_font" }} className="text-xl font-bold text-indigo-700 mt-8 mb-3">Amenities</h2>
+  <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-indigo-700 mt-8 mb-3">Amenities</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     {/* Known Amenities */}
     {knownAmenities.map((amenity, idx) => {
@@ -668,8 +668,8 @@ function PopupModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-white rounded-xl max-w-2xl w-full p-6 relative overflow-y-auto max-h-[90vh] shadow-xl">
-        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-500 font-bold">×</button>
-        <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center text-indigo-700 mb-2">What’s Included in <span className="text-black"> ₹1299</span></h2>
+        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-500 ">×</button>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-center text-indigo-700 mb-2">What’s Included in <span className="text-black"> ₹1299</span></h2>
         <p className="text-center text-gray-600 mb-4">Unlock everything you need to find your perfect flatmate — with one simple fee.</p>
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-sm">
@@ -688,7 +688,7 @@ function PopupModal({
 
        
         <div className="mt-4 flex justify-center">
-          <button  className={`mt-4 w-[30%] py-4 px-2 text-sm font-semibold rounded-xl transition-all ${hasPaid
+          <button  className={`mt-4 w-[30%] py-4 px-2 text-sm  rounded-xl transition-all ${hasPaid
                     ? 'bg-green-600 text-white cursor-default'
                     : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     }`}

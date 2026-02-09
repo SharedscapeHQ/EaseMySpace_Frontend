@@ -149,13 +149,13 @@ useEffect(() => {
 
   return (
     <div className="bg-white shadow rounded-lg p-6">
-      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-center mb-8">Complete Your Profile</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-center mb-8">Complete Your Profile</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Form Section */}
         <div>
           <div className="mb-4 text-gray-700">
-            <span className="font-semibold">Phone:</span> {profile.phone}
+            <span className="">Phone:</span> {profile.phone}
           </div>
 
           {["firstName", "lastName", "email", "gender", "password"].map((field) =>

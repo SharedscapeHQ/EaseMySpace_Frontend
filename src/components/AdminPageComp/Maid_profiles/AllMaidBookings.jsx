@@ -28,7 +28,7 @@ export default function AllMaidBookings() {
 
   return (
     <div className="p-6 space-y-6">
-      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold text-pink-600 mb-6">All Maid Bookings</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-pink-600 mb-6">All Maid Bookings</h2>
       {bookings.length === 0 ? (
         <p className="text-gray-500">No bookings available.</p>
       ) : (
@@ -90,7 +90,7 @@ export default function AllMaidBookings() {
       <td className="py-3 px-4 text-green-600 font-medium">{b.booking_status}</td>
 
       {/* Price Paid */}
-      <td className="py-3 px-4 font-semibold text-indigo-700">₹{b.booked_price}</td> {/* <-- show booking price */}
+      <td className="py-3 px-4  text-indigo-700">₹{b.booked_price}</td> {/* <-- show booking price */}
     </tr>
   ))}
 </tbody>

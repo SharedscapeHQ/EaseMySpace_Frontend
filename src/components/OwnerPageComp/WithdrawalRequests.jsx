@@ -48,7 +48,7 @@ if (res.data.success) {
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
       <h2
-        className="text-xl font-semibold mb-4 flex items-center gap-2"
+        className="text-xl  mb-4 flex items-center gap-2"
         style={{ fontFamily: "para_font" }}
       >
         <FiDownload className="text-blue-600" />
@@ -87,7 +87,7 @@ if (res.data.success) {
           ? w.paymentDetails?.upi_id
           : `${w.paymentDetails?.account || ""} (${w.paymentDetails?.ifsc || ""})`}
       </td>
-      <td className="p-2 font-semibold">₹{w.amount}</td>
+      <td className="p-2 ">₹{w.amount}</td>
       <td
         className={`p-2 font-medium ${
           w.status === "approved"

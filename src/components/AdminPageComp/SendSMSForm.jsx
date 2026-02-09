@@ -36,7 +36,7 @@ export default function SendSMSForm() {
 
   return (
     <div className="max-w-md mx-auto p-6 border rounded-lg shadow-lg bg-white">
-      <h2 style={{ fontFamily: "para_font" }} className="text-2xl font-bold mb-6 text-center text-gray-800">
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl  mb-6 text-center text-gray-800">
         Send SMS
       </h2>
       <form onSubmit={handleSend} className="space-y-5">
@@ -66,7 +66,7 @@ export default function SendSMSForm() {
         </div>
         <button
           type="submit"
-          className={`w-full py-3 rounded-lg text-white font-semibold ${
+          className={`w-full py-3 rounded-lg text-white  ${
             loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
           }`}
           disabled={loading}

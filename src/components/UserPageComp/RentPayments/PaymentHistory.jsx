@@ -18,12 +18,12 @@ export default function PaymentHistory({ payments }) {
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
       {/* Title */}
-      <p className="font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
+      <p className=" text-lg text-gray-800 mb-4 flex items-center gap-2">
         <MdOutlinePayment className="text-indigo-500" /> Payment History
       </p>
 
       {/* Headings */}
-      <div className="grid grid-cols-4 text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 px-2">
+      <div className="grid grid-cols-4 text-xs  text-gray-500 uppercase tracking-wide mb-2 px-2">
         <span className="text-left">Date</span>
         <span className="text-center">Amount</span>
         <span className="text-center">Month</span>
@@ -65,7 +65,7 @@ export default function PaymentHistory({ payments }) {
               {/* Status */}
               <div className="flex justify-end">
                 <span
-                  className={`text-xs px-2 py-1 rounded-full uppercase tracking-wide font-semibold ${
+                  className={`text-xs px-2 py-1 rounded-full uppercase tracking-wide  ${
                     isAdvance
                       ? "bg-yellow-200 text-yellow-800"
                       : "bg-green-100 text-green-700"

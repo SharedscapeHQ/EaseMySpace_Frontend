@@ -90,7 +90,7 @@ export default function BlogPage() {
             >
               <Link to={cat.url} className="block h-full p-6">
                 <div className="flex justify-center mb-5">{cat.icon}</div>
-                <h2 style={{ fontFamily: "para_font" }} className="text-lg sm:text-xl font-bold mb-3 text-zinc-800 text-center">
+                <h2 style={{ fontFamily: "para_font" }} className="text-lg sm:text-xl  mb-3 text-zinc-800 text-center">
                   {cat.title}
                 </h2>
                 <p className="text-zinc-600 text-sm sm:text-base mb-6 text-center">{cat.description}</p>

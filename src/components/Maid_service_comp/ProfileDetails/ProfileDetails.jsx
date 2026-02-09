@@ -63,7 +63,7 @@ export default function ProfileDetail() {
 
         {/* KYC Badge */}
         {profile.kyc_status && (
-          <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+          <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm  shadow-md">
             KYC Verified
           </div>
         )}

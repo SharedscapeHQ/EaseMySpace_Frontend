@@ -58,11 +58,11 @@ function AboutStory() {
       <p className="text-gray-700 dark:text-gray-300 text-xs sm:text-base leading-relaxed space-y-4">
         <span className="block mb-4">
           Founded in{" "}
-          <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+          <span className=" text-indigo-600 dark:text-indigo-400">
             2025
           </span>{" "}
           by{" "}
-          <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+          <span className=" text-indigo-600 dark:text-indigo-400">
             Rakesh Goswami
           </span>{" "}
           a young Chartered Accountant and passionate entrepreneur, EaseMySpace™

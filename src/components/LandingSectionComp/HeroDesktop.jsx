@@ -18,7 +18,7 @@ export default function HeroDesktop() {
       <div className="max-w-6xl mx-auto text-center">
 
         {/* <h1
-          className="text-4xl lg:text-5xl font-semibold text-zinc-800 dark:text-zinc-100 mb-6"
+          className="text-4xl lg:text-5xl  text-zinc-800 dark:text-zinc-100 mb-6"
           style={{ fontFamily: "para_font" }}
         >
           Find your next home, without the hassle

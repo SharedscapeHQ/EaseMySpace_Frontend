@@ -102,7 +102,7 @@ export default function ListerPaymentButton({ plan, userData, onInvoiceGenerated
       <button
         onClick={handlePayment}
         disabled={isPaying}
-        className="py-3 px-6 rounded-xl bg-indigo-500 text-white font-semibold text-lg transition-all"
+        className="py-3 px-6 rounded-xl bg-indigo-500 text-white  text-lg transition-all"
       >
         {isPaying ? "Processing..." : "Pay Now"}
       </button>

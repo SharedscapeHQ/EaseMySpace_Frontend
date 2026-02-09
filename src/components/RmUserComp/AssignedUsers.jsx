@@ -109,7 +109,7 @@ export default function AssignedUsers() {
               <FiZap className="text-indigo-500 text-xl" />
               <div>
                 <p className="text-gray-800 font-medium">Plan Name</p>
-                <p className="font-semibold capitalize text-gray-700">
+                <p className=" capitalize text-gray-700">
                   {plan?.plan_name || "N/A"}
                 </p>
               </div>
@@ -121,7 +121,7 @@ export default function AssignedUsers() {
                 <FiCheckCircle className="text-green-500 text-xl" />
                 <div>
                   <p className="text-gray-800 font-medium">Contact Limit</p>
-                  <p className="font-semibold text-gray-700">
+                  <p className=" text-gray-700">
                     {plan?.contact_limit ?? "N/A"}
                   </p>
                 </div>
@@ -130,7 +130,7 @@ export default function AssignedUsers() {
                 <FiCheckCircle className="text-yellow-600 text-xl" />
                 <div>
                   <p className="text-gray-800 font-medium">Used Contacts</p>
-                  <p className="font-semibold text-gray-700">
+                  <p className=" text-gray-700">
                     {plan?.used_contacts ?? "N/A"}
                   </p>
                 </div>
@@ -143,7 +143,7 @@ export default function AssignedUsers() {
                 <FiBriefcase className="text-purple-500 text-xl" />
                 <div>
                   <p className="text-gray-800 font-medium">Booking Limit</p>
-                  <p className="font-semibold text-gray-700">
+                  <p className=" text-gray-700">
                     {plan?.booking_limit ?? "N/A"}
                   </p>
                 </div>
@@ -152,7 +152,7 @@ export default function AssignedUsers() {
                 <FiBriefcase className="text-pink-500 text-xl" />
                 <div>
                   <p className="text-gray-800 font-medium">Used Bookings</p>
-                  <p className="font-semibold text-gray-700">
+                  <p className=" text-gray-700">
                     {plan?.used_bookings ?? "N/A"}
                   </p>
                 </div>
@@ -164,7 +164,7 @@ export default function AssignedUsers() {
               <FiCalendar className="text-blue-500 text-xl" />
               <div>
                 <p className="text-gray-800 font-medium">Start Date</p>
-                <p className="font-semibold text-gray-700">
+                <p className=" text-gray-700">
                   {startDate ? startDate.toLocaleDateString("en-IN") : "N/A"}
                 </p>
               </div>
@@ -174,7 +174,7 @@ export default function AssignedUsers() {
               <FiCalendar className="text-red-500 text-xl" />
               <div>
                 <p className="text-gray-800 font-medium">End Date</p>
-                <p className="font-semibold text-gray-700">
+                <p className=" text-gray-700">
                   {isValidEndDate
                     ? endDate.toLocaleDateString("en-IN")
                     : "Invalid date"}
@@ -191,7 +191,7 @@ export default function AssignedUsers() {
           {/* Right Column */}
           <div className="lg:w-1/3 bg-indigo-50 px-6 py-6 flex flex-col justify-between">
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-indigo-700">
+              <h3 className="text-xl  text-indigo-700">
                 Maximize Your Subscription
               </h3>
               <p className="text-gray-700 text-sm">
@@ -209,7 +209,7 @@ export default function AssignedUsers() {
             <div className="mt-6">
               <Link
                 to="/subscription"
-                className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition w-full"
+                className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white  px-4 py-2 rounded-md transition w-full"
               >
                 View / Upgrade Plans <FiArrowRightCircle />
               </Link>
@@ -225,7 +225,7 @@ export default function AssignedUsers() {
 return (
   <div className="p-4 sm:p-6 max-w-7xl mx-auto">
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-      <h2 style={{ fontFamily: "para_font" }} className="text-xl sm:text-3xl font-bold text-gray-800">
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl sm:text-3xl  text-gray-800">
         Assigned Users
       </h2>
 
@@ -295,7 +295,7 @@ return (
             onClick={() => setSelectedUser(user)}
             className="border rounded-lg shadow-sm p-4 bg-white cursor-pointer hover:shadow-md transition"
           >
-            <h3 className="font-semibold text-indigo-600">{user.name}</h3>
+            <h3 className=" text-indigo-600">{user.name}</h3>
             <p className="text-sm text-gray-500 mb-2">
               {user.subscription?.plan_name || "No Plan"}
             </p>
@@ -330,19 +330,19 @@ return (
           <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
             <thead className="bg-blue-700 text-white sticky top-0 z-10">
               <tr>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                <th className="px-4 py-2 text-left  uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                <th className="px-4 py-2 text-left  uppercase tracking-wider">
                   Email / Phone
                 </th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                <th className="px-4 py-2 text-left  uppercase tracking-wider">
                   Start
                 </th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                <th className="px-4 py-2 text-left  uppercase tracking-wider">
                   End
                 </th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wider">
+                <th className="px-4 py-2 text-left  uppercase tracking-wider">
                   Gender
                 </th>
               </tr>

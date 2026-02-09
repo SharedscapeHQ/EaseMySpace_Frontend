@@ -78,7 +78,7 @@ export default function MatchesPage({ userRequirement }) {
   return (
     <div className="bg-gradient-to-b from-zinc-50 max-w-7xl lg:px-20 px-3 to-white pt-16 min-h-screen p-6 font-sans">
       <div className="max-w-6xl mx-auto">
-        <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-gray-800 mb-2">Your Matches</h2>
+        <h2 style={{ fontFamily: "para_font" }} className="text-3xl  text-gray-800 mb-2">Your Matches</h2>
         <p className="text-gray-600 mb-6">Curated by EMS Algorithm</p>
 
         {filteredMatches.length === 0 && (
@@ -108,10 +108,10 @@ export default function MatchesPage({ userRequirement }) {
                 {/* Content */}
                 <div className="p-4 flex-1 flex flex-col justify-between gap-2">
                   <div className="flex items-start justify-between">
-                    <div className="font-semibold text-gray-800 truncate">
+                    <div className=" text-gray-800 truncate">
                       {match.bhk_type} • {match.location}
                     </div>
-                    <div className="text-sm text-gray-600 font-bold">
+                    <div className="text-sm text-gray-600 ">
                       ₹{Number(match.price).toLocaleString()}
                     </div>
                   </div>
@@ -139,13 +139,13 @@ export default function MatchesPage({ userRequirement }) {
                   <div className="flex gap-2 pt-2">
                     <Link
                       to={`/properties/${match.id}`}
-                      className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold text-center hover:bg-blue-700 transition"
+                      className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm  text-center hover:bg-blue-700 transition"
                     >
                       Book Visit
                     </Link>
                     <button
                       onClick={() => handlePass(match.id)}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100 transition"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm  text-gray-700 hover:bg-gray-100 transition"
                     >
                       Pass
                     </button>

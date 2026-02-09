@@ -11,7 +11,7 @@ import {
 export default function PropertyPieChart({ data }) {
   return (
     <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-      <h3 className="text-lg font-semibold text-indigo-700 mb-4">
+      <h3 className="text-lg  text-indigo-700 mb-4">
         Status Overview
       </h3>
       <ResponsiveContainer width="100%" height={320}>

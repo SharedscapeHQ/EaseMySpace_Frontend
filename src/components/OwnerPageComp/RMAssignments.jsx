@@ -32,7 +32,7 @@ export default function RMAssignments() {
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-      <h2 style={{ fontFamily: "para_font" }} className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+      <h2 style={{ fontFamily: "para_font" }} className="text-2xl sm:text-3xl  text-gray-800 mb-6">
         RM Assignment History
       </h2>
 
@@ -41,16 +41,16 @@ export default function RMAssignments() {
           <table className="min-w-full divide-y divide-gray-200 text-base sm:text-base">
             <thead className="bg-indigo-50 sticky top-0 z-10">
               <tr>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left  text-gray-700 uppercase tracking-wider">
                   User
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left  text-gray-700 uppercase tracking-wider">
                   RM
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left  text-gray-700 uppercase tracking-wider">
                   Assigned By
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left  text-gray-700 uppercase tracking-wider">
                   Assigned At
                 </th>
               </tr>

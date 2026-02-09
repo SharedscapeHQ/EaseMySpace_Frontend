@@ -157,7 +157,7 @@ export default function ShareReportActions({ propertyId }) {
               transition={{ duration: 0.25, type: "spring" }}
               className="bg-white w-80 rounded-2xl shadow-xl p-6 border"
             >
-              <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold mb-2 text-gray-900">
+              <h2 style={{ fontFamily: "para_font" }} className="text-lg  mb-2 text-gray-900">
                 Report Property
               </h2>
               <p className="text-xs text-gray-500 mb-4">
@@ -223,7 +223,7 @@ export default function ShareReportActions({ propertyId }) {
             exit={{ opacity: 0 }}
           >
             <div className="bg-white p-6 rounded-xl w-72 text-center">
-              <h3 className="text-lg font-semibold mb-2">Login Required</h3>
+              <h3 className="text-lg  mb-2">Login Required</h3>
               <p className="text-sm text-gray-600 mb-4">
                 You must be logged in to report.
               </p>

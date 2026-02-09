@@ -11,9 +11,9 @@ export default function DeletedPropertyCard({ property, onRestore }) {
       />
       <div className="p-4 space-y-1">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-bold text-indigo-700">{property.title}</h3>
+          <h3 className="text-lg  text-indigo-700">{property.title}</h3>
           {property.verified && (
-            <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+            <span className="bg-green-500 text-white text-xs  px-2 py-1 rounded-full flex items-center gap-1">
               <FiCheckCircle className="text-sm" />
               Verified
             </span>
@@ -23,15 +23,15 @@ export default function DeletedPropertyCard({ property, onRestore }) {
         <p className="text-gray-600">{property.location}</p>
 
         <div className="flex flex-wrap gap-2">
-          <span className="bg-yellow-400 text-zinc-900 font-semibold px-3 py-0.5 text-sm rounded-md">
+          <span className="bg-yellow-400 text-zinc-900  px-3 py-0.5 text-sm rounded-md">
             Owner: {property.owner_code}
           </span>
-          <span className="bg-red-100 text-red-600 font-semibold px-3 py-0.5 text-sm rounded-md">
+          <span className="bg-red-100 text-red-600  px-3 py-0.5 text-sm rounded-md">
             Deleted by: {property.deleted_by_owner_code || "N/A"}
           </span>
         </div>
 
-        <p className="text-indigo-900 font-semibold">₹{property.price}</p>
+        <p className="text-indigo-900 ">₹{property.price}</p>
 
         <div className="mt-2 flex gap-2">
           <button

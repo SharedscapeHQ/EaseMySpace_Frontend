@@ -19,7 +19,7 @@ export default function PropertyDetailsPage({
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h2 style={{ fontFamily: "para_font" }} className="text-3xl font-bold text-indigo-700 mb-6 text-center">Properties</h2>
+      <h2 style={{ fontFamily: "para_font" }} className="text-3xl  text-indigo-700 mb-6 text-center">Properties</h2>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3 mb-8 justify-center">
@@ -74,7 +74,7 @@ export default function PropertyDetailsPage({
 
               {/* Info */}
               <div className="p-5 space-y-2">
-                <h3 className="text-lg font-semibold text-indigo-700">{item.property?.title || "-"}</h3>
+                <h3 className="text-lg  text-indigo-700">{item.property?.title || "-"}</h3>
 
                 <div className="flex items-center text-gray-500 text-sm gap-2">
                   <FiMapPin className="text-indigo-500" />

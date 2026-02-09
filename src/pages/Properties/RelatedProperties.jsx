@@ -58,7 +58,7 @@ function RelatedPropertyCard({ property }) {
       {/* Details */}
       <div className="flex-1 p-4 sm:p-6 flex flex-col justify-between w-full">
         <div>
-          <h3 className="text-gray-900 font-bold text-base sm:text-lg lg:text-xl mb-1 truncate">
+          <h3 className="text-gray-900  text-base sm:text-lg lg:text-xl mb-1 truncate">
             {property.title}
           </h3>
           <p className="text-gray-600 text-xs sm:text-sm mb-1">
@@ -71,7 +71,7 @@ function RelatedPropertyCard({ property }) {
             </p>
           )}
         </div>
-        <p className="text-indigo-600 font-semibold text-base sm:text-lg lg:text-xl mt-auto">
+        <p className="text-indigo-600  text-base sm:text-lg lg:text-xl mt-auto">
           ₹{property.price?.toLocaleString() || "N/A"}
         </p>
       </div>
@@ -118,7 +118,7 @@ function RelatedProperties({ currentProperty }) {
     <div className="mt-8 p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
       <h2
         style={{ fontFamily: "para_font" }}
-        className="text-[16px] lg:text-2xl font-semibold text-gray-900 mb-6"
+        className="text-[16px] lg:text-2xl  text-gray-900 mb-6"
       >
         You Might Also Like
       </h2>

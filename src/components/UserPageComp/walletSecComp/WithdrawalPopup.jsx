@@ -4,7 +4,7 @@ export default function WithdrawalPopup({ showPopup, setShowPopup }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       <div className="bg-white rounded-xl shadow-lg p-6 text-center max-w-sm w-full">
-        <h2 style={{ fontFamily: "para_font" }} className="text-xl font-semibold text-green-700 mb-2">
+        <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-green-700 mb-2">
           Withdrawal Request Sent
         </h2>
         <p className="text-gray-600 mb-4">

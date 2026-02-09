@@ -290,7 +290,7 @@ export default function ContactCard({
       >
         ✕
       </button>
-      <h2 style={{ fontFamily: "para_font" }} className="text-lg font-semibold text-gray-800 mb-4 text-center">
+      <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800 mb-4 text-center">
         Login Required
       </h2>
       <p className="text-sm text-gray-600 mb-6 text-center">
@@ -314,10 +314,10 @@ export default function ContactCard({
         {showCallPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-xl p-6 shadow-xl w-[20rem] text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <h3 className="text-lg  text-gray-900 mb-4">
                 Call Owner
               </h3>
-              <p className="text-xl font-bold text-indigo-600 mb-6">
+              <p className="text-xl  text-indigo-600 mb-6">
                 +91 {property?.owner_phone || "Unavailable"}
               </p>
               <button
@@ -340,7 +340,7 @@ export default function ContactCard({
               >
                 ✕
               </button>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <h3 className="text-lg  text-gray-900 mb-4">
                 Help & Support
               </h3>
               <p className="text-md font-medium text-gray-700 mb-6">

@@ -6,7 +6,7 @@ const PricingSection = ({ formData, setFormData }) => {
 
   return (
     <div className="pt-6">
-      <h2 style={{ fontFamily: "para_font" }} className="font-bold mb-6 text-indigo-600 text-2xl tracking-tight">
+      <h2 style={{ fontFamily: "para_font" }} className=" mb-6 text-indigo-600 text-2xl tracking-tight">
          Rent per Room
       </h2>
 
@@ -51,7 +51,7 @@ const PricingSection = ({ formData, setFormData }) => {
               <div className="flex flex-col md:flex-row md:items-end md:gap-6 gap-3">
                 {/* Occupancy Type */}
                 <div className="flex flex-col w-full md:w-1/3">
-                  <label className="text-sm font-semibold text-gray-700 mb-1">
+                  <label className="text-sm  text-gray-700 mb-1">
                     Occupancy Type
                   </label>
                   <select
@@ -79,7 +79,7 @@ const PricingSection = ({ formData, setFormData }) => {
 
                 {/* Rent */}
                 <div className="flex flex-col w-full md:w-1/4">
-                  <label className="text-sm font-semibold text-gray-700 mb-1">
+                  <label className="text-sm  text-gray-700 mb-1">
                     Rent (₹)
                   </label>
                   <input
@@ -97,7 +97,7 @@ const PricingSection = ({ formData, setFormData }) => {
 
                 {/* Deposit */}
                 <div className="flex flex-col w-full md:w-1/4">
-                  <label className="text-sm font-semibold text-gray-700 mb-1">
+                  <label className="text-sm  text-gray-700 mb-1">
                     Deposit (₹)
                   </label>
                   <input
@@ -159,7 +159,7 @@ const PricingSection = ({ formData, setFormData }) => {
       <div className="flex justify-center mt-6">
         <button
           type="button"
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-sm transition-all"
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white  px-6 py-3 rounded-xl shadow-sm transition-all"
           onClick={() =>
             setFormData((prev) => ({
               ...prev,
