@@ -35,7 +35,7 @@ function RequirementReq() {
   return (
     <div className="max-w-5xl mx-auto p-6" style={{ fontFamily: "universal_font" }}>
       <div className="flex items-center justify-between mb-6">
-        <h2 style={{ fontFamily: "para_font" }} className="text-2xl" style={{ fontFamily: "para_font" }}>
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl" >
           Posted Requirements
         </h2>
 

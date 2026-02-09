@@ -9,6 +9,8 @@ function Register() {
   const [searchParams] = useSearchParams();
   const referralFromUrl = searchParams.get("ref") || "";
   const [showPassword, setShowPassword] = useState(false);
+  const [consentAccepted, setConsentAccepted] = useState(false);
+
 
   const [form, setForm] = useState({
     firstName: "",
@@ -49,6 +51,11 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!consentAccepted) {
+  toast.error("Please accept Terms & Privacy Policy");
+  return;
+}
 
     if (!form.firstName || !form.lastName) {
       toast.error("First Name and Last Name cannot be empty");
@@ -210,6 +217,35 @@ function Register() {
     {showPassword ? <FiEye size={20}/>  : <FiEyeOff size={20} /> }
   </button>
 </div>
+
+<div className="flex items-start gap-2 text-sm text-gray-700">
+  <input
+    type="checkbox"
+    id="consent"
+    checked={consentAccepted}
+    onChange={(e) => setConsentAccepted(e.target.checked)}
+    className="mt-1 accent-blue-500 cursor-pointer"
+  />
+  <label htmlFor="consent" className="cursor-pointer leading-snug">
+    I agree to the{" "}
+    <Link
+      to="/terms-conditions"
+      target="_blank"
+      className="text-blue-600 hover:underline"
+    >
+      Terms & Conditions
+    </Link>{" "}
+    and{" "}
+    <Link
+      to="/privacy-policy"
+      target="_blank"
+      className="text-blue-600 hover:underline"
+    >
+      Privacy Policy
+    </Link>
+  </label>
+</div>
+
 
         <button
           type="submit"
