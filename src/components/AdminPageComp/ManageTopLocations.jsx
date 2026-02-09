@@ -72,7 +72,7 @@ function ManageTopLocations() {
 
   return (
     <div style={{fontFamily:"para_font"}} className="p-6 w-full max-w-3xl mx-auto">
-      <h2 style={{fontFamily:"heading_font"}} className="text-3xl  mb-6 text-gray-800">Manage Top Locations</h2>
+      <h2 style={{fontFamily:"para_font"}} className="text-3xl  mb-6 text-gray-800">Manage Top Locations</h2>
 
       {/* Add Location Form */}
       <div className="bg-white shadow-md rounded-xl p-6 mb-8 border border-gray-200">

@@ -117,7 +117,7 @@ function RelatedProperties({ currentProperty }) {
   return (
     <div className="mt-8 p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
       <h2
-        style={{ fontFamily: "universal_font" }}
+        style={{ fontFamily: "para_font" }}
         className="text-[16px] lg:text-2xl font-semibold text-gray-900 mb-6"
       >
         You Might Also Like

@@ -49,7 +49,7 @@ export default function AboutHighlights() {
 
       <div className="max-w-7xl mx-auto mb-10">
         <h2
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
           className="text-lg lg:text-3xl mb-0 text-black dark:text-white leading-tight"
           itemProp="headline"
         >

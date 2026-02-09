@@ -60,7 +60,7 @@ export default function HRDashboardSidebar({ activeTab, setActiveTab }) {
       >
         {/* Desktop Header */}
         <div className="p-6 border-b hidden lg:flex items-center justify-between">
-          <h2 style={{ fontFamily: "universal_font" }} className="text-xl text-pink-600">
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl text-pink-600">
             HR Panel
           </h2>
           <button

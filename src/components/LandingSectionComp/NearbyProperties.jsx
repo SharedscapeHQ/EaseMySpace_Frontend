@@ -161,7 +161,7 @@ useEffect(() => {
     <div className="bg-zinc-50 pb-5">
       <section className="lg:px-10 px-3 rounded-2xl max-w-7xl mx-auto relative" style={{ fontFamily: "universal_font" }}>
         <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
-          <h2 style={{ fontFamily: "para_font" }} className="text-[16px] lg:text-3xl text-left text-black" style={{ fontFamily: "universal_font" }}>
+          <h2 style={{ fontFamily: "para_font" }} className="text-[16px] lg:text-3xl text-left text-black" style={{ fontFamily: "para_font" }}>
             {headingText}
           </h2>
 

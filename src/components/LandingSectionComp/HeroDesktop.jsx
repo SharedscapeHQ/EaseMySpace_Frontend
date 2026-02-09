@@ -19,7 +19,7 @@ export default function HeroDesktop() {
 
         {/* <h1
           className="text-4xl lg:text-5xl font-semibold text-zinc-800 dark:text-zinc-100 mb-6"
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
         >
           Find your next home, without the hassle
         </h1> */}

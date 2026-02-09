@@ -83,7 +83,7 @@ export default function LifeAtEaseMySpace() {
         {/* Heading */}
         <div className="mb-6 text-left">
           <h2
-            style={{ fontFamily: "universal_font" }}
+            style={{ fontFamily: "para_font" }}
             className="text-lg lg:text-3xl mb-0 text-black leading-tight"
           >
             Life at EaseMySpace™

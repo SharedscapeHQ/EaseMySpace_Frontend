@@ -77,7 +77,7 @@ export default function OurTeam() {
     className="w-full mb-6"
   >
     <h2
-      style={{ fontFamily: "universal_font" }}
+      style={{ fontFamily: "para_font" }}
       className="text-lg lg:text-3xl mb-0 dark:text-white text-black leading-tight"
       itemProp="employee"
     >

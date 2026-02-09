@@ -128,7 +128,7 @@ const TestimonialSection = () => {
     >
       <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
         <h2
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
           className="text-lg sm:text-3xl mb-5 text-left"
         >
           Google Reviews of our customers

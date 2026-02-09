@@ -73,7 +73,7 @@ export default function FAQSection() {
 
       <div className="max-w-7xl lg:px-10 px-3 mx-auto">
        <h2
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
           className="text-lg sm:text-3xl mb-5 text-left"
         >
   FAQs on PGs, Flats & Flatmates in Mumbai

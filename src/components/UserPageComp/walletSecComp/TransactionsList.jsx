@@ -14,7 +14,7 @@ export default function RecentTransactions({ transactions }) {
     <div className="bg-white shadow-md rounded-2xl p-6 h-full">
       <h2
         className="text-xl font-semibold mb-4 flex items-center gap-2"
-        style={{ fontFamily: "universal_font" }}
+        style={{ fontFamily: "para_font" }}
       >
         <FiTrendingUp className="text-blue-600" />
         Recent Transactions

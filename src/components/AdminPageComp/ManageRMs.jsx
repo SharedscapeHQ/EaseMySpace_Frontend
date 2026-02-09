@@ -88,7 +88,7 @@ export default function ManageRMs() {
 
   return (
     <div style={{fontFamily:"para_font"}} className="p-6 max-w-5xl mx-auto">
-      <h2 style={{fontFamily:"heading_font"}} className="text-3xl mb-8 text-zinc-800">Manage RMs</h2>
+      <h2 style={{fontFamily:"para_font"}} className="text-3xl mb-8 text-zinc-800">Manage RMs</h2>
 
       {/* Add RM Form */}
       <div className="bg-white p-6 rounded-2xl shadow-md mb-10">

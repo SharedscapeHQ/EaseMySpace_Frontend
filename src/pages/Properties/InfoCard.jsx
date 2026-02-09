@@ -203,7 +203,7 @@ export default function ContactCard({
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full">
         <h2
           className="text-lg text-gray-900 flex items-center gap-2 mb-4"
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
         >
           <FaUserCircle className="text-indigo-600 text-2xl" />
           {!user || (!hasPaid && wallet <= 0)
@@ -387,7 +387,7 @@ export default function ContactCard({
       <div className="bg-white border rounded-xl p-5 shadow-sm w-full mt-4">
         <h2
           className="text-lg flex items-center gap-2 mb-3"
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
         >
           {!existingBookingDateTime && (
             <FaCalendarAlt className="text-indigo-600" />

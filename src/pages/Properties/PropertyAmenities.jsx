@@ -78,7 +78,7 @@ function PropertyAmenities({ amenities, property }) {
   return (
     <div style={{ fontFamily: "universal_font" }} className="bg-white rounded-xl border p-6">
       <h2
-        style={{ fontFamily: "universal_font" }}
+        style={{ fontFamily: "para_font" }}
         className="text-[16px] lg:text-xl text-left text-black mb-3"
       >
         Amenities

@@ -30,7 +30,7 @@ export default function MsgFromFounder() {
       {/* Heading */}
       <div className="mb-6 text-left">
         <h2
-          style={{ fontFamily: "universal_font" }}
+          style={{ fontFamily: "para_font" }}
           className="text-lg lg:text-3xl mb-0 text-black pl-3 lg:pl-0 dark:text-white leading-tight"
         >
           Message from the Founder

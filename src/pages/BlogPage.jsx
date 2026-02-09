@@ -54,7 +54,7 @@ export default function BlogPage() {
         <header className="text-center mb-12">
           <h1
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-800 mb-4"
-            style={{ fontFamily: "universal_font" }}
+            style={{ fontFamily: "para_font" }}
           >
             Flatmates, PGs & Rentals in Mumbai
           </h1>

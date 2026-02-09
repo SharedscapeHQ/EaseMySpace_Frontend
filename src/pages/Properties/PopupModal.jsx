@@ -150,7 +150,7 @@ const PlanCard = ({
 
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mt-4">
         <div className="lg:w-1/3">
-          <h2 style={{ fontFamily: "universal_font" }} className="text-xl mb-1">
+          <h2 style={{ fontFamily: "para_font" }} className="text-xl mb-1">
             {title}
           </h2>
           <p className="text-sm mb-1">{subtitle}</p>

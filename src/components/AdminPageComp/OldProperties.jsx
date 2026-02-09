@@ -63,7 +63,7 @@ export default function OldProperties() {
     <div style={{ fontFamily: "universal_font" }} className="p-4">
       {/* Heading + Search Bar */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
-        <h2 style={{ fontFamily: "universal_font" }} className="text-2xl mb-2 md:mb-0">
+        <h2 style={{ fontFamily: "para_font" }} className="text-2xl mb-2 md:mb-0">
           Properties Older Than 30 Days
         </h2>
 

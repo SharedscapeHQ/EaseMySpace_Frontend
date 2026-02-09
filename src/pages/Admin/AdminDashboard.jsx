@@ -502,7 +502,7 @@ const openEditModal = (property) => {
           {activeTab === "NewlyListed" && (
             <section>
               <h2
-                style={{ fontFamily: "universal_font" }}
+                style={{ fontFamily: "para_font" }}
                 className="text-xl mb-4"
               >
                 Featured Listing

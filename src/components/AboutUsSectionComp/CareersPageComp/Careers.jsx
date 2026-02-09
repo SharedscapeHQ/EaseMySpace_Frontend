@@ -173,7 +173,7 @@ const handleSubmit = async (e) => {
   itemType="https://schema.org/JobPosting"
 >
   <h1
-    style={{ fontFamily: "universal_font" }}
+    style={{ fontFamily: "para_font" }}
     className="text-4xl font-bold mb-4"
     itemProp="title"
   >
@@ -231,7 +231,7 @@ const handleSubmit = async (e) => {
       {/* Perks & Benefits + Form */}
       <section className="bg-white py-16 px-6 lg:px-20 border-t border-gray-200">
         <div className="mx-auto mb-12">
-          <h2 style={{ fontFamily: "universal_font" }} className="text-[16px] lg:text-3xl text-left text-black">
+          <h2 style={{ fontFamily: "para_font" }} className="text-[16px] lg:text-3xl text-left text-black">
             We’re Always Looking for Great Talent
           </h2>
         </div>

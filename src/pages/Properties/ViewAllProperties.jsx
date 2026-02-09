@@ -255,7 +255,7 @@ const handleSelectLocation = (description) => {
         {/* Header */}
         <section className="w-full text-center  mb-6 px-2">
           <h1
-            style={{ fontFamily: "universal_font" }}
+            style={{ fontFamily: "para_font" }}
             className="text-lg lg:text-3xl font-semibold text-black dark:text-white"
           >
             {filters.looking_for === "pg" &&
