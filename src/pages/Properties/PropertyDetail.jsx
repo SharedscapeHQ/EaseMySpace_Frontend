@@ -2,7 +2,11 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { FiEye, FiCheckCircle } from "react-icons/fi";
 import { markPropertyAsViewed, getUnlockedLeads } from "../../api/userApi";
-import { incrementPropertyView, getPropertyById, getPropertyVisitCount } from "../../api/propertiesApi";
+import {
+  incrementPropertyView,
+  getPropertyById,
+  getPropertyVisitCount,
+} from "../../api/propertiesApi";
 import { getCurrentUser } from "../../api/authApi";
 
 import PropertyAmenities from "./PropertyAmenities";
@@ -24,48 +28,55 @@ function PropertyDetail() {
   const location = useLocation();
 
   const stripQuotes = (v) =>
-    v == null ? "" : String(v).replace(/^"+|"+$/g, "").trim();
+    v == null
+      ? ""
+      : String(v)
+          .replace(/^"+|"+$/g, "")
+          .trim();
 
   const parseImages = (raw) => {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw.map(stripQuotes).filter(Boolean);
-  if (typeof raw === "string" && raw.startsWith("{")) {
-    return raw.slice(1, -1).split(",").map(stripQuotes).filter(Boolean);
-  }
-  return [stripQuotes(raw)];
-};
-
-const enrich = (row) => {
-  const allImageFields = [
-    "image",
-    "bedroom_images",
-    "kitchen_images",
-    "bathroom_images",
-    "hall_images",
-    "additional_images",
-  ];
-
-  const images = allImageFields
-    .map((field) => parseImages(row[field]))
-    .flat(); // flatten array of arrays
-
-  return {
-    ...row,
-    images,
-    video: stripQuotes(row.video),
-    cover: images[0], // first available image
+    if (!raw) return [];
+    if (Array.isArray(raw)) return raw.map(stripQuotes).filter(Boolean);
+    if (typeof raw === "string" && raw.startsWith("{")) {
+      return raw.slice(1, -1).split(",").map(stripQuotes).filter(Boolean);
+    }
+    return [stripQuotes(raw)];
   };
-};
 
+  const enrich = (row) => {
+    const allImageFields = [
+      "image",
+      "bedroom_images",
+      "kitchen_images",
+      "bathroom_images",
+      "hall_images",
+      "additional_images",
+    ];
+
+    const images = allImageFields
+      .map((field) => parseImages(row[field]))
+      .flat(); // flatten array of arrays
+
+    return {
+      ...row,
+      images,
+      video: stripQuotes(row.video),
+      cover: images[0], // first available image
+    };
+  };
 
   const generateTitle = (title) => {
     if (!title) return "Property Listing";
     const firstWord = title.trim().split(" ")[0];
-    const possessive = firstWord.endsWith("s") ? `${firstWord}'` : `${firstWord}'s`;
+    const possessive = firstWord.endsWith("s")
+      ? `${firstWord}'`
+      : `${firstWord}'s`;
     return `${possessive} listed home`;
   };
 
-  const init = location.state?.property ? enrich(location.state.property) : null;
+  const init = location.state?.property
+    ? enrich(location.state.property)
+    : null;
 
   const [property, setProperty] = useState(init);
   const [loading, setLoading] = useState(!init);
@@ -105,16 +116,21 @@ const enrich = (row) => {
 
   useEffect(() => {
     setLoading(true);
+
     async function fetchProperty() {
       try {
-        const { data } = await getPropertyById(id);
-        setProperty(enrich(data));
+        const res = await getPropertyById(id);
+
+        const enriched = enrich(res.data);
+
+        setProperty(enriched);
       } catch (err) {
-        console.error("Failed to fetch property:", err);
+        console.error("❌ Failed to fetch property:", err);
       } finally {
         setLoading(false);
       }
     }
+
     fetchProperty();
   }, [id]);
 
@@ -133,12 +149,14 @@ const enrich = (row) => {
 
   useEffect(() => {
     if (!property || !loggedInUser) return;
-    const viewedProps = JSON.parse(sessionStorage.getItem("viewedProps") || "[]");
+    const viewedProps = JSON.parse(
+      sessionStorage.getItem("viewedProps") || "[]",
+    );
     if (!viewedProps.includes(property.id)) {
       incrementPropertyView(property.id).catch(console.error);
       sessionStorage.setItem(
         "viewedProps",
-        JSON.stringify([...viewedProps, property.id])
+        JSON.stringify([...viewedProps, property.id]),
       );
     }
     markPropertyAsViewed(property.id).catch(console.error);
@@ -160,7 +178,7 @@ const enrich = (row) => {
       const total = property.images.length + (property.video ? 1 : 0);
       setLightboxIdx((idx) => (idx + dir + total) % total);
     },
-    [property]
+    [property],
   );
 
   useEffect(() => {
@@ -203,121 +221,127 @@ const enrich = (row) => {
         />
       )}
 
-      <main style={{ fontFamily: "universal_font" }} className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8">
+      <main
+        style={{ fontFamily: "universal_font" }}
+        className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8"
+      >
         <div className="flex flex-col p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
           <div className="flex items-center justify-between flex-wrap">
-  {/* Left side */}
-  <div className="flex items-center gap-2 flex-wrap">
-    <div className="text-base lg:text-2xl  text-gray-800">
-      {generateTitle(property.title)}
-    </div>
-    {property.verified && (
-      <span className="bg-green-500 text-white text-[8px] lg:text-sm px-2 py-1 rounded-full flex items-center gap-1">
-        <FiCheckCircle className="text-xs lg:text-sm" /> Verified
-      </span>
-    )}
-   {(() => {
-  if (!property.created_at) return null;
+            {/* Left side */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="text-base lg:text-2xl  text-gray-800">
+                {generateTitle(property.title)}
+              </div>
+              {property.verified && (
+                <span className="bg-green-500 text-white text-[8px] lg:text-sm px-2 py-1 rounded-full flex items-center gap-1">
+                  <FiCheckCircle className="text-xs lg:text-sm" /> Verified
+                </span>
+              )}
+              {(() => {
+                if (!property.created_at) return null;
 
-  const created = new Date(property.created_at);
-  const now = new Date();
-  const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+                const created = new Date(property.created_at);
+                const now = new Date();
+                const diffDays = Math.floor(
+                  (now - created) / (1000 * 60 * 60 * 24),
+                );
 
-  if (diffDays > 10) return null;
+                if (diffDays > 10) return null;
 
-  let label = "";
-  if (diffDays === 0) label = "Added today";
-  else if (diffDays === 1) label = "Added 1 day ago";
-  else label = `Added ${diffDays} days ago`;
+                let label = "";
+                if (diffDays === 0) label = "Added today";
+                else if (diffDays === 1) label = "Added 1 day ago";
+                else label = `Added ${diffDays} days ago`;
 
-  return (
-    <span className="bg-blue-500 text-white text-[8px] lg:text-sm px-2 py-1 rounded-full flex items-center gap-1">
-      {label}
-    </span>
-  );
-})()}
-    {/* {visitCount > 0 && (
+                return (
+                  <span className="bg-blue-500 text-white text-[8px] lg:text-sm px-2 py-1 rounded-full flex items-center gap-1">
+                    {label}
+                  </span>
+                );
+              })()}
+              {/* {visitCount > 0 && (
       <span className="inline-flex items-center gap-1 lg:text-sm text-xs text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-md shadow-sm">
         <FiEye className="text-gray-500" /> {visitCount} Visits
       </span>
     )} */}
-  </div>
+            </div>
 
-  {/* Right side */}
-  
-  <SavePropertyButton propertyId={property.id} />
-</div>
+            {/* Right side */}
 
-         {property.owner_code === "subdomainEMS221" ? (
-  <PropertyHeaderSectionSub
-    property={property}
-    setLightboxIdx={setLightboxIdx}
-    hasPaid={hasPaid}
-    userMobile={loggedInUser?.phone}
-    setHasPaid={setHasPaid}
-    setShowPlanPopup={setShowPlanPopup}
-  />
-) : (
-  <PropertyHeaderSection
-    property={property}
-    lightboxIdx={lightboxIdx}
-    setLightboxIdx={setLightboxIdx}
-    stepLightbox={stepLightbox}
-    hasPaid={hasPaid}
-    userMobile={loggedInUser?.phone}
-    setHasPaid={setHasPaid}
-    setShowPlanPopup={setShowPlanPopup}
-  />
-)}
+            <SavePropertyButton propertyId={property.id} />
+          </div>
 
-       {property.owner_code === "subdomainEMS221" ? (
-  <EssentialDetailsSub
-    property={property}
-    onPaymentSuccess={(roomLabel, occupancy) => {
-      setProperty((prev) => ({
-        ...prev,
-        pricingOptions: prev.pricingOptions.map((room) =>
-          room.room_label === roomLabel
-            ? {
-                ...room,
-                occupancies: room.occupancies.map((o) =>
-                  o.occupancy === occupancy
-                    ? { ...o, availability: "occupied" }
-                    : o
-                ),
-              }
-            : room
-        ),
-      }));
-    }}
-  />
-) : (
-  <EssentialDetails
-    property={property}
-    onPaymentSuccess={(roomLabel, occupancy) => {
-      setProperty((prev) => ({
-        ...prev,
-        pricingOptions: prev.pricingOptions.map((room) =>
-          room.room_label === roomLabel
-            ? {
-                ...room,
-                occupancies: room.occupancies.map((o) =>
-                  o.occupancy === occupancy
-                    ? { ...o, availability: "occupied" }
-                    : o
-                ),
-              }
-            : room
-        ),
-      }));
-    }}
-  />
-)}
+          {property.owner_code === "subdomainEMS221" ? (
+            <PropertyHeaderSectionSub
+              property={property}
+              setLightboxIdx={setLightboxIdx}
+              hasPaid={hasPaid}
+              userMobile={loggedInUser?.phone}
+              setHasPaid={setHasPaid}
+              setShowPlanPopup={setShowPlanPopup}
+            />
+          ) : (
+            <PropertyHeaderSection
+              property={property}
+              lightboxIdx={lightboxIdx}
+              setLightboxIdx={setLightboxIdx}
+              stepLightbox={stepLightbox}
+              hasPaid={hasPaid}
+              userMobile={loggedInUser?.phone}
+              setHasPaid={setHasPaid}
+              setShowPlanPopup={setShowPlanPopup}
+            />
+          )}
 
-
+          {property.owner_code === "subdomainEMS221" ? (
+            <EssentialDetailsSub
+              property={property}
+              onPaymentSuccess={(roomLabel, occupancy) => {
+                setProperty((prev) => ({
+                  ...prev,
+                  pricingOptions: prev.pricingOptions.map((room) =>
+                    room.room_label === roomLabel
+                      ? {
+                          ...room,
+                          occupancies: room.occupancies.map((o) =>
+                            o.occupancy === occupancy
+                              ? { ...o, availability: "occupied" }
+                              : o,
+                          ),
+                        }
+                      : room,
+                  ),
+                }));
+              }}
+            />
+          ) : (
+            <EssentialDetails
+              property={property}
+              onPaymentSuccess={(roomLabel, occupancy) => {
+                setProperty((prev) => ({
+                  ...prev,
+                  pricingOptions: prev.pricingOptions.map((room) =>
+                    room.room_label === roomLabel
+                      ? {
+                          ...room,
+                          occupancies: room.occupancies.map((o) =>
+                            o.occupancy === occupancy
+                              ? { ...o, availability: "occupied" }
+                              : o,
+                          ),
+                        }
+                      : room,
+                  ),
+                }));
+              }}
+            />
+          )}
 
           <div className="bg-white rounded-xl border p-6">
-            <h2 style={{ fontFamily: "para_font" }} className="text-[16px] lg:text-xl text-left text-black mb-3">
+            <h2
+              style={{ fontFamily: "para_font" }}
+              className="text-[16px] lg:text-xl text-left text-black mb-3"
+            >
               Property Description
             </h2>
             <p className="text-gray-700 text-sm lg:text-md leading-relaxed whitespace-pre-line">
@@ -325,13 +349,15 @@ const enrich = (row) => {
             </p>
           </div>
 
-          <PropertyAmenities amenities={property.amenities} property={property} />
+          <PropertyAmenities
+            amenities={property.amenities}
+            property={property}
+          />
           <PropertyMap
-  location={property.location} 
-  pincode={property.pincode}   
-  title={property.title}
-/>
-
+            location={property.location}
+            pincode={property.pincode}
+            title={property.title}
+          />
         </div>
 
         <RelatedProperties currentProperty={property} />
