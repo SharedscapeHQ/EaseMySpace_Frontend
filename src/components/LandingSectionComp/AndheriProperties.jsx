@@ -5,21 +5,6 @@ import axios from "axios";
 import PropertyMiniCard from "./PropertyMiniCard";
 
 
-const parseImages = (raw) => {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-
-  if (typeof raw === "string" && raw.startsWith("{"))
-    return raw
-      .slice(1, -1)
-      .split(",")
-      .map((s) => s.trim().replace(/^"|"$/g, "").replace(/^'|'$/g, ""))
-      .filter(Boolean);
-
-  return [];
-};
-
-
 export default function AndheriProperties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,11 +13,10 @@ export default function AndheriProperties() {
 useEffect(() => {
   async function fetchProperties() {
     const CACHE_KEY = "andheri_properties";
-    const CACHE_TIME_KEY = "andheri_properties_time";
-    const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
+    const CACHE_DURATION = 1000 * 60 * 10;
 
     const cachedData = sessionStorage.getItem(CACHE_KEY);
-    const cachedTime = sessionStorage.getItem(CACHE_TIME_KEY);
+    const cachedTime = sessionStorage.getItem(`${CACHE_KEY}_time`);
 
     if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_DURATION) {
       setProperties(JSON.parse(cachedData));
@@ -40,8 +24,9 @@ useEffect(() => {
       return;
     }
 
-    setLoading(true);
     try {
+      setLoading(true);
+
       const res = await axios.get(
         "https://api.easemyspace.in/api/properties/all"
       );
@@ -50,27 +35,17 @@ useEffect(() => {
         .filter(
           (p) =>
             p.status === "approved" &&
-            p.location &&
-            p.location.toLowerCase().includes("andheri")
+            p.location?.toLowerCase().includes("andheri")
         )
         .sort(
           (a, b) =>
             (a.newly_listed_position || 9999) -
             (b.newly_listed_position || 9999)
-        )
-        .map((p) => ({
-          ...p,
-          image: parseImages(p.image),
-          bedroom_images: parseImages(p.bedroom_images),
-          kitchen_images: parseImages(p.kitchen_images),
-          bathroom_images: parseImages(p.bathroom_images),
-          hall_images: parseImages(p.hall_images),
-          additional_images: parseImages(p.additional_images),
-        }));
+        );
 
       setProperties(filtered);
       sessionStorage.setItem(CACHE_KEY, JSON.stringify(filtered));
-      sessionStorage.setItem(CACHE_TIME_KEY, Date.now());
+      sessionStorage.setItem(`${CACHE_KEY}_time`, Date.now());
     } catch (err) {
       console.error("Failed to fetch Andheri properties", err);
       setProperties([]);
@@ -81,6 +56,7 @@ useEffect(() => {
 
   fetchProperties();
 }, []);
+
 
 
   /* ---------- Loading ---------- */
