@@ -80,6 +80,8 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
     e.preventDefault();
     e.stopPropagation();
 
+    if (isLoggedIn === null) return;
+
     if (!isLoggedIn && !isOtpVerified) {
       setShowOtpPopup(true);
       return;
