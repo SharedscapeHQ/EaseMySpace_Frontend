@@ -7,7 +7,17 @@ export default function PropertyMiniCard({ property }) {
     property.location,
     property.pincode,
   );
-  const img = property.bedroom_image || null;
+
+function getOptimizedImage(url, size = 400) {
+  if (!url) return null;
+  return url.replace(
+    "/upload/",
+    `/upload/w_${size},h_${size},c_fill,q_auto,f_auto/`
+  );
+}
+
+const img = getOptimizedImage(property.bedroom_image);
+
 
   return (
     <div
