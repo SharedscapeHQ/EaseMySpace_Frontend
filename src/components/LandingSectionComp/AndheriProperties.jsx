@@ -4,75 +4,64 @@ import { FiArrowRight } from "react-icons/fi";
 import axios from "axios";
 import PropertyMiniCard from "./PropertyMiniCard";
 
-
 export default function AndheriProperties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
 
-useEffect(() => {
-  async function fetchProperties() {
-    const CACHE_KEY = "andheri_properties";
-    const CACHE_DURATION = 1000 * 60 * 10;
+  useEffect(() => {
+    async function fetchProperties() {
+      const CACHE_KEY = "andheri_properties";
+      const CACHE_DURATION = 1000 * 60 * 10;
 
-    const cachedData = sessionStorage.getItem(CACHE_KEY);
-    const cachedTime = sessionStorage.getItem(`${CACHE_KEY}_time`);
+      const cachedData = sessionStorage.getItem(CACHE_KEY);
+      const cachedTime = sessionStorage.getItem(`${CACHE_KEY}_time`);
 
-    if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_DURATION) {
-      setProperties(JSON.parse(cachedData));
-      setLoading(false);
-      return;
-    }
+      if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_DURATION) {
+        setProperties(JSON.parse(cachedData));
+        setLoading(false);
+        return;
+      }
 
-    try {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      const res = await axios.get(
-        "https://api.easemyspace.in/api/properties/all"
-      );
-
-      const filtered = res.data
-        .filter(
-          (p) =>
-            p.status === "approved" &&
-            p.location?.toLowerCase().includes("andheri")
-        )
-        .sort(
-          (a, b) =>
-            (a.newly_listed_position || 9999) -
-            (b.newly_listed_position || 9999)
+        const res = await axios.get(
+          "https://api.easemyspace.in/api/properties/andheri"
         );
+console.log("Andheri properties response:", res.data);
+        setProperties(res.data);
 
-      setProperties(filtered);
-      sessionStorage.setItem(CACHE_KEY, JSON.stringify(filtered));
-      sessionStorage.setItem(`${CACHE_KEY}_time`, Date.now());
-    } catch (err) {
-      console.error("Failed to fetch Andheri properties", err);
-      setProperties([]);
-    } finally {
-      setLoading(false);
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(res.data));
+        sessionStorage.setItem(`${CACHE_KEY}_time`, Date.now());
+      } catch (err) {
+        console.error("Failed to fetch Andheri properties", err);
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
 
-  fetchProperties();
-}, []);
-
-
+    fetchProperties();
+  }, []);
 
   /* ---------- Loading ---------- */
 
   if (loading) {
     return (
       <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
-        <h2 style={{ fontFamily: "para_font" }} className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
-  Properties in Andheri
-  <Link
-    to="/view-properties"
-    className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
-  >
-    <FiArrowRight className="text-black w-4 h-4" />
-  </Link>
-</h2>
+        <h2
+          style={{ fontFamily: "para_font" }}
+          className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white"
+        >
+          Properties in Andheri
+          <Link
+            to="/view-properties"
+            className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+          >
+            <FiArrowRight className="text-black w-4 h-4" />
+          </Link>
+        </h2>
 
         <div className="flex gap-6 overflow-x-auto pb-4">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -97,22 +86,25 @@ useEffect(() => {
   /* ---------- UI ---------- */
 
   return (
-    <div className=" dark:bg-zinc-900 transition-colors">
+    <div className="dark:bg-zinc-900 transition-colors">
       <section
         className="lg:py-10 pt-10 lg:px-10 px-3 max-w-7xl mx-auto"
         style={{ fontFamily: "universal_font" }}
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-         <h2 style={{ fontFamily: "para_font" }} className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
-  Properties in Andheri
-  <Link
-    to="/view-properties"
-    className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
-  >
-    <FiArrowRight className="text-black w-4 h-4" />
-  </Link>
-</h2>
+          <h2
+            style={{ fontFamily: "para_font" }}
+            className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white"
+          >
+            Properties in Andheri
+            <Link
+              to="/view-properties"
+              className="ml-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+            >
+              <FiArrowRight className="text-black w-4 h-4" />
+            </Link>
+          </h2>
 
           <Link
             to="/view-properties?location=andheri"
