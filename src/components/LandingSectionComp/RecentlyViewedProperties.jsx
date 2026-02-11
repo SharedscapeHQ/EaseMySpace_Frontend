@@ -4,21 +4,6 @@ import { FiArrowRight } from "react-icons/fi";
 import { getRecentlyViewedProperties } from "../../api/userApi";
 import PropertyMiniCard from "./PropertyMiniCard";
 
-// Helper to parse images stored as strings/arrays
-const parseImages = (raw) => {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-
-  if (typeof raw === "string" && raw.startsWith("{"))
-    return raw
-      .slice(1, -1)
-      .split(",")
-      .map((s) => s.trim().replace(/^"|"$/g, "").replace(/^'|'$/g, ""))
-      .filter(Boolean);
-
-  return [];
-};
-
 export default function RecentlyViewedProperties() {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,16 +14,12 @@ export default function RecentlyViewedProperties() {
     async function fetchRecentlyViewed() {
       const CACHE_KEY = "recently_viewed_properties";
       const CACHE_TIME_KEY = "recently_viewed_properties_time";
-      const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes (shorter = safer)
+      const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes
 
       const cachedData = sessionStorage.getItem(CACHE_KEY);
       const cachedTime = sessionStorage.getItem(CACHE_TIME_KEY);
 
-      if (
-        cachedData &&
-        cachedTime &&
-        Date.now() - cachedTime < CACHE_DURATION
-      ) {
+      if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_DURATION) {
         setRecentlyViewed(JSON.parse(cachedData));
         setLoading(false);
         return;
@@ -53,17 +34,8 @@ export default function RecentlyViewedProperties() {
           return;
         }
 
-        const filtered = res
-          .filter((p) => p.status === "approved")
-          .map((p) => ({
-            ...p,
-            image: parseImages(p.image),
-            bedroom_images: parseImages(p.bedroom_images),
-            kitchen_images: parseImages(p.kitchen_images),
-            bathroom_images: parseImages(p.bathroom_images),
-            hall_images: parseImages(p.hall_images),
-            additional_images: parseImages(p.additional_images),
-          }));
+        // API already sends only one image, no need to parse
+        const filtered = res.filter((p) => p.status === "approved");
 
         setRecentlyViewed(filtered);
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(filtered));
@@ -88,7 +60,7 @@ export default function RecentlyViewedProperties() {
   if (loading) {
     return (
       <section className="py-10 lg:px-10 px-3 max-w-7xl mx-auto">
-        <h2 style={{ fontFamily: "para_font" }} className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
+        <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
           Recently Viewed
           <Link
             to="/view-properties"
@@ -109,18 +81,14 @@ export default function RecentlyViewedProperties() {
     );
   }
 
-  // Not authorized or no properties
   if (!authorized || recentlyViewed.length === 0) return null;
 
   return (
     <div className="dark:bg-zinc-900 transition-colors">
-      <section
-        className="lg:py-10 pt-10 lg:px-10 px-3 max-w-7xl mx-auto"
-        style={{ fontFamily: "universal_font" }}
-      >
+      <section className="lg:py-10 pt-10 lg:px-10 px-3 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 style={{ fontFamily: "para_font" }} className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
+          <h2 className="flex items-center gap-2 text-[16px] lg:text-xl text-black dark:text-white">
             Recently Viewed
             <Link
               to="/view-properties"
@@ -138,10 +106,7 @@ export default function RecentlyViewedProperties() {
         </div>
 
         {/* Property Cards */}
-        <div
-          ref={scrollRef}
-          className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide"
-        >
+        <div ref={scrollRef} className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide">
           {recentlyViewed.map((property) => (
             <PropertyMiniCard key={property.id} property={property} />
           ))}

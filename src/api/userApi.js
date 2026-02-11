@@ -93,13 +93,13 @@ export const checkListerUserSubscription = async () => {
 
 export const getUnlockedProperties = async () => {
   const res = await axiosInstance.get("/unlocked-contacts");
-  return res.data; // array of unlocked property objects
+  return res.data; 
 };
 
 export const getRecentlyViewedProperties = async () => {
   try {
     const res = await axiosInstance.get("/recently-viewed");
-    return res.data.properties;
+    return res.data;
   } catch (err) {
     console.error("Failed to fetch recently viewed properties:", err);
     return [];

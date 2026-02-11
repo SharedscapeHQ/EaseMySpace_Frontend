@@ -20,21 +20,18 @@ export default function RecentlyViewed({ property }) {
     >
       {/* Image Section */}
       <div className="relative w-full h-44">
-        {property.bedroom_images ? (
-          <img
-            src={
-              Array.isArray(property.bedroom_images)
-                ? property.bedroom_images[0]
-                : property.bedroom_images
-            }
-            alt={property.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 italic">
-            No Image
-          </div>
-        )}
+      {property.bedroom_image ? (
+  <img
+    src={property.bedroom_image}
+    alt={property.title}
+    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+  />
+) : (
+  <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 italic">
+    No Image
+  </div>
+)}
+
 
         {/* Viewed timestamp */}
         {property.viewed_at && (
