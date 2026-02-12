@@ -59,18 +59,23 @@ export default function NewlyListedCard({ property, markNewlyListed, fetchProper
   return (
     <div style={{ fontFamily: "universal_font" }} className="bg-white rounded-xl border hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
       {/* Image */}
-      <div className="relative h-44 md:h-48">
-        <img
-          src={Array.isArray(property.image) ? property.image[0] : property.image || "/default-property.jpg"}
-          alt={property.title}
-          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
-        />
-        {property.is_newly_listed && (
-          <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
-            <FiCheckCircle className="text-[10px]" /> Marked
-          </span>
-        )}
-      </div>
+     <div className="relative h-44 md:h-48">
+  <img
+    src={
+      Array.isArray(property.bedroom_images) && property.bedroom_images.length > 0
+        ? `${property.bedroom_images[0]}?tr=w-400,h-300,c_fill,q_auto,f_auto`
+        : "/default-property.jpg"
+    }
+    alt={property.title}
+    className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+  />
+  {property.is_newly_listed && (
+    <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+      <FiCheckCircle className="text-[10px]" /> Marked
+    </span>
+  )}
+</div>
+
 
       {/* Details */}
       <div className="p-4">

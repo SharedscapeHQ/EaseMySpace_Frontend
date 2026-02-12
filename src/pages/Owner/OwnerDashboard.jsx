@@ -412,7 +412,7 @@ export default function OwnerDashboard() {
                 style={{ fontFamily: "para_font" }}
                 className="text-xl mb-4"
               >
-                Featured Listing
+                Featured Listings
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {approved

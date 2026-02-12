@@ -49,6 +49,7 @@ const [modalUser, setModalUser] = useState(null);
   const [leads, setLeads] = useState([]);
   const [properties, setProperties] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
+  const [sourceFilter, setSourceFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("MyProfile");
 
   const [loadingLeads, setLoadingLeads] = useState(true);
@@ -454,50 +455,81 @@ const openEditModal = (property) => {
             </section>
           )}
 
-          {activeTab === "Properties" && (
-            <section>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h2 style={{ fontFamily: "para_font" }} className="text-xl ">Properties</h2>
+         {activeTab === "Properties" && (
+  <section>
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <h2 style={{ fontFamily: "para_font" }} className="text-xl">Properties</h2>
 
-                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-                  <div className="relative w-full sm:w-64">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                      <FiSearch />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Search by title, location..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
-                    />
-                  </div>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="border rounded px-3 py-1"
-                  >
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </div>
-              </div>
+      <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+        {/* Search Input */}
+        <div className="relative w-full sm:w-64">
+          <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+            <FiSearch />
+          </span>
+          <input
+            type="text"
+            placeholder="Search by title, location..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
+          />
+        </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {searchedProperties.map((property) => (
-                  <PropertyCard
-                    key={property.id}
-                    property={property}
-                    onApprove={handleApprove}
-                    onEdit={openEditModal}
-                    onDelete={handleDelete}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
+        {/* Status Filter with Label */}
+        <div className="flex items-center gap-2">
+          <label className="text-gray-700 font-medium">Status:</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="border rounded px-3 py-1"
+          >
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+
+        {/* Source Filter with Label */}
+        <div className="flex items-center gap-2">
+          <label className="text-gray-700 font-medium">Source:</label>
+         <select
+  value={sourceFilter}
+  onChange={(e) => setSourceFilter(e.target.value)}
+  className="border rounded px-3 py-1"
+>
+  <option value="all">All</option>
+  <option value="mainwebsite">Main Website</option>
+  <option value="subdomain">Subdomain</option>
+  <option value="app">Mobile App</option>
+</select>
+
+        </div>
+      </div>
+    </div>
+
+    {/* Property Cards Grid */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      {searchedProperties
+        .filter((p) =>
+          statusFilter === "all" ? true : p.status === statusFilter
+        )
+        .filter((p) =>
+          sourceFilter === "all" ? true : p.source === sourceFilter
+        )
+        .map((property) => (
+          <PropertyCard
+            key={property.id}
+            property={property}
+            onApprove={handleApprove}
+            onEdit={openEditModal}
+            onDelete={handleDelete}
+          />
+        ))}
+    </div>
+  </section>
+)}
+
 
           {activeTab === "NewlyListed" && (
             <section>
@@ -505,7 +537,7 @@ const openEditModal = (property) => {
                 style={{ fontFamily: "para_font" }}
                 className="text-xl mb-4"
               >
-                Featured Listing
+                Featured Listings
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {approved

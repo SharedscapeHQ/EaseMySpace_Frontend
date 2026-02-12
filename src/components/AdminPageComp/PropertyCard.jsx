@@ -1,34 +1,40 @@
 import React, { useState } from "react";
 import { FiCheckCircle, FiX } from "react-icons/fi";
 
-
-
-
-export default function PropertyCard({ property, onApprove, onEdit, onDelete }) {
-
-
+export default function PropertyCard({
+  property,
+  onApprove,
+  onEdit,
+  onDelete,
+}) {
   const sourceLabelMap = {
-  mainwebsite: "Main Website",
-  subdomain: "Subdomain",
-  app: "Mobile App",
-};
+    mainwebsite: "Main Website",
+    subdomain: "Subdomain",
+    app: "Mobile App",
+  };
 
-const sourceColorMap = {
-  mainwebsite: "bg-blue-500",
-  subdomain: "bg-yellow-500",
-  app: "bg-purple-600",
-};
-
+  const sourceColorMap = {
+    mainwebsite: "bg-blue-500",
+    subdomain: "bg-yellow-500",
+    app: "bg-purple-600",
+  };
 
   const [showConfirm, setShowConfirm] = useState(false);
 
   // Pick first main image, fallback to bedroom_images, then default
   const imageUrl =
     Array.isArray(property.image) && property.image.length > 0
-      ? property.image[0]
-      : Array.isArray(property.bedroom_images) && property.bedroom_images.length > 0
-      ? property.bedroom_images[0]
-      : "/default-property.jpg";
+      ? property.image[0].replace(
+          "/upload/",
+          "/upload/w_300,h_200,c_fill,f_auto,q_auto/",
+        )
+      : Array.isArray(property.bedroom_images) &&
+          property.bedroom_images.length > 0
+        ? property.bedroom_images[0].replace(
+            "/upload/",
+            "/upload/w_300,h_200,c_fill,f_auto,q_auto/",
+          )
+        : "/default-property.jpg";
 
   const hasPricing = property.pricing?.length > 0;
   const firstPrice = hasPricing
@@ -52,7 +58,12 @@ const sourceColorMap = {
     >
       {/* Property Image */}
       <div className="relative">
-        <img src={imageUrl} alt={property.title} className="w-full h-48 object-cover" />
+        <img
+          src={imageUrl}
+          alt={property.title || "Property Image"}
+          className="w-full h-48 object-cover"
+        />
+
         {property.verified && (
           <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow">
             <FiCheckCircle className="text-sm" /> Verified
@@ -69,24 +80,30 @@ const sourceColorMap = {
           >
             {property.title}
           </h3>
-        <span
-  className={`px-3 py-0.5 text-sm rounded-md text-white ${
-    sourceColorMap[property.source] || "bg-gray-500"
-  }`}
->
-  {sourceLabelMap[property.source] || "Unknown"}
-</span>
-
+          <span
+            className={`px-3 py-0.5 text-sm rounded-md text-white ${
+              sourceColorMap[property.source] || "bg-gray-500"
+            }`}
+          >
+            {sourceLabelMap[property.source] || "Unknown"}
+          </span>
         </div>
 
         {/* Pricing */}
         {hasPricing ? (
-          <p style={{ fontFamily: "universal_font" }} className="text-zinc-800 text-xs md:text-base">
+          <p
+            style={{ fontFamily: "universal_font" }}
+            className="text-zinc-800 text-xs md:text-base"
+          >
             ₹ {firstPrice}/mo{" "}
-            {multiplePricing && <span className="text-gray-500 text-xs">(multiple options)</span>}
+            {multiplePricing && (
+              <span className="text-gray-500 text-xs">(multiple options)</span>
+            )}
           </p>
         ) : (
-          <p className="text-gray-500 text-xs md:text-base">No Rent available</p>
+          <p className="text-gray-500 text-xs md:text-base">
+            No Rent available
+          </p>
         )}
 
         <p className="text-gray-600 text-sm">{property.location}</p>
