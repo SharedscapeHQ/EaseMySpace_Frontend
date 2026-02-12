@@ -12,6 +12,7 @@ const AddProperty = () => {
   const [formData, setFormData] = useState({
     title: "",
     location: "",
+    pincode: "",
     gender: "",
     looking_for: "",
     bhk_type: "",
@@ -19,12 +20,12 @@ const AddProperty = () => {
     bathrooms: "",
     owner_phone: "",
     description: "",
+    food_preference: "",
     bedroom_images_base64: [],
-  kitchen_images_base64: [],
-  bathroom_images_base64: [],
-  hall_images_base64: [],
-  additional_images_base64: [],
-    image_base64: [],
+    kitchen_images_base64: [],
+    bathroom_images_base64: [],
+    hall_images_base64: [],
+    additional_images_base64: [],
     video_base64: [],
     amenities: [],
     pricingOptions: [],
@@ -33,100 +34,110 @@ const AddProperty = () => {
   const [uploading, setUploading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const trimmedLocation = formData.location?.trim() || "";
-  const requiredFields = ["title", "location", "gender", "owner_phone"];
+    const trimmedLocation = formData.location?.trim() || "";
+    const requiredFields = [
+      "title",
+      "location",
+      "pincode",
+      "gender",
+      "owner_phone",
+    ];
 
-  for (const field of requiredFields) {
-    const value = field === "location" ? trimmedLocation : formData[field];
-    if (!value) {
-      toast.error(`Please fill ${field.replace("_", " ")}`);
+    for (const field of requiredFields) {
+      const value = field === "location" ? trimmedLocation : formData[field];
+      if (!value) {
+        toast.error(`Please fill ${field.replace("_", " ")}`);
+        return;
+      }
+    }
+
+    // ✅ Check mandatory image sections
+    const requiredImageSections = [
+      "bedroom_images_base64",
+      "kitchen_images_base64",
+      "bathroom_images_base64",
+      "hall_images_base64",
+    ];
+
+    const missingSections = requiredImageSections.filter(
+      (section) => !formData[section] || formData[section].length === 0,
+    );
+
+    if (missingSections.length > 0) {
+      toast.error(
+        `Please upload at least one image for: ${missingSections
+          .map((s) => s.replace("_base64", "").replace("_", " "))
+          .join(", ")}`,
+      );
       return;
     }
-  }
 
-  // ✅ Check mandatory image sections
-  const requiredImageSections = [
-    "bedroom_images_base64",
-    "kitchen_images_base64",
-    "bathroom_images_base64",
-    "hall_images_base64",
-  ];
-
-  const missingSections = requiredImageSections.filter(
-    (section) => !formData[section] || formData[section].length === 0
-  );
-
-  if (missingSections.length > 0) {
-    toast.error(
-      `Please upload at least one image for: ${missingSections
-        .map((s) => s.replace("_base64", "").replace("_", " "))
-        .join(", ")}`
+    // Filter valid pricing rooms
+    const validRooms = (formData.pricingOptions || []).filter(
+      (room) =>
+        room.room_name &&
+        room.occupancies &&
+        room.occupancies.some(
+          (occ) => occ.occupancy && occ.price && occ.deposit,
+        ),
     );
-    return;
-  }
 
-  // Filter valid pricing rooms
-  const validRooms = (formData.pricingOptions || []).filter(
-    (room) =>
-      room.room_name &&
-      room.occupancies &&
-      room.occupancies.some((occ) => occ.occupancy && occ.price && occ.deposit)
-  );
+    if (!validRooms.length) {
+      toast.error("Please enter at least one pricing option with occupancy");
+      return;
+    }
 
-  if (!validRooms.length) {
-    toast.error("Please enter at least one pricing option with occupancy");
-    return;
-  }
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const owner_code = user?.owner_code;
+    if (!owner_code) {
+      toast.error("Owner code missing. Please log in again.");
+      return;
+    }
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const owner_code = user?.owner_code;
-  if (!owner_code) {
-    toast.error("Owner code missing. Please log in again.");
-    return;
-  }
+    setUploading(true);
 
-  setUploading(true);
+    try {
+      await addProperty({
+        ...formData,
+        location: trimmedLocation,
+        pricingOptions: validRooms,
+        owner_code,
+        source: "mainwebsite",
+      });
 
-  try {
-    await addProperty({
-      ...formData,
-      location: trimmedLocation,
-      pricingOptions: validRooms,
-      owner_code,
-    });
+      setShowPopup(true);
 
-    setShowPopup(true);
-
-    setFormData({
-      title: "",
-      location: "",
-      gender: "",
-      looking_for: "",
-      bhk_type: "",
-      distance_from_station: "",
-      bathrooms: "",
-      owner_phone: "",
-      description: "",
-      bedroom_images_base64: [],
-      kitchen_images_base64: [],
-      bathroom_images_base64: [],
-      hall_images_base64: [],
-      additional_images_base64: [],
-      image_base64: [],
-      video_base64: [],
-      amenities: [],
-      pricingOptions: [],
-    });
-  } catch (err) {
-    console.error("Add property error:", err);
-    toast.error("Failed to upload property");
-  } finally {
-    setUploading(false);
-  }
-};
+      setFormData({
+        title: "",
+        location: "",
+         pincode: "",
+        gender: "",
+        looking_for: "",
+        bhk_type: "",
+        distance_from_station: "",
+        bathrooms: "",
+        owner_phone: "",
+        description: "",
+        food_preference: "",
+        bedroom_images_base64: [],
+        kitchen_images_base64: [],
+        bathroom_images_base64: [],
+        hall_images_base64: [],
+        additional_images_base64: [],
+        video_base64: [],
+        amenities: [],
+        pricingOptions: [],
+      });
+    } catch (err) {
+      console.error("Add property error:", err);
+      toast.error("Failed to upload property");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-indigo-50 p-4 md:p-10">
@@ -137,7 +148,10 @@ const handleSubmit = async (e) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 style={{ fontFamily: "para_font" }} className="text-3xl  text-indigo-700 flex items-center gap-3 mb-6">
+        <h1
+          style={{ fontFamily: "para_font" }}
+          className="text-3xl  text-indigo-700 flex items-center gap-3 mb-6"
+        >
           <FaHome /> Add Property Details
         </h1>
 
@@ -181,7 +195,10 @@ const handleSubmit = async (e) => {
                 className="bg-white shadow-2xl rounded-xl p-6 max-w-sm w-full border-l-4 border-blue-600"
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h2 style={{ fontFamily: "para_font" }} className="text-lg text-blue-600 ">
+                  <h2
+                    style={{ fontFamily: "para_font" }}
+                    className="text-lg text-blue-600 "
+                  >
                     Property Submitted!
                   </h2>
                   <button
@@ -192,8 +209,8 @@ const handleSubmit = async (e) => {
                   </button>
                 </div>
                 <p className="text-gray-700 text-sm mb-4">
-                  Your property is in the queue for admin approval. Once approved,
-                  it will be visible on{" "}
+                  Your property is in the queue for admin approval. Once
+                  approved, it will be visible on{" "}
                   <a
                     href="https://easemyspace.in/view-properties"
                     target="_blank"

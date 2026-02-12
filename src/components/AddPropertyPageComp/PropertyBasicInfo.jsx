@@ -26,6 +26,14 @@ const PropertyBasicInfo = ({ formData, setFormData }) => {
     "2 RK",
   ];
 
+  const foodOptions = [
+  { label: "Veg", value: "veg" },
+  { label: "Non-Veg", value: "nonveg" },
+  { label: "Vegan", value: "vegan" },
+  { label: "Any", value: "any" },
+];
+
+
   const dropdowns = [
     { name: "gender", label: "Gender Preference", options: ["male", "female", "any"], required: true },
     { name: "bhk_type", label: "BHK & RK Type", options: bhkOptions, required: true },
@@ -34,6 +42,12 @@ const PropertyBasicInfo = ({ formData, setFormData }) => {
       { label: "Flatmate", value: "flatmate" },
       { label: "PGs", value: "pg" },
     ], required: true },
+    {
+    name: "food_preference",
+    label: "Food Preference",
+    options: foodOptions,
+    required: false, 
+  },
   ];
 
   const handleChange = (e) =>
