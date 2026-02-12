@@ -1,7 +1,25 @@
 import React, { useState } from "react";
 import { FiCheckCircle, FiX } from "react-icons/fi";
 
+
+
+
 export default function PropertyCard({ property, onApprove, onEdit, onDelete }) {
+
+
+  const sourceLabelMap = {
+  mainwebsite: "Main Website",
+  subdomain: "Subdomain",
+  app: "Mobile App",
+};
+
+const sourceColorMap = {
+  mainwebsite: "bg-blue-500",
+  subdomain: "bg-yellow-500",
+  app: "bg-purple-600",
+};
+
+
   const [showConfirm, setShowConfirm] = useState(false);
 
   // Pick first main image, fallback to bedroom_images, then default
@@ -51,13 +69,14 @@ export default function PropertyCard({ property, onApprove, onEdit, onDelete }) 
           >
             {property.title}
           </h3>
-          <span
-            className={`px-3 py-0.5 text-sm rounded-md text-white ${
-              property.added_by_user_id === null ? "bg-blue-500" : "bg-yellow-500"
-            }`}
-          >
-            {property.added_by_user_id === null ? "Main Website" : "Subdomain"}
-          </span>
+        <span
+  className={`px-3 py-0.5 text-sm rounded-md text-white ${
+    sourceColorMap[property.source] || "bg-gray-500"
+  }`}
+>
+  {sourceLabelMap[property.source] || "Unknown"}
+</span>
+
         </div>
 
         {/* Pricing */}

@@ -10,50 +10,49 @@ export default function EditModal({
 }) {
   if (!editingProperty) return null;
 
-  const [draggedImage, setDraggedImage] = useState(null); 
+  const [draggedImage, setDraggedImage] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-
 
   // ---------------- File Handling ----------------
   const handleFileChange = async (e, type, category = null) => {
-  const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files);
 
-  const base64Files = await Promise.all(
-    files.map(
-      (file) =>
-        new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        })
-    )
-  );
+    const base64Files = await Promise.all(
+      files.map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          }),
+      ),
+    );
 
-  // ✅ VIDEOS
-  if (type === "video") {
+    // ✅ VIDEOS
+    if (type === "video") {
+      setEditForm((prev) => ({
+        ...prev,
+        video_base64: [...(prev.video_base64 || []), ...base64Files],
+      }));
+      return;
+    }
+
+    // ✅ CATEGORY IMAGES
+    if (category) {
+      setEditForm((prev) => ({
+        ...prev,
+        [category]: [...(prev[category] || []), ...base64Files],
+      }));
+      return;
+    }
+
+    // ✅ MAIN IMAGES
     setEditForm((prev) => ({
       ...prev,
-      video_base64: [...(prev.video_base64 || []), ...base64Files],
+      image: [...(prev.image || []), ...base64Files],
     }));
-    return;
-  }
-
-  // ✅ CATEGORY IMAGES
-  if (category) {
-    setEditForm((prev) => ({
-      ...prev,
-      [category]: [...(prev[category] || []), ...base64Files],
-    }));
-    return;
-  }
-
-  // ✅ MAIN IMAGES
-  setEditForm((prev) => ({
-    ...prev,
-    image: [...(prev.image || []), ...base64Files],
-  }));
-};
+  };
 
   const handleRemoveImage = (img, idx, category = null) => {
     const target = category || "image";
@@ -69,24 +68,23 @@ export default function EditModal({
     }));
   };
 
- const handleRemoveVideo = (idx) => {
-  const updated = (editingProperty.video || []).filter((_, i) => i !== idx);
+  const handleRemoveVideo = (idx) => {
+    const updated = (editingProperty.video || []).filter((_, i) => i !== idx);
 
-  setEditForm((prev) => ({
-    ...prev,
-    video: updated,
-    remove_video_urls: [
-      ...(prev.remove_video_urls || []),
-      editingProperty.video[idx],
-    ],
-  }));
+    setEditForm((prev) => ({
+      ...prev,
+      video: updated,
+      remove_video_urls: [
+        ...(prev.remove_video_urls || []),
+        editingProperty.video[idx],
+      ],
+    }));
 
-  setEditingProperty((prev) => ({
-    ...prev,
-    video: updated,
-  }));
-};
-
+    setEditingProperty((prev) => ({
+      ...prev,
+      video: updated,
+    }));
+  };
 
   // ---------------- Pricing Handlers ----------------
   const addRoom = () => {
@@ -130,7 +128,7 @@ export default function EditModal({
     setEditForm((prev) => {
       const updated = [...(prev.pricing || [])];
       updated[roomIdx].occupancies = updated[roomIdx].occupancies.filter(
-        (_, i) => i !== occIdx
+        (_, i) => i !== occIdx,
       );
       return { ...prev, pricing: updated };
     });
@@ -148,62 +146,64 @@ export default function EditModal({
   };
 
   // ---------------- Drag & Drop ----------------
-const handleDropToCategory = (category, dropIndex) => {
-  if (!draggedImage) return;
+  const handleDropToCategory = (category, dropIndex) => {
+    if (!draggedImage) return;
 
-  const fromCategory = draggedImage.fromCategory;
-  const img = draggedImage.img;
+    const fromCategory = draggedImage.fromCategory;
+    const img = draggedImage.img;
 
-  // Copy original array
-  const fromArr = [...(editForm[fromCategory] || [])];
+    // Copy original array
+    const fromArr = [...(editForm[fromCategory] || [])];
 
-  // Remove the dragged image
-  fromArr.splice(draggedImage.index, 1);
+    // Remove the dragged image
+    fromArr.splice(draggedImage.index, 1);
 
-  // If same category, insert at the dropIndex
-  if (fromCategory === category) {
-    fromArr.splice(dropIndex, 0, img);
-    setEditForm((prev) => ({
-      ...prev,
-      [category]: fromArr,
-    }));
-  } else {
-    // Moving to a different category
-    const toArr = [...(editForm[category] || [])];
-    toArr.splice(dropIndex, 0, img);
-    setEditForm((prev) => ({
-      ...prev,
-      [fromCategory]: fromArr,
-      [category]: toArr,
-    }));
-  }
+    // If same category, insert at the dropIndex
+    if (fromCategory === category) {
+      fromArr.splice(dropIndex, 0, img);
+      setEditForm((prev) => ({
+        ...prev,
+        [category]: fromArr,
+      }));
+    } else {
+      // Moving to a different category
+      const toArr = [...(editForm[category] || [])];
+      toArr.splice(dropIndex, 0, img);
+      setEditForm((prev) => ({
+        ...prev,
+        [fromCategory]: fromArr,
+        [category]: toArr,
+      }));
+    }
 
-  setDraggedImage(null);
-};
-
+    setDraggedImage(null);
+  };
 
   const renderImages = (images = [], category = null) => (
     <div className="flex flex-wrap gap-3">
       {images.map((img, idx) => (
-      <div
-  key={idx}
-  className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
-  draggable
-  onDragStart={() =>
-    setDraggedImage({ img, fromCategory: category || "image", index: idx })
-  }
-  onDragOver={(e) => e.preventDefault()}
-  onDrop={() => handleDropToCategory(category || "image", idx)}
->
-  <img src={img} className="w-full h-full object-cover" />
-  <button
-    onClick={() => handleRemoveImage(img, idx, category)}
-    className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-  >
-    ✕
-  </button>
-</div>
-
+        <div
+          key={idx}
+          className="relative w-24 h-24 border rounded overflow-hidden cursor-move"
+          draggable
+          onDragStart={() =>
+            setDraggedImage({
+              img,
+              fromCategory: category || "image",
+              index: idx,
+            })
+          }
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={() => handleDropToCategory(category || "image", idx)}
+        >
+          <img src={img} className="w-full h-full object-cover" />
+          <button
+            onClick={() => handleRemoveImage(img, idx, category)}
+            className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+          >
+            ✕
+          </button>
+        </div>
       ))}
     </div>
   );
@@ -217,16 +217,15 @@ const handleDropToCategory = (category, dropIndex) => {
   ];
 
   const handleSave = async () => {
-  if (isSaving) return;
+    if (isSaving) return;
 
-  try {
-    setIsSaving(true);
-    await handleEditSubmit(); 
-  } finally {
-    setIsSaving(false);
-  }
-};
-
+    try {
+      setIsSaving(true);
+      await handleEditSubmit();
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4">
@@ -235,21 +234,49 @@ const handleDropToCategory = (category, dropIndex) => {
 
         {/* === Basic Info === */}
         <div className="mb-6">
-          <h4 className=" mb-3 text-indigo-600">Basic Info</h4>
+          <h4 className="text-lg font-semibold mb-3 text-indigo-600 border-b pb-1">
+            Basic Info
+          </h4>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               ["title", "Title"],
               ["location", "Location"],
-              ["flat_status", "Flat Status"],
-              ["status", "Status", "select", ["pending", "approved", "rejected"]],
+              ["pincode", "Pincode"],
+              [
+                "status",
+                "Status",
+                "select",
+                ["pending", "approved", "rejected"],
+              ],
               [
                 "bhk_type",
                 "BHK Type",
                 "select",
-                ["1 RK","2 RK","1 BHK", "1.5 BHK", "2 BHK", "2.5 BHK", "3 BHK", "4 BHK"],
+                [
+                  "1 RK",
+                  "2 RK",
+                  "1 BHK",
+                  "1.5 BHK",
+                  "2 BHK",
+                  "2.5 BHK",
+                  "3 BHK",
+                  "4 BHK",
+                ],
               ],
-              ["looking_for", "Looking For", "select", ["flatmate", "vacant", "pg"]],
+              [
+                "looking_for",
+                "Looking For",
+                "select",
+                ["flatmate", "vacant", "pg"],
+              ],
               ["gender", "Gender", "select", ["male", "female", "Any"]],
+              [
+                "food_preference",
+                "Food Preference",
+                "select",
+                ["any", "veg", "nonveg", "vegan"],
+              ],
               ["owner_code", "Owner Code"],
               ["owner_phone", "Owner Phone"],
               ["bathrooms", "Bathrooms"],
@@ -289,6 +316,12 @@ const handleDropToCategory = (category, dropIndex) => {
                 )}
               </div>
             ))}
+            <div className="mt-4 flex items-center gap-3">
+              <span className="text-sm text-gray-600">Source:</span>
+              <span className="px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-700 border">
+                {editForm.source || "mainwebsite"}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -335,7 +368,7 @@ const handleDropToCategory = (category, dropIndex) => {
                         roomIdx,
                         occIdx,
                         "occupancy",
-                        e.target.value
+                        e.target.value,
                       )
                     }
                     className="border px-2 py-2 rounded w-32"
@@ -350,7 +383,7 @@ const handleDropToCategory = (category, dropIndex) => {
                         roomIdx,
                         occIdx,
                         "price",
-                        e.target.value
+                        e.target.value,
                       )
                     }
                     className="border px-2 py-2 rounded w-32"
@@ -365,7 +398,7 @@ const handleDropToCategory = (category, dropIndex) => {
                         roomIdx,
                         occIdx,
                         "deposit",
-                        e.target.value
+                        e.target.value,
                       )
                     }
                     className="border px-2 py-2 rounded w-32"
@@ -418,9 +451,11 @@ const handleDropToCategory = (category, dropIndex) => {
               <label key={amenity} className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
-                  checked={Array.isArray(editForm.amenities)
-                    ? editForm.amenities.includes(amenity)
-                    : false}
+                  checked={
+                    Array.isArray(editForm.amenities)
+                      ? editForm.amenities.includes(amenity)
+                      : false
+                  }
                   onChange={(e) => {
                     const checked = e.target.checked;
                     setEditForm((prev) => {
@@ -450,7 +485,12 @@ const handleDropToCategory = (category, dropIndex) => {
                   setEditForm((prev) => ({
                     ...prev,
                     amenities: Array.from(
-                      new Set([...(Array.isArray(prev.amenities) ? prev.amenities : []), ...custom])
+                      new Set([
+                        ...(Array.isArray(prev.amenities)
+                          ? prev.amenities
+                          : []),
+                        ...custom,
+                      ]),
                     ),
                   }));
                 }
@@ -497,7 +537,9 @@ const handleDropToCategory = (category, dropIndex) => {
               }
             />
             {editForm.verified ? (
-              <span className="text-green-700">Verified (click to unverify)</span>
+              <span className="text-green-700">
+                Verified (click to unverify)
+              </span>
             ) : (
               <span className="text-gray-700">Mark as Verified</span>
             )}
@@ -508,7 +550,10 @@ const handleDropToCategory = (category, dropIndex) => {
               name="phone_visible"
               checked={!!editForm.phone_visible}
               onChange={(e) =>
-                setEditForm((prev) => ({ ...prev, phone_visible: e.target.checked }))
+                setEditForm((prev) => ({
+                  ...prev,
+                  phone_visible: e.target.checked,
+                }))
               }
             />
             {editForm.phone_visible ? (
@@ -552,53 +597,56 @@ const handleDropToCategory = (category, dropIndex) => {
           </div>
         ))}
 
-       {/* === Videos Section === */}
-<div className="mb-6">
-  <h4 className=" mb-3 text-indigo-600">Videos</h4>
+        {/* === Videos Section === */}
+        <div className="mb-6">
+          <h4 className=" mb-3 text-indigo-600">Videos</h4>
 
-  {/* EXISTING VIDEOS */}
-  {(editingProperty.video || []).length > 0 && (
-    <div className="flex flex-wrap gap-3 mb-3">
-      {editingProperty.video.map((vid, idx) => (
-        <div
-          key={idx}
-          className="relative w-48 h-32 border rounded overflow-hidden"
-        >
-          <video src={vid} controls className="w-full h-full object-cover" />
-          <button
-            onClick={() => handleRemoveVideo(idx)}
-            className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
-          >
-            ✕
-          </button>
+          {/* EXISTING VIDEOS */}
+          {(editingProperty.video || []).length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-3">
+              {editingProperty.video.map((vid, idx) => (
+                <div
+                  key={idx}
+                  className="relative w-48 h-32 border rounded overflow-hidden"
+                >
+                  <video
+                    src={vid}
+                    controls
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    onClick={() => handleRemoveVideo(idx)}
+                    className="absolute top-0 right-0 bg-black/70 text-white text-xs px-1 rounded-bl hover:bg-red-600"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* NEW VIDEOS PREVIEW */}
+          {(editForm.video_base64 || []).length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-3">
+              {editForm.video_base64.map((vid, idx) => (
+                <video
+                  key={idx}
+                  src={vid}
+                  controls
+                  className="w-48 h-32 border rounded object-cover"
+                />
+              ))}
+            </div>
+          )}
+
+          {/* UPLOAD INPUT */}
+          <input
+            type="file"
+            multiple
+            accept="video/*"
+            onChange={(e) => handleFileChange(e, "video")}
+          />
         </div>
-      ))}
-    </div>
-  )}
-
-  {/* NEW VIDEOS PREVIEW */}
-  {(editForm.video_base64 || []).length > 0 && (
-    <div className="flex flex-wrap gap-3 mb-3">
-      {editForm.video_base64.map((vid, idx) => (
-        <video
-          key={idx}
-          src={vid}
-          controls
-          className="w-48 h-32 border rounded object-cover"
-        />
-      ))}
-    </div>
-  )}
-
-  {/* UPLOAD INPUT */}
-  <input
-    type="file"
-    multiple
-    accept="video/*"
-    onChange={(e) => handleFileChange(e, "video")}
-  />
-</div>
-
 
         {/* Newly Listed Position */}
         {editForm.is_newly_listed && (
@@ -624,40 +672,39 @@ const handleDropToCategory = (category, dropIndex) => {
           >
             Cancel
           </button>
-         <button
-  onClick={handleSave}
-  disabled={isSaving}
-  className={`px-4 py-2 rounded flex items-center gap-2 ${
-    isSaving
-      ? "bg-blue-400 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700"
-  } text-white`}
->
-  {isSaving && (
-    <svg
-      className="animate-spin h-4 w-4 text-white"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
-      />
-    </svg>
-  )}
-  {isSaving ? "Saving..." : "Save"}
-</button>
-
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className={`px-4 py-2 rounded flex items-center gap-2 ${
+              isSaving
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            } text-white`}
+          >
+            {isSaving && (
+              <svg
+                className="animate-spin h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
+                />
+              </svg>
+            )}
+            {isSaving ? "Saving..." : "Save"}
+          </button>
         </div>
       </div>
     </div>
