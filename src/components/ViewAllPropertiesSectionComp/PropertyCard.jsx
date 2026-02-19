@@ -175,17 +175,23 @@ const PropertyCard = ({ p }) => {
       </div>
 
       {/* Info */}
-      <Link to={`/properties/${p.id}`}>
-        <div className="mt-2 text-[12px]  text-zinc-900 dark:text-white">
-          {formattedLocation}
-        </div>
-        <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
-          {p.bhk_type || "-"} | {p.looking_for || "-"}
-        </div>
-        <div className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300">
-          Rent – ₹{p.price?.toLocaleString() || "-"} | Deposit ₹{p.deposit?.toLocaleString() || "-"}
-        </div>
-      </Link>
+     {/* Info */}
+<Link to={`/properties/${p.id}`}>
+  <div className="lg:w-56 w-80">
+    <div className="mt-2 text-[12px] text-zinc-900 dark:text-white truncate">
+      {formattedLocation}
+    </div>
+
+    <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+      {p.bhk_type || "-"} | {p.looking_for || "-"}
+    </div>
+
+    <div className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
+      Rent – ₹{p.price?.toLocaleString() || "-"} | Deposit ₹{p.deposit?.toLocaleString() || "-"}
+    </div>
+  </div>
+</Link>
+
     </div>
   );
 };
