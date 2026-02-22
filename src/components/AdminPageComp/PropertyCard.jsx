@@ -22,19 +22,13 @@ export default function PropertyCard({
   const [showConfirm, setShowConfirm] = useState(false);
 
   // Pick first main image, fallback to bedroom_images, then default
-  const imageUrl =
-    Array.isArray(property.image) && property.image.length > 0
-      ? property.image[0].replace(
-          "/upload/",
-          "/upload/w_300,h_200,c_fill,f_auto,q_auto/",
-        )
-      : Array.isArray(property.bedroom_images) &&
-          property.bedroom_images.length > 0
-        ? property.bedroom_images[0].replace(
-            "/upload/",
-            "/upload/w_300,h_200,c_fill,f_auto,q_auto/",
-          )
-        : "/default-property.jpg";
+const imageUrl =
+  Array.isArray(property.image) && property.image.length > 0
+    ? property.image[0] 
+    : Array.isArray(property.bedroom_images) &&
+      property.bedroom_images.length > 0
+    ? property.bedroom_images[0] 
+    : "/default-property.jpg";
 
   const hasPricing = property.pricing?.length > 0;
   const firstPrice = hasPricing
