@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.easemyspace.app",
+      "sha256_cert_fingerprints": [
+        "2B:99:5A:4B:D8:4F:4B:4C:E1:41:7C:FA:35:CA:EA:91:A0:A4:02:EB:05:7D:F9:06:8A:9D:81:5B:8B:BF:7A:84"
+      ]
+    }
+  }
+]
