@@ -4,7 +4,11 @@
     "details": [
       {
         "appID": "VRGJC99LY4.com.easemyspace.app",
-        "paths": ["/properties/*"]
+        "paths": [
+          "/properties/*",
+          "/open-app",
+          "/open-app/*"
+        ]
       }
     ]
   }
