@@ -4,8 +4,9 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.easemyspace.app",
-      "sha256_cert_fingerprints":
-        ["0C:79:32:37:38:A3:41:AB:CE:AD:DD:FB:74:BF:BB:F7:08:52:A0:F7:A8:DC:05:AA:01:DC:89:18:6D:83:00:42"]
+      "sha256_cert_fingerprints": [
+        "0C:79:32:37:38:A3:41:AB:CE:AD:DD:FB:74:BF:BB:F7:08:52:A0:F7:A8:DC:05:AA:01:DC:89:18:6D:83:00:42"
+      ]
     }
   }
 ]
