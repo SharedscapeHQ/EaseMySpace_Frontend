@@ -36,7 +36,7 @@ import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
 import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
-import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
+import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport";
 import MyProfile from "../../components/UserPageComp/MyProfile";
 import PostPermissionRequests from "../../components/AdminPageComp/PostPermissionRequests";
 
@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const mainRef = useRef(null);
 
-const [modalUser, setModalUser] = useState(null);
+  const [modalUser, setModalUser] = useState(null);
 
   const [leads, setLeads] = useState([]);
   const [properties, setProperties] = useState([]);
@@ -62,6 +62,7 @@ const [modalUser, setModalUser] = useState(null);
   const [users, setUsers] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [ageFilter, setAgeFilter] = useState("all");
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -121,62 +122,59 @@ const [modalUser, setModalUser] = useState(null);
     })();
   }, []);
 
- const fetchUsers = async () => {
-  try {
-    setLoadingUsers(true);
-    const { data } = await getAllUsers();
+  const fetchUsers = async () => {
+    try {
+      setLoadingUsers(true);
+      const { data } = await getAllUsers();
 
-    const sortedUsers = [...data].sort((a, b) => b.id - a.id);
+      const sortedUsers = [...data].sort((a, b) => b.id - a.id);
 
-    setUsers(sortedUsers);
-  } catch (err) {
-    console.error("Error fetching users", err);
-  } finally {
-    setLoadingUsers(false);
-  }
-};
-
-
- const fetchProperties = async () => {
-  try {
-    setLoadingProps(true);
-
-    const { data } = await getAllProperties();
-    
-
-    // Ensure always an array, and normalize pricing
-    const safeData = Array.isArray(data)
-      ? data.map((prop) => ({
-          ...prop,
-          pricing: Array.isArray(prop.pricing) ? prop.pricing : [],
-        }))
-      : [];
-
-    setProperties(safeData);
-  } catch (err) {
-    console.error("Error loading properties:", err);
-    toast.error("Error loading properties");
-    setProperties([]);
-  } finally {
-    setLoadingProps(false);
-  }
-};
-
-
- const handleApprove = async (propertyId) => {
-  try {
-    const res = await approveProperty(propertyId);
-
-    toast.success("Property approved successfully");
-    fetchProperties();
-  } catch (err) {
-    if (err.response?.status === 403) {
-      toast.error("KYC Pending");
-    } else {
-      toast.error("Failed to approve property");
+      setUsers(sortedUsers);
+    } catch (err) {
+      console.error("Error fetching users", err);
+    } finally {
+      setLoadingUsers(false);
     }
-  }
-};
+  };
+
+  const fetchProperties = async () => {
+    try {
+      setLoadingProps(true);
+
+      const { data } = await getAllProperties();
+
+      // Ensure always an array, and normalize pricing
+      const safeData = Array.isArray(data)
+        ? data.map((prop) => ({
+            ...prop,
+            pricing: Array.isArray(prop.pricing) ? prop.pricing : [],
+          }))
+        : [];
+
+      setProperties(safeData);
+    } catch (err) {
+      console.error("Error loading properties:", err);
+      toast.error("Error loading properties");
+      setProperties([]);
+    } finally {
+      setLoadingProps(false);
+    }
+  };
+
+  const handleApprove = async (propertyId) => {
+    try {
+      const res = await approveProperty(propertyId);
+
+      toast.success("Property approved successfully");
+      fetchProperties();
+    } catch (err) {
+      if (err.response?.status === 403) {
+        toast.error("KYC Pending");
+      } else {
+        toast.error("Failed to approve property");
+      }
+    }
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this property?")) {
@@ -186,38 +184,36 @@ const [modalUser, setModalUser] = useState(null);
     }
   };
 
-const openEditModal = (property) => {
-  // ✅ Transform pricing into correct modal structure
-  const groupedPricing = Array.isArray(property.pricing)
-    ? property.pricing.map((p, idx) => ({
-        room_name: p.room_name || `Room ${idx + 1}`,
-        occupancies: [
-          {
-            occupancy: p.occupancy,
-            price: p.price,
-            deposit: p.deposit,
-          },
-        ],
-      }))
-    : [];
+  const openEditModal = (property) => {
+    // ✅ Transform pricing into correct modal structure
+    const groupedPricing = Array.isArray(property.pricing)
+      ? property.pricing.map((p, idx) => ({
+          room_name: p.room_name || `Room ${idx + 1}`,
+          occupancies: [
+            {
+              occupancy: p.occupancy,
+              price: p.price,
+              deposit: p.deposit,
+            },
+          ],
+        }))
+      : [];
 
-  setEditingProperty(property);
+    setEditingProperty(property);
 
-  setEditForm({
-    ...property,
-    pricing: groupedPricing, 
-    price: property.pricing?.[0]?.price ?? "",
-    deposit: property.pricing?.[0]?.deposit ?? "",
-    amenities: Array.isArray(property.amenities)
-      ? property.amenities
-      : (property.amenities || "").split(",").map((a) => a.trim()),
-    is_newly_listed: property.is_newly_listed || false,
-    verified: property.verified === true || property.verified === "true",
-    newly_listed_position: property.newly_listed_position || "",
-  });
-};
-
-
+    setEditForm({
+      ...property,
+      pricing: groupedPricing,
+      price: property.pricing?.[0]?.price ?? "",
+      deposit: property.pricing?.[0]?.deposit ?? "",
+      amenities: Array.isArray(property.amenities)
+        ? property.amenities
+        : (property.amenities || "").split(",").map((a) => a.trim()),
+      is_newly_listed: property.is_newly_listed || false,
+      verified: property.verified === true || property.verified === "true",
+      newly_listed_position: property.newly_listed_position || "",
+    });
+  };
 
   const handleEditChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -254,12 +250,12 @@ const openEditModal = (property) => {
             p.is_newly_listed &&
             Number(p.newly_listed_position) ===
               Number(updateData.newly_listed_position) &&
-            p.id !== editingProperty.id
+            p.id !== editingProperty.id,
         );
 
         if (conflict) {
           const confirmReplace = window.confirm(
-            `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Replace it?`
+            `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Replace it?`,
           );
           if (!confirmReplace) return;
         }
@@ -284,18 +280,29 @@ const openEditModal = (property) => {
     navigate("/");
   };
 
-  const filteredProperties =
-    statusFilter === "all"
-      ? properties
-      : properties.filter(
-          (p) => p.status?.toLowerCase() === statusFilter.toLowerCase()
-        );
+  const searchedProperties = properties.filter((p) => {
+    const query = searchQuery.toLowerCase();
 
-  const searchedProperties = filteredProperties.filter((p) =>
-    `${p.title} ${p.location} ${p.description || ""}`
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
-  );
+    return (
+      p.title?.toLowerCase().includes(query) ||
+      p.location?.toLowerCase().includes(query)
+    );
+  });
+
+  const finalProperties = searchedProperties
+    .filter((p) => (statusFilter === "all" ? true : p.status === statusFilter))
+    .filter((p) => (sourceFilter === "all" ? true : p.source === sourceFilter))
+    .filter((p) => {
+      if (ageFilter === "all") return true;
+
+      const createdDate = new Date(p.created_at);
+      const now = new Date();
+
+      const monthsAgo = new Date();
+      monthsAgo.setMonth(now.getMonth() - Number(ageFilter));
+
+      return createdDate <= monthsAgo;
+    });
 
   const approved = properties.filter((p) => p.status === "approved");
 
@@ -326,116 +333,148 @@ const openEditModal = (property) => {
         handleLogout={handleLogout}
         pendingCount={
           pendingQueries.filter(
-            (q) => q.resolved === false || q.resolved === "false"
+            (q) => q.resolved === false || q.resolved === "false",
           ).length
         }
       />
 
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
-      {activeTab === "Users" && (
-  <section className="mt-6">
-    <h2 style={{ fontFamily: "para_font" }} className="text-2xl  mb-6 text-gray-800">Users</h2>
+          {activeTab === "Users" && (
+            <section className="mt-6">
+              <h2
+                style={{ fontFamily: "para_font" }}
+                className="text-2xl  mb-6 text-gray-800"
+              >
+                Users
+              </h2>
 
-    {loadingUsers ? (
-      <p className="text-gray-500">Loading users...</p>
-    ) : (
-      <div className="overflow-x-auto shadow border border-gray-200 rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200 text-left">
-          <thead className="bg-indigo-50">
-            <tr>
-              <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
-                Name
-              </th>
-              <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
-                Contact
-              </th>
-             
-              <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
-                Referred By
-              </th>
-            </tr>
-          </thead>
+              {loadingUsers ? (
+                <p className="text-gray-500">Loading users...</p>
+              ) : (
+                <div className="overflow-x-auto shadow border border-gray-200 rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 text-left">
+                    <thead className="bg-indigo-50">
+                      <tr>
+                        <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
+                          Contact
+                        </th>
 
-          <tbody className="bg-white divide-y divide-gray-200">
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50 transition duration-150">
-                {/* Name */}
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  {u.firstName} {u.lastName}
-                </td>
+                        <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
+                          Referred By
+                        </th>
+                      </tr>
+                    </thead>
 
-                {/* Contact */}
-                <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
-                  <div>
-                    {u.email || <span className="italic text-gray-400">N/A</span>}
-                  </div>
-                  <div className="mt-1">
-                    {u.phone || <span className="italic text-gray-400">N/A</span>}
-                  </div>
-                </td>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {users.map((u) => (
+                        <tr
+                          key={u.id}
+                          className="hover:bg-gray-50 transition duration-150"
+                        >
+                          {/* Name */}
+                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {u.firstName} {u.lastName}
+                          </td>
 
+                          {/* Contact */}
+                          <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
+                            <div>
+                              {u.email || (
+                                <span className="italic text-gray-400">
+                                  N/A
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-1">
+                              {u.phone || (
+                                <span className="italic text-gray-400">
+                                  N/A
+                                </span>
+                              )}
+                            </div>
+                          </td>
 
-                {/* Referred By */}
-                <td className="px-6 py-4 text-sm whitespace-nowrap">
-                  {u.referred_by_name && u.referred_by_name !== "N/A" ? (
+                          {/* Referred By */}
+                          <td className="px-6 py-4 text-sm whitespace-nowrap">
+                            {u.referred_by_name &&
+                            u.referred_by_name !== "N/A" ? (
+                              <button
+                                onClick={() => {
+                                  const refUser = users.find(
+                                    (user) => user.id === u.referred_by,
+                                  );
+                                  if (refUser) setModalUser(refUser);
+                                  else {
+                                    setModalUser({
+                                      firstName: u.referred_by_name,
+                                      lastName: "",
+                                      email: "N/A",
+                                      phone: "N/A",
+                                      role: "N/A",
+                                      referred_by_name: "N/A",
+                                    });
+                                  }
+                                }}
+                                className="text-indigo-600 hover:underline"
+                              >
+                                {u.referred_by_name}
+                              </button>
+                            ) : (
+                              <span className="italic text-gray-400">
+                                Self Signup
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* Referrer Modal */}
+              {modalUser && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
+                    <h3 className="text-lg  mb-4">Referrer Details</h3>
+                    <p>
+                      <strong>Name:</strong> {modalUser.firstName}{" "}
+                      {modalUser.lastName}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {modalUser.email}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {modalUser.phone}
+                    </p>
+                    <p>
+                      <strong>Role:</strong> {modalUser.role}
+                    </p>
+                    <p>
+                      <strong>Referred By:</strong>{" "}
+                      {modalUser.referred_by_name || "Self Signup"}
+                    </p>
                     <button
-                      onClick={() => {
-                        const refUser = users.find(user => user.id === u.referred_by);
-                        if (refUser) setModalUser(refUser);
-                        else {
-                          setModalUser({
-                            firstName: u.referred_by_name,
-                            lastName: "",
-                            email: "N/A",
-                            phone: "N/A",
-                            role: "N/A",
-                            referred_by_name: "N/A",
-                          });
-                        }
-                      }}
-                      className="text-indigo-600 hover:underline"
+                      onClick={() => setModalUser(null)}
+                      className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded-md"
                     >
-                      {u.referred_by_name}
+                      Close
                     </button>
-                  ) : (
-                    <span className="italic text-gray-400">Self Signup</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-
-    {/* Referrer Modal */}
-    {modalUser && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
-          <h3 className="text-lg  mb-4">Referrer Details</h3>
-          <p><strong>Name:</strong> {modalUser.firstName} {modalUser.lastName}</p>
-          <p><strong>Email:</strong> {modalUser.email}</p>
-          <p><strong>Phone:</strong> {modalUser.phone}</p>
-          <p><strong>Role:</strong> {modalUser.role}</p>
-          <p><strong>Referred By:</strong> {modalUser.referred_by_name || "Self Signup"}</p>
-          <button
-            onClick={() => setModalUser(null)}
-            className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded-md"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    )}
-  </section>
-)}
-
-
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
 
           {activeTab === "Leads" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Leads</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
+                Leads
+              </h2>
               {loadingLeads ? (
                 <p>Loading leads...</p>
               ) : (
@@ -444,99 +483,120 @@ const openEditModal = (property) => {
             </section>
           )}
 
-           {activeTab === "Requests" && (
+          {activeTab === "Requests" && (
             <section>
               <RequestsTable />
             </section>
           )}
-           {activeTab === "SendSMS" && (
-            <section> 
+          {activeTab === "SendSMS" && (
+            <section>
               <SendSMSForm />
             </section>
           )}
 
-         {activeTab === "Properties" && (
-  <section>
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-      <h2 style={{ fontFamily: "para_font" }} className="text-xl">Properties</h2>
+          {activeTab === "Properties" && (
+            <section>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <h2 style={{ fontFamily: "para_font" }} className="text-xl">
+                    Properties
+                  </h2>
 
-      <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-        {/* Search Input */}
-        <div className="relative w-full sm:w-64">
-          <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-            <FiSearch />
-          </span>
-          <input
-            type="text"
-            placeholder="Search by title, location..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
-          />
-        </div>
+                  <span className="bg-blue-100 text-blue-700 px-3 py-0.5 rounded-full text-sm">
+                    {finalProperties.length}
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                  {/* Search Input */}
+                  <div className="relative w-full sm:w-64">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                      <FiSearch />
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search by title, location..."
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setAgeFilter("all");
+                      }}
+                      className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
+                    />
+                  </div>
 
-        {/* Status Filter with Label */}
-        <div className="flex items-center gap-2">
-          <label className="text-gray-700 font-medium">Status:</label>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded px-3 py-1"
-          >
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-          </select>
-        </div>
+                  {/* Status Filter with Label */}
+                  <div className="flex items-center gap-2">
+                    <label className="text-gray-700 font-medium">Status:</label>
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => {
+                        setStatusFilter(e.target.value);
+                        setAgeFilter("all");
+                      }}
+                      className="border rounded px-3 py-1"
+                    >
+                      <option value="all">All</option>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approved</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </div>
 
-        {/* Source Filter with Label */}
-        <div className="flex items-center gap-2">
-          <label className="text-gray-700 font-medium">Source:</label>
-         <select
-  value={sourceFilter}
-  onChange={(e) => setSourceFilter(e.target.value)}
-  className="border rounded px-3 py-1"
->
-  <option value="all">All</option>
-  <option value="mainwebsite">Main Website</option>
-  <option value="subdomain">Subdomain</option>
-  <option value="app">Mobile App</option>
-</select>
+                  {/* Source Filter with Label */}
+                  <div className="flex items-center gap-2">
+                    <label className="text-gray-700 font-medium">Source:</label>
+                    <select
+                      value={sourceFilter}
+                      onChange={(e) => {
+                        setSourceFilter(e.target.value);
+                        setAgeFilter("all");
+                      }}
+                      className="border rounded px-3 py-1"
+                    >
+                      <option value="all">All</option>
+                      <option value="mainwebsite">Main Website</option>
+                      <option value="subdomain">Subdomain</option>
+                      <option value="app">Mobile App</option>
+                    </select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-gray-700 font-medium">Age:</label>
 
-        </div>
-      </div>
-    </div>
+                    <select
+                      value={ageFilter}
+                      onChange={(e) => setAgeFilter(e.target.value)}
+                      className="border rounded px-3 py-1"
+                    >
+                      <option value="all">All</option>
+                      <option value="1">Older than 1 Month</option>
+                      <option value="2">Older than 2 Months</option>
+                      <option value="3">Older than 3 Months</option>
+                      <option value="4">Older than 4 Months</option>
+                      <option value="5">Older than 5 Months</option>
+                      <option value="6">Older than 6 Months</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-    {/* Property Cards Grid */}
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      {searchedProperties
-        .filter((p) =>
-          statusFilter === "all" ? true : p.status === statusFilter
-        )
-        .filter((p) =>
-          sourceFilter === "all" ? true : p.source === sourceFilter
-        )
-        .map((property) => (
-          <PropertyCard
-            key={property.id}
-            property={property}
-            onApprove={handleApprove}
-            onEdit={openEditModal}
-            onDelete={handleDelete}
-          />
-        ))}
-    </div>
-  </section>
-)}
-
+              {/* Property Cards Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                {finalProperties.map((property) => (
+                  <PropertyCard
+                    key={property.id}
+                    property={property}
+                    onApprove={handleApprove}
+                    onEdit={openEditModal}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
           {activeTab === "NewlyListed" && (
             <section>
-              <h2
-                style={{ fontFamily: "para_font" }}
-                className="text-xl mb-4"
-              >
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl mb-4">
                 Featured Listings
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -606,17 +666,15 @@ const openEditModal = (property) => {
               <OldProperties />
             </section>
           )}
- 
-                    {activeTab === "RentPayments" && <RentPaymentsDashboard />}
-                    {activeTab === "allAccounts" && <LandlordAgents />}
-                    {activeTab === "TallyReports" && <LandlordLedgerSummary />}
-                    {activeTab === "RequestsLandlord" && <ContactSalesTable />}
-                    {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
-                    {activeTab === "PropertyReports" && <ManagePropertyReport />}
-                    {activeTab === "MyProfile" && <MyProfile />}
-                    {activeTab === "UserPosts" && <PostPermissionRequests />}
-                    
-          
+
+          {activeTab === "RentPayments" && <RentPaymentsDashboard />}
+          {activeTab === "allAccounts" && <LandlordAgents />}
+          {activeTab === "TallyReports" && <LandlordLedgerSummary />}
+          {activeTab === "RequestsLandlord" && <ContactSalesTable />}
+          {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
+          {activeTab === "PropertyReports" && <ManagePropertyReport />}
+          {activeTab === "MyProfile" && <MyProfile />}
+          {activeTab === "UserPosts" && <PostPermissionRequests />}
 
           {activeTab === "Marketing" && <Marketing />}
           {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}
