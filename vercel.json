@@ -11,6 +11,10 @@
     {
       "source": "/sitemap.xml",
       "destination": "https://api.easemyspace.in/api/sitemap.xml"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/" 
     }
   ]
 }
