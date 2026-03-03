@@ -1,16 +1,16 @@
 {
+  "headers": [
+    {
+      "source": "/.well-known/apple-app-site-association",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/sitemap.xml",
       "destination": "https://api.easemyspace.in/api/sitemap.xml"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/apple-app-site-association",
-      "headers": [
-        { "key": "Content-Type", "value": "application/json" }
-      ]
     }
   ]
 }
