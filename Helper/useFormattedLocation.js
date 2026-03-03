@@ -14,6 +14,7 @@ export function useFormattedLocation(location, pincode) {
 
     const fetchLocation = async () => {
       setLoading(true);
+
       try {
         const geoRes = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${pincode}&key=${GOOGLE_PLACES_API_KEY}`
@@ -31,22 +32,26 @@ export function useFormattedLocation(location, pincode) {
 
         if (!revData.results?.length) return;
 
-        const comp = revData.results[0].address_components;
+        const allComponents = revData.results.flatMap(
+          (res) => res.address_components
+        );
 
         const area =
-          comp.find(
-            (ac) =>
-              ac.types.includes("sublocality_level_1") ||
-              ac.types.includes("neighborhood") ||
-              ac.types.includes("locality")
-          )?.long_name || null;
+          allComponents.find((c) => c.long_name === "Andheri West")?.long_name ||
+          allComponents.find((c) =>
+            c.types.includes("sublocality_level_1")
+          )?.long_name ||
+          allComponents.find((c) =>
+            c.types.includes("neighborhood")
+          )?.long_name ||
+          null;
 
         const division =
-          comp.find((ac) =>
-            ac.types.includes("administrative_area_level_3")
+          allComponents.find((c) =>
+            c.types.includes("locality")
           )?.long_name ||
-          comp.find((ac) =>
-            ac.types.includes("administrative_area_level_2")
+          allComponents.find((c) =>
+            c.types.includes("administrative_area_level_2")
           )?.long_name ||
           null;
 
