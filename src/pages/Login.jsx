@@ -46,7 +46,7 @@ function Login() {
     } catch (err) {
       toast.error(
         err?.response?.data?.message || "Email or password is incorrect",
-        { id }
+        { id },
       );
     }
   };
@@ -69,7 +69,7 @@ function Login() {
       await requestPasswordReset(payload);
       toast.success(
         `OTP sent to your ${mode === "email" ? "email" : "mobile"}`,
-        { id }
+        { id },
       );
       setOtpSent(true);
     } catch (err) {
@@ -124,7 +124,10 @@ function Login() {
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white rounded-xl shadow-xl p-8 flex flex-col gap-6"
       >
-        <h1 style={{ fontFamily: "para_font" }} className="text-2xl  text-center text-blue-500">
+        <h1
+          style={{ fontFamily: "para_font" }}
+          className="text-2xl  text-center text-blue-500"
+        >
           {showForgot ? "Forgot Password" : "Login"}
         </h1>
 
@@ -248,8 +251,12 @@ function Login() {
                   type="tel"
                   placeholder="Enter your phone"
                   required
+                  maxLength={10}
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    setPhone(value);
+                  }}
                   className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -274,6 +281,9 @@ function Login() {
         {/* FORGOT PASSWORD - STEP 2 */}
         {showForgot && otpSent && (
           <>
+          <p className="text-sm text-gray-600 text-center bg-blue-50 border border-blue-200 rounded-md py-2 px-3">
+  OTP has been sent to your {mode === "email" ? "email" : "WhatsApp number"}.
+</p>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 OTP
@@ -287,59 +297,34 @@ function Login() {
                 className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                New Password
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                value={newPass}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (!val.includes(" ")) setNewPass(val);
-                }}
-                placeholder="New Password"
-                className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((p) => !p)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 hover:text-blue-600"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-8-11-8a19.85 19.85 0 013.23-4.61" />
-                    <path d="M1 1l22 22" />
-                    <path d="M9.53 9.53a3 3 0 014.24 4.24" />
-                  </svg>
-                )}
-              </button>
-            </div>
+          <div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">
+    New Password
+  </label>
+
+  <div className="relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      required
+      value={newPass}
+      onChange={(e) => {
+        const val = e.target.value;
+        if (!val.includes(" ")) setNewPass(val);
+      }}
+      placeholder="New Password"
+      className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 h-10"
+    />
+
+    <button
+      type="button"
+      onClick={() => setShowPassword((p) => !p)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-blue-600"
+      aria-label={showPassword ? "Hide password" : "Show password"}
+    >
+      {showPassword ? <FiEye size={20} /> : <FiEyeOff size={20} />}
+    </button>
+  </div>
+</div>
             <button
               type="button"
               onClick={handleVerifyOtp}
