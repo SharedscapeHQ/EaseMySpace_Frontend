@@ -21,6 +21,17 @@ export default function PropertyCard({
 
   const [showConfirm, setShowConfirm] = useState(false);
 
+  // Format property created/posted time
+const formattedDate = property.created_at
+  ? new Date(property.created_at).toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+  : null;
+
   // Pick first main image, fallback to bedroom_images, then default
 const imageUrl =
   Array.isArray(property.image) && property.image.length > 0
@@ -67,21 +78,23 @@ const imageUrl =
 
       {/* Property Details */}
       <div className="p-5">
-        <div className="flex items-center justify-between">
-          <h3
-            style={{ fontFamily: "universal_font" }}
-            className="text-zinc-800 text-xs md:text-base truncate"
-          >
-            {property.title}
-          </h3>
-          <span
-            className={`px-3 py-0.5 text-sm rounded-md text-white ${
-              sourceColorMap[property.source] || "bg-gray-500"
-            }`}
-          >
-            {sourceLabelMap[property.source] || "Unknown"}
-          </span>
-        </div>
+       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
+  <h3
+    style={{ fontFamily: "universal_font" }}
+    className="text-zinc-800 text-xs md:text-base truncate"
+  >
+    {property.title}
+  </h3>
+  <div className="flex flex-col items-end">
+    <span
+      className={`px-3 py-0.5 text-sm rounded-md text-white ${
+        sourceColorMap[property.source] || "bg-gray-500"
+      }`}
+    >
+      {sourceLabelMap[property.source] || "Unknown"}
+    </span>
+  </div>
+</div>
 
         {/* Pricing */}
         {hasPricing ? (
@@ -102,42 +115,51 @@ const imageUrl =
 
         <p className="text-gray-600 text-sm">{property.location}</p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-2 mt-3">
-          {onApprove && property.status === "pending" && (
-            <button
-              onClick={handleApproveClick}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
-            >
-              Approve
-            </button>
-          )}
+       {/* Action Buttons */}
+<div className="flex flex-wrap gap-2 mt-3">
+  {onApprove && property.status === "pending" && (
+    <button
+      onClick={handleApproveClick}
+      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+    >
+      Approve
+    </button>
+  )}
 
-          {onEdit && (
-            <button
-              onClick={() => onEdit(property)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
-            >
-              Edit
-            </button>
-          )}
+  {onEdit && (
+    <button
+      onClick={() => onEdit(property)}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+    >
+      Edit
+    </button>
+  )}
 
-          {onDelete && (
-            <button
-              onClick={() => onDelete(property.id)}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
-            >
-              Delete
-            </button>
-          )}
+  {onDelete && (
+    <button
+      onClick={() => onDelete(property.id)}
+      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+    >
+      Delete
+    </button>
+  )}
 
-          <button
-            onClick={() => window.open(`/properties/${property.id}`, "_blank")}
-            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
-          >
-            View Details
-          </button>
-        </div>
+  <button
+    onClick={() => window.open(`/properties/${property.id}`, "_blank")}
+    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+  >
+    View Details
+  </button>
+</div>
+
+{/* Property Created Date at bottom-right of the card */}
+{formattedDate && (
+  <div className="flex justify-end mt-4">
+    <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-md shadow-sm">
+      Listed on: {formattedDate}
+    </span>
+  </div>
+)}
       </div>
 
       {/* Confirm Approval Modal */}
