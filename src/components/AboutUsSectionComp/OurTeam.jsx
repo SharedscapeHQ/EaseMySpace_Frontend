@@ -5,7 +5,8 @@ import YogitaImg from "/TeamImg/YogitaR.png";
 import TaniyaImg from "/TeamImg/TaniyaS.png";
 import ArvindImg from "/TeamImg/ArvindV.png";
 import NikhilImg from "/TeamImg/Nikhil.png";
-import { motion } from "framer-motion"; 
+import KedarImg from "/TeamImg/KedarM.png";
+import { motion } from "framer-motion";
 
 const teamMembers = [
   {
@@ -45,15 +46,23 @@ const teamMembers = [
     email: "arvind.vishwakrma@easemyspace.in",
   },
   {
-  name: "Nikhil Hiranandani",
-  role: "Business Consultant",
-  description:
-    "A strategic business consultant, providing expert advice and actionable insights to drive growth, optimize operations, and enhance overall business performance at EaseMySpace™.",
-  imageSrc: NikhilImg,
-  linkedin: "https://www.linkedin.com/in/nikhil-hiranandani/",
-  email: "nikhil.hiranandani@easemyspace.in",
-},
-
+    name: "Nikhil Hiranandani",
+    role: "Business Consultant",
+    description:
+      "A strategic business consultant, providing expert advice and actionable insights to drive growth, optimize operations, and enhance overall business performance at EaseMySpace™.",
+    imageSrc: NikhilImg,
+    linkedin: "https://www.linkedin.com/in/nikhil-hiranandani/",
+    email: "nikhil.hiranandani@easemyspace.in",
+  },
+  {
+    name: "Kedar Mane",
+    role: "Business Development Executive",
+    description:
+      "A dynamic business development executive driving sales growth, building strong client relationships, and expanding market opportunities for EaseMySpace™.",
+    imageSrc: KedarImg,
+    linkedin: "https://www.linkedin.com/in/kedar-mane-2ab73a155",
+    email: "kedar.mane@easemyspace.in",
+  },
 ];
 
 export default function OurTeam() {
@@ -64,59 +73,60 @@ export default function OurTeam() {
   }, []);
 
   return (
-   <section
-  style={{ fontFamily: "universal_font" }}
-  className="py-5 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
-  itemScope
-  itemType="https://schema.org/Organization"
->
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-    transition={{ duration: 0.5 }}
-    className="w-full mb-6"
-  >
-    <h2
-      style={{ fontFamily: "para_font" }}
-      className="text-lg lg:text-3xl mb-0 dark:text-white text-black leading-tight"
-      itemProp="employee"
+    <section
+      style={{ fontFamily: "universal_font" }}
+      className="py-5 lg:px-10 pb-24 px-3 max-w-7xl mx-auto"
+      itemScope
+      itemType="https://schema.org/Organization"
     >
-      Meet our Team
-    </h2>
-    <p
-      className=" mb-4 heading-font text-gray-500 dark:text-zinc-400 tracking-wider text-shadow"
-      itemProp="description"
-    >
-      Passionate. Proactive. Expert. 
-    </p>
-  </motion.div>
-
-  <div className="flex flex-wrap justify-center lg:justify-center items-center gap-4">
-    {teamMembers.map((member, index) => (
-      <article
-        key={index}
-        itemScope
-        itemType="https://schema.org/Person"
-        className="team-card"
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        transition={{ duration: 0.5 }}
+        className="w-full mb-6"
       >
-        <TeamCard
-          name={member.name}
-          role={member.role}
-          description={member.description}
-          imageSrc={member.imageSrc}
-          linkedin={member.linkedin}
-          email={member.email}
-        />
-        <meta itemProp="name" content={member.name} />
-        <meta itemProp="jobTitle" content={member.role} />
-        <meta itemProp="description" content={member.description} />
-        <meta itemProp="image" content={member.imageSrc} />
-        {member.linkedin && <meta itemProp="sameAs" content={member.linkedin} />}
-        {member.email && <meta itemProp="email" content={member.email} />}
-      </article>
-    ))}
-  </div>
-</section>
+        <h2
+          style={{ fontFamily: "para_font" }}
+          className="text-lg lg:text-3xl mb-0 dark:text-white text-black leading-tight"
+          itemProp="employee"
+        >
+          Meet our Team
+        </h2>
+        <p
+          className=" mb-4 heading-font text-gray-500 dark:text-zinc-400 tracking-wider text-shadow"
+          itemProp="description"
+        >
+          Passionate. Proactive. Expert.
+        </p>
+      </motion.div>
 
+      <div className="flex flex-wrap justify-center lg:justify-center items-center gap-4">
+        {teamMembers.map((member, index) => (
+          <article
+            key={index}
+            itemScope
+            itemType="https://schema.org/Person"
+            className="team-card"
+          >
+            <TeamCard
+              name={member.name}
+              role={member.role}
+              description={member.description}
+              imageSrc={member.imageSrc}
+              linkedin={member.linkedin}
+              email={member.email}
+            />
+            <meta itemProp="name" content={member.name} />
+            <meta itemProp="jobTitle" content={member.role} />
+            <meta itemProp="description" content={member.description} />
+            <meta itemProp="image" content={member.imageSrc} />
+            {member.linkedin && (
+              <meta itemProp="sameAs" content={member.linkedin} />
+            )}
+            {member.email && <meta itemProp="email" content={member.email} />}
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }
