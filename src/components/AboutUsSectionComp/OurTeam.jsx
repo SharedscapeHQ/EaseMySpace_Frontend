@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import TeamCard from "./TeamCard";
-import RakeshImg from "/TeamImg/RakeshG.png";
-import YogitaImg from "/TeamImg/YogitaR.png";
-import TaniyaImg from "/TeamImg/TaniyaS.png";
-import ArvindImg from "/TeamImg/ArvindV.png";
-import NikhilImg from "/TeamImg/Nikhil.png";
-import KedarImg from "/TeamImg/KedarM.png";
+import RakeshImg from "/TeamImg/RakeshG.webp";
+import YogitaImg from "/TeamImg/YogitaR.webp";
+import TaniyaImg from "/TeamImg/TaniyaS.webp";
+import ArvindImg from "/TeamImg/ArvindV.webp";
+import NikhilImg from "/TeamImg/Nikhil.webp";
+import KedarImg from "/TeamImg/KedarM.webp";
 import { motion } from "framer-motion";
 
 const teamMembers = [
