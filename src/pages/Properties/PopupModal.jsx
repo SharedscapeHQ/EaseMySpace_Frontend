@@ -15,25 +15,25 @@ const CrossIcon = () => (
 );
 
 const plans = [
-  {
-    type: "trial",
-    title: "Trial Plan",
-    description: "7 days validity with all premium services",
-    originalPrice: "₹699",
-    price: "₹499",
-    gst: "+18% GST",
-    savings: "Save ₹200!",
-    color: "yellow",
-    features: [
-      { text: "Up to 5 contact access", included: true },
-      { text: "Personalised Dashboard", included: true },
-      { text: "Post Requirement", included: true },
-      { text: "Re-location assistance (on call)", included: true },
-      { text: "Dedicated Customer Support", included: true },
-      { text: "New listed property alert", included: true },
-      { text: "Post-shifting basic support (If needed)", included: true },
-    ],
-  },
+  // {
+  //   type: "trial",
+  //   title: "Trial Plan",
+  //   description: "7 days validity with all premium services",
+  //   originalPrice: "₹699",
+  //   price: "₹499",
+  //   gst: "+18% GST",
+  //   savings: "Save ₹200!",
+  //   color: "yellow",
+  //   features: [
+  //     { text: "Up to 5 contact access", included: true },
+  //     { text: "Personalised Dashboard", included: true },
+  //     { text: "Post Requirement", included: true },
+  //     { text: "Re-location assistance (on call)", included: true },
+  //     { text: "Dedicated Customer Support", included: true },
+  //     { text: "New listed property alert", included: true },
+  //     { text: "Post-shifting basic support (If needed)", included: true },
+  //   ],
+  // },
   {
     type: "ultimate",
     title: "Ultimate Plan",
