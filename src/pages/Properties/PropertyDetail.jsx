@@ -271,7 +271,7 @@ function PropertyDetail() {
             <SavePropertyButton propertyId={property.id} />
           </div>
 
-          {property.owner_code === "subdomainEMS221" ? (
+          {property.source === "subdomain" ? (
             <PropertyHeaderSectionSub
               property={property}
               setLightboxIdx={setLightboxIdx}
@@ -293,7 +293,7 @@ function PropertyDetail() {
             />
           )}
 
-          {property.owner_code === "subdomainEMS221" ? (
+          {property.source === "subdomain" ? (
             <EssentialDetailsSub
               property={property}
               onPaymentSuccess={(roomLabel, occupancy) => {
