@@ -161,7 +161,14 @@ export default function BottomNav() {
 
           {isOpen && (
             <div ref={popupRef} className="absolute bg-white p-4 rounded-xl bottom-14 left-1/2 -translate-x-1/2 flex flex-col gap-3 items-center">
-              <Link to="/add-properties" className="bg-blue-600 text-white px-3 py-2 rounded-md shadow-md text-sm w-40 hover:bg-blue-700 text-center">List your Property</Link>
+             <a
+  href="https://property.easemyspace.in/add-property"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-blue-600 text-white px-3 py-2 rounded-md shadow-md text-sm w-40 hover:bg-blue-700 text-center"
+>
+  List your Property
+</a>
               <Link to="/demand-form" className="bg-blue-600 text-white px-3 py-2 rounded-md shadow-md text-sm w-40 hover:bg-blue-700 text-center">Post Requirement</Link>
             </div>
           )}

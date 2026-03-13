@@ -39,12 +39,14 @@ export default function LandingPopup({ onClose }) {
               >
                 Post Requirement
               </Link>
-              <Link
-                to="/add-properties"
-                className="flex-1 text-center bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition"
-              >
-                Add Property
-              </Link>
+             <a
+  href="https://property.easemyspace.in/add-property"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex-1 text-center bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition"
+>
+  Add Property
+</a>
             </div>
           </motion.div>
         </motion.div>

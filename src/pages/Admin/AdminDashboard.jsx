@@ -162,19 +162,20 @@ export default function AdminDashboard() {
   };
 
   const handleApprove = async (propertyId) => {
-    try {
-      const res = await approveProperty(propertyId);
+  try {
+    await approveProperty(propertyId);
 
-      toast.success("Property approved successfully");
-      fetchProperties();
-    } catch (err) {
-      if (err.response?.status === 403) {
-        toast.error("KYC Pending");
-      } else {
-        toast.error("Failed to approve property");
-      }
-    }
-  };
+    toast.success("Property approved successfully");
+    fetchProperties();
+  } catch (err) {
+    const message =
+      err.response?.data?.message ||
+      err.response?.data?.error ||
+      "Failed to approve property";
+
+    toast.error(message);
+  }
+};
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this property?")) {
