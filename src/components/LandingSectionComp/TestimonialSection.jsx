@@ -1,209 +1,132 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import React from "react";
+import { FaStar } from "react-icons/fa";
+import { FaQuoteLeft } from "react-icons/fa";
 import arvind_vishwakarma from "/testimonial/arvind_vishwakarma.png";
 import aditya_borse from "/testimonial/aditya_borse.png";
 import navin_patil from "/testimonial/navin_patil.png";
 
-const getRandomBg = () => {
-  const colors = [
-    "bg-red-500",
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-yellow-500",
-    "bg-indigo-500",
-    "bg-purple-500",
-    "bg-pink-500",
-    "bg-orange-500",
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
-const initialTestimonials = [
+const testimonials = [
   {
     img: aditya_borse,
     name: "Aditya Borse",
     review:
-      "I had an excellent experience with Mumbai Paying Guest. The rooms were clean and well-maintained, providing a great stay for me. Additionally, the accommodations were budget-friendly, making it a great choice for those looking for affordable lodging. Overall, I was very satisfied with my stay at Mumbai Paying Guest.",
-    rating: 5,
+      "I had an excellent experience with Mumbai Paying Guest. The rooms were clean and well-maintained, providing a great stay for me.",
   },
   {
     img: navin_patil,
     name: "Naveen Patil",
     review:
-      "Really User friendly Website, Great Service by the Team, Hoping to keep the rappo same In future. Thank you for Your Kind Support When Needed the Most 😊",
-    rating: 5,
+      "Really user friendly website. Great service by the team. Thank you for your support when needed the most.",
   },
   {
     img: null,
     name: "Jayant Bhatter",
     review:
-      "Great service!! Loved the team members who helped me to find my match!",
-    rating: 5,
+      "Great service! Loved the team members who helped me find my match.",
   },
   {
     img: arvind_vishwakarma,
     name: "Arvind Vishwakarma",
     review:
-      "As a Full Stack Developer at EaseMySpace™, I really enjoy being part of a team that's passionate about creating seamless solutions and helping people find their perfect space. Highly recommend checking us out!",
-    rating: 5,
+      "As a Full Stack Developer at EaseMySpace™, I enjoy being part of a team building seamless housing solutions.",
   },
   {
     img: null,
     name: "Rajshree Bihani",
     review: "Great flat options available, really like it!",
-    rating: 5,
   },
   {
     img: null,
     name: "Vikas Lahoti",
     review: "Amazing assistance!",
-    rating: 5,
-  },
-  {
-    img: null,
-    name: "Hitesh Kukreja",
-    review:
-      "Great and genuine website to help in finding shared flats for living. Much helpful",
-    rating: 5,
-  },
-  {
-    img: null,
-    name: "Ankit Songire",
-    review:
-      "Found a nice place with friendly roommates, and the whole process was super easy and quick. Great experience overall!",
-    rating: 5,
   },
 ];
 
-const shuffleArray = (array) => {
-  let shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+function Avatar({ img, name }) {
+  if (img)
+    return (
+      <img
+        src={img}
+        alt={name}
+        className="w-12 h-12 rounded-full object-cover"
+      />
+    );
+
+  return (
+    <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
+      {name.charAt(0)}
+    </div>
+  );
+}
+
+export default function TestimonialSection() {
+  const duplicated = [...testimonials, ...testimonials];
+
+  function Card(t, i) {
+    return (
+      <div
+        key={i}
+        className="w-[350px] flex-shrink-0 bg-slate-50 border border-blue-200 rounded-2xl p-7"
+      >
+        <div className="flex gap-1 text-orange-400 mb-4">
+          {Array.from({ length: 5 }).map(function (_, i) {
+            return <FaStar key={i} />;
+          })}
+        </div>
+
+        <FaQuoteLeft className="text-blue-400 mb-3" />
+
+        <p className="text-gray-600 italic text-sm leading-relaxed mb-6">
+          {t.review}
+        </p>
+
+      <div className="flex flex-col text-sm gap-1">
+  <Avatar img={t.img} name={t.name} />
+  <div>
+    <div className="font-semibold text-gray-900">{t.name}</div>
+    <div className="text-gray-500">{t.location}</div>
+  </div>
+</div>
+      </div>
+    );
   }
-  return shuffled;
-};
-
-const TestimonialSection = () => {
-  const [expandedIndex, setExpandedIndex] = useState(null);
-  const [testimonials, setTestimonials] = useState(initialTestimonials);
-  const [paused, setPaused] = useState(false); 
-  const carouselRef = useRef(null);
-
-  const toggleExpand = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
-  };
-
-  useEffect(() => {
-    let animationFrame;
-    let lastTime = performance.now();
-    const speed = 40; 
-
-    const smoothScroll = (time) => {
-      if (!paused && carouselRef.current) { 
-        const { scrollLeft, clientWidth, scrollWidth } = carouselRef.current;
-        const deltaTime = (time - lastTime) / 1000;
-        lastTime = time;
-
-        const distance = speed * deltaTime;
-        carouselRef.current.scrollLeft += distance;
-
-        if (scrollLeft + clientWidth >= scrollWidth - 1) {
-          setTestimonials((prev) => shuffleArray(prev));
-          carouselRef.current.scrollTo({ left: 0, behavior: "auto" });
-        }
-      }
-      animationFrame = requestAnimationFrame(smoothScroll);
-    };
-
-    animationFrame = requestAnimationFrame(smoothScroll);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [paused]);
 
   return (
     <section
       style={{ fontFamily: "universal_font" }}
-      className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white"
-      aria-label="Customer testimonials"
+      className="w-full py-10 bg-white dark:bg-zinc-900 dark:text-white overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-3 lg:px-10 relative">
-        <h2
+      {/* Heading */}
+      <div className="max-w-7xl lg:px-10 px-3 mx-auto">
+         <h2
           style={{ fontFamily: "para_font" }}
-          className="text-lg sm:text-3xl mb-5 text-left"
+          className="text-lg sm:text-3xl mb-10 text-left"
         >
           Google Reviews of our customers
         </h2>
+        {/* CLOUD MASK WRAPPER */}
+       <div
+  className="overflow-hidden group"
+  style={{
+    WebkitMaskImage:
+      "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+    maskImage:
+      "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+  }}
+>
+  <div className="flex flex-col gap-6">
+    {/* Row 1 */}
+    <div className="flex gap-6 w-max animate-scroll group-hover:pause">
+      {duplicated.map((t, i) => Card(t, i))}
+    </div>
 
-       
-        <div
-          ref={carouselRef}
-          className="flex gap-6 overflow-x-auto scrollbar-hide"
-          onMouseEnter={() => setPaused(true)}   
-          onMouseLeave={() => setPaused(false)}  
-        >
-          {testimonials.map((testimonial, index) => {
-            const isExpanded = expandedIndex === index;
-            const shouldTruncate = testimonial.review.length > 150;
-            const reviewText =
-              isExpanded || !shouldTruncate
-                ? testimonial.review
-                : testimonial.review.slice(0, 150) + "...";
-
-            return (
-              <article
-                key={index}
-                className="flex-shrink-0 w-80 border-zinc-200 border my-2 bg-blue-100 dark:bg-neutral-900  p-6 rounded-md shadow-md cursor-pointer transition-all duration-500"
-              >
-                {testimonial.img ? (
-                  <img
-                    src={testimonial.img}
-                    alt={testimonial.name}
-                    className="w-14 h-14 rounded-full object-cover mb-3 mx-auto"
-                  />
-                ) : (
-                  <div
-                    className={`w-14 h-14 rounded-full flex items-center justify-center text-white  text-3xl mb-3 mx-auto ${getRandomBg()}`}
-                  >
-                    {testimonial.name.charAt(0)}
-                  </div>
-                )}
-
-                <h3 className=" text-lg text-zinc-900 dark:text-white mb-2 text-center">
-                  {testimonial.name}
-                </h3>
-
-                <div className="flex justify-center mb-3">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <FaStar
-                      key={i}
-                      className={`h-5 w-5 ${
-                        i < testimonial.rating
-                          ? "text-yellow-400"
-                          : "text-yellow-200"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                <p className="text-sm text-center text-zinc-800 dark:text-white leading-relaxed">
-                  {reviewText}{" "}
-                  {shouldTruncate && (
-                    <button
-                      onClick={() => toggleExpand(index)}
-                      className="text-blue-600 hover:underline ml-1"
-                      aria-label="Read more"
-                    >
-                      {isExpanded ? "Read less" : "Read more"}
-                    </button>
-                  )}
-                </p>
-              </article>
-            );
-          })}
-        </div>
+    {/* Row 2 */}
+    <div className="flex gap-6 w-max animate-scroll-reverse mt-6 group-hover:pause">
+      {duplicated.map((t, i) => Card(t, i))}
+    </div>
+  </div>
+</div>
       </div>
     </section>
   );
-};
-
-export default TestimonialSection;
+}

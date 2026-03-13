@@ -12,6 +12,7 @@ import TestimonialSection from "../components/LandingSectionComp/TestimonialSect
 import AndheriProperties from "../components/LandingSectionComp/AndheriProperties";
 import RecentlyViewedProperties from "../components/LandingSectionComp/RecentlyViewedProperties";
 import InstaReelsSection from "../components/LandingSectionComp/InstaReelSection/InstaReelsSection";
+import EaseMySpaceShowcase from "../components/LandingSectionComp/EaseMySpaceShowcase";
 
 function Landing() {
 
@@ -73,6 +74,7 @@ function Landing() {
         <AndheriProperties/>
         <Banner />
         <InstaReelsSection />
+        <EaseMySpaceShowcase/>
         <FAQSection />
         <TestimonialSection/>
         <BottomNav />
