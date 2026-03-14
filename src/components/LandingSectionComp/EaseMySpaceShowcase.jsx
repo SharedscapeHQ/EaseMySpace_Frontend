@@ -30,13 +30,13 @@ const EaseMySpaceShowcase = () => {
         </div> */}
 
         <h1 className="hero-title text-[#0f172a] font-black leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
-          Mumbai's Smartest
+          Trusted shared homes
           <br />
-          <span className="text-[#2664eb]">Urban Living</span> App
+          <span className="text-[#2664eb]">With zero brokerage</span>
         </h1>
 
         <p className="hero-sub text-[17px] leading-[1.7] text-slate-600 max-w-[560px] mx-auto font-normal">
-          Find verified flatmates, PGs & flats — with zero brokerage, in-app
+          Find verified flatmates, PGs & flats with zero brokerage, in-app
           rent payments, digital agreements and govt-backed KYC. All in one app.
         </p>
 
