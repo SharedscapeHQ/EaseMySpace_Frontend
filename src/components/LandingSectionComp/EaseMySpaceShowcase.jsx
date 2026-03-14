@@ -24,10 +24,10 @@ const EaseMySpaceShowcase = () => {
       {/* HERO */}
       <section className="hero">
 
-        <div className="hero-eyebrow text-[12.5px] font-semibold text-[#2664eb] flex items-center gap-[7px]">
+        {/* <div className="hero-eyebrow text-[12.5px] font-semibold text-[#2664eb] flex items-center gap-[7px]">
           <div className="eyebrow-dot"></div>
           Now live in Mumbai · Available on Android & iOS
-        </div>
+        </div> */}
 
         <h1 className="hero-title text-[#0f172a] font-black leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
           Mumbai's Smartest

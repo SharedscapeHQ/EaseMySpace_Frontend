@@ -66,15 +66,16 @@ function Landing() {
 </Helmet>
 
       <div className="w-full -pt-10 lg:pb-0 pb-9 dark:bg-zinc-900">
-        <HeroMobile />
-        <HeroDesktop />
-        <RecentlyViewedProperties/>
-        <NewlyListedProperties />
-        <RecentAddedProperties />
-        <AndheriProperties/>
+        {/* <HeroMobile /> */}
+        {/* <HeroDesktop /> */}
+        {/* <RecentlyViewedProperties/> */}
+        {/* <NewlyListedProperties /> */}
+        {/* <RecentAddedProperties /> */}
+        {/* <AndheriProperties/> */}
+        
+        <EaseMySpaceShowcase/>
         <Banner />
         <InstaReelsSection />
-        <EaseMySpaceShowcase/>
         <FAQSection />
         <TestimonialSection/>
         <BottomNav />

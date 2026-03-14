@@ -9,7 +9,7 @@ body, .hero, .hiw-section {
 
 /* ── HERO ── */
 .hero {
-  padding: 100px 56px 0;
+  padding: 20px 56px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
