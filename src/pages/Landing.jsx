@@ -78,7 +78,7 @@ function Landing() {
         <InstaReelsSection />
         <FAQSection />
         <TestimonialSection/>
-        <BottomNav />
+        {/* <BottomNav /> */}
         <Footer />
       </div>
     </>
