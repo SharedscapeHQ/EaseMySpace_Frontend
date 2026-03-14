@@ -104,7 +104,7 @@ export default function ListerSubscription() {
       className="min-h-screen bg-white font-inter"
     >
       <Helmet>
-        <title>Lister Subscription | EaseMySpace™</title>
+        <title>EaseMySpace™ - Lister Subscription</title>
         <meta
           name="description"
           content="Choose the Standard Lister plan to access essential property listing services with EaseMySpace™."

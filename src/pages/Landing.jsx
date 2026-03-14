@@ -28,7 +28,7 @@ function Landing() {
   />
 
   {/* Main Page Title */}
-  <title>PGs, Flatmates & Vacant Flats in Mumbai | EaseMySpace™</title>
+  <title>EaseMySpace™ - find shared homes with zero brokerage</title>
 
   {/* Meta Description */}
   <meta

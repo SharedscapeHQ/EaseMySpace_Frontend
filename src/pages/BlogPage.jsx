@@ -38,10 +38,10 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title>Flatmates in Mumbai | PGs & Rental Flats | EaseMySpace™</title>
+        <title>EaseMySpace™ - Flatmates in Mumbai | PGs & Rental Flats</title>
         <meta
           name="description"
-          content="Find flatmates in Mumbai – Andheri, Goregaon, Powai, Chandivali, Thane, Dadar & South Mumbai. Explore verified PGs, shared rooms & budget-friendly rental flats for students & working professionals."
+          content="EaseMySpace™ - Find flatmates in Mumbai – Andheri, Goregaon, Powai, Chandivali, Thane, Dadar & South Mumbai. Explore verified PGs, shared rooms & budget-friendly rental flats for students & working professionals."
         />
         <meta
           name="keywords"

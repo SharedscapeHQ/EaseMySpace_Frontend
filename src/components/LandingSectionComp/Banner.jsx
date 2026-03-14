@@ -73,7 +73,7 @@ function Banner() {
     <>
       <Helmet>
         <title>
-          Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace™
+          EaseMySpace™ - find shared homes with zero brokerage
         </title>
         <meta
           name="description"
@@ -86,7 +86,7 @@ function Banner() {
         {/* Open Graph */}
         <meta
           property="og:title"
-          content="Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace™"
+          content="EaseMySpace™ - find shared homes with zero brokerage"
         />
         <meta
           property="og:description"
@@ -99,7 +99,7 @@ function Banner() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Find Flatmates, PGs & Vacant Flats in Mumbai | EaseMySpace™"
+          content="EaseMySpace™ - Find Flatmates, PGs & Vacant Flats in Mumbai"
         />
         <meta
           name="twitter:description"
