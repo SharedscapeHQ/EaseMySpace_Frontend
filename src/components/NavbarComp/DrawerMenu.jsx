@@ -59,7 +59,7 @@ export default function DrawerMenu({ open, setOpen }) {
           {[
             ["Home", <FaHome />, "/"],
             ["About Us", <FaInfoCircle />, "/about"],
-            ["Listings", <FaBuilding />, "/view-properties"],
+            // ["Listings", <FaBuilding />, "/view-properties"],
             ["Contact", <FaPhone />, "/contact"],
             ["Blog", <FaBlog />, "/blog"],
           ].map(([label, icon, href]) => (
@@ -80,12 +80,12 @@ export default function DrawerMenu({ open, setOpen }) {
           ))}
 
           {/* Premium Section */}
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mt-6 mb-1">
+          {/* <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mt-6 mb-1">
             Premium
-          </p>
+          </p> */}
 
           {/* Subscription Main Button */}
-          <li>
+          {/* <li>
             <button
               onClick={() => setShowSubmenu((prev) => !prev)}
               className={`flex w-full items-center justify-between gap-3 px-4 py-2 rounded-lg
@@ -117,7 +117,7 @@ export default function DrawerMenu({ open, setOpen }) {
                 showSubmenu ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"
               }`}
             >
-              <ul className="ml-6 space-y-2 text-sm">
+              {/* <ul className="ml-6 space-y-2 text-sm">
                 <li>
                   <Link
                     to="/subscription"
@@ -144,9 +144,9 @@ export default function DrawerMenu({ open, setOpen }) {
                     <span>Lister Subscription</span>
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </div>
-          </li>
+          {/* </li>  */}
         </ul>
 
         {/* Footer */}

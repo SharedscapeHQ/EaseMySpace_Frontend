@@ -140,7 +140,7 @@ body, .hero, .hiw-section {
 }
 
 .store-badge {
-  height: 45px;
+  height: 75px;
   width: auto;
   border-radius: 13px;
   transition: all 0.22s ease;

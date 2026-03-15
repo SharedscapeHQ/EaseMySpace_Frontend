@@ -147,7 +147,7 @@ export default function Footer() {
           {[
             { label: "Home ", to: "/", icon: FaHome },
             { label: "About Us ", to: "/about", icon: FaInfoCircle },
-            { label: "Listings ", to: "/view-properties", icon: FaThList },
+            // { label: "Listings ", to: "/view-properties", icon: FaThList },
             { label: "Contact ", to: "/contact", icon: FaPhone },
             { label: "Careers", to: "/careers", icon: FaBriefcase },
             { label: "Life at EMS", to: "/life-at-ems", icon: FaUsers }
