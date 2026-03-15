@@ -3,7 +3,7 @@ import "./EaseMySpaceShowcase.css";
 
 import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
 import AppleBadge from "/app_assets/AppleStoreButton.png";
-import AppHome from "/app_assets/app_home.jpg";
+import AppHome from "/app_assets/Hero.png";
 import kycPage from "/app_assets/kyc_page.jpg";
 import listingImg from "/app_assets/listing.jpg";
 import rentPayment from "/app_assets/rentPayment.jpg";
@@ -29,58 +29,53 @@ const EaseMySpaceShowcase = () => {
           Now live in Mumbai · Available on Android & iOS
         </div> */}
 
-        <h1 className="hero-title text-[#0f172a] font-black leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
+        <h1 style={{ fontFamily: "para_font" }} className="hero-title text-[#0f172a] leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
           Trusted shared homes
           <br />
           <span className="text-[#2664eb]">With zero brokerage</span>
         </h1>
 
-        <p className="hero-sub text-[17px] leading-[1.7] text-slate-600 max-w-[560px] mx-auto font-normal">
+        <p style={{ fontFamily: "universal_font" }} className="hero-sub text-[17px] leading-[1.7] text-slate-600 max-w-[560px] mx-auto font-normal">
           Find verified flatmates, PGs & flats with zero brokerage, in-app
           rent payments, digital agreements and govt-backed KYC. All in one app.
         </p>
 
-        <div className="store-row flex gap-[14px] justify-center flex-wrap">
+       <div className="flex flex-wrap justify-center gap-3 sm:gap-4  sm:mt-8">
 
-          <a
-            href="https://apps.apple.com/in/app/easemyspace/id6758399361"
-            className="store-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={AppleBadge}
-              alt="Download on the App Store"
-              className="store-badge apple"
-            />
-          </a>
+  <a
+    href="https://apps.apple.com/in/app/easemyspace/id6758399361"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block transition-transform duration-200 hover:-translate-y-1"
+  >
+    <img
+      src={AppleBadge}
+      alt="Download on the App Store"
+      className="h-[48px] sm:h-[60px] md:h-[70px] w-auto rounded-[12px]"
+    />
+  </a>
 
-          <a
-            href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
-            className="store-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={playBadge}
-              alt="Get it on Google Play"
-              className="store-badge google"
-            />
-          </a>
+  <a
+    href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block transition-transform duration-200 hover:-translate-y-1"
+  >
+    <img
+      src={playBadge}
+      alt="Get it on Google Play"
+      className="h-[48px] sm:h-[60px] md:h-[70px] w-auto rounded-[12px]"
+    />
+  </a>
 
-        </div>
-
-        <div className="hero-phone-wrap">
-          <div className="hero-phone-bg"></div>
-
-          <div className="hero-phone">
-            <img
-              src={AppHome}
-              alt="EaseMySpace App Home Screen"
-              className="phone-screen-image"
-            />
-          </div>
-        </div>
+</div>
+<div className="w-full flex justify-center lg:-mt-10">
+  <img
+    src={AppHome}
+    alt="EaseMySpace App Home Screen"
+    className="w-full float-animation"
+  />
+</div>
 
       </section>
 

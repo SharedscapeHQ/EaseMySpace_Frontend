@@ -63,14 +63,6 @@ body, .hero, .hiw-section {
   animation: up 0.5s 0.12s ease both;
 }
 
-.store-row {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  animation: up 0.5s 0.18s ease both;
-  margin-bottom: 60px;
-}
 
 /* ── PHONE ── */
 
@@ -118,6 +110,10 @@ body, .hero, .hiw-section {
   overflow: hidden;
 }
 
+.float-animation {
+  animation: bob 4s ease-in-out infinite;
+}
+
 .phone-screen-image {
   width: 100%;
   height: 100%;
@@ -125,29 +121,6 @@ body, .hero, .hiw-section {
   border-radius: 38px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   display: block;
-}
-
-/* ── STORE BADGES ── */
-
-.store-link {
-  display: inline-block;
-  transition: all 0.22s ease;
-  text-decoration: none;
-}
-
-.store-link:hover {
-  transform: translateY(-2px);
-}
-
-.store-badge {
-  height: 75px;
-  width: auto;
-  border-radius: 13px;
-  transition: all 0.22s ease;
-}
-
-.store-badge:hover {
-  filter: brightness(1.05);
 }
 
 /* ── HOW IT WORKS ── */

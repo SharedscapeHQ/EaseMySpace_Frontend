@@ -4,8 +4,7 @@ import RakeshImg from "/TeamImg/RakeshG.webp";
 import YogitaImg from "/TeamImg/YogitaR.webp";
 import TaniyaImg from "/TeamImg/TaniyaS.webp";
 import ArvindImg from "/TeamImg/ArvindV.webp";
-// import NikhilImg from "/TeamImg/Nikhil.webp";
-// import KedarImg from "/TeamImg/KedarM.webp";
+import ShaileshImg from "/TeamImg/ShaileshD.webp";
 import { motion } from "framer-motion";
 
 const teamMembers = [
@@ -42,27 +41,18 @@ const teamMembers = [
     description:
       "A skilled full stack developer and UI/UX designer, managing all technical aspects to create seamless and engaging user experiences at EaseMySpace™.",
     imageSrc: ArvindImg,
-    linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-067209212?",
+    linkedin: "https://www.linkedin.com/in/arvind-vishwakarma-023b75292/",
     email: "arvind.vishwakrma@easemyspace.in",
   },
-  // {
-  //   name: "Nikhil Hiranandani",
-  //   role: "Business Consultant",
-  //   description:
-  //     "A strategic business consultant, providing expert advice and actionable insights to drive growth, optimize operations, and enhance overall business performance at EaseMySpace™.",
-  //   imageSrc: NikhilImg,
-  //   linkedin: "https://www.linkedin.com/in/nikhil-hiranandani/",
-  //   email: "nikhil.hiranandani@easemyspace.in",
-  // },
-  // {
-  //   name: "Kedar Mane",
-  //   role: "Business Development Executive",
-  //   description:
-  //     "A dynamic business development executive driving sales growth, building strong client relationships, and expanding market opportunities for EaseMySpace™.",
-  //   imageSrc: KedarImg,
-  //   linkedin: "https://www.linkedin.com/in/kedar-mane-2ab73a155",
-  //   email: "kedar.mane@easemyspace.in",
-  // },
+  {
+    name: "Shailesh Dubey",
+    role: "Business Development Executive",
+    description:
+      "A dynamic business development executive driving sales growth, building strong client relationships, and expanding market opportunities for EaseMySpace™.",
+    imageSrc: ShaileshImg,
+    linkedin: "https://www.linkedin.com/in/shailesh-d-a4434047/",
+    email: "shailesh.dubey@easemyspace.in",
+  },
 ];
 
 export default function OurTeam() {
