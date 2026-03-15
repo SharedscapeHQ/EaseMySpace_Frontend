@@ -74,9 +74,9 @@ export default function ProfileDropdown({ user, isVerified, profileOpen, setProf
                   Login
                 </Link>
               )}
-              <Link to="/view-properties" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
+              {/* <Link to="/view-properties" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
                 View Listings
-              </Link>
+              </Link> */}
               {(user || isVerified) && (
                 <Link to="/contact" onClick={() => setProfileOpen(false)} className="hover:text-blue-600">
                   Contact Support
