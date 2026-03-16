@@ -29,7 +29,6 @@ export default function AndheriProperties() {
         const res = await axios.get(
           "https://api.easemyspace.in/api/properties/andheri"
         );
-console.log("Andheri properties response:", res.data);
         setProperties(res.data);
 
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(res.data));

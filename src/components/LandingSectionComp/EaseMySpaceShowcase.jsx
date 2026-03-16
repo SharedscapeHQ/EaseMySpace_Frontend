@@ -1,12 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import "./EaseMySpaceShowcase.css";
 
-import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
-import AppleBadge from "/app_assets/AppleStoreButton.png";
-import AppHome from "/app_assets/Hero.png";
+
 import kycPage from "/app_assets/kyc_page.jpg";
 import listingImg from "/app_assets/listing.jpg";
 import rentPayment from "/app_assets/rentPayment.jpg";
+import RecentlyViewedProperties from "./RecentlyViewedProperties";
+import NewlyListedProperties from "./NewlyListedProperties";
+import RecentAddedProperties from "./RecentAddedProperties";
+import AndheriProperties from "./AndheriProperties";
+import Banner from "./Banner";
+import Hero_v2 from "./Hero_v2";
+
 
 const EaseMySpaceShowcase = () => {
   const containerRef = useRef(null);
@@ -18,18 +23,20 @@ const EaseMySpaceShowcase = () => {
     }
   }, []);
 
+  
+
   return (
     <div ref={containerRef} className="ease-my-space-showcase">
 
       {/* HERO */}
-      <section className="hero">
+      {/* <section className="hero"> */}
 
         {/* <div className="hero-eyebrow text-[12.5px] font-semibold text-[#2664eb] flex items-center gap-[7px]">
           <div className="eyebrow-dot"></div>
           Now live in Mumbai · Available on Android & iOS
         </div> */}
 
-        <h1 style={{ fontFamily: "para_font" }} className="hero-title text-[#0f172a] leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
+        {/* <h1 style={{ fontFamily: "para_font" }} className="hero-title text-[#0f172a] leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
           Trusted shared homes
           <br />
           <span className="text-[#2664eb]">With zero brokerage</span>
@@ -75,12 +82,20 @@ const EaseMySpaceShowcase = () => {
     alt="EaseMySpace App Home Screen"
     className="w-full float-animation"
   />
-</div>
+</div> */}
 
-      </section>
+      {/* </section> */}
+      <Hero_v2/>
+
+        <RecentlyViewedProperties/>
+        <NewlyListedProperties />
+        <RecentAddedProperties />
+        <AndheriProperties/>
+        <Banner />
+
 
       {/* STATS */}
-      <div
+      {/* <div
         id="why-us"
         className="bg-[#f7f9ff] border-y border-slate-200 py-10 px-6 md:px-14 flex flex-wrap md:flex-nowrap justify-center items-center"
       >
@@ -129,7 +144,7 @@ const EaseMySpaceShowcase = () => {
           </div>
         </div>
 
-      </div>
+      </div> */}
 
       <section className="offers-section" id="services">
         <div className="offers-header">

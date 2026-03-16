@@ -74,7 +74,7 @@ function Landing() {
         {/* <AndheriProperties/> */}
         
         <EaseMySpaceShowcase/>
-        <Banner />
+        {/* <Banner /> */}
         <InstaReelsSection />
         <FAQSection />
         <TestimonialSection/>

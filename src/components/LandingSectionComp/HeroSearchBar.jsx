@@ -100,10 +100,10 @@ export default function HeroSearchBar() {
   const occupancyOptions = ["Single", "Double", "Triple+"];
 
   return (
-    <div ref={containerRef} className="max-w-4xl mx-auto mb-10 relative group z-20">
+    <div ref={containerRef} className="max-w-4xl flex items-center mx-auto mb-10 relative group z-20">
       <div
-        className={`relative flex items-center h-[66px] rounded-full border border-zinc-200 ${
-          active ? "bg-zinc-100" : "bg-white shadow-sm"
+        className={`relative flex items-center lg:h-[66px] h-[55px] rounded-full border border-zinc-200 ${
+          active ? "bg-zinc-100" : "bg-white w-full shadow-sm"
         }`}
       >
         {/* Sliding Pill */}
@@ -133,8 +133,8 @@ export default function HeroSearchBar() {
                 setLocation(val);
                 fetchSuggestions(val);
               }}
-              placeholder="Search area"
-              className="text-sm bg-transparent outline-none text-zinc-600 w-full"
+              placeholder="Search"
+              className="lg:text-sm text-xs bg-transparent outline-none text-zinc-600 w-full"
             />
             {suggestions.length > 0 && (
               <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-zinc-200 max-h-96 overflow-y-auto scrollbar-hide w-[400px] lg:w-[500px] p-3">
@@ -162,12 +162,12 @@ export default function HeroSearchBar() {
         {/* BHK */}
       <div className={sectionClass("bhk")}>
   <div className="flex flex-col items-start w-full relative">
-    <span className="text-xs  text-zinc-800 mb-1">BHK</span>
+    <span className="lg:text-sm text-[12px]  text-zinc-800 mb-1">BHK</span>
 
     {/* Selected value aligned left */}
     <div
       onClick={() => setActive("bhk")}
-      className="text-sm text-zinc-700 w-full cursor-pointer py-1 text-left"
+      className="lg:text-sm text-[12px] text-zinc-700 w-full cursor-pointer py-1 text-left"
     >
       {bhk || "Select"}
     </div>
@@ -199,12 +199,12 @@ export default function HeroSearchBar() {
         {/* OCCUPANCY + SEARCH */}
       <div className={`${sectionClass("occupancy")} flex items-center justify-between`}>
   <div className="flex flex-col items-start w-full relative">
-    <span className="text-xs  text-zinc-800 mb-1">Looking For?</span>
+    <span className="lg:text-sm text-[12px] text-zinc-800 mb-1 whitespace-nowrap">Looking For?</span>
 
     {/* Selected value aligned left, no border */}
     <div
       onClick={() => setActive("occupancy")}
-      className="text-sm text-zinc-700 w-full cursor-pointer py-1 text-left"
+      className="lg:text-sm text-[12px] text-zinc-700 w-full cursor-pointer py-1 text-left"
     >
       {occupancy || "Occupancy"}
     </div>
@@ -230,15 +230,17 @@ export default function HeroSearchBar() {
   </div>
 
   {/* Center-aligned search button */}
-  <button
-    onClick={handleSearch}
-    className="w-10 h-10 flex-shrink-0 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105 active:scale-95 ml-3"
-  >
-    <FiSearch size={16} />
-  </button>
+
 </div>
 
+
       </div>
+        <button
+    onClick={handleSearch}
+    className="lg:w-14 lg:h-14 w-10 h-10 flex-shrink-0 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center shadow-md transition-all duration-200 hover:scale-105 active:scale-95 ml-3"
+  >
+    <FiSearch size={22}  />
+  </button>
     </div>
   );
 }
@@ -246,7 +248,7 @@ export default function HeroSearchBar() {
 function Separator({ active }) {
   return (
     <div
-      className={`w-px h-8 bg-zinc-300 transition-opacity ${
+      className={`lg:w-px h-8 bg-zinc-300 transition-opacity ${
         active ? "opacity-0" : "group-hover:opacity-0 opacity-100"
       }`}
     />
