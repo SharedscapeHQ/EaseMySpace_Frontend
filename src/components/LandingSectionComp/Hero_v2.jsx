@@ -16,7 +16,7 @@ const cards = [
 
 function Hero_v2() {
   return (
-   <section className="w-full min-h-[calc(100vh-120px)] flex items-center bg-white dark:bg-zinc-900 overflow-hidden">
+   <section className="w-full min-h-[calc(100vh-40px)] flex items-center bg-white dark:bg-zinc-900 overflow-hidden">
 
   <div className="max-w-7xl mx-auto w-full px-6 flex flex-col lg:flex-row items-center">
 
