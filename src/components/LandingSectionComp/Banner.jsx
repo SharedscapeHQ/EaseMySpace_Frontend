@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { saveRequest } from "../../api/requestApi";
-import leftImg from "/CTA-assets/cta2.png";
-import rightImg from "/CTA-assets/cta.png";
+import leftImg from "/CTA-assets/cta2.webp";
+import rightImg from "/CTA-assets/cta.webp";
 import { Helmet } from "react-helmet";
 import { IoSparklesOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
@@ -92,7 +92,7 @@ function Banner() {
           property="og:description"
           content="Looking for a flatmate or vacant flats in Mumbai? Get personalized assistance and verified listings with EaseMySpace™."
         />
-        <meta property="og:image" content="/CTA-assets/cta2.png" />
+        <meta property="og:image" content="/CTA-assets/cta2.webp" />
         <meta property="og:url" content="https://easemyspace.in" />
         <meta property="og:type" content="website" />
         {/* Twitter */}
@@ -105,7 +105,7 @@ function Banner() {
           name="twitter:description"
           content="Looking for a flatmate or vacant flats in Mumbai? Get personalized assistance and verified listings with EaseMySpace™."
         />
-        <meta name="twitter:image" content="/CTA-assets/cta2.png" />
+        <meta name="twitter:image" content="/CTA-assets/cta2.webp" />
         {/* Structured Data */}
         <script type="application/ld+json">
           {`

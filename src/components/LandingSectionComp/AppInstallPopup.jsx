@@ -2,7 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX } from "react-icons/fi";
 import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
-import AppleBadge from "/app_assets/AppleStoreButton.png";
+import AppleBadge from "/app_assets/AppleStoreButton.webp";
 
 export default function AppInstallPopup({ onClose }) {
   return (

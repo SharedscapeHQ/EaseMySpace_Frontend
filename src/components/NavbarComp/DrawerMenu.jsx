@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
-import AppleBadge from "/app_assets/AppleStoreButton.png";
+import AppleBadge from "/app_assets/AppleStoreButton.webp";
 
 
 export default function DrawerMenu({ open, setOpen }) {

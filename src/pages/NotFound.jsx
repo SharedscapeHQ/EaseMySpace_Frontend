@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import NotFoundVid from "/not-found-page.mov";
+import NotFoundVid from "/not-found-page.mp4";
 
 function NotFound() {
   const navigate = useNavigate();

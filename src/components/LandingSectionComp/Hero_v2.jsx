@@ -1,7 +1,7 @@
 import React from "react";
 import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
-import AppleBadge from "/app_assets/AppleStoreButton.png";
-import AppHome from "/app_assets/Hero.png";
+import AppleBadge from "/app_assets/AppleStoreButton.webp";
+import AppHome from "/app_assets/Hero.webp";
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
@@ -95,7 +95,7 @@ function Hero_v2() {
 </div>
 
   {/* RIGHT SIDE IMAGE */}
-<div className="w-full lg:w-1/2  lg:flex justify-end items-center overflow-visible">
+<div className="w-full lg:w-1/2 float-animation lg:flex justify-end items-center overflow-visible">
 
   <img
     src={AppHome}

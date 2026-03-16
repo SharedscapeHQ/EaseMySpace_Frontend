@@ -19,7 +19,7 @@ import {
   FaTrashAlt
 } from "react-icons/fa";
 import playBadge from "/app_assets/GetItOnGooglePlay_Badge_Web_color_English.svg";
-import AppleBadge from "/app_assets/AppleStoreButton.png";
+import AppleBadge from "/app_assets/AppleStoreButton.webp";
 import { FaApple } from "react-icons/fa";
 import { QRCodeCanvas } from "qrcode.react";
 import { FaXTwitter } from "react-icons/fa6";

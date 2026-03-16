@@ -110,9 +110,7 @@ body, .hero, .hiw-section {
   overflow: hidden;
 }
 
-.float-animation {
-  animation: bob 4s ease-in-out infinite;
-}
+
 
 .phone-screen-image {
   width: 100%;
@@ -198,10 +196,6 @@ body, .hero, .hiw-section {
   50% { opacity: 0.3; }
 }
 
-@keyframes bob {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
 
 /* ── RESPONSIVE ── */
 

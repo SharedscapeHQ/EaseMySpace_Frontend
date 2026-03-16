@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from "react";
 import "./EaseMySpaceShowcase.css";
 
 
-import kycPage from "/app_assets/kyc_page.jpg";
-import listingImg from "/app_assets/listing.jpg";
-import rentPayment from "/app_assets/rentPayment.jpg";
+import kycPage from "/app_assets/kyc_page.webp";
+import listingImg from "/app_assets/listing.webp";
+import rentPayment from "/app_assets/rentPayment.webp";
 import RecentlyViewedProperties from "./RecentlyViewedProperties";
 import NewlyListedProperties from "./NewlyListedProperties";
 import RecentAddedProperties from "./RecentAddedProperties";

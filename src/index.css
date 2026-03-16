@@ -153,4 +153,23 @@
   src: url('/fonts/universal_font.ttf') format('truetype');
 }
 
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.2s ease-out;
+}
+
+.float-animation {
+  animation: bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+
 
