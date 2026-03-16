@@ -82,11 +82,11 @@ function Hero_v2() {
 
     {/* Download buttons */}
     <div className="flex justify-center gap-7">
-      <a href="https://play.google.com/store/apps/details?id=com.easemyspace.app" className="hover:opacity-80 transition">
+      <a target="_blank" href="https://play.google.com/store/apps/details?id=com.easemyspace.app" className="hover:opacity-80 transition">
         <img src={playBadge} alt="Google Play" className="h-10 md:h-12 w-auto lg:mt-10" />
       </a>
 
-      <a href="https://apps.apple.com/in/app/easemyspace/id6758399361" className="hover:opacity-80 transition">
+      <a target="_blank" href="https://apps.apple.com/in/app/easemyspace/id6758399361" className="hover:opacity-80 transition">
         <img src={AppleBadge} alt="App Store" className="h-10 md:h-12 w-auto lg:mt-10" />
       </a>
     </div>
