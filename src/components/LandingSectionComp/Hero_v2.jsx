@@ -26,30 +26,32 @@ function Hero_v2() {
   {/* CONTENT WIDTH CONTROLLER */}
   <div className="max-w-[520px]">
 
-    <h1
-      style={{ fontFamily: "para_font" }}
-      className="text-[30px] md:text-[42px] lg:text-[50px] whitespace-nowrap leading-[1.15] font-semibold text-[#0f172a] dark:text-white"
-    >
-      Trusted shared homes
-      <br />
-      <span className="text-[#2664eb]">With zero brokerage</span>
-    </h1>
+  <h1
+  style={{ fontFamily: "para_font" }}
+  className="text-[30px] md:text-[42px] lg:text-[50px] whitespace-nowrap leading-[1.15] font-semibold text-[#0f172a] dark:text-white"
+>
+  Trusted shared homes
+  <br />
+  <span className="text-[#2664eb]">With</span>{" "}
+  <span className="relative inline-block text-[#2664eb]">
+    Zero brokerage
+ 
+  </span>
+</h1>
 
     <p
       style={{ fontFamily: "universal_font" }}
       className="lg:hidden block mt-5 text-[16px] lg:text-base leading-[1.7] text-slate-600 dark:text-zinc-400"
     >
       Find verified flatmates, PGs & flats with <br /> zero brokerage.
-      {/* in-app rent payments, digital agreements and govt-backed
-      KYC - <span className="text-[#2664eb]">all in one app.</span> */}
+     
     </p>
     <p
       style={{ fontFamily: "universal_font" }}
       className="lg:block hidden mt-5 text-[16px] lg:text-base leading-[1.7] text-slate-600 dark:text-zinc-400"
     >
       Find verified flatmates, PGs & flats with zero brokerage.
-      {/* in-app rent payments, digital agreements and govt-backed
-      KYC - <span className="text-[#2664eb]">all in one app.</span> */}
+     
     </p>
 
     {/* Cards */}

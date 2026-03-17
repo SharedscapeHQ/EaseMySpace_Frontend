@@ -28,63 +28,7 @@ const EaseMySpaceShowcase = () => {
   return (
     <div ref={containerRef} className="ease-my-space-showcase">
 
-      {/* HERO */}
-      {/* <section className="hero"> */}
-
-        {/* <div className="hero-eyebrow text-[12.5px] font-semibold text-[#2664eb] flex items-center gap-[7px]">
-          <div className="eyebrow-dot"></div>
-          Now live in Mumbai · Available on Android & iOS
-        </div> */}
-
-        {/* <h1 style={{ fontFamily: "para_font" }} className="hero-title text-[#0f172a] leading-[1.06] tracking-[-2.5px] text-[clamp(42px,5.5vw,72px)]">
-          Trusted shared homes
-          <br />
-          <span className="text-[#2664eb]">With zero brokerage</span>
-        </h1>
-
-        <p style={{ fontFamily: "universal_font" }} className="hero-sub text-[17px] leading-[1.7] text-slate-600 max-w-[560px] mx-auto font-normal">
-          Find verified flatmates, PGs & flats with zero brokerage, in-app
-          rent payments, digital agreements and govt-backed KYC. All in one app.
-        </p>
-
-       <div className="flex flex-wrap justify-center gap-3 sm:gap-4  sm:mt-8">
-
-  <a
-    href="https://apps.apple.com/in/app/easemyspace/id6758399361"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-block transition-transform duration-200 hover:-translate-y-1"
-  >
-    <img
-      src={AppleBadge}
-      alt="Download on the App Store"
-      className="h-[48px] sm:h-[60px] md:h-[70px] w-auto rounded-[12px]"
-    />
-  </a>
-
-  <a
-    href="https://play.google.com/store/apps/details?id=com.easemyspace.app"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-block transition-transform duration-200 hover:-translate-y-1"
-  >
-    <img
-      src={playBadge}
-      alt="Get it on Google Play"
-      className="h-[48px] sm:h-[60px] md:h-[70px] w-auto rounded-[12px]"
-    />
-  </a>
-
-</div>
-<div className="w-full flex justify-center lg:-mt-10">
-  <img
-    src={AppHome}
-    alt="EaseMySpace App Home Screen"
-    className="w-full float-animation"
-  />
-</div> */}
-
-      {/* </section> */}
+     
       <Hero_v2/>
 
         <RecentlyViewedProperties/>
@@ -92,59 +36,6 @@ const EaseMySpaceShowcase = () => {
         <RecentAddedProperties />
         <AndheriProperties/>
         <Banner />
-
-
-      {/* STATS */}
-      {/* <div
-        id="why-us"
-        className="bg-[#f7f9ff] border-y border-slate-200 py-10 px-6 md:px-14 flex flex-wrap md:flex-nowrap justify-center items-center"
-      >
-
-        <div className="flex-1 max-w-[220px] text-center px-6 border-r border-slate-200 last:border-none">
-          <div className="text-[36px] font-black text-[#2664eb] tracking-[-1px]">
-            1.7K<sup className="text-[18px]">+</sup>
-          </div>
-          <div className="text-[13px] text-slate-600 mt-1 font-medium">
-           App Downloads
-          </div>
-        </div>
-
-        <div className="flex-1 max-w-[220px] text-center px-6 border-r border-slate-200 last:border-none">
-          <div className="text-[36px] font-black text-[#2664eb] tracking-[-1px]">
-            300<sup className="text-[18px]">+</sup>
-          </div>
-          <div className="text-[13px] text-slate-600 mt-1 font-medium">
-            Active Users
-          </div>
-        </div>
-        <div className="flex-1 max-w-[220px] text-center px-6 border-r border-slate-200 last:border-none">
-          <div className="text-[36px] font-black text-[#2664eb] tracking-[-1px]">
-            180<sup className="text-[18px]">+</sup>
-          </div>
-          <div className="text-[13px] text-slate-600 mt-1 font-medium">
-            Property Listings
-          </div>
-        </div>
-
-        <div className="flex-1 max-w-[220px] text-center px-6 border-r border-slate-200 last:border-none">
-          <div className="text-[36px] font-black text-[#2664eb] tracking-[-1px]">
-            ₹0
-          </div>
-          <div className="text-[13px] text-slate-600 mt-1 font-medium">
-            Brokerage Fee
-          </div>
-        </div>
-
-        <div className="flex-1 max-w-[220px] text-center px-6">
-          <div className="text-[36px] font-black text-[#2664eb] tracking-[-1px]">
-            &lt;60s
-          </div>
-          <div className="text-[13px] text-slate-600 mt-1 font-medium">
-            KYC Verification
-          </div>
-        </div>
-
-      </div> */}
 
       <section className="offers-section" id="services">
         <div className="offers-header">
