@@ -26,21 +26,14 @@ function Hero_v2() {
   {/* CONTENT WIDTH CONTROLLER */}
   <div className="max-w-[520px]">
 
-  <div className="text-justify w-full">
-  <h1
-    style={{ fontFamily: "para_font" }}
-    className="text-[30px] md:text-[42px] lg:text-[45px] leading-[1.15] font-extrabold text-[#0f172a] dark:text-white "
-  >
-    Trusted shared homes
-  </h1>
-
-  <h1
-    style={{ fontFamily: "para_font" }}
-    className="text-[30px] md:text-[42px] lg:text-[46px] tracking-wider leading-[1.15] font-extrabold text-[#2664eb] "
-  >
-    With zero brokerage
-  </h1>
-</div>
+    <h1
+      style={{ fontFamily: "para_font" }}
+      className="text-[30px] md:text-[42px] lg:text-[50px] whitespace-nowrap leading-[1.15] font-semibold text-[#0f172a] dark:text-white"
+    >
+      Trusted shared homes
+      <br />
+      <span className="text-[#2664eb]">With zero brokerage</span>
+    </h1>
 
     <p
       style={{ fontFamily: "universal_font" }}
