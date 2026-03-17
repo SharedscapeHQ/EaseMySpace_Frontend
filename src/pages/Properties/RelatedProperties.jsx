@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiCheckCircle } from "react-icons/fi";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 const parseImages = (raw) => {
   if (!raw) return [];
@@ -17,11 +16,7 @@ const parseImages = (raw) => {
 };
 
 function RelatedPropertyCard({ property }) {
-  const { displayLocation, loading } = useFormattedLocation(
-    property.location,
-    property.pincode
-  );
-  const formattedLocation = loading ? "Loading..." : displayLocation || property.location || "";
+ const formattedLocation = property.display_location || "Mumbai, Maharashtra";
 
   const getFirstImage = () => {
     return property.images?.[0] || property.bedroom_images?.[0] || property.hall_images?.[0] || null;
@@ -71,9 +66,9 @@ function RelatedPropertyCard({ property }) {
             </p>
           )}
         </div>
-        <p className="text-indigo-600  text-base sm:text-lg lg:text-xl mt-auto">
-          ₹{property.price?.toLocaleString() || "N/A"}
-        </p>
+        <p className="text-indigo-600 text-base sm:text-lg lg:text-xl mt-auto">
+  {property.price ? `₹${property.price.toLocaleString()}/mo` : "N/A"}
+</p>
       </div>
     </Link>
   );

@@ -1,15 +1,7 @@
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 export default function PropertyMap({ location, pincode, title }) {
-  const { displayLocation, loading } =
-    location && pincode
-      ? useFormattedLocation(location, pincode)
-      : { displayLocation: location || "", loading: false };
-
-  const mapAddress =
-    loading
-      ? location || pincode || ""
-      : displayLocation || location || pincode || "";
+ const displayLocation = location || pincode || "Mumbai, Maharashtra";
+const mapAddress = displayLocation;
 
   return (
     <section className="w-full">
@@ -20,7 +12,7 @@ export default function PropertyMap({ location, pincode, title }) {
             style={{ fontFamily: "universal_font" }}
             className="text-xs lg:text-sm text-gray-600 ml-2 truncate"
           >
-            {loading ? "Loading..." : mapAddress}
+           {mapAddress}
           </span>
         </h2>
 

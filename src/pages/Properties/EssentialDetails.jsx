@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 export default function EssentialDetails({ property }) {
   const pricingOptions = property.pricingOptions?.length
@@ -29,11 +28,7 @@ export default function EssentialDetails({ property }) {
 
   useEffect(() => {}, [roomsWithLabels]);
 
-  const { displayLocation, loading: locationLoading } = useFormattedLocation(
-    property.location,
-    property.pincode,
-  );
-
+const displayLocation = property.display_location || "Mumbai, Maharashtra";
   return (
     <div className="mt-6 flex flex-col lg:flex-row gap-6">
       {/* Left Container - Property Details */}
@@ -43,12 +38,7 @@ export default function EssentialDetails({ property }) {
             { label: "BHK Type", value: property.bhk_type || "Unavailable" },
             {
               label: "Location",
-              value: locationLoading
-                ? "Loading..."
-                : displayLocation ||
-                  property.location ||
-                  property.pincode ||
-                  "Unavailable",
+              value: displayLocation,
             },
 
             {

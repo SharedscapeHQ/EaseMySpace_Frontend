@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import RentPaymentModal from "./RentPayment/RentPaymentModal";
 import { getCurrentUser } from "../../api/authApi";
 import { useNavigate } from "react-router-dom";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 
 export default function EssentialDetailsSub({ property }) {
@@ -165,10 +164,8 @@ export default function EssentialDetailsSub({ property }) {
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
   };
 
-  const { displayLocation, loading: locationLoading } = useFormattedLocation(
-  property.location,
-  property.pincode
-);
+const displayLocation = property.display_location || "Mumbai, Maharashtra";
+const locationLoading = false; 
 
 
   return (
@@ -184,9 +181,7 @@ export default function EssentialDetailsSub({ property }) {
               { label: "BHK Type", value: property.bhk_type || "Unavailable" },
               {
   label: "Location",
-  value: locationLoading
-    ? "Loading..."
-    : displayLocation || property.location || property.pincode || "Unavailable",
+ value: displayLocation,
 },
               { label: "Looking For", value: property.looking_for || "Unavailable" },
               { label: "Gender Preference", value: property.gender || "Unavailable" },

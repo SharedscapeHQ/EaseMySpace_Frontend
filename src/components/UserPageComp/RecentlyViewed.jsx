@@ -1,16 +1,9 @@
 import React from "react";
 import dayjs from "dayjs";
 import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
-
-
 
 export default function RecentlyViewed({ property }) {
-
-  const { displayLocation, loading } = useFormattedLocation(
-  property.location,
-  property.pincode
-);
+  const displayLocation = property.display_location || "Mumbai, Maharashtra";
 
   return (
     <div
@@ -20,18 +13,17 @@ export default function RecentlyViewed({ property }) {
     >
       {/* Image Section */}
       <div className="relative w-full h-44">
-      {property.bedroom_image ? (
-  <img
-    src={property.bedroom_image}
-    alt={property.title}
-    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-  />
-) : (
-  <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 italic">
-    No Image
-  </div>
-)}
-
+        {property.bedroom_image ? (
+          <img
+            src={property.bedroom_image}
+            alt={property.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 italic">
+            No Image
+          </div>
+        )}
 
         {/* Viewed timestamp */}
         {property.viewed_at && (
@@ -47,7 +39,7 @@ export default function RecentlyViewed({ property }) {
         <p className="text-zinc-800 text-sm">Owner's Contact</p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600  text-lg">
+            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-lg">
               {property.title?.charAt(0) || "U"}
             </div>
             <span className="font-medium text-sm text-gray-700">
@@ -61,24 +53,15 @@ export default function RecentlyViewed({ property }) {
           </div>
         </div>
 
-        
         {/* Rent Info */}
         <div className="text-center">
-          <p className=" text-black text-base">
+          <p className="text-black text-base">
             ₹ {Number(property.price || 0).toLocaleString()}/month
           </p>
-        <p className="text-gray-600 text-sm">
-  {property.bhk_type} in{" "}
-  {loading ? (
-    <span className="inline-block h-4 w-28 bg-gray-200 rounded animate-pulse align-middle" />
-  ) : (
-    displayLocation || "Unknown location"
-  )}
-</p>
-
+          <p className="text-gray-600 text-sm">
+            {property.bhk_type} in {displayLocation}
+          </p>
         </div>
-
-       
       </div>
     </div>
   );

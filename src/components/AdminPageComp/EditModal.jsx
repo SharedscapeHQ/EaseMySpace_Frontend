@@ -243,6 +243,7 @@ export default function EditModal({
               ["title", "Title"],
               ["location", "Location"],
               ["pincode", "Pincode"],
+              ["display_location", "Display Location"],
               [
                 "status",
                 "Status",
@@ -314,6 +315,7 @@ export default function EditModal({
                     }`}
                   />
                 )}
+                
               </div>
             ))}
             <div className="mt-4 flex items-center gap-3">

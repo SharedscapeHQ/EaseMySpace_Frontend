@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LikeButton from "../LandingSectionComp/LikeButton";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 const PropertyCard = ({ p }) => {
   const images = [
@@ -26,13 +25,12 @@ const PropertyCard = ({ p }) => {
   const prevTranslate = useRef(0);
   const isDragging = useRef(false);
 
-  // Get formatted location using the hook
-  const { displayLocation, loading } = useFormattedLocation(p.location, p.pincode);
-  const formattedLocation = loading ? "Loading..." : displayLocation || p.location || "Unknown";
+  // Use display_location directly with fallback
+  const formattedLocation = p.display_location || "Mumbai, Maharashtra";
 
   // Detect touch device
   useEffect(() => {
-    isTouchDevice.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    isTouchDevice.current = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   }, []);
 
   // Mobile swipe handlers
@@ -55,8 +53,8 @@ const PropertyCard = ({ p }) => {
     isDragging.current = false;
     const movedBy = currentTranslate.current - prevTranslate.current;
 
-    if (movedBy < -50 && currentIndex < images.length - 1) setCurrentIndex(prev => prev + 1);
-    else if (movedBy > 50 && currentIndex > 0) setCurrentIndex(prev => prev - 1);
+    if (movedBy < -50 && currentIndex < images.length - 1) setCurrentIndex((prev) => prev + 1);
+    else if (movedBy > 50 && currentIndex > 0) setCurrentIndex((prev) => prev - 1);
     else {
       trackRef.current.style.transition = "transform 0.3s ease-out";
       trackRef.current.style.transform = `translateX(${prevTranslate.current}px)`;
@@ -66,7 +64,7 @@ const PropertyCard = ({ p }) => {
   // Update translate when index changes
   useEffect(() => {
     if (!trackRef.current || !isTouchDevice.current) return;
-    prevTranslate.current = -currentIndex * (containerRef.current?.offsetWidth || 0);
+    prevTranslate.current = -(currentIndex * (containerRef.current?.offsetWidth || 0));
     currentTranslate.current = prevTranslate.current;
     trackRef.current.style.transition = "transform 0.3s ease-out";
     trackRef.current.style.transform = `translateX(${prevTranslate.current}px)`;
@@ -106,9 +104,7 @@ const PropertyCard = ({ p }) => {
             <div
               ref={trackRef}
               className="flex h-full transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`,
-              }}
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {images.map((img, idx) => (
                 <img
@@ -129,7 +125,7 @@ const PropertyCard = ({ p }) => {
         {/* Desktop arrows */}
         {hovered && !isTouchDevice.current && images.length > 1 && currentIndex > 0 && (
           <button
-            onClick={() => setCurrentIndex(prev => Math.max(prev - 1, 0))}
+            onClick={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
             className="hidden lg:block absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
           >
             <FaChevronLeft size={16} />
@@ -137,7 +133,7 @@ const PropertyCard = ({ p }) => {
         )}
         {hovered && !isTouchDevice.current && images.length > 1 && currentIndex < images.length - 1 && (
           <button
-            onClick={() => setCurrentIndex(prev => Math.min(prev + 1, images.length - 1))}
+            onClick={() => setCurrentIndex((prev) => Math.min(prev + 1, images.length - 1))}
             className="hidden lg:block absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white shadow-md z-10"
           >
             <FaChevronRight size={16} />
@@ -175,23 +171,22 @@ const PropertyCard = ({ p }) => {
       </div>
 
       {/* Info */}
-     {/* Info */}
-<Link to={`/properties/${p.id}`}>
-  <div className="lg:w-56 w-80">
-    <div className="mt-2 text-[12px] text-zinc-900 dark:text-white truncate">
-      {formattedLocation}
-    </div>
+      <Link to={`/properties/${p.id}`}>
+        <div className="lg:w-56 w-80">
+          <div className="mt-2 text-[12px] text-zinc-900 dark:text-white truncate">
+            {formattedLocation}
+          </div>
 
-    <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
-      {p.bhk_type || "-"} | {p.looking_for || "-"}
-    </div>
+          <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+            {p.bhk_type || "-"} | {p.looking_for || "-"}
+          </div>
 
-    <div className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
-      Rent – ₹{p.price?.toLocaleString() || "-"} | Deposit ₹{p.deposit?.toLocaleString() || "-"}
-    </div>
-  </div>
-</Link>
-
+          <div className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
+            Rent – ₹{p.price?.toLocaleString() || "-"} | Deposit ₹
+            {p.deposit?.toLocaleString() || "-"}
+          </div>
+        </div>
+      </Link>
     </div>
   );
 };

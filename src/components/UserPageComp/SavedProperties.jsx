@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getSavedProperties } from "../../api/userApi";
 import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 export default function SavedProperties() {
   const [properties, setProperties] = useState([]);
@@ -33,7 +32,9 @@ export default function SavedProperties() {
   if (!properties.length) {
     return (
       <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 shadow-md border border-gray-200 dark:border-zinc-700 text-center">
-        <p className="text-gray-700 dark:text-gray-300 font-medium">No saved properties yet.</p>
+        <p className="text-gray-700 dark:text-gray-300 font-medium">
+          No saved properties yet.
+        </p>
       </div>
     );
   }
@@ -50,12 +51,8 @@ export default function SavedProperties() {
 }
 
 function SavedPropertyCard({ property }) {
-  const { displayLocation, loading: locationLoading } = useFormattedLocation(
-    property.location,
-    property.pincode
-  );
+  const displayLocation = property.display_location || "Mumbai, Maharashtra";
 
-  // ✅ Only bedroom image
   const img = property.bedroom_images?.[0] || null;
 
   return (
@@ -84,7 +81,7 @@ function SavedPropertyCard({ property }) {
         <p className="text-zinc-800 dark:text-zinc-200 text-sm">Owner's Contact</p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300  text-lg">
+            <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-lg">
               {property.title?.charAt(0) || "U"}
             </div>
             <span className="font-medium text-sm text-gray-700 dark:text-gray-300">
@@ -100,16 +97,11 @@ function SavedPropertyCard({ property }) {
 
         {/* Rent Info */}
         <div className="text-center">
-          <p className=" text-black dark:text-white text-base">
+          <p className="text-black dark:text-white text-base">
             ₹ {Number(property.price || 0).toLocaleString()}/month
           </p>
           <p className="text-gray-600 dark:text-gray-300 text-sm">
-            {property.bhk_type || "-"} in{" "}
-            {locationLoading ? (
-              <span className="inline-block h-4 w-28 bg-gray-200 rounded animate-pulse align-middle" />
-            ) : (
-              displayLocation || "Unknown location"
-            )}
+            {property.bhk_type || "-"} in {displayLocation}
           </p>
         </div>
 
@@ -123,4 +115,3 @@ function SavedPropertyCard({ property }) {
     </div>
   );
 }
-

@@ -1,17 +1,9 @@
 import { Link } from "react-router-dom";
 import LikeButton from "./LikeButton";
-import { useFormattedLocation } from "../../../Helper/useFormattedLocation";
 
 export default function PropertyMiniCard({ property }) {
-  const { displayLocation, loading } = useFormattedLocation(
-    property.location,
-    property.pincode,
-  );
-
-
-
-const img = property.bedroom_image || null;
-
+  const img = property.bedroom_image || null;
+  const displayLocation = property.display_location || "Mumbai, Maharashtra";
 
   return (
     <div
@@ -45,7 +37,7 @@ const img = property.bedroom_image || null;
             </div>
           )}
 
-          {/* Verified badge (bold → para_font) */}
+          {/* Verified badge */}
           {property.verified && (
             <span
               className="absolute top-2 left-2 bg-green-500 text-white text-[10px] px-1.5 py-0.5 rounded-full shadow-md"
@@ -59,25 +51,20 @@ const img = property.bedroom_image || null;
 
       {/* Info */}
       <Link to={`/properties/${property.id}`}>
-        {/* Location (bold → para_font) */}
+        {/* Location */}
         <div
-          className="mt-2 text-[12px]  text-zinc-900 dark:text-white line-clamp-2"
+          className="mt-2 text-[12px] text-zinc-900 dark:text-white line-clamp-2"
           style={{ fontFamily: "universal_font" }}
         >
-          {loading
-            ? "Loading..."
-            : displayLocation ||
-              property.location ||
-              property.pincode ||
-              "Unknown"}
+          {displayLocation}
         </div>
 
-        {/* BHK | Looking For (normal → universal_font) */}
+        {/* BHK | Looking For */}
         <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
           {property.bhk_type || "-"} | {property.looking_for || "-"}
         </div>
 
-        {/* Rent | Deposit (normal → universal_font) */}
+        {/* Rent | Deposit */}
         <div className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300">
           Rent – ₹{property.price?.toLocaleString() || "-"} | Deposit ₹
           {property.deposit?.toLocaleString() || "-"}

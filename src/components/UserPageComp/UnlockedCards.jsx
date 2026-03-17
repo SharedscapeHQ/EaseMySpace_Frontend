@@ -18,24 +18,23 @@ export default function UnlockedCards() {
       .finally(() => setLoading(false));
   }, []);
 
-  const getImageUrl = (property) => {
-    const baseUrl = "https://your-backend-url.com/";
+const getImageUrl = (property) => {
+  let imagePath = "";
 
-    let imagePath = "";
-    if (Array.isArray(property.image) && property.image.length > 0) {
-      imagePath = property.image[0];
-    } else if (typeof property.image === "string") {
-      imagePath = property.image;
-    }
+  if (Array.isArray(property.bedroom_images) && property.bedroom_images.length > 0) {
+    imagePath = property.bedroom_images[0];
+  } else if (Array.isArray(property.image) && property.image.length > 0) {
+    imagePath = property.image[0];
+  } else if (typeof property.image === "string") {
+    imagePath = property.image;
+  }
 
-    if (!imagePath) {
-      return "https://via.placeholder.com/300x160?text=No+Image";
-    }
+  if (!imagePath) {
+    return "https://via.placeholder.com/300x160?text=No+Image";
+  }
 
-    return imagePath.startsWith("http")
-      ? imagePath
-      : baseUrl + imagePath.replace(/^\/+/, "");
-  };
+  return imagePath; // no baseUrl needed
+};
 
   if (loading)
     return (
