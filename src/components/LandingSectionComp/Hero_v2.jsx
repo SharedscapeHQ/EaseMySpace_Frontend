@@ -29,7 +29,7 @@ function Hero_v2() {
   <div className="max-w-[520px]">
 <h1
   style={{ fontFamily: "para_font" }}
-  className="text-[30px] md:text-[42px] z-10 lg:text-[50px] whitespace-nowrap lg:leading-[1.7] font-semibold text-[#0f172a] dark:text-white"
+  className="text-[27px] md:text-[42px] z-10 lg:text-[50px] whitespace-nowrap lg:leading-[1.7] font-semibold text-[#0f172a] dark:text-white"
 >
   Trusted shared homes
   <br />
@@ -39,7 +39,7 @@ function Hero_v2() {
     <img
       src={redCircle}
       alt="red circle"
-      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[13rem] h-[12rem] lg:w-[30rem] lg:h-[28rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
+      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[13rem] h-[12rem] lg:w-[28rem] lg:h-[26rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
     />
 
     {/* Text on top of the circle */}
@@ -49,7 +49,7 @@ function Hero_v2() {
 
     <p
       style={{ fontFamily: "universal_font" }}
-      className="lg:hidden block mt-5 text-[16px] lg:text-base leading-[1.7] text-slate-600 dark:text-zinc-400"
+      className="lg:hidden block mt-5 text-[13px] lg:text-base leading-[1.7] text-slate-600 dark:text-zinc-400"
     >
       Find verified flatmates, PGs & flats with <br /> zero brokerage.
      
