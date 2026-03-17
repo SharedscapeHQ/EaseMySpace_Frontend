@@ -5,8 +5,10 @@ import AppHome from "/app_assets/Hero.webp";
 import pgImg from "/landing-assets/pgImg.webp";
 import sharedImg from "/landing-assets/sharedImg.webp";
 import vacantImg from "/landing-assets/vacantImg.webp";
+import redCircle from "/landing-assets/red_circle.png";
 import { Link } from "react-router-dom";
 import HeroSearchBar from "./HeroSearchBar";
+
 
 const cards = [
   { title: "PGs", value: "pg", img: pgImg },
@@ -25,18 +27,24 @@ function Hero_v2() {
 
   {/* CONTENT WIDTH CONTROLLER */}
   <div className="max-w-[520px]">
-
-  <h1
+<h1
   style={{ fontFamily: "para_font" }}
-  className="text-[30px] md:text-[42px] lg:text-[50px] whitespace-nowrap leading-[1.15] font-semibold text-[#0f172a] dark:text-white"
+  className="text-[30px] md:text-[42px] z-10 lg:text-[50px] whitespace-nowrap lg:leading-[1.7] font-semibold text-[#0f172a] dark:text-white"
 >
   Trusted shared homes
   <br />
-  <span className="text-[#2664eb]">With</span>{" "}
-  <span className="relative inline-block text-[#2664eb]">
-    Zero brokerage
- 
-  </span>
+  <span className="text-[#2664eb] mr-8">With </span>
+  <div className="relative inline-block">
+    {/* Red circle behind the text */}
+    <img
+      src={redCircle}
+      alt="red circle"
+      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[13rem] h-[12rem] lg:w-[30rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
+    />
+
+    {/* Text on top of the circle */}
+    <span className="relative z-10 text-[#2664eb]">Zero brokerage</span>
+  </div>
 </h1>
 
     <p
