@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 
 const GOOGLE_PLACES_API_KEY = "AIzaSyARyFU8-dg2b25qj4bq8Vhp3K4-LCoL57U";
 
+// 🟢 Global in-memory cache for pincodes
+const pinCodeCache = {};
+
 export function useFormattedLocation(location, pincode) {
   const [displayLocation, setDisplayLocation] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -9,6 +12,12 @@ export function useFormattedLocation(location, pincode) {
   useEffect(() => {
     if (!pincode) {
       setDisplayLocation(location || null);
+      return;
+    }
+
+    // ✅ Check global cache first
+    if (pinCodeCache[pincode]) {
+      setDisplayLocation(pinCodeCache[pincode]);
       return;
     }
 
@@ -55,7 +64,12 @@ export function useFormattedLocation(location, pincode) {
           )?.long_name ||
           null;
 
-        setDisplayLocation([area, division].filter(Boolean).join(", "));
+        const formatted = [area, division].filter(Boolean).join(", ");
+
+        setDisplayLocation(formatted);
+
+        // ✅ Store result in global cache
+        pinCodeCache[pincode] = formatted;
       } catch (err) {
         console.error("Location fetch failed", err);
       } finally {
