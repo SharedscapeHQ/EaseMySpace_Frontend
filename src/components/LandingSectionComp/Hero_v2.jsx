@@ -39,11 +39,11 @@ function Hero_v2() {
     <img
       src={redCircle}
       alt="red circle"
-      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[13rem] h-[12rem] lg:w-[28rem] lg:h-[26rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
+      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[10rem] h-[10rem] lg:w-[20rem] lg:h-[23rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
     />
 
     {/* Text on top of the circle */}
-    <span className="relative z-10 text-[#2664eb]">Zero brokerage</span>
+    <span className="relative lg:text-[45px] text-[23px] z-10 text-[#2664eb]">Zero brokerage</span>
   </div>
 </h1>
 
