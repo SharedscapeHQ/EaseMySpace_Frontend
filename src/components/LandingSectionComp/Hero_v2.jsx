@@ -33,13 +33,13 @@ function Hero_v2() {
 >
   Trusted shared homes
   <br />
-  <span className="text-[#2664eb] mr-8">With </span>
+  <span className="text-[#2664eb] mr-4">With </span>
   <div className="relative inline-block">
     {/* Red circle behind the text */}
     <img
       src={redCircle}
       alt="red circle"
-      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[13rem] h-[12rem] lg:w-[30rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
+      className="absolute top-1/2 left-1/2 mt-1 -translate-x-1/2 -translate-y-1/2 w-[13rem] h-[12rem] lg:w-[30rem] lg:h-[28rem] lg:scale-[1.4] scale-[1.5] pointer-events-none"
     />
 
     {/* Text on top of the circle */}
