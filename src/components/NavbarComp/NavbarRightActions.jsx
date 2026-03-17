@@ -20,7 +20,7 @@ export default function NavbarRightActions() {
   rel="noopener noreferrer"
     className="inline-block text-center px-4 py-2 rounded-full border-2 border-blue-500  lg:text-base text-xs text-blue-600 bg-white hover:bg-blue-600 hover:text-white transition-all duration-200 shadow-md"
   >
-    Become a Partner
+    For landlords
   </a>
 </div>
     <div className="hidden lg:inline-block group">
@@ -39,7 +39,7 @@ export default function NavbarRightActions() {
   rel="noopener noreferrer"
   className="inline-block text-center px-4 py-2 rounded-full lg:text-base text-xs bg-white hover:bg-blue-600 hover:text-white transition-all duration-200"
 >
-  Become a Partner
+  For landlords
 </a>
 </div>
 
