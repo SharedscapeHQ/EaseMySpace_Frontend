@@ -157,28 +157,30 @@ export default function RentPaymentModal({
             )}
 
             {/* Locking Period */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
-              <span className="font-medium text-gray-700">Locking Period:</span>
-              <select
-                value={selectedLocking?.period || 6}
-                onChange={(e) => {
-                  const selected = pricing.locking_options.find(
-                    (opt) => String(opt.period) === e.target.value
-                  );
-                  setSelectedLocking(selected || { period: 6, deduction: 0 });
-                }}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                <option value={6}>6 months</option>
-                {pricing.locking_options
-                  ?.filter((opt) => opt.period && opt.period !== 6)
-                  .map((opt, idx) => (
-                    <option key={idx} value={opt.period}>
-                      {opt.period} months
-                    </option>
-                  ))}
-              </select>
-            </div>
+           <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
+  <span className="font-medium text-gray-700">Locking Period:</span>
+
+  {pricing.locking_options?.length > 0 ? (
+    <select
+      value={selectedLocking?.period || ""}
+      onChange={(e) => {
+        const selected = pricing.locking_options.find(
+          (opt) => String(opt.period) === e.target.value
+        );
+        setSelectedLocking(selected);
+      }}
+      className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    >
+      {pricing.locking_options.map((opt, idx) => (
+        <option key={idx} value={opt.period}>
+          {opt.period} months
+        </option>
+      ))}
+    </select>
+  ) : (
+    <span className="text-gray-400 italic text-sm">Optional</span>
+  )}
+</div>
 
             {/* Summary Section */}
             <div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">

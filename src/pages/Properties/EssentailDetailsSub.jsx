@@ -53,19 +53,17 @@ export default function EssentialDetailsSub({ property }) {
 
   const [selected, setSelected] = useState(roomsWithLabels[0]);
 
-  const getCapacity = (occupancy) => {
-    if (!occupancy) return 1;
-    switch (occupancy.toLowerCase()) {
-      case "single":
-        return 1;
-      case "double":
-        return 2;
-      case "triple":
-        return 3;
-      default:
-        return 1;
-    }
-  };
+ const getCapacity = (occupancy) => {
+  if (!occupancy) return 1;
+
+  const occ = occupancy.toLowerCase();
+
+  if (occ.includes("single") || occ === "1") return 1;
+  if (occ.includes("double") || occ === "2") return 2;
+  if (occ.includes("triple") || occ === "3") return 3;
+
+  return 1;
+};
 
   const currentDataRaw =
     selected.occupancyOptions.find((o) => o.occupancy === selected.occupancy) || {
@@ -75,6 +73,7 @@ export default function EssentialDetailsSub({ property }) {
       availability: "available",
       locking_options: [],
     };
+    
 
   const totalCapacity = getCapacity(currentDataRaw.occupancy);
 
@@ -100,7 +99,6 @@ export default function EssentialDetailsSub({ property }) {
       }
     })();
   }, []);
-
   const handlePaymentSuccess = (roomLabel, occupancy) => {
     setPricingOptions((prev) =>
       prev.map((room) =>
@@ -263,29 +261,32 @@ const locationLoading = false;
           </div>
 
           {/* Locking Period */}
-          <div className="w-full flex flex-col sm:flex-row sm:items-center gap-3 mt-2">
-            <span className="font-medium text-gray-700 w-32">Locking Period:</span>
-            <select
-              value={selectedLocking?.period || "6"}
-              onChange={(e) => {
-                const selectedOption =
-                  currentData.locking_options.find(
-                    (opt) => String(opt.period) === e.target.value
-                  ) || { period: e.target.value, deduction: 0 };
-                setSelectedLocking(selectedOption);
-              }}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              <option value="6">6 Months</option>
-              {currentData.locking_options
-                ?.filter((opt) => opt.period && opt.period !== 6)
-                .map((opt, idx) => (
-                  <option key={idx} value={opt.period}>
-                    {opt.period} Months
-                  </option>
-                ))}
-            </select>
-          </div>
+         <div className="w-full flex flex-col sm:flex-row sm:items-center gap-3 mt-2">
+  <span className="text-sm font-medium text-gray-600 whitespace-nowrap">
+    Locking Period :
+  </span>
+
+  {currentData.locking_options?.length > 0 ? (
+    <select
+      value={selectedLocking?.period || ""}
+      onChange={(e) => {
+        const selected = currentData.locking_options.find(
+          (opt) => opt.period === e.target.value
+        );
+        setSelectedLocking(selected);
+      }}
+      className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2664eb]"
+    >
+      {currentData.locking_options.map((opt) => (
+        <option key={opt.period} value={opt.period}>
+          {opt.period} Months
+        </option>
+      ))}
+    </select>
+  ) : (
+    <span className="text-sm text-gray-400 italic">Optional</span>
+  )}
+</div>
 
           {/* Rent & Deposit Summary */}
           <div className="w-full flex flex-col sm:flex-row gap-3">
