@@ -99,7 +99,7 @@ export default function PayRent() {
               <div className="lg:w-2/5 w-full">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={property.images?.[0] || "https://placehold.co/600x400?text=No+Image"}
+                    src={property.bedroom_image || "https://placehold.co/600x400?text=No+Image"}
                     alt={property.property_name || "Property"}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
