@@ -24,19 +24,21 @@ export default function Navbar() {
     setIsVerified(otpStatus === "true");
   }, []);
 
-  useEffect(() => {
-    const cachedUser = localStorage.getItem("user");
-    if (cachedUser) setUser(JSON.parse(cachedUser));
-
-    (async () => {
-      try {
-        const me = await getCurrentUser();
+ useEffect(() => {
+  (async () => {
+    try {
+      const me = await getCurrentUser();
+      if (me) {
         setUser(me);
-        localStorage.setItem("user", JSON.stringify(me));
-      } catch {
+        localStorage.setItem("user", JSON.stringify(me)); 
+      } else {
+        setUser(null);
       }
-    })();
-  }, []);
+    } catch {
+      setUser(null);
+    }
+  })();
+}, []);
 
   useEffect(() => {
     window.addEventListener("storage", syncUser);
