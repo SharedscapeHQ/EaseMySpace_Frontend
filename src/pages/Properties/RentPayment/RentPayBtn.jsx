@@ -44,11 +44,10 @@ export default function RentPayBtn({ property, rentDetails, onSuccess }) {
       const { rent, deposit, room_label, occupancy, locking_period, deduction } = rentDetails;
 
       // Total amount = rent + deposit + service fee + GST
-      const totalAmount = rent + deposit + SERVICE_CHARGE + getGst();
-      const amountInPaise = Math.round(totalAmount * 100);
+     const totalAmount = +(rent + deposit + SERVICE_CHARGE + getGst()).toFixed(2);
 
-      const order = await createRentOrder({
-        amount: amountInPaise,
+const order = await createRentOrder({
+  amount: totalAmount,
         property_id: property.id,
         room_label,
         occupancy,
