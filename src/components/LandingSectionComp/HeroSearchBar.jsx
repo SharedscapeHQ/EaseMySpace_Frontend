@@ -259,7 +259,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch, FiMapPin } from "react-icons/fi";
 
-const GOOGLE_PLACES_API_KEY = "AIzaSyARyFU8-dg2b25qj4bq8Vhp3K4-LCoL57U";
+const GOOGLE_PLACES_API_KEY = "AIzaSyA7eEHeUbXgAcQpRh9Drs0lXetq7VB8N4A";
 
 export default function HeroSearchBar() {
   const navigate = useNavigate();
@@ -268,18 +268,23 @@ export default function HeroSearchBar() {
 
   const [location, setLocation] = useState("");
 
-  useEffect(() => {
-    // Load Google Maps script
-    if (!window.google) {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES_API_KEY}&libraries=places`;
-      script.async = true;
-      script.onload = initAutocomplete;
-      document.body.appendChild(script);
-    } else {
+ useEffect(() => {
+  console.log("Google object:", window.google);
+
+  if (!window.google) {
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES_API_KEY}&libraries=places`;
+    script.async = true;
+    script.onload = () => {
+      console.log("Google script loaded");
       initAutocomplete();
-    }
-  }, []);
+    };
+    document.body.appendChild(script);
+  } else {
+    console.log("Google already exists");
+    initAutocomplete();
+  }
+}, []);
 
   const initAutocomplete = () => {
     if (!inputRef.current || !window.google) return;
