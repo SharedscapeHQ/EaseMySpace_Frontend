@@ -69,7 +69,7 @@ function PropertyDetail() {
     if (!title) return "Property Listing";
     const firstWord = title.trim().split(" ")[0];
     const possessive = firstWord.endsWith("s")
-      ? `${firstWord}'`
+      ? `${firstWord}`
       : `${firstWord}'s`;
     return `${possessive} listed home`;
   };

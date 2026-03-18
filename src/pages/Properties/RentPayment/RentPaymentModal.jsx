@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineClose } from "react-icons/ai";
 import RentPayBtn from "./RentPayBtn";
-import { SERVICE_CHARGE, getGst } from "./RentPayHelpers"; // import helpers
+import { SERVICE_CHARGE, getGst } from "./RentPayHelpers";
 
 export default function RentPaymentModal({
   isOpen,
@@ -47,15 +47,14 @@ export default function RentPaymentModal({
     const defaultOcc = defaultRoom.occupancies[0];
     setSelectedRoom(defaultRoom);
     setSelectedOccupancy(defaultOcc?.occupancy || "N/A");
-    const initialLocking = parentLocking || { period: 6, deduction: 0 };
-    setSelectedLocking(initialLocking);
+    setSelectedLocking(parentLocking || null);
   }, [property, parentLocking]);
 
   // Update pricing when room or occupancy changes
   useEffect(() => {
     if (!selectedRoom || !selectedOccupancy) return;
     const found = selectedRoom.occupancies.find(
-      (o) => o.occupancy === selectedOccupancy
+      (o) => o.occupancy === selectedOccupancy,
     );
     if (found) {
       setPricing({
@@ -101,7 +100,10 @@ export default function RentPaymentModal({
             </button>
 
             {/* Modal Title */}
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-900 mb-4 text-center">
+            <h2
+              style={{ fontFamily: "para_font" }}
+              className="text-xl  text-gray-900 mb-4 text-center"
+            >
               Confirm Rent Payment
             </h2>
 
@@ -109,7 +111,7 @@ export default function RentPaymentModal({
             <div className="flex justify-center gap-3 mb-3 flex-wrap">
               {pricingOptions.map((room) => {
                 const isBooked = room.occupancies.every(
-                  (o) => o.availability === "booked"
+                  (o) => o.availability === "booked",
                 );
                 return (
                   <button
@@ -123,8 +125,8 @@ export default function RentPaymentModal({
                       isBooked
                         ? "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed"
                         : selectedRoom?.room_label === room.room_label
-                        ? "bg-gray-900 text-white border-gray-900"
-                        : "bg-gray-100 hover:bg-gray-200 border-gray-300"
+                          ? "bg-gray-900 text-white border-gray-900"
+                          : "bg-gray-100 hover:bg-gray-200 border-gray-300"
                     }`}
                   >
                     {room.room_label} {isBooked && "(Booked)"}
@@ -145,8 +147,8 @@ export default function RentPaymentModal({
                       occ.availability === "booked"
                         ? "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed"
                         : selectedOccupancy === occ.occupancy
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "bg-gray-100 hover:bg-gray-200 border-gray-300"
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-gray-100 hover:bg-gray-200 border-gray-300"
                     }`}
                   >
                     {occ.occupancy}{" "}
@@ -157,30 +159,31 @@ export default function RentPaymentModal({
             )}
 
             {/* Locking Period */}
-           <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
-  <span className="font-medium text-gray-700">Locking Period:</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
+              <span className="font-medium text-gray-700">Locking Period:</span>
 
-  {pricing.locking_options?.length > 0 ? (
-    <select
-      value={selectedLocking?.period || ""}
-      onChange={(e) => {
-        const selected = pricing.locking_options.find(
-          (opt) => String(opt.period) === e.target.value
-        );
-        setSelectedLocking(selected);
-      }}
-      className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    >
-      {pricing.locking_options.map((opt, idx) => (
-        <option key={idx} value={opt.period}>
-          {opt.period} months
-        </option>
-      ))}
-    </select>
-  ) : (
-    <span className="text-gray-400 italic text-sm">Optional</span>
-  )}
-</div>
+              {pricing.locking_options?.length > 0 ? (
+                <select
+                  value={selectedLocking?.period || ""}
+                  onChange={(e) => {
+                    const selected = pricing.locking_options.find(
+                      (opt) => String(opt.period) === e.target.value,
+                    );
+                    setSelectedLocking(selected || null); // keep null if nothing
+                  }}
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="">Select locking period (optional)</option>
+                  {pricing.locking_options.map((opt, idx) => (
+                    <option key={idx} value={opt.period}>
+                      {opt.period} months
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <span className="text-gray-400 italic text-sm">Optional</span>
+              )}
+            </div>
 
             {/* Summary Section */}
             <div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">
@@ -195,7 +198,9 @@ export default function RentPaymentModal({
                 Service Fee: ₹{SERVICE_CHARGE.toLocaleString()}{" "}
                 <span className="text-xs text-gray-500">(one-time)</span>
               </p>
-              <p className="text-sm text-gray-700">GST (18%): ₹{gst.toFixed(2)}</p>
+              <p className="text-sm text-gray-700">
+                GST (18%): ₹{gst.toFixed(2)}
+              </p>
               <hr className="my-2 border-gray-300" />
               <p className="text-lg  text-gray-900">
                 Total Payable: ₹{totalPayable.toLocaleString()}
@@ -216,12 +221,16 @@ export default function RentPaymentModal({
                   deposit: pricing.deposit,
                   room_label: selectedRoom?.room_label,
                   occupancy: selectedOccupancy,
-                  locking_period: selectedLocking?.period,
-                  deduction: selectedLocking?.deduction,
+                  locking_period: selectedLocking?.period || null,
+                  deduction: selectedLocking?.deduction || 0,
                 }}
-                onSuccess={() =>
-                  onPaymentSuccess?.(selectedRoom?.room_label, selectedOccupancy)
-                }
+                onSuccess={() => {
+                  onPaymentSuccess?.(
+                    selectedRoom?.room_label,
+                    selectedOccupancy,
+                  );
+                  onClose(); 
+                }}
               />
             </div>
           </motion.div>
