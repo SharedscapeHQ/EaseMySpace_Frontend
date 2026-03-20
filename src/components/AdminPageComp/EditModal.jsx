@@ -7,6 +7,8 @@ export default function EditModal({
   setEditingProperty,
   handleEditChange,
   handleEditSubmit,
+  removedOccupancies,       
+  setRemovedOccupancies
 }) {
   if (!editingProperty) return null;
 
@@ -97,12 +99,22 @@ export default function EditModal({
     }));
   };
 
-  const removeRoom = (roomIdx) => {
-    setEditForm((prev) => ({
-      ...prev,
-      pricing: prev.pricing.filter((_, i) => i !== roomIdx),
+const removeRoom = (roomIdx) => {
+  const roomToRemove = editForm.pricing[roomIdx];
+
+  if (roomToRemove?.occupancies?.length) {
+    const newRemoved = roomToRemove.occupancies.map((occ) => ({
+      room_name: roomToRemove.room_name,
+      occupancy: occ.occupancy,
     }));
-  };
+    setRemovedOccupancies((prevRemoved) => [...prevRemoved, ...newRemoved]);
+  }
+
+  setEditForm((prev) => {
+    const updated = prev.pricing.filter((_, i) => i !== roomIdx);
+    return { ...prev, pricing: updated };
+  });
+};
 
   const handleRoomNameChange = (roomIdx, value) => {
     setEditForm((prev) => {
@@ -124,15 +136,34 @@ export default function EditModal({
     });
   };
 
-  const removeOccupancy = (roomIdx, occIdx) => {
-    setEditForm((prev) => {
-      const updated = [...(prev.pricing || [])];
-      updated[roomIdx].occupancies = updated[roomIdx].occupancies.filter(
-        (_, i) => i !== occIdx,
-      );
-      return { ...prev, pricing: updated };
+const removeOccupancy = (roomIdx, occIdx) => {
+  // ✅ Read the value BEFORE setEditForm, not inside it
+  const pricing = editForm.pricing || [];
+  const room = pricing[roomIdx];
+  const removedOcc = room?.occupancies?.[occIdx];
+
+  if (removedOcc?.occupancy) {
+    setRemovedOccupancies((prev) => [
+      ...prev,
+      {
+        room_name: room.room_name,
+        occupancy: removedOcc.occupancy,
+      },
+    ]);
+  }
+
+  // Now safely update the form
+  setEditForm((prev) => {
+    const updated = prev.pricing.map((r, rIdx) => {
+      if (rIdx !== roomIdx) return r;
+      return {
+        ...r,
+        occupancies: r.occupancies.filter((_, i) => i !== occIdx),
+      };
     });
-  };
+    return { ...prev, pricing: updated };
+  });
+};
 
   const handleOccupancyChange = (roomIdx, occIdx, field, value) => {
     setEditForm((prev) => {

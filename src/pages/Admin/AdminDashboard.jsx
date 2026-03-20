@@ -66,6 +66,7 @@ export default function AdminDashboard() {
   const [ageFilter, setAgeFilter] = useState("all");
 
   const [editingProperty, setEditingProperty] = useState(null);
+  const [removedOccupancies, setRemovedOccupancies] = useState([]);
   const [editForm, setEditForm] = useState({
     title: "",
     location: "",
@@ -186,36 +187,40 @@ export default function AdminDashboard() {
     }
   };
 
-  const openEditModal = (property) => {
-    // ✅ Transform pricing into correct modal structure
-    const groupedPricing = Array.isArray(property.pricing)
-      ? property.pricing.map((p, idx) => ({
-          room_name: p.room_name || `Room ${idx + 1}`,
-          occupancies: [
-            {
-              occupancy: p.occupancy,
-              price: p.price,
-              deposit: p.deposit,
-            },
-          ],
-        }))
-      : [];
+const openEditModal = (property) => {
+  setRemovedOccupancies([]);
 
-    setEditingProperty(property);
-
-    setEditForm({
-      ...property,
-      pricing: groupedPricing,
-      price: property.pricing?.[0]?.price ?? "",
-      deposit: property.pricing?.[0]?.deposit ?? "",
-      amenities: Array.isArray(property.amenities)
-        ? property.amenities
-        : (property.amenities || "").split(",").map((a) => a.trim()),
-      is_newly_listed: property.is_newly_listed || false,
-      verified: property.verified === true || property.verified === "true",
-      newly_listed_position: property.newly_listed_position || "",
+  // ✅ Group flat pricing rows by room_name
+  const roomMap = {};
+  if (Array.isArray(property.pricing)) {
+    property.pricing.forEach((p) => {
+      const key = p.room_name || "default";
+      if (!roomMap[key]) {
+        roomMap[key] = { room_name: key, occupancies: [] };
+      }
+      roomMap[key].occupancies.push({
+        occupancy: p.occupancy,
+        price: p.price,
+        deposit: p.deposit,
+      });
     });
-  };
+  }
+  const groupedPricing = Object.values(roomMap);
+
+  setEditingProperty(property);
+  setEditForm({
+    ...property,
+    pricing: groupedPricing,
+    price: property.pricing?.[0]?.price ?? "",
+    deposit: property.pricing?.[0]?.deposit ?? "",
+    amenities: Array.isArray(property.amenities)
+      ? property.amenities
+      : (property.amenities || "").split(",").map((a) => a.trim()),
+    is_newly_listed: property.is_newly_listed || false,
+    verified: property.verified === true || property.verified === "true",
+    newly_listed_position: property.newly_listed_position || "",
+  });
+};
 
   const handleEditChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -241,6 +246,7 @@ export default function AdminDashboard() {
         remove_video_urls: editForm.remove_video_urls || [],
         image_base64: editForm.image_base64 || [],
         video_base64: editForm.video_base64 || [],
+        removed_occupancies: removedOccupancies,
       };
 
       if (
@@ -691,6 +697,8 @@ export default function AdminDashboard() {
             setEditingProperty={setEditingProperty}
             handleEditChange={handleEditChange}
             handleEditSubmit={handleEditSubmit}
+            removedOccupancies={removedOccupancies}     
+  setRemovedOccupancies={setRemovedOccupancies}
           />
         </div>
       </main>

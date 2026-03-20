@@ -211,53 +211,58 @@ export default function OwnerDashboard() {
     }));
   };
 
-  const handleEditSubmit = async () => {
-    try {
-      const updateData = {
-        ...editForm,
-        deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
-        price: editForm.price === "" ? null : Number(editForm.price),
-        newly_listed_position: editForm.is_newly_listed
-          ? Number(editForm.newly_listed_position)
-          : null,
-        amenities: Array.isArray(editForm.amenities)
-          ? editForm.amenities
-          : (editForm.amenities || "").split(",").map((a) => a.trim()),
-        remove_image_urls: editForm.remove_image_urls || [],
-        remove_video_urls: editForm.remove_video_urls || [],
-        image_base64: editForm.image_base64 || [],
-        video_base64: editForm.video_base64 || [],
-      };
+const handleEditSubmit = async () => {
+  try {
+    const updateData = {
+      ...editForm,
+      deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
+      price: editForm.price === "" ? null : Number(editForm.price),
+      newly_listed_position: editForm.is_newly_listed
+        ? Number(editForm.newly_listed_position)
+        : null,
+      amenities: Array.isArray(editForm.amenities)
+        ? editForm.amenities
+        : (editForm.amenities || "").split(",").map((a) => a.trim()),
+      remove_image_urls: editForm.remove_image_urls || [],
+      remove_video_urls: editForm.remove_video_urls || [],
+      image_base64: editForm.image_base64 || [],
+      video_base64: editForm.video_base64 || [],
+    };
 
-      if (
-        editForm.is_newly_listed &&
-        updateData.newly_listed_position !== null
-      ) {
-        const conflict = properties.find(
-          (p) =>
-            p.is_newly_listed &&
-            Number(p.newly_listed_position) ===
-              Number(updateData.newly_listed_position) &&
-            p.id !== editingProperty.id
+    // Check for newly listed conflicts
+    if (
+      editForm.is_newly_listed &&
+      updateData.newly_listed_position !== null
+    ) {
+      const conflict = properties.find(
+        (p) =>
+          p.is_newly_listed &&
+          Number(p.newly_listed_position) ===
+            Number(updateData.newly_listed_position) &&
+          p.id !== editingProperty.id,
+      );
+      if (conflict) {
+        const confirmReplace = window.confirm(
+          `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Replace it?`
         );
-
-        if (conflict) {
-          const confirmReplace = window.confirm(
-            `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Replace it?`
-          );
-          if (!confirmReplace) return;
-        }
+        if (!confirmReplace) return;
       }
-
-      await editProperty(editingProperty.id, updateData);
-      toast.success("Property updated successfully");
-      setEditingProperty(null);
-      fetchProperties();
-    } catch (err) {
-      console.error("Edit submit error:", err);
-      toast.error("Failed to update property");
     }
-  };
+
+    const updatedProperty = await editProperty(editingProperty.id, updateData);
+
+    // ✅ Optimistically update the properties array
+    setProperties((prev) =>
+      prev.map((p) => (p.id === editingProperty.id ? updatedProperty.data : p))
+    );
+
+    toast.success("Property updated successfully");
+    setEditingProperty(null);
+  } catch (err) {
+    console.error("Edit submit error:", err);
+    toast.error("Failed to update property");
+  }
+};
 
   const handleRestore = async (id) => {
     try {
