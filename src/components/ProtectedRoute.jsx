@@ -1,51 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContextV1";
 
 export default function ProtectedRoute({
   allowedRoles = [],
   children,
   showContentBehindPopup = false,
 }) {
+  const { user, isVerified, loading } = useContext(AuthContext);
   const [isAuthorized, setIsAuthorized] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-useEffect(() => {
-  const controller = new AbortController();
+  useEffect(() => {
+    if (loading) return;
 
-  const checkAuth = async () => {
-    try {
-      // ✅ FAST CHECK FIRST
-      const { data } = await axios.get(
-        "https://api.easemyspace.in/api/auth/check",
-        { withCredentials: true, signal: controller.signal }
-      );
-      const normalizedAllowed = Array.isArray(allowedRoles)
-        ? allowedRoles.map((r) => String(r).toLowerCase().trim())
-        : [String(allowedRoles).toLowerCase().trim()];
+    const controller = new AbortController();
 
-      const userRole = String(data.role || "").toLowerCase().trim();
+    const checkAuth = async () => {
+      try {
+        // Frontend check first
+        if (!user && !isVerified) {
+          setIsAuthorized(false);
+          setShowModal(true);
+          return;
+        }
 
-      if (!normalizedAllowed.includes(userRole)) {
-        setShowModal(true);
+        // Optional: backend double-check
+        const { data } = await axios.get(
+          "https://api.easemyspace.in/api/auth/check",
+          { withCredentials: true, signal: controller.signal }
+        );
+
+        const normalizedAllowed = Array.isArray(allowedRoles)
+          ? allowedRoles.map((r) => String(r).toLowerCase().trim())
+          : [String(allowedRoles).toLowerCase().trim()];
+
+        const userRole = String(data.role || "").toLowerCase().trim();
+
+        if (!normalizedAllowed.includes(userRole)) {
+          setIsAuthorized(false);
+          setShowModal(true);
+        } else {
+          setIsAuthorized(true);
+        }
+      } catch (err) {
+        if (err.name === "CanceledError") return;
+
+        console.error("ProtectedRoute: Auth check failed", err);
         setIsAuthorized(false);
-      } else {
-        setIsAuthorized(true);
+        setShowModal(true);
       }
-    } catch (err) {
-      if (err.name === "CanceledError") return;
+    };
 
-      console.error("ProtectedRoute: Auth check failed", err);
-      setShowModal(true);
-      setIsAuthorized(false);
-    }
-  };
-
-  checkAuth();
-  return () => controller.abort();
-}, [allowedRoles]);
-
+    checkAuth();
+    return () => controller.abort();
+  }, [allowedRoles, user, isVerified, loading]);
 
   const handleCancel = () => {
     setShowModal(false);
@@ -53,48 +64,42 @@ useEffect(() => {
   };
 
   const handleLogin = () => {
-  navigate(`/login?redirect=${encodeURIComponent(window.location.pathname)}`, { replace: true });
-};
+    navigate(`/login?redirect=${encodeURIComponent(window.location.pathname)}`, { replace: true });
+  };
 
-  if (isAuthorized === null) {
-    return (
-      <div className="pt-20 text-center text-indigo-600 ">
-        Verifying access...
-      </div>
-    );
+  if (loading || isAuthorized === null) {
+    return <div className="pt-20 text-center text-indigo-600">Verifying access...</div>;
   }
 
   if (!isAuthorized && !showContentBehindPopup) {
     return (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50">
-  <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden">
-    
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden">
+          <h2 className="text-2xl text-gray-800 mb-2 text-center" style={{ fontFamily: "para_font" }}>
+            Oops! You're not logged in
+          </h2>
+          <p className="text-sm text-gray-600 mb-6 text-center">
+            Sign in with your account to unlock this page.
+          </p>
 
-    <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-gray-800 mb-2 text-center">Oops! You're not logged in</h2>
-    <p className="text-sm text-gray-600 mb-6 text-center">
-      Sign in with your account to unlock this page.
-    </p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={handleCancel}
+              className="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleLogin}
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-lg"
+            >
+              Login
+            </button>
+          </div>
 
-    <div className="flex justify-center gap-4">
-      <button
-        onClick={handleCancel}
-        className="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
-      >
-        Cancel
-      </button>
-      <button
-        onClick={handleLogin}
-        className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-lg"
-      >
-        Login
-      </button>
-    </div>
-
-    {/* Optional subtle animation */}
-    <div className="absolute inset-0 pointer-events-none animate-pulse rounded-2xl border-2 border-blue-200 opacity-30"></div>
-  </div>
-</div>
-
+          <div className="absolute inset-0 pointer-events-none animate-pulse rounded-2xl border-2 border-blue-200 opacity-30"></div>
+        </div>
+      </div>
     );
   }
 
@@ -105,34 +110,32 @@ useEffect(() => {
           <div className="relative">
             <div className="opacity-50 pointer-events-none">{children}</div>
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50">
-  <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden">
-    
+              <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative overflow-hidden">
+                <h2 className="text-2xl text-gray-800 mb-2 text-center" style={{ fontFamily: "para_font" }}>
+                  Oops! You're not logged in
+                </h2>
+                <p className="text-sm text-gray-600 mb-6 text-center">
+                  Sign in with your account to unlock this page.
+                </p>
 
-    <h2 style={{ fontFamily: "para_font" }} className="text-2xl  text-gray-800 mb-2 text-center">Oops! You're not logged in</h2>
-    <p className="text-sm text-gray-600 mb-6 text-center">
-      Sign in with your account to unlock this page.
-    </p>
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={handleCancel}
+                    className="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleLogin}
+                    className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-lg"
+                  >
+                    Login
+                  </button>
+                </div>
 
-    <div className="flex justify-center gap-4">
-      <button
-        onClick={handleCancel}
-        className="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
-      >
-        Cancel
-      </button>
-      <button
-        onClick={handleLogin}
-        className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-lg"
-      >
-        Login
-      </button>
-    </div>
-
-    {/* Optional subtle animation */}
-    <div className="absolute inset-0 pointer-events-none animate-pulse rounded-2xl border-2 border-blue-200 opacity-30"></div>
-  </div>
-</div>
-
+                <div className="absolute inset-0 pointer-events-none animate-pulse rounded-2xl border-2 border-blue-200 opacity-30"></div>
+              </div>
+            </div>
           </div>
         ) : (
           children

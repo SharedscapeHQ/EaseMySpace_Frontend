@@ -29,12 +29,10 @@ export const verifyPasswordReset = (payload) =>
 
 export const getCurrentUser = async () => {
   try {
-    const res = await apiClient.get("/auth/me");
-    return res.data; 
+    const res = await apiClient.get("/auth/me"); 
+    return res.data;
   } catch (err) {
-    if (err.response?.status === 401) {
-      return null; 
-    }
+    if (err.response?.status === 401) return null;
     throw err;
   }
 };

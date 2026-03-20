@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import OtpPopup from "../../pages/Properties/OtpPopup";
@@ -7,12 +7,14 @@ import {
   removeLeadProperty,
   fetchLeadSavedProperties,
 } from "../../api/leadApi";
-import { getCurrentUser } from "../../api/authApi";
 import axiosInstance, { saveProperty, removeSavedProperty, getSavedProperties } from "../../api/userApi";
+import { AuthContext } from "../../context/AuthContextV1"; // <-- AuthContext import
 
 export default function LikeButton({ propertyId, initiallyLiked = false }) {
+  const { user } = useContext(AuthContext); // <-- get login from context
+  const isLoggedIn = !!user;
+
   const [liked, setLiked] = useState(initiallyLiked);
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [phone, setPhone] = useState(null);
   const [showOtpPopup, setShowOtpPopup] = useState(false);
@@ -22,28 +24,16 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
   const [selectedGroup, setSelectedGroup] = useState("");
   const [newGroupName, setNewGroupName] = useState("");
 
-  // Fetch user / OTP info
+  // ---- OTP / Phone ----
   useEffect(() => {
-    async function fetchUser() {
-      try {
-        const user = await getCurrentUser();
-        setIsLoggedIn(!!user);
+    const otpVerified = localStorage.getItem("otp_verified") === "true";
+    setIsOtpVerified(otpVerified);
 
-        const otpVerified = localStorage.getItem("otp_verified") === "true";
-        setIsOtpVerified(otpVerified);
-
-        const verifiedPhone = localStorage.getItem("user_verified_mobile") || null;
-        setPhone(verifiedPhone);
-      } catch {
-        setIsLoggedIn(false);
-        setIsOtpVerified(localStorage.getItem("otp_verified") === "true");
-        setPhone(localStorage.getItem("user_verified_mobile") || null);
-      }
-    }
-    fetchUser();
+    const verifiedPhone = localStorage.getItem("user_verified_mobile") || null;
+    setPhone(verifiedPhone);
   }, []);
 
-  // Check if property is already liked
+  // ---- Check if property is liked ----
   useEffect(() => {
     async function checkLiked() {
       try {
@@ -61,7 +51,7 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
     if (isLoggedIn !== null) checkLiked();
   }, [propertyId, isLoggedIn, isOtpVerified, phone]);
 
-  // Fetch user groups
+  // ---- Fetch groups for logged-in users ----
   useEffect(() => {
     async function fetchGroups() {
       if (!isLoggedIn) return;
@@ -76,11 +66,10 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
     if (isLoggedIn) fetchGroups();
   }, [isLoggedIn]);
 
+  // ---- Handle click ----
   const handleClick = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    if (isLoggedIn === null) return;
 
     if (!isLoggedIn && !isOtpVerified) {
       setShowOtpPopup(true);
@@ -88,7 +77,6 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
     }
 
     if (liked) {
-      // Remove saved
       try {
         if (isLoggedIn) await removeSavedProperty(propertyId);
         else if (phone) await removeLeadProperty(phone, propertyId);
@@ -97,26 +85,21 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
         console.error("Error removing property:", err);
       }
     } else {
-      // Show group modal
       setShowGroupModal(true);
     }
   };
 
   const handleSaveToGroup = async () => {
     try {
-      let groupPayload = selectedGroup || newGroupName.trim();
-      if (!groupPayload) {
-        alert("Please select or create a group.");
-        return;
-      }
+      const groupPayload = selectedGroup || newGroupName.trim();
+      if (!groupPayload) return alert("Please select or create a group.");
 
       if (isLoggedIn) {
         await saveProperty({ propertyId, groupName: groupPayload });
-        // Refresh groups
         const res = await axiosInstance.get("/group");
         setGroups(res.data.groups || []);
       } else if (phone) {
-        await saveLeadProperty(phone, propertyId); // group not needed for leads
+        await saveLeadProperty(phone, propertyId);
       }
 
       setLiked(true);
@@ -131,50 +114,47 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
 
   return (
     <>
-     {/* Heart Button */}
-{!showOtpPopup && !showGroupModal && (
-  <motion.div
-    onClick={handleClick}
-    className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform z-10"
-    whileTap={{ scale: 0.85 }}
-  >
-    <div className="relative text-[26px]">
-      {/* Shadow behind heart */}
-      <AiFillHeart className="absolute inset-0 text-black/40" />
-      
-      <AnimatePresence mode="wait" initial={false}>
-        {liked ? (
-          <motion.span
-            key="heart-filled"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: [1.4, 0.9, 1], opacity: 1 }}
-            exit={{ scale: 0.5, opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            <AiFillHeart className="relative text-red-500 drop-shadow-md transition-colors duration-300" />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="heart-outline"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: [1.2, 0.95, 1], opacity: 1 }}
-            exit={{ scale: 0.5, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            <AiOutlineHeart className="relative text-white drop-shadow-md transition-colors duration-300" />
-          </motion.span>
-        )}
-      </AnimatePresence>
-    </div>
-  </motion.div>
-)}
-
+      {/* Heart Button */}
+      {!showOtpPopup && !showGroupModal && (
+        <motion.div
+          onClick={handleClick}
+          className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform z-10"
+          whileTap={{ scale: 0.85 }}
+        >
+          <div className="relative text-[26px]">
+            <AiFillHeart className="absolute inset-0 text-black/40" />
+            <AnimatePresence mode="wait" initial={false}>
+              {liked ? (
+                <motion.span
+                  key="heart-filled"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: [1.4, 0.9, 1], opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <AiFillHeart className="relative text-red-500 drop-shadow-md transition-colors duration-300" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="heart-outline"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: [1.2, 0.95, 1], opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <AiOutlineHeart className="relative text-white drop-shadow-md transition-colors duration-300" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
 
       {/* OTP Modal */}
       {showOtpPopup && (
         <OtpPopup
           otpPurpose="save property"
-          onVerified={async (verifiedPhone) => {
+          onVerified={(verifiedPhone) => {
             localStorage.setItem("otp_verified", "true");
             localStorage.setItem("user_verified_mobile", verifiedPhone);
             setPhone(verifiedPhone);
@@ -189,9 +169,7 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
       {showGroupModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm relative">
-            <h2 style={{ fontFamily: "para_font" }} className="text-lg  mb-4">Select or Create Group</h2>
-
-            {/* Existing Groups */}
+            <h2 style={{ fontFamily: "para_font" }} className="text-lg mb-4">Select or Create Group</h2>
             {groups.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm mb-2">Existing Groups:</p>
@@ -211,8 +189,6 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
                 ))}
               </div>
             )}
-
-            {/* New Group */}
             <div className="mb-4">
               <p className="text-sm mb-2">Or create new group:</p>
               <input
@@ -223,7 +199,6 @@ export default function LikeButton({ propertyId, initiallyLiked = false }) {
                 className="w-full border border-gray-300 rounded-lg p-2"
               />
             </div>
-
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowGroupModal(false)}

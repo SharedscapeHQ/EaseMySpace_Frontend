@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import brandLogo from "/navbar-assets/brand-logo.png";
-import { logoutUser, getCurrentUser } from "../api/authApi";
+import { logoutUser } from "../api/authApi";
 
+import { AuthContext } from "../context/AuthContextV1";
 import Hamburger from "./NavbarComp/Hamburger";
 import ProfileDropdown from "./NavbarComp/ProfileDropdown";
 import DrawerMenu from "./NavbarComp/DrawerMenu";
@@ -11,43 +12,7 @@ import InstallAppBanner from "./NavbarComp/InstallAppBanner";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [isVerified, setIsVerified] = useState(
-    localStorage.getItem("otp_verified") === "true"
-  );
-
-  const syncUser = useCallback(() => {
-    const cache = localStorage.getItem("user");
-    setUser(cache ? JSON.parse(cache) : null);
-
-    const otpStatus = localStorage.getItem("otp_verified");
-    setIsVerified(otpStatus === "true");
-  }, []);
-
- useEffect(() => {
-  (async () => {
-    try {
-      const me = await getCurrentUser();
-      if (me) {
-        setUser(me);
-        localStorage.setItem("user", JSON.stringify(me)); 
-      } else {
-        setUser(null);
-      }
-    } catch {
-      setUser(null);
-    }
-  })();
-}, []);
-
-  useEffect(() => {
-    window.addEventListener("storage", syncUser);
-    window.addEventListener("auth-change", syncUser);
-    return () => {
-      window.removeEventListener("storage", syncUser);
-      window.removeEventListener("auth-change", syncUser);
-    };
-  }, [syncUser]);
+  const { user, isVerified, logout } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -71,13 +36,14 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
-    try {
-      await logoutUser();
-    } catch {}
-    setUser(null);
-    navigate("/");
-  };
+  try {
+    await logoutUser();  
+  } catch {}
+  logout();              
+  navigate("/");
+};
 
+  /* ─── Close profile dropdown on small screens ─── */
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -100,10 +66,10 @@ export default function Navbar() {
   }, [profileOpen]);
 
   return (
-    <header style={{ fontFamily: "universal_font" }}> 
+    <header style={{ fontFamily: "universal_font" }}>
       <nav
         className="fixed top-0 w-full flex flex-col z-40"
-        style={{ height: `calc(5rem + ${bannerHeight}px)` }} 
+        style={{ height: `calc(5rem + ${bannerHeight}px)` }}
       >
         <InstallAppBanner onHeightChange={setBannerHeight} />
 
@@ -129,14 +95,12 @@ export default function Navbar() {
           <div className="flex items-center gap-3 sm:gap-5 relative">
             <NavbarRightActions />
 
-            <ProfileDropdown
-              user={user}
-              isVerified={isVerified}
-              profileOpen={profileOpen}
-              setProfileOpen={setProfileOpen}
-              dashRoute={dashRoute}
-              handleLogout={handleLogout}
-            />
+           <ProfileDropdown
+  profileOpen={profileOpen}
+  setProfileOpen={setProfileOpen}
+  dashRoute={dashRoute}
+  handleLogout={handleLogout}
+/>
           </div>
         </div>
       </nav>

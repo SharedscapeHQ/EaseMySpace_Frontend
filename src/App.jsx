@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
+import { AuthProvider } from "./context/AuthContextV1"; // ✅ import context
 
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -11,7 +12,7 @@ import Navbar from "./components/Navbar";
 import AboutUs from "./pages/AboutUs";
 import AddProperty from "./pages/Properties/AddProperty";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
-import ProtectedRoute from "./components/ProtectedRoute"; 
+import ProtectedRoute from "./components/ProtectedRoute";
 // import AdminPropertyDetails from "./pages/Admin/AdminPropertyDetails";
 import ContactPage from "./pages/ContactPage";
 import PropertyDetail from "./pages/Properties/PropertyDetail";
@@ -40,7 +41,7 @@ import LifeAtEaseMySpace from "./components/AboutUsSectionComp/LifeAtEMS/LifeAtE
 import ListerSubscription from "./components/Lister-Subscription/ListerSubscription";
 import PrivacyPolicy from "./components/FooterSectionComp/PolicyPrivacy";
 import AccountDeletion from "./pages/AccountDeletion";
-import OpenApp from "./pages/OpenApp"
+import OpenApp from "./pages/OpenApp";
 import GlobalPopups from "./pages/GlobalPopups";
 import AppRedirect from "./components/AppRedirect";
 
@@ -83,27 +84,26 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-
         {/* Public */}
 
         <Route
-  path="/open-app"
-  element={
-    <PageWrapper>
-      {/* <Layout> */}
-        <OpenApp />
-      {/* </Layout> */}
-    </PageWrapper>
-  }
-/>
+          path="/open-app"
+          element={
+            <PageWrapper>
+              {/* <Layout> */}
+              <OpenApp />
+              {/* </Layout> */}
+            </PageWrapper>
+          }
+        />
         <Route
-  path="/app-redirect"
-  element={
-    <PageWrapper>
-        <AppRedirect />
-    </PageWrapper>
-  }
-/>
+          path="/app-redirect"
+          element={
+            <PageWrapper>
+              <AppRedirect />
+            </PageWrapper>
+          }
+        />
         <Route
           path="/"
           element={
@@ -415,14 +415,16 @@ function AnimatedRoutes() {
 /* ───── App ───── */
 export default function App() {
   return (
-    <BrowserRouter>
-      <VisitorTracker />
-      <ScrollToTop />
-      <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
-      <WhatsAppButton />
-      <GlobalPopups />
-      <AnimatedRoutes />
-      <AnalyticsTracker />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <VisitorTracker />
+        <ScrollToTop />
+        <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
+        <WhatsAppButton />
+        <GlobalPopups />
+        <AnimatedRoutes />
+        <AnalyticsTracker />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

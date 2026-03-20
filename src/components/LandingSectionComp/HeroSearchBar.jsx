@@ -269,8 +269,6 @@ export default function HeroSearchBar() {
   const [location, setLocation] = useState("");
 
  useEffect(() => {
-  console.log("Google object:", window.google);
-
   if (!window.google) {
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES_API_KEY}&libraries=places`;

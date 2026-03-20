@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { createOrder, verifyPayment } from "../../api/PaymentApi";
-import { getCurrentUser } from "../../api/authApi";
-import { fetchUserContactStatus } from "../../api/userApi";
+import { AuthContext } from "../../context/AuthContextV1"; 
 import { Link, useNavigate } from "react-router-dom";
 import InvoiceModal from "../../components/Subscription/InvoiceModal";
 
-export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
-  const [userData, setUserData] = useState({});
+export default function PaymentButton({ hasPaid, setHasPaid }) {
+  const { user, isVerified } = useContext(AuthContext);
   const [isPaying, setIsPaying] = useState(false);
-  const [activeUserPhone, setActiveUserPhone] = useState("");
   const [showPlanOptions, setShowPlanOptions] = useState(false);
   const [invoiceUrl, setInvoiceUrl] = useState("");
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
@@ -17,49 +15,10 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   const navigate = useNavigate();
 
   const plans = {
-    trial: {
-      label: "Trial",
-      amount: 499,
-      description: "7 days validity with essential services.",
-    },
-    ultimate: {
-      label: "Ultimate",
-      amount: 2999,
-      description: "45 days validity with all premium services",
-    },
+    trial: { label: "Trial", amount: 499, description: "7 days validity" },
+    ultimate: { label: "Ultimate", amount: 2999, description: "45 days validity" },
   };
-
   const GST_RATE = 18;
-
-  // Fetch current user if logged in
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await getCurrentUser();
-        if (data?.subscription_status === "paid") setHasPaid(true);
-        setUserData(data || {});
-        const phone =
-          data?.phone || localStorage.getItem("user_verified_mobile");
-        if (phone) setActiveUserPhone(phone);
-      } catch {
-        const phone = localStorage.getItem("user_verified_mobile");
-        if (phone) setActiveUserPhone(phone);
-      }
-    })();
-  }, [setHasPaid]);
-
-  // Fetch plan status for logged in users
-  useEffect(() => {
-    if (!activeUserPhone || hasPaid) return;
-    fetchUserContactStatus()
-      .then((res) => {
-        if (res.hasPlan) {
-          setHasPaid(true);
-          if (!userData?.id) localStorage.setItem("has_paid_lead", "true");
-        }
-      })
-      .catch(() => {});
-  }, [activeUserPhone, hasPaid, setHasPaid, userData?.id]);
 
   const loadScript = (src) =>
     new Promise((resolve) => {
@@ -81,21 +40,15 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
       const loaded = await loadScript(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
-      if (!loaded)
-        return (
-          toast.error("❌ Razorpay SDK failed to load."), setIsPaying(false)
-        );
+      if (!loaded) return toast.error("❌ Razorpay SDK failed to load.");
 
       const { orderId, currency } = await createOrder({
         amount: amountWithGST,
         planName: planKey,
       });
 
-      let phone = userData.phone || userMobile || activeUserPhone;
-      if (!phone)
-        phone = prompt("📱 Please enter your phone number for payment:");
-      if (!phone)
-        return toast.error("Phone number is required."), setIsPaying(false);
+      const phone = user?.phone || prompt("📱 Enter your phone number:");
+      if (!phone) return toast.error("Phone number required.");
 
       const options = {
         key: "rzp_live_5kR19yQxcQHzsv",
@@ -104,11 +57,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         name: "EaseMySpace",
         description: plan.description,
         order_id: orderId,
-        prefill: {
-          name: userData.firstName || "Guest User",
-          email: userData.email || "guest@easemyspace.com",
-          contact: phone.startsWith("+91") ? phone : `+91${phone}`,
-        },
+        prefill: { name: user?.firstName || "Guest", email: user?.email || "", contact: phone },
         theme: { color: "#6366F1" },
         handler: async (response) => {
           try {
@@ -117,20 +66,16 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               amount: amountWithGST,
-              user_id: userData?.id || null,
+              user_id: user?.id || null,
               phone,
               plan_type: planKey,
             });
             if (result.success) {
               setHasPaid(true);
-              localStorage.setItem("has_paid_lead", "true");
-              localStorage.setItem("user_verified_mobile", phone);
               toast.success("Payment successful!");
               setInvoiceUrl(result.data.invoice_url);
               setShowInvoiceModal(true);
-            } else {
-              toast.error("⚠️ Payment verification failed!");
-            }
+            } else toast.error("⚠️ Payment verification failed!");
           } catch (err) {
             console.error(err);
             toast.error("Something went wrong during verification.");
@@ -161,52 +106,16 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
   };
 
   const proceedToPayment = (planKey) => {
-    if (!userData?.id)
-      return setShowPlanOptions(false), setShowLoginPopup(true);
+    if (!user?.id) return setShowLoginPopup(true);
     setShowPlanOptions(false);
     loadRazorpay(planKey);
   };
 
   return (
     <>
-      {isPaying && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <svg
-              className="animate-spin h-12 w-12 text-indigo-600 mb-4"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
-            </svg>
-            <p className="text-indigo-600  text-lg">
-              Processing your payment...
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              Please do not refresh or close the page
-            </p>
-          </div>
-        </div>
-      )}
-
       <button
         className={`w-1/2 py-2.5 px-2 text-md rounded-xl transition-all ${
-          hasPaid
-            ? "bg-green-600 text-white"
-            : "bg-indigo-600 hover:bg-indigo-700 text-white"
+          hasPaid ? "bg-green-600 text-white" : "bg-indigo-600 hover:bg-indigo-700 text-white"
         } ${isPaying ? "opacity-60 cursor-not-allowed" : ""}`}
         disabled={isPaying}
         onClick={() => setShowPlanOptions(true)}
@@ -214,78 +123,41 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         {isPaying ? "Processing..." : hasPaid ? "Upgrade" : "Subscribe"}
       </button>
 
+      {/* Plan Options Modal */}
       {showPlanOptions && (
-        <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          onClick={() => setShowPlanOptions(false)}
-        >
-          <div
-            className="relative bg-white p-6 rounded-lg w-[90%] max-w-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-2 right-3 text-gray-500 hover:text-gray-700 text-2xl"
-              onClick={() => setShowPlanOptions(false)}
-            >
-              &times;
-            </button>
-            <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4 text-center">
-              Choose Your Plan
-            </h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPlanOptions(false)}>
+          <div className="relative bg-white p-6 rounded-lg w-[90%] max-w-md" onClick={(e) => e.stopPropagation()}>
+            <button className="absolute top-2 right-3 text-gray-500 hover:text-gray-700 text-2xl" onClick={() => setShowPlanOptions(false)}>×</button>
+            <h2 className="text-xl mb-4 text-center">Choose Your Plan</h2>
             <div className="space-y-4">
               {Object.entries(plans).map(([key, plan]) => (
                 <div
                   key={key}
-                  className={`relative border-2 ${
-                    key === "trial" ? "border-yellow-400" : "border-red-500"
-                  } bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`}
+                  className={`relative border-2 ${key === "trial" ? "border-yellow-400" : "border-red-500"} bg-gradient-to-br to-white p-4 rounded-xl shadow hover:scale-[1.02] transition-all cursor-pointer`}
                   onClick={() => proceedToPayment(key)}
                 >
-                  <span
-                    className={`absolute top-[-10px] right-[-10px] ${
-                      key === "trial" ? "bg-yellow-400" : "bg-red-500"
-                    } text-white text-xs px-2 py-1 rounded-full shadow`}
-                  >
+                  <span className={`absolute top-[-10px] right-[-10px] ${key === "trial" ? "bg-yellow-400" : "bg-red-500"} text-white text-xs px-2 py-1 rounded-full shadow`}>
                     {plan.label}
                   </span>
-                  <h3 className="text-lg  text-gray-800">
-                    {plan.label} - ₹{plan.amount} + GST
-                  </h3>
+                  <h3 className="text-lg text-gray-800">{plan.label} - ₹{plan.amount} + GST</h3>
                   <p className="text-sm text-gray-700">{plan.description}</p>
                 </div>
               ))}
-              <Link
-                to="/subscription"
-                className="block text-center text-sm text-blue-600 hover:underline mt-4"
-              >
-                More Details
-              </Link>
+              <Link to="/subscription" className="block text-center text-sm text-blue-600 hover:underline mt-4">More Details</Link>
             </div>
           </div>
         </div>
       )}
 
+      {/* Login popup */}
       {showLoginPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg p-6 w-80 relative">
+            <button onClick={() => setShowLoginPopup(false)} className="absolute top-2 right-2 text-gray-600 hover:text-gray-900">✕</button>
+            <h2 className="text-lg text-gray-800 mb-4 text-center">Login Required</h2>
+            <p className="text-sm text-gray-600 mb-6 text-center">Please login to continue with payment.</p>
             <button
-              onClick={() => setShowLoginPopup(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-            >
-              ✕
-            </button>
-            <h2 style={{ fontFamily: "para_font" }} className="text-lg  text-gray-800 mb-4 text-center">
-              Login Required
-            </h2>
-            <p className="text-sm text-gray-600 mb-6 text-center">
-              Please login to continue with payment.
-            </p>
-            <button
-              onClick={() => {
-                const currentPath =
-                  window.location.pathname + window.location.search;
-                navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
-              }}
+              onClick={() => navigate("/login")}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition-colors"
             >
               Go to Login
@@ -294,11 +166,7 @@ export default function PaymentButton({ hasPaid, userMobile, setHasPaid }) {
         </div>
       )}
 
-      <InvoiceModal
-        isOpen={showInvoiceModal}
-        onClose={() => setShowInvoiceModal(false)}
-        invoiceUrl={invoiceUrl}
-      />
+      <InvoiceModal isOpen={showInvoiceModal} onClose={() => setShowInvoiceModal(false)} invoiceUrl={invoiceUrl} />
     </>
   );
 }

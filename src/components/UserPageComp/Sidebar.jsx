@@ -70,7 +70,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
         { label: "Saved Properties", value: "SavedProperties", icon: <FaHeart /> },
         { label: "Unlocked Contacts", value: "UnlockedContacts", icon: <FiPhoneCall /> },
         { label: "My Queries", value: "MyQueries", icon: <FiMessageSquare /> },
-        { label: "Chat", value: "Chat", icon: <FiMessageSquare /> },
+        // { label: "Chat", value: "Chat", icon: <FiMessageSquare /> },
       ],
     },
     ...(isOccupant
@@ -91,18 +91,18 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
       icon: <FiUser />,
       items: [
         { label: "My Profile", value: "MyProfile", icon: <FiUser /> },
-        { label: "Refer & Earn", value: "ReferEarn", icon: <FiGift /> },
-        { label: "My Wallet", value: "MyWallet", icon: <TfiWallet /> },
-        {
-          label: "My Plan",
-          value: "MyPlan",
-          icon: <FiCreditCard />,
-          subItems: [
-            { label: "Seeker Plan", value: "SeekerPlan", icon: <FiCreditCard /> },
-            { label: "Lister Plan", value: "ListerPlan", icon: <FiCreditCard /> },
-          ],
-        },
-        { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> },
+        // { label: "Refer & Earn", value: "ReferEarn", icon: <FiGift /> },
+        // { label: "My Wallet", value: "MyWallet", icon: <TfiWallet /> },
+        // {
+        //   label: "My Plan",
+        //   value: "MyPlan",
+        //   icon: <FiCreditCard />,
+        //   subItems: [
+        //     { label: "Seeker Plan", value: "SeekerPlan", icon: <FiCreditCard /> },
+        //     { label: "Lister Plan", value: "ListerPlan", icon: <FiCreditCard /> },
+        //   ],
+        // },
+        // { label: "Dedicated RM", value: "DedicatedRM", icon: <FiUser /> },
         { label: "Delete Account", value: "DeleteAccount", icon: <FiTrash2 /> },
       ],
     },

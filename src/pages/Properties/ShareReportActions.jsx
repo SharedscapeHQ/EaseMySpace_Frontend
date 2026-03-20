@@ -1,35 +1,25 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { FaShareAlt, FaWhatsapp, FaLink, FaFlag } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { getCurrentUser } from "../../api/authApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { submitPropertyReport } from "../../api/userApi";
+import { AuthContext } from "../../context/AuthContextV1";
 
 export default function ShareReportActions({ propertyId }) {
+  const { user } = useContext(AuthContext);
+  const isLoggedIn = !!user;
+
   const [showShare, setShowShare] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [reportType, setReportType] = useState("");
   const [message, setMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [loading, setLoading] = useState(false); // <-- Loading state
+  const [loading, setLoading] = useState(false);
 
   const dropdownRef = useRef(null);
   const reportRef = useRef(null);
   const navigate = useNavigate();
-
-  // ---- CHECK LOGIN STATUS ----
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await getCurrentUser();
-        if (res && res.id) setIsLoggedIn(true);
-      } catch {}
-      setAuthChecked(true);
-    })();
-  }, []);
 
   const copyUrlToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -44,14 +34,12 @@ export default function ShareReportActions({ propertyId }) {
   };
 
   const handleReportClick = () => {
-    if (!authChecked) return;
     if (!isLoggedIn) return setShowLoginPopup(true);
 
     setShowReport(true);
     setShowShare(false);
   };
 
-  // ---- SUBMIT REPORT ----
   const submitReport = async () => {
     setLoading(true);
     try {
@@ -71,20 +59,17 @@ export default function ShareReportActions({ propertyId }) {
     }
   };
 
-  // ---- DISABLE SUBMIT ----
   const isSubmitDisabled = () => {
     if (!reportType) return true;
     if (reportType === "other" && message.trim().length === 0) return true;
     return false;
   };
 
-  // ---- CLOSE POPUPS ----
+  // Close popups on outside click
   useEffect(() => {
     const handler = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
-        setShowShare(false);
-      if (reportRef.current && !reportRef.current.contains(e.target))
-        setShowReport(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setShowShare(false);
+      if (reportRef.current && !reportRef.current.contains(e.target)) setShowReport(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);

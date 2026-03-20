@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   FaWifi, FaParking, FaSnowflake, FaTv, FaChair, FaLock, FaPuzzlePiece, FaShower
 } from "react-icons/fa";
@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 import BookingCalendar from "./BookingCalendar";
 import { createBooking } from "../../api/userApi";
-import { getCurrentUser } from "../../api/authApi";
 import { toast } from "react-hot-toast";
+import { AuthContext } from "../../context/AuthContextV1"; 
 
 const knownAmenities = [
   "wifi","parking","air conditioning","refrigerator","washing machine",
@@ -73,35 +73,20 @@ function buildAmenities(propertyAmenities, amenities) {
 function PropertyAmenities({ amenities = [], property }) {
   const [showAllMobile, setShowAllMobile] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [confirmBooking, setConfirmBooking] = useState(null);
 
+  const { user } = useContext(AuthContext); // Get user from global AuthContext
   const navigate = useNavigate();
 
-  // Fetch current user once when component mounts
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const user = await getCurrentUser();
-        setUserData(user || null);
-      } catch {
-        setUserData(null);
-      }
-    };
-    loadUser();
-  }, []);
-
-  // On booking button click, check user login
   const handleBooking = (dateTime) => {
-    if (!userData?.id) {
+    if (!user?.id) {
       setShowLoginPopup(true);
       return;
     }
     setConfirmBooking(dateTime);
   };
 
-  // Confirm booking submission
   const confirmBookingSubmit = async () => {
     try {
       setLoading(true);
@@ -110,9 +95,8 @@ function PropertyAmenities({ amenities = [], property }) {
 
       const res = await createBooking(property.id, booking_date, booking_time);
       console.log("Booking created:", res);
-      toast.success(" Visit scheduled successfully");
+      toast.success("Visit scheduled successfully");
       setConfirmBooking(null);
-
     } catch (err) {
       console.error("Booking failed:", err);
       toast.error("❌ Booking failed");
@@ -121,7 +105,6 @@ function PropertyAmenities({ amenities = [], property }) {
     }
   };
 
-  // Redirect to login
   const handleLoginRedirect = () => {
     const currentPath = window.location.pathname + window.location.search;
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
