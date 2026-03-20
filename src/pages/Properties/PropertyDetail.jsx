@@ -22,8 +22,9 @@ import EssentialDetails from "./EssentialDetails";
 import EssentialDetailsSub from "./EssentailDetailsSub";
 import SavePropertyButton from "./SavePropertyButton";
 import PropertyHeaderSectionSub from "./PropertyDetailsHeroSub";
-import PropertyDetailsBox from "./PropertyDetailsBox";
 import BottomTitle from "./BottomTitle";
+import PropertyDescription from "./PropertyDescription";
+import Reviews from "./Reviews";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -343,17 +344,7 @@ function PropertyDetail() {
               }}
             />
           )}
-          <div className="bg-white rounded-xl border p-6">
-            <h2
-              style={{ fontFamily: "para_font" }}
-              className="text-[16px] lg:text-xl text-left text-black mb-3"
-            >
-              Property Description
-            </h2>
-            <p className="text-gray-700 text-sm lg:text-md leading-relaxed whitespace-pre-line">
-              {property.description}
-            </p>
-          </div>
+          <PropertyDescription property={property} />
           
 
           <PropertyAmenities
@@ -361,9 +352,8 @@ function PropertyDetail() {
             property={property}
           />
           <PropertyMap
-            location={property.location}
-            pincode={property.pincode}
-            title={property.title}
+          property={property}
+            location={property.display_location}
           />
         </div>
 

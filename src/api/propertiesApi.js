@@ -47,3 +47,16 @@ export const getPropertyVisitCount = id =>
 
 export const getOldProperties = () =>
   api.get("/properties/old-properties", authHeaders());
+
+export const addPropertyReview = (propertyId, reviewText, rating) =>
+  api.post(
+    "/properties/add-property-review",
+    { propertyId, reviewText, rating },
+    authHeaders()
+  );
+
+export const canPostReviewForProperty = propertyId =>
+  api.get(`/properties/${propertyId}/can-post`, authHeaders());
+
+export const getReviewsForProperty = propertyId =>
+  api.get(`/properties/reviews/${propertyId}`);
