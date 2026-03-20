@@ -406,6 +406,9 @@ export default function OwnerDashboard() {
             </section>
           )}
 
+
+          {activeTab === "AllBookings" && <BookingSchedule />}
+
           {activeTab === "NewlyListed" && (
             <section>
               <h2

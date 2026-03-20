@@ -19,6 +19,7 @@ import {
   FiPhone,
   FiFlag,
   FiImage,
+  FiCalendar,
 } from "react-icons/fi";
 import { LuCrown } from "react-icons/lu";
 import { VscGitPullRequestGoToChanges } from "react-icons/vsc";
@@ -49,6 +50,7 @@ export default function Sidebar({
       title: "User Management",
       icon: <FiUsers className="text-gray-400" />,
       items: [
+        { label: "All Bookings", value: "AllBookings", icon: <FiCalendar /> }, 
         { label: "Users", value: "Users", icon: <FiUsers /> },
         { label: "Leads", value: "Leads", icon: <FiUserPlus /> },
         {

@@ -39,6 +39,7 @@ import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable"
 import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport";
 import MyProfile from "../../components/UserPageComp/MyProfile";
 import PostPermissionRequests from "../../components/AdminPageComp/PostPermissionRequests";
+import BookingSchedule from "../../components/RmUserComp/BookingSchedule";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -594,6 +595,8 @@ export default function AdminDashboard() {
               </div>
             </section>
           )}
+
+          {activeTab === "AllBookings" && <BookingSchedule />}
 
           {activeTab === "NewlyListed" && (
             <section>
