@@ -3,6 +3,8 @@ import { MdVerified } from "react-icons/md";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
+import PropertyDetailsBox from "./PropertyDetailsBox";
+import EaseMySpaceProtection from "./EaseMySpaceProtection";
 
 const PLACEHOLDER_IMG = "https://imgs.search.brave.com/m5jHohAkzrVAxMl5d5AwPtOFIgWGGxv2V6c5BQQNous/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvNS9Qcm9m/aWxlLVBORy1GcmVl/LURvd25sb2FkLnBu/Zw"; 
 
@@ -59,7 +61,7 @@ export default function OwnerKycCard({ propertyId }) {
     );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
 
       {/* OWNER PROFILE CARD */}
       <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5 flex flex-col gap-4">
@@ -127,38 +129,7 @@ export default function OwnerKycCard({ propertyId }) {
       </div>
 
       {/* EASEMYSPACE PROTECTION CARD */}
-      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5 flex flex-col gap-3">
-
-       <div className="flex items-center gap-2 font-semibold text-gray-900">
-  <IoShieldCheckmark className="text-blue-600" size={18} />
-  EaseMySpace Protection
-</div>
-
-        <div className="flex flex-col gap-2 text-sm text-gray-600">
-
-          <div className="flex items-center gap-2">
-            <MdVerified className="text-green-600" />
-            Owner KYC verified via DigiLocker
-          </div>
-
-          <div className="flex items-center gap-2">
-            <MdVerified className="text-green-600" />
-            Digital rental agreement included
-          </div>
-
-          <div className="flex items-center gap-2">
-            <MdVerified className="text-green-600" />
-            In-app rent payment protection
-          </div>
-
-          <div className="flex items-center gap-2">
-            <MdVerified className="text-green-600" />
-            Dispute resolution support
-          </div>
-
-        </div>
-
-      </div>
+    <EaseMySpaceProtection/>
 
     </div>
   );

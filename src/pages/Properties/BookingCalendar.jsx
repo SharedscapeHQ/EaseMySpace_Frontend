@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiCheckCircle, FiClock } from "react-icons/fi";
 
-export default function BookingCalendar({ onConfirm }) {
+export default function BookingCalendar({ onConfirm, loading }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState("09:00");
 
@@ -24,8 +24,8 @@ export default function BookingCalendar({ onConfirm }) {
     const [hours, minutes] = selectedTime.split(":");
     const finalDate = new Date(selectedDate);
     finalDate.setHours(parseInt(hours), parseInt(minutes));
+
     if (onConfirm) onConfirm(finalDate);
-    alert(`Visit Scheduled: ${finalDate.toLocaleString()}`);
   };
 
   return (
@@ -40,18 +40,17 @@ export default function BookingCalendar({ onConfirm }) {
             </span>
           </div>
 
-          {/* Weekday labels */}
           <div className="grid grid-cols-7 text-center text-[10px] font-semibold text-gray-500 mb-1">
             {dayNames.map((d) => (
               <div key={d}>{d}</div>
             ))}
           </div>
 
-          {/* Calendar grid */}
           <div className="grid grid-cols-7 gap-1">
             {monthDates.map((date, idx) => {
               const isSelected = date.toDateString() === selectedDate.toDateString();
               const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
+
               return (
                 <button
                   key={idx}
@@ -72,10 +71,9 @@ export default function BookingCalendar({ onConfirm }) {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="hidden lg:block w-px bg-gray-200" />
 
-        {/* Time selection + schedule */}
+        {/* Time selection */}
         <div className="lg:w-1/3 w-full flex flex-col items-center gap-3">
           <h2 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-1">
             <FiClock className="text-indigo-600" /> Select Time
@@ -99,9 +97,11 @@ export default function BookingCalendar({ onConfirm }) {
 
           <button
             onClick={handleConfirm}
-            className="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1 text-xs shadow-sm"
+            disabled={loading}
+            className="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1 text-xs shadow-sm"
           >
-            <FiCheckCircle className="text-sm" /> Schedule Visit
+            <FiCheckCircle className="text-sm" />
+            {loading ? "Scheduling..." : "Schedule Visit"}
           </button>
         </div>
       </div>

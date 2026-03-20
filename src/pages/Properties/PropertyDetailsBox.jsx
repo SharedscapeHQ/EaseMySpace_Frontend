@@ -37,7 +37,7 @@ export default function PropertyDetailsBox({ property }) {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5">
 
       <h2
         style={{ fontFamily: "para_font" }}
