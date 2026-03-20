@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdVerified } from "react-icons/md";
-import { IoShieldCheckmark, IoShieldCheckmarkOutline } from "react-icons/io5";
+import { IoShieldCheckmark } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 
@@ -13,6 +13,8 @@ export default function OwnerKycCard({ propertyId }) {
 
   const [rating] = useState((Math.random() * (5 - 4) + 4).toFixed(1));
   const [responseTime] = useState(Math.floor(Math.random() * 5) + 2);
+
+  
 
   useEffect(() => {
     const fetchOwnerProfile = async () => {
@@ -31,6 +33,10 @@ export default function OwnerKycCard({ propertyId }) {
 
     if (propertyId) fetchOwnerProfile();
   }, [propertyId]);
+
+  const memberSince = owner?.created_at
+  ? new Date(owner.created_at).getFullYear()
+  : "";
 
   if (loading)
     return (
@@ -79,7 +85,7 @@ export default function OwnerKycCard({ propertyId }) {
             </span>
 
             <span className="text-xs text-gray-500">
-              Direct Owner · Member since 2023
+              Direct Owner · Member since {memberSince}
             </span>
 
             {owner.isVerified && (
