@@ -5,6 +5,12 @@ import { useNavigate } from "react-router-dom";
 import OwnerVerifiedCard from "./OwnerVerifiedCard";
 import PropertyDetailsBox from "./PropertyDetailsBox";
 
+  const occupancyOrder = {
+  single: 1,
+  double: 2,
+  triple: 3
+};
+
 export default function EssentialDetailsSub({ property }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -52,7 +58,23 @@ export default function EssentialDetailsSub({ property }) {
     occupancy: room.occupancies?.[0]?.occupancy || "N/A",
   }));
 
-  const [selected, setSelected] = useState(roomsWithLabels[0]);
+  const [selected, setSelected] = useState(() => {
+  const firstRoom = roomsWithLabels[0];
+
+  const sorted = [...firstRoom.occupancyOptions].sort(
+    (a, b) =>
+      (occupancyOrder[a.occupancy?.toLowerCase()] || 99) -
+      (occupancyOrder[b.occupancy?.toLowerCase()] || 99)
+  );
+
+  const firstAvailable =
+    sorted.find((o) => o.availability !== "booked") || sorted[0];
+
+  return {
+    ...firstRoom,
+    occupancy: firstAvailable.occupancy,
+  };
+});
 
  const getCapacity = (occupancy) => {
   if (!occupancy) return 1;
@@ -165,6 +187,14 @@ export default function EssentialDetailsSub({ property }) {
 
 
 
+
+const sortedOccupancies = [...selected.occupancyOptions].sort(
+  (a, b) =>
+    (occupancyOrder[a.occupancy?.toLowerCase()] || 99) -
+    (occupancyOrder[b.occupancy?.toLowerCase()] || 99)
+);
+
+
   return (
     <>
 <div className="mt-3 grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
@@ -210,7 +240,12 @@ export default function EssentialDetailsSub({ property }) {
             setSelected({
               ...room,
               occupancy:
-                room.occupancyOptions.find((o) => o.availability !== "booked")
+               [...room.occupancyOptions]
+  .sort((a,b)=>
+    (occupancyOrder[a.occupancy?.toLowerCase()]||99) -
+    (occupancyOrder[b.occupancy?.toLowerCase()]||99)
+  )
+  .find((o)=>o.availability !== "booked")
                   ?.occupancy || room.occupancyOptions[0].occupancy,
             })
           }
@@ -230,7 +265,7 @@ export default function EssentialDetailsSub({ property }) {
   <div className="w-full flex flex-col sm:flex-row my-3 sm:items-center gap-2">
     <span className="font-medium text-gray-700 text-xs ">Occupancy:</span>
     <div className="flex flex-wrap gap-2">
-      {selected.occupancyOptions.map((occ) => (
+    {sortedOccupancies.map((occ) => (
         <div
           key={occ.occupancy}
           onClick={() => setSelected((prev) => ({ ...prev, occupancy: occ.occupancy }))}

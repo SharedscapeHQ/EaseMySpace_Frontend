@@ -4,6 +4,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LikeButton from "../LandingSectionComp/LikeButton";
 
 const PropertyCard = ({ p }) => {
+  console.log("PropertyCard data:", p);
   const images = [
     ...(p.images || []),
     ...(p.bedroom_images || []),
@@ -178,7 +179,7 @@ const PropertyCard = ({ p }) => {
           </div>
 
           <div className="mt-0.5 text-[11px] uppercase text-zinc-500 dark:text-zinc-400 truncate">
-            {p.bhk_type || "-"} | {p.looking_for || "-"}
+           {p.bhk_type === "pg" ? "PG" : p.bhk_type || "-"} | {p.looking_for || "-"}
           </div>
 
           <div className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300 truncate">

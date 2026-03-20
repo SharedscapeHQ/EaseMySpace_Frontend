@@ -2,8 +2,17 @@ import { Link } from "react-router-dom";
 import LikeButton from "./LikeButton";
 
 export default function PropertyMiniCard({ property }) {
+
+  
   const img = property.bedroom_image || null;
   const displayLocation = property.display_location || "Mumbai, Maharashtra";
+
+const lookingForLabel =
+  property.looking_for?.toLowerCase() === "pg"
+    ? "PG"
+    : property.looking_for
+    ? property.looking_for.charAt(0).toUpperCase() + property.looking_for.slice(1)
+    : "-";
 
   return (
     <div
@@ -61,7 +70,7 @@ export default function PropertyMiniCard({ property }) {
 
         {/* BHK | Looking For */}
         <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
-          {property.bhk_type || "-"} | {property.looking_for || "-"}
+         {property.bhk_type || "-"} | {lookingForLabel}
         </div>
 
         {/* Rent | Deposit */}

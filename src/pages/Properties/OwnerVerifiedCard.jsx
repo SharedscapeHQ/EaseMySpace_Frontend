@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { MdVerified } from "react-icons/md";
-import { IoShieldCheckmark } from "react-icons/io5";
-import DigioImg from "/property-details-assets/digio.webp";
-import DigilockerImg from "/property-details-assets/digilocker.webp";
+import { IoShieldCheckmark, IoShieldCheckmarkOutline } from "react-icons/io5";
+import { FaStar } from "react-icons/fa";
 import axios from "axios";
 
 const PLACEHOLDER_IMG = "https://imgs.search.brave.com/m5jHohAkzrVAxMl5d5AwPtOFIgWGGxv2V6c5BQQNous/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvNS9Qcm9m/aWxlLVBORy1GcmVl/LURvd25sb2FkLnBu/Zw"; 
 
+
 export default function OwnerKycCard({ propertyId }) {
   const [owner, setOwner] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [rating] = useState((Math.random() * (5 - 4) + 4).toFixed(1));
+  const [responseTime] = useState(Math.floor(Math.random() * 5) + 2);
 
   useEffect(() => {
     const fetchOwnerProfile = async () => {
@@ -20,7 +23,7 @@ export default function OwnerKycCard({ propertyId }) {
         );
         setOwner(res.data.user);
       } catch (err) {
-        console.error("❌ Failed to fetch owner profile:", err);
+        console.error("Failed to fetch owner profile:", err);
       } finally {
         setLoading(false);
       }
@@ -29,112 +32,126 @@ export default function OwnerKycCard({ propertyId }) {
     if (propertyId) fetchOwnerProfile();
   }, [propertyId]);
 
-  // Skeleton Loader
   if (loading)
     return (
-      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5 flex flex-col gap-4 animate-pulse">
-        <div className="flex items-center gap-7">
-          <div className="w-[72px] h-[72px] rounded-full bg-gray-200" />
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5 animate-pulse">
+        <div className="flex items-center gap-4">
+          <div className="w-[70px] h-[70px] rounded-full bg-gray-200" />
           <div className="flex flex-col gap-2 w-full">
             <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
             <div className="h-3 w-1/3 bg-gray-200 rounded"></div>
-            <div className="h-3 w-1/4 bg-gray-200 rounded mt-1"></div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-6">
-          <div className="h-12 w-12 bg-gray-200 rounded" />
-          <div className="h-12 w-1 bg-gray-200" />
-          <div className="h-12 w-12 bg-gray-200 rounded" />
-        </div>
-
-        <div className="flex justify-between text-center mt-5 border-t pt-4 gap-2">
-          <div className="flex flex-col gap-1">
-            <div className="h-4 w-12 bg-gray-200 rounded mx-auto" />
-            <div className="h-3 w-16 bg-gray-200 rounded mx-auto" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="h-4 w-12 bg-gray-200 rounded mx-auto" />
-            <div className="h-3 w-16 bg-gray-200 rounded mx-auto" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="h-4 w-12 bg-gray-200 rounded mx-auto" />
-            <div className="h-3 w-16 bg-gray-200 rounded mx-auto" />
           </div>
         </div>
       </div>
     );
 
   if (!owner)
-    return <div className="p-4 bg-white rounded-xl shadow-md">Owner not found</div>;
+    return (
+      <div className="p-4 bg-white rounded-xl shadow-md">
+        Owner not found
+      </div>
+    );
 
   return (
-    <div className="bg-white rounded-2xl h-full shadow-md border border-gray-200 p-5 flex flex-col justify-between">
+    <div className="flex flex-col gap-4">
 
-      {/* TOP SECTION */}
-     <div className="flex items-center gap-7">
-  <div className="relative">
-    <img
-      src={owner.profile_image || PLACEHOLDER_IMG} 
-      alt={owner.firstName}
-      className="w-[72px] h-[72px] rounded-full object-cover bg-gray-200"
-    />
+      {/* OWNER PROFILE CARD */}
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5 flex flex-col gap-4">
 
-    {/* Show shield if owner is verified */}
-    {owner.isVerified && (
-      <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow">
-        <IoShieldCheckmark className="text-blue-600" size={18} />
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <img
+              src={owner.profile_image || PLACEHOLDER_IMG}
+              alt={owner.firstName}
+              className="w-[70px] h-[70px] rounded-full object-cover bg-gray-200"
+            />
+
+            {owner.isVerified && (
+              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow">
+                <IoShieldCheckmark className="text-blue-600" size={18} />
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <span className="font-semibold text-gray-900 text-sm">
+              {owner.firstName} {owner.lastName}
+            </span>
+
+            <span className="text-xs text-gray-500">
+              Direct Owner · Member since 2023
+            </span>
+
+            {owner.isVerified && (
+              <span className="mt-1 flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full w-fit font-medium">
+                <MdVerified size={14} />
+                DigiLocker KYC Verified
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* STATS */}
+        <div className="border-t pt-4 flex justify-between text-center">
+
+          <div className="flex flex-col items-center">
+            <span className="flex items-center gap-1 text-sm font-semibold text-gray-900">
+              <FaStar className="text-yellow-500" size={13} />
+              {rating}
+            </span>
+            <span className="text-xs text-gray-500">Rating</span>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <span className="text-sm font-semibold text-gray-900">
+              {owner.listings?.length || 0}
+            </span>
+            <span className="text-xs text-gray-500">Listings</span>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <span className="text-sm font-semibold text-gray-900">
+              {responseTime} hrs
+            </span>
+            <span className="text-xs text-gray-500">Response</span>
+          </div>
+
+        </div>
+
       </div>
-    )}
-  </div>
 
-  <div className="flex flex-col">
-    <span className="font-semibold text-gray-900">
-      {owner.firstName} {owner.lastName}
-    </span>
-    <span className="text-xs text-gray-500">Property Owner</span>
+      {/* EASEMYSPACE PROTECTION CARD */}
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-5 flex flex-col gap-3">
 
-    {/* Show identity verified label if owner is verified */}
-    {owner.isVerified && (
-      <div className="flex items-center gap-1 mt-1 text-xs text-green-600 font-medium">
-        <MdVerified />
-        Identity Verified
-      </div>
-    )}
-  </div>
+       <div className="flex items-center gap-2 font-semibold text-gray-900">
+  <IoShieldCheckmark className="text-blue-600" size={18} />
+  EaseMySpace Protection
 </div>
 
-      {/* VERIFIED SERVICES */}
-      <div className="mt-5 flex items-center justify-center gap-6">
-        <div className="flex flex-col items-center gap-1">
-          <img src={DigioImg} alt="Digio" className="h-12 object-contain" />
-          <span className="text-[11px] text-gray-500">eSign Verified</span>
+        <div className="flex flex-col gap-2 text-sm text-gray-600">
+
+          <div className="flex items-center gap-2">
+            <MdVerified className="text-green-600" />
+            Owner KYC verified via DigiLocker
+          </div>
+
+          <div className="flex items-center gap-2">
+            <MdVerified className="text-green-600" />
+            Digital rental agreement included
+          </div>
+
+          <div className="flex items-center gap-2">
+            <MdVerified className="text-green-600" />
+            In-app rent payment protection
+          </div>
+
+          <div className="flex items-center gap-2">
+            <MdVerified className="text-green-600" />
+            Dispute resolution support
+          </div>
+
         </div>
 
-        <div className="w-[1px] h-10 bg-gray-200"></div>
-
-        <div className="flex flex-col items-center gap-1">
-          <img src={DigilockerImg} alt="DigiLocker" className="h-12 object-contain" />
-          <span className="text-[11px] text-gray-500">Govt Identity</span>
-        </div>
-      </div>
-
-      {/* TRUST DETAILS */}
-      <div className="mt-5 border-t pt-4 flex justify-between text-center">
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold text-gray-900">Verified</span>
-          <span className="text-xs text-gray-500">Owner Identity</span>
-        </div>
-
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold text-gray-900">Govt ID</span>
-          <span className="text-xs text-gray-500">DigiLocker</span>
-        </div>
-
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold text-gray-900">Secure</span>
-          <span className="text-xs text-gray-500">Booking</span>
-        </div>
       </div>
 
     </div>

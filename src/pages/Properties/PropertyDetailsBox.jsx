@@ -8,6 +8,11 @@ export default function PropertyDetailsBox({ property }) {
 
   const displayLocation = property.display_location || "Mumbai, Maharashtra";
 
+  const category =
+    property.looking_for?.toLowerCase() === "pg"
+      ? "PG"
+      : property.looking_for;
+
   const details = [
     {
       icon: <FaHome className="text-gray-500 text-lg" />,
@@ -22,7 +27,7 @@ export default function PropertyDetailsBox({ property }) {
     {
       icon: <FiUsers className="text-gray-500 text-lg" />,
       label: "Category",
-      value: property.looking_for || "Unavailable",
+      value: category || "Unavailable",
     },
     {
       icon: <BsGenderAmbiguous className="text-gray-500 text-lg" />,
@@ -42,7 +47,6 @@ export default function PropertyDetailsBox({ property }) {
       </h2>
 
       <div className="divide-y divide-gray-100">
-
         {details.map((item, idx) => (
           <div key={idx} className="flex items-center justify-between py-4">
 
@@ -64,7 +68,6 @@ export default function PropertyDetailsBox({ property }) {
 
           </div>
         ))}
-
       </div>
 
     </div>
