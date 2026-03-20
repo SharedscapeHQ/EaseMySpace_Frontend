@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import RentPaymentModal from "./RentPayment/RentPaymentModal";
 import { getCurrentUser } from "../../api/authApi";
 import { useNavigate } from "react-router-dom";
-
+import OwnerVerifiedCard from "./OwnerVerifiedCard";
+import PropertyDetailsBox from "./PropertyDetailsBox";
 
 export default function EssentialDetailsSub({ property }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -162,157 +163,150 @@ export default function EssentialDetailsSub({ property }) {
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
   };
 
-const displayLocation = property.display_location || "Mumbai, Maharashtra";
-const locationLoading = false; 
 
 
   return (
     <>
-      <div className="mt-6 flex flex-col lg:flex-row gap-6">
-        {/* Property Details */}
-        <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 style={{ fontFamily: "para_font" }} className="text-xl  text-gray-800 mb-6 text-center pb-3">
-            Property Details
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { label: "BHK Type", value: property.bhk_type || "Unavailable" },
-              {
-  label: "Location",
- value: displayLocation,
-},
-              { label: "Looking For", value: property.looking_for || "Unavailable" },
-              { label: "Gender Preference", value: property.gender || "Unavailable" },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col items-center justify-center text-center px-6 py-5 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:shadow transition-shadow duration-150"
-              >
-                <span className="text-sm text-gray-500 font-medium capitalize">{item.label}</span>
-                <span className="text-base text-gray-900  mt-1 capitalize">{item.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+<div className="mt-3 grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
 
-        {/* Booking Section */}
-        <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-start space-y-4 relative">
-          <span
-            className={`absolute top-4 right-4 px-2 py-1 rounded-full text-sm  ${
-              currentData.availability === "booked"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-green-100 text-green-800"
-            }`}
-          >
-            {currentData.availability === "booked" ? "Booked" : "Available"}
-          </span>
+  <div className="flex-1">
+    <OwnerVerifiedCard propertyId={property.id} />
+  </div>
 
-          <div className="absolute top-16 right-4 bg-blue-100 text-blue-700 text-xs  px-3 py-1 rounded-full shadow-sm">
-            Filled: {currentData.filled_count}/{totalCapacity}
-          </div>
+  <div className="flex-1">
+    <PropertyDetailsBox property={property} />
+  </div>
 
-          {/* Room Selection */}
-          <div className="w-full flex flex-col sm:flex-row sm:items-center gap-2">
-            <span className="font-medium text-gray-700 w-24">Room:</span>
-            <div className="flex flex-wrap gap-2">
-              {roomsWithLabels.map((room) => (
-                <div
-                  key={room.id || room.room_label}
-                  onClick={() =>
-                    setSelected({
-                      ...room,
-                      occupancy:
-                        room.occupancyOptions.find((o) => o.availability !== "booked")
-                          ?.occupancy || room.occupancyOptions[0].occupancy,
-                    })
-                  }
-                  className={`px-3 py-1 rounded-full text-sm  border cursor-pointer ${
-                    selected.room_label === room.room_label
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                  }`}
-                >
-                  {room.room_label}
-                </div>
-              ))}
-            </div>
-          </div>
+  {/* Booking Section */}
+<div className="flex-1 bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col h-full">
 
-          {/* Occupancy Selection */}
-          <div className="w-full flex flex-col sm:flex-row sm:items-center gap-2">
-            <span className="font-medium text-gray-700 w-24">Occupancy:</span>
-            <div className="flex flex-wrap gap-2">
-              {selected.occupancyOptions.map((occ) => (
-                <div
-                  key={occ.occupancy}
-                  onClick={() => setSelected((prev) => ({ ...prev, occupancy: occ.occupancy }))}
-                  className={`px-3 py-1 rounded-full text-sm  border cursor-pointer ${
-                    selected.occupancy === occ.occupancy
-                      ? "bg-indigo-600 text-white border-indigo-600"
-                      : occ.availability === "booked"
-                      ? "bg-gray-100 text-gray-500 border-gray-300"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
-                  }`}
-                >
-                  {occ.occupancy}
-                </div>
-              ))}
-            </div>
-          </div>
+  {/* TOP STATUS ROW */}
+  <div className="flex items-center justify-between">
 
-          {/* Locking Period */}
-         <div className="w-full flex flex-col sm:flex-row sm:items-center gap-3 mt-2">
-  <span className="text-sm font-medium text-gray-600 whitespace-nowrap">
-    Locking Period :
-  </span>
-
-  {currentData.locking_options?.length > 0 ? (
-    <select
-      value={selectedLocking?.period || ""}
-      onChange={(e) => {
-        const selected = currentData.locking_options.find(
-          (opt) => opt.period === e.target.value
-        );
-        setSelectedLocking(selected);
-      }}
-      className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2664eb]"
+    <span
+      className={`px-2 py-1 rounded-full text-sm ${
+        currentData.availability === "booked"
+          ? "bg-yellow-100 text-yellow-800"
+          : "bg-green-100 text-green-800"
+      }`}
     >
-      {currentData.locking_options.map((opt) => (
-        <option key={opt.period} value={opt.period}>
-          {opt.period} Months
-        </option>
-      ))}
-    </select>
-  ) : (
-    <span className="text-sm text-gray-400 italic">Optional</span>
-  )}
-</div>
+      {currentData.availability === "booked" ? "Booked" : "Available"}
+    </span>
 
-          {/* Rent & Deposit Summary */}
-          <div className="w-full flex flex-col sm:flex-row gap-3">
-            <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
-              <span className="text-gray-700 text-sm font-medium">Rent</span>
-              <span className=" text-gray-900 text-lg mt-1">₹{displayedRent.toLocaleString()}</span>
-            </div>
-            <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
-              <span className="text-gray-700 text-sm font-medium">Deposit</span>
-              <span className=" text-gray-900 text-lg mt-1">₹{Number(currentData.deposit).toLocaleString()}</span>
-            </div>
-          </div>
+    <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">
+      Filled: {currentData.filled_count}/{totalCapacity}
+    </span>
 
-          {/* Book Now Button */}
-          <button
-            onClick={handleBookNowClick}
-            disabled={currentData.availability === "booked"}
-            className={`mt-4 w-full  py-2.5 rounded-lg transition ${
-              currentData.availability === "booked"
-                ? "bg-green-400 text-white cursor-not-allowed"
-                : "bg-green-600 text-white hover:bg-green-700"
-            }`}
-          >
-            Book Now
-          </button>
+  </div>
+
+  {/* Room Selection */}
+  <div className="w-full flex mt-5 flex-col sm:flex-row sm:items-center gap-2">
+    <span className="font-medium text-gray-700 text-xs">Room:</span>
+    <div className="flex flex-wrap gap-2">
+      {roomsWithLabels.map((room) => (
+        <div
+          key={room.id || room.room_label}
+          onClick={() =>
+            setSelected({
+              ...room,
+              occupancy:
+                room.occupancyOptions.find((o) => o.availability !== "booked")
+                  ?.occupancy || room.occupancyOptions[0].occupancy,
+            })
+          }
+          className={`px-3 py-1 rounded-full  text-sm border cursor-pointer ${
+            selected.room_label === room.room_label
+              ? "bg-black text-white border-black text-xs"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+          }`}
+        >
+          {room.room_label}
         </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Occupancy Selection */}
+  <div className="w-full flex flex-col sm:flex-row my-3 sm:items-center gap-2">
+    <span className="font-medium text-gray-700 text-xs ">Occupancy:</span>
+    <div className="flex flex-wrap gap-2">
+      {selected.occupancyOptions.map((occ) => (
+        <div
+          key={occ.occupancy}
+          onClick={() => setSelected((prev) => ({ ...prev, occupancy: occ.occupancy }))}
+          className={`px-3 py-1 rounded-full text-sm border cursor-pointer ${
+            selected.occupancy === occ.occupancy
+              ? "bg-indigo-600 text-white border-indigo-600"
+              : occ.availability === "booked"
+              ? "bg-gray-100 text-gray-500 border-gray-300 text-xs"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100 text-xs"
+          }`}
+        >
+          {occ.occupancy}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Locking Period */}
+  <div className="w-full flex flex-col sm:flex-row sm:items-center gap-3 my-5">
+    <span className="text-sm font-medium text-gray-600 whitespace-nowrap">
+      Locking Period :
+    </span>
+
+    {currentData.locking_options?.length > 0 ? (
+      <select
+        value={selectedLocking?.period || ""}
+        onChange={(e) => {
+          const selected = currentData.locking_options.find(
+            (opt) => opt.period === e.target.value
+          );
+          setSelectedLocking(selected);
+        }}
+        className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2664eb]"
+      >
+        {currentData.locking_options.map((opt) => (
+          <option key={opt.period} value={opt.period}>
+            {opt.period} Months
+          </option>
+        ))}
+      </select>
+    ) : (
+      <span className="text-sm text-gray-400 italic">Optional</span>
+    )}
+  </div>
+
+  {/* Rent & Deposit Summary */}
+  <div className="w-full flex flex-col sm:flex-row gap-3">
+    <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+      <span className="text-gray-700 text-sm font-medium">Rent</span>
+      <span className="text-gray-900 text-lg mt-1">
+        ₹{displayedRent.toLocaleString()}
+      </span>
+    </div>
+
+    <div className="flex-1 flex flex-col items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+      <span className="text-gray-700 text-sm font-medium">Deposit</span>
+      <span className="text-gray-900 text-lg mt-1">
+        ₹{Number(currentData.deposit).toLocaleString()}
+      </span>
+    </div>
+  </div>
+
+  {/* Book Now Button */}
+  <button
+  onClick={handleBookNowClick}
+  disabled={currentData.availability === "booked"}
+  className={`lg:mt-auto mt-5 w-full py-2.5 rounded-lg transition ${
+    currentData.availability === "booked"
+      ? "bg-green-400 text-white cursor-not-allowed"
+      : "bg-green-600 text-white hover:bg-green-700"
+  }`}
+>
+  Book Now
+</button>
+
+</div>
       </div>
 
       {/* Rent Payment Modal */}

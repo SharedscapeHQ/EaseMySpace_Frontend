@@ -6,8 +6,8 @@ import LikeButton from "../LandingSectionComp/LikeButton";
 const PropertyCard = ({ p }) => {
   const images = [
     ...(p.images || []),
-    ...(p.hall_images || []),
     ...(p.bedroom_images || []),
+    ...(p.hall_images || []),
     ...(p.kitchen_images || []),
     ...(p.bathroom_images || []),
     ...(p.additional_images || []),

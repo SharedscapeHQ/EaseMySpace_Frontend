@@ -4,7 +4,7 @@ function PropertyHeaderSection({ property, setLightboxIdx }) {
   const totalMedia = property.images.length + (property.video ? 1 : 0);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-5 w-full p-6 bg-white rounded-xl shadow-md border border-gray-200">
+    <div className="flex flex-col lg:flex-row gap-3 w-full rounded-xl ">
       
       {/* Left Big Image */}
       <div

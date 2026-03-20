@@ -22,6 +22,8 @@ import EssentialDetails from "./EssentialDetails";
 import EssentialDetailsSub from "./EssentailDetailsSub";
 import SavePropertyButton from "./SavePropertyButton";
 import PropertyHeaderSectionSub from "./PropertyDetailsHeroSub";
+import PropertyDetailsBox from "./PropertyDetailsBox";
+import BottomTitle from "./BottomTitle";
 
 function PropertyDetail() {
   const { id } = useParams();
@@ -223,13 +225,16 @@ function PropertyDetail() {
 
       <main
         style={{ fontFamily: "universal_font" }}
-        className="w-full bg-zinc-50 min-h-screen py-5 sm:px-6 md:px-8"
+        className="w-full min-h-screen py-5 sm:px-6 md:px-8"
       >
         <div className="flex flex-col p-5 rounded-2xl gap-5 max-w-6xl mx-auto">
           <div className="flex items-center justify-between flex-wrap">
             {/* Left side */}
             <div className="flex items-center gap-2 flex-wrap">
-              <div style={{ fontFamily: "para_font" }} className="text-base lg:text-2xl  text-gray-800">
+              <div
+                style={{ fontFamily: "para_font" }}
+                className="text-base lg:text-2xl  text-gray-800"
+              >
                 {generateTitle(property.title)}
               </div>
               {property.verified && (
@@ -293,6 +298,8 @@ function PropertyDetail() {
             />
           )}
 
+<BottomTitle property={property} />
+
           {property.source === "subdomain" ? (
             <EssentialDetailsSub
               property={property}
@@ -336,7 +343,6 @@ function PropertyDetail() {
               }}
             />
           )}
-
           <div className="bg-white rounded-xl border p-6">
             <h2
               style={{ fontFamily: "para_font" }}
@@ -348,6 +354,7 @@ function PropertyDetail() {
               {property.description}
             </p>
           </div>
+          
 
           <PropertyAmenities
             amenities={property.amenities}

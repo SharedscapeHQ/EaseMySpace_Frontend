@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import OwnerVerifiedCard from "./OwnerVerifiedCard";
+import PropertyDetailsBox from "./PropertyDetailsBox";
 
 export default function EssentialDetails({ property }) {
   const pricingOptions = property.pricingOptions?.length
@@ -28,45 +30,19 @@ export default function EssentialDetails({ property }) {
 
   useEffect(() => {}, [roomsWithLabels]);
 
-const displayLocation = property.display_location || "Mumbai, Maharashtra";
   return (
-    <div className="mt-6 flex flex-col lg:flex-row gap-6">
-      {/* Left Container - Property Details */}
-      <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            { label: "BHK Type", value: property.bhk_type || "Unavailable" },
-            {
-              label: "Location",
-              value: displayLocation,
-            },
-
-            {
-              label: "Looking For",
-              value: property.looking_for || "Unavailable",
-            },
-            {
-              label: "Gender preference",
-              value: property.gender || "Unavailable",
-            },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              className="flex flex-col items-center justify-center text-center px-4 py-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-sm transition-shadow"
-            >
-              <span className="text-sm lg:text-base text-gray-500 font-medium capitalize">
-                {item.label}
-              </span>
-              <span className="text-sm lg:text-base text-gray-900  mt-1 capitalize">
-                {item.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right Container - Room + Occupancy + Rent/Deposit */}
-      <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-start space-y-4">
+   <div className="mt-3 grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+   
+     <div className="flex-1">
+       <OwnerVerifiedCard propertyId={property.id} />
+     </div>
+   
+     <div className="flex-1">
+       <PropertyDetailsBox property={property} />
+     </div>
+   
+     {/* Booking Section */}
+   <div className="flex-1 justify-between bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col h-full">
         {/* Room Selection */}
         <div className="w-full flex flex-col sm:flex-row sm:items-center gap-2">
           <span className="font-medium text-gray-700 w-24">Room:</span>
