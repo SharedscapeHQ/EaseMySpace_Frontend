@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getMyBookings } from "../../api/userApi";
-import { IoChatboxEllipsesOutline, IoCall } from "react-icons/io5";
 import dayjs from "dayjs";
 
 export default function MyBookings() {
@@ -70,46 +69,39 @@ export default function MyBookings() {
           >
             {/* Image */}
             <div className="relative w-full h-44">
-  {b.bedroom_image ? (
-    <img
-      src={b.bedroom_image}
-      alt={b.property_title || "Property"}
-      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-    />
-  ) : (
-    <div className="w-full h-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 italic">
-      No Image
-    </div>
-  )}
-</div>
+              {b.bedroom_image ? (
+                <img
+                  src={b.bedroom_image}
+                  alt={b.property_title || "Property"}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 italic">
+                  No Image
+                </div>
+              )}
+            </div>
 
             {/* Details */}
             <div className="p-4 flex flex-col gap-3">
               {/* Owner Info */}
               <p className="text-zinc-800 dark:text-zinc-200 text-sm">Owner's Contact</p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300  text-lg">
-                    {b.property_title?.charAt(0) || "U"}
-                  </div>
-                  <span className="font-medium text-sm text-gray-700 dark:text-gray-300">
-                    {b.property_title}
-                  </span>
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-lg">
+                  {b.property_title?.charAt(0) || "U"}
                 </div>
-
-                <div className="flex gap-4 text-blue-500">
-                  <IoChatboxEllipsesOutline className="text-2xl cursor-pointer" />
-                  <IoCall className="text-2xl cursor-pointer" />
-                </div>
+                <span className="font-medium text-sm text-gray-700 dark:text-gray-300">
+                  {b.property_title}
+                </span>
               </div>
 
               {/* Rent Info */}
               <div className="text-center">
-                <p className=" text-black dark:text-white text-base">
+                <p className="text-black dark:text-white text-base">
                   ₹ {Number(b.price || 0).toLocaleString()}/month
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {b.bhk_type} in {b.location || "Unknown location"}
+                  {b.bhk_type} in {b.display_location || "Unknown location"}
                 </p>
               </div>
 
