@@ -5,7 +5,7 @@ import {
   getReviewsForProperty,
   canPostReviewForProperty,
   addPropertyReview,
-} from "../../API/propertiesApi";
+} from "../../api/propertiesApi";
 import { FaStar } from "react-icons/fa";
 
 const PLACEHOLDER_IMG =
