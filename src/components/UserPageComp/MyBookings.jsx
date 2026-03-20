@@ -70,18 +70,18 @@ export default function MyBookings() {
           >
             {/* Image */}
             <div className="relative w-full h-44">
-              {b.image && b.image.length > 0 ? (
-                <img
-                  src={b.image[0]}
-                  alt={b.property_title || "Property"}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 italic">
-                  No Image
-                </div>
-              )}
-            </div>
+  {b.bedroom_image ? (
+    <img
+      src={b.bedroom_image}
+      alt={b.property_title || "Property"}
+      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+    />
+  ) : (
+    <div className="w-full h-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-400 italic">
+      No Image
+    </div>
+  )}
+</div>
 
             {/* Details */}
             <div className="p-4 flex flex-col gap-3">
