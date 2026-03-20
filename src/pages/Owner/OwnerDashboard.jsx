@@ -45,6 +45,8 @@ import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable"
 import PlatformRevenueTable from "../../components/OwnerPageComp/PlatformRevenueTable";
 import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
 import MyProfile from "../../components/UserPageComp/MyProfile";
+import BookingSchedule from "../../components/RmUserComp/BookingSchedule";
+
 
 
 
