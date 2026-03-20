@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { sendOtp, verifyOtp } from "../../api/mobileAuthApi";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContextV1";
 
 
 export default function OtpPopup({ onVerified, onClose }) {
@@ -12,6 +14,8 @@ export default function OtpPopup({ onVerified, onClose }) {
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [consentChecked, setConsentChecked] = useState(false);
+
+  const { login } = useContext(AuthContext);
 
   useEffect(() => {
     if (!resendTimer) return;
@@ -72,27 +76,21 @@ const verifyOtpHandler = async () => {
     const res = await verifyOtp({ phone, otp, firstName });
     const { user, accessToken } = res.data;
 
-    // Save login
+    // Update AuthContext immediately
+    login(user);  // ✅ This sets the user in context
     localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("otp_verified", "true");
-
-    // ✅ Dispatch a custom event for Navbar to catch
-    window.dispatchEvent(new Event("auth-change"));
 
     toast.success("Logged in successfully");
 
-    // Inform parent
     onVerified?.(user, accessToken);
     onClose?.();
-
   } catch (err) {
     toast.error(err.response?.data?.message || "OTP verification failed");
   } finally {
     setLoading(false);
   }
 };
-
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
