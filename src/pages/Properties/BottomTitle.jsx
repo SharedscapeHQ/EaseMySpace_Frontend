@@ -16,12 +16,12 @@ function BottomTitle({ property }) {
     style={{ fontFamily: "para_font" }}
     className="text-sm lg:text-lg text-gray-900 font-medium"
   >
-    Looking for{" "} 
-    <span className="font-semibold">
+    Available{" "} 
+    <span className="font-semibold uppercase">
       {property.looking_for}
     </span>{" "}
     in{" "}
-    <span className="font-semibold">
+    <span className="font-semibold capitalize">
       {property.display_location}
     </span>
   </h2>
@@ -65,7 +65,7 @@ function BottomTitle({ property }) {
     transition
   ">
     <FaTag className="text-green-500 text-[15px]" />
-    <span>Smart Price Compared Nearby</span>
+    <span>Filling Fast</span>
   </div>
 </div>
 

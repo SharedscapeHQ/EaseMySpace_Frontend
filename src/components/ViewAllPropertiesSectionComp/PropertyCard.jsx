@@ -177,7 +177,7 @@ const PropertyCard = ({ p }) => {
             {formattedLocation}
           </div>
 
-          <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+          <div className="mt-0.5 text-[11px] uppercase text-zinc-500 dark:text-zinc-400 truncate">
             {p.bhk_type || "-"} | {p.looking_for || "-"}
           </div>
 
