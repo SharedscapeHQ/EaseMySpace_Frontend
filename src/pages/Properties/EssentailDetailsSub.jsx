@@ -284,7 +284,7 @@ const sortedOccupancies = [...selected.occupancyOptions].sort(
   </div>
 
   {/* Locking Period */}
-  <div className="w-full flex flex-col sm:flex-row sm:items-center gap-3 my-5">
+  <div className="w-full flex flex-col sm:flex-row sm:items-center gap-3 my-2">
     <span className="text-sm font-medium text-gray-600 whitespace-nowrap">
       Locking Period :
     </span>
@@ -332,7 +332,7 @@ const sortedOccupancies = [...selected.occupancyOptions].sort(
   <button
   onClick={handleBookNowClick}
   disabled={currentData.availability === "booked"}
-  className={`lg:mt-auto mt-5 w-full py-2.5 rounded-lg transition ${
+  className={`lg:mt-auto mt-5 py-2 rounded-lg transition ${
     currentData.availability === "booked"
       ? "bg-green-400 text-white cursor-not-allowed"
       : "bg-green-600 text-white hover:bg-green-700"
