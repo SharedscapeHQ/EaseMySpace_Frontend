@@ -24,21 +24,39 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name } = e.target;
-    let value = e.target.value;
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  let newValue = value;
 
-    // Prevent spaces for firstName and lastName
-  if ((name === "firstName" || name === "lastName" || name === "password") && value.includes(" ")) {
-    return;
+  // Email lowercase
+  if (name === "email") {
+    newValue = value.toLowerCase();
   }
 
-   if (name === "email") {
-    value = value.toLowerCase();
+  // First Name / Last Name rules
+  if (name === "firstName" || name === "lastName") {
+    // Remove spaces inside (optional, if you want)
+    // newValue = newValue.replace(/\s+/g, "");
+
+    // Limit to 10 chars
+    if (newValue.length > 15) return;
+
+    // Capitalize first letter
+    if (newValue.length === 1) {
+      newValue = newValue.toUpperCase();
+    } else if (newValue.length > 1) {
+      newValue = newValue.charAt(0).toUpperCase() + newValue.slice(1);
+    }
+
+    // Optional: allow only letters
+    newValue = newValue.replace(/[^a-zA-Z]/g, "");
   }
 
-    setForm({ ...form, [name]: value });
-  };
+  // Prevent spaces in password
+  if (name === "password" && value.includes(" ")) return;
+
+  setForm({ ...form, [name]: newValue });
+};
 
   const handleChangePhn = (e) => {
     const { value } = e.target;

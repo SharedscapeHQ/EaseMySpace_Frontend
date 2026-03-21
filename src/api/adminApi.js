@@ -158,3 +158,18 @@ export const handlePostRequest = (id, action) => {
     action, 
   });
 };
+
+export const adminUploadKycForm = (formData) => {
+  return adminAxios.post("/kyc/upload", formData, {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "multipart/form-data", 
+    },
+  });
+};
+
+export const getUserKYCDocs = (userId) => {
+  return adminAxios.get(`/kyc-docs/${userId}`);
+};
+
+

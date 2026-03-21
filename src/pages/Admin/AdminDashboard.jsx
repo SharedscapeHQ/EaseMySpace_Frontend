@@ -40,6 +40,7 @@ import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyR
 import MyProfile from "../../components/UserPageComp/MyProfile";
 import PostPermissionRequests from "../../components/AdminPageComp/PostPermissionRequests";
 import BookingSchedule from "../../components/RmUserComp/BookingSchedule";
+import UsersTable from "../../components/AdminPageComp/UsersTable";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -357,92 +358,11 @@ const openEditModal = (property) => {
                 Users
               </h2>
 
-              {loadingUsers ? (
-                <p className="text-gray-500">Loading users...</p>
-              ) : (
-                <div className="overflow-x-auto shadow border border-gray-200 rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 text-left">
-                    <thead className="bg-indigo-50">
-                      <tr>
-                        <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
-                          Name
-                        </th>
-                        <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
-                          Contact
-                        </th>
-
-                        <th className="px-6 py-3 text-xs  text-indigo-700 uppercase tracking-wider">
-                          Referred By
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {users.map((u) => (
-                        <tr
-                          key={u.id}
-                          className="hover:bg-gray-50 transition duration-150"
-                        >
-                          {/* Name */}
-                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {u.firstName} {u.lastName}
-                          </td>
-
-                          {/* Contact */}
-                          <td className="px-6 py-4 text-gray-700 text-sm whitespace-nowrap">
-                            <div>
-                              {u.email || (
-                                <span className="italic text-gray-400">
-                                  N/A
-                                </span>
-                              )}
-                            </div>
-                            <div className="mt-1">
-                              {u.phone || (
-                                <span className="italic text-gray-400">
-                                  N/A
-                                </span>
-                              )}
-                            </div>
-                          </td>
-
-                          {/* Referred By */}
-                          <td className="px-6 py-4 text-sm whitespace-nowrap">
-                            {u.referred_by_name &&
-                            u.referred_by_name !== "N/A" ? (
-                              <button
-                                onClick={() => {
-                                  const refUser = users.find(
-                                    (user) => user.id === u.referred_by,
-                                  );
-                                  if (refUser) setModalUser(refUser);
-                                  else {
-                                    setModalUser({
-                                      firstName: u.referred_by_name,
-                                      lastName: "",
-                                      email: "N/A",
-                                      phone: "N/A",
-                                      role: "N/A",
-                                      referred_by_name: "N/A",
-                                    });
-                                  }
-                                }}
-                                className="text-indigo-600 hover:underline"
-                              >
-                                {u.referred_by_name}
-                              </button>
-                            ) : (
-                              <span className="italic text-gray-400">
-                                Self Signup
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+            {loadingUsers ? (
+  <p className="text-gray-500">Loading users...</p>
+) : (
+  <UsersTable users={users} />
+)}
 
               {/* Referrer Modal */}
               {modalUser && (
