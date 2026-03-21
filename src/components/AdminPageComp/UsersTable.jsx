@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import AdminKycUploadModal from "./AdminKycUploadModal";
 import AdminKycViewModal from "./AdminKycViewModal";
-import { adminUploadKycForm, getUserKYCDocs } from "../../Api/adminApi";
+import { adminUploadKycForm, getUserKYCDocs } from "../../api/adminApi";
 
 export default function UsersTable({ users }) {
   const [modalUser, setModalUser] = useState(null); 
