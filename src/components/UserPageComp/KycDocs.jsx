@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { MdCloudUpload, MdDelete, MdVerified } from "react-icons/md";
-import { uploadKycDocs, getKycDocs } from "../../Api/kycApi";
+import { uploadKycDocs, getKycDocs } from "../../api/kycApi";
 
 export default function KycVerification() {
   const [files, setFiles] = useState({
