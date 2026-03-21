@@ -91,6 +91,7 @@ export default function Sidebar({ activeTab, setActiveTab, handleLogout, userPla
       icon: <FiUser />,
       items: [
         { label: "My Profile", value: "MyProfile", icon: <FiUser /> },
+        // { label: "KYC Docs", value: "KycDocs", icon: <FiUser /> },
         // { label: "Refer & Earn", value: "ReferEarn", icon: <FiGift /> },
         // { label: "My Wallet", value: "MyWallet", icon: <TfiWallet /> },
         // {

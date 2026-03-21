@@ -32,6 +32,7 @@ import { FiClock } from "react-icons/fi";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import MyProfile from "../../components/UserPageComp/MyProfile";
 import DeleteAccount from "../../components/UserPageComp/DeleteAccount";
+import KycDocs from "../../components/UserPageComp/KycDocs";
 
 const TAB_TITLES = {
   MyProperties: "Your Listed Properties",
@@ -49,6 +50,7 @@ const TAB_TITLES = {
   DownloadReceipt: "Download Rent Receipts",
   Agreement: "Rental Agreement",
   MyProfile: "My Profile",
+  KycDocs: "KYC Documents",
   DeleteAccount: "Delete Account",
 };
 
@@ -262,6 +264,7 @@ export default function UserDashboard() {
             )}
             {activeTab === "SavedProperties" && <SavedProperties />}
             {activeTab === "MyProfile" && <MyProfile />}
+            {activeTab === "KycDocs" && <KycDocs />}
             {activeTab === "DeleteAccount" && <DeleteAccount />}
 
             {["PayRent", "DownloadReceipt", "Agreement"].includes(activeTab) &&
