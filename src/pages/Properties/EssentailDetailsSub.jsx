@@ -5,6 +5,7 @@ import OwnerVerifiedCard from "./OwnerVerifiedCard";
 import PropertyDetailsBox from "./PropertyDetailsBox";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContextV1";
+import MoveInDateModal from "./RentPayment/MoveInDateModal";
 
 const occupancyOrder = {
   single: 1,
@@ -17,6 +18,8 @@ export default function EssentialDetailsSub({ property }) {
   const [userData, setUserData] = useState(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [selectedLocking, setSelectedLocking] = useState(null);
+  const [showMoveInModal, setShowMoveInModal] = useState(false);
+  const [moveInDate, setMoveInDate] = useState(null);
   const navigate = useNavigate();
 
   const { user } = useContext(AuthContext);
@@ -166,13 +169,19 @@ export default function EssentialDetailsSub({ property }) {
   };
 
   const handleBookNowClick = () => {
-    if (!user) {
-      setShowLoginPopup(true);
-      return;
-    }
-    setIsModalOpen(true);
-  };
+  if (!user) {
+    setShowLoginPopup(true);
+    return;
+  }
+  setShowMoveInModal(true); // step 1: ask for move-in date
+};
 
+// callback from MoveInDateModal
+const handleMoveInConfirm = (date) => {
+  setMoveInDate(date);
+  setShowMoveInModal(false);
+  setIsModalOpen(true); // step 2: open rent payment modal
+};
   const handleLoginRedirect = () => {
     const currentPath = window.location.pathname + window.location.search;
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
@@ -338,6 +347,12 @@ export default function EssentialDetailsSub({ property }) {
         </div>
       </div>
 
+      <MoveInDateModal
+  isOpen={showMoveInModal}
+  onClose={() => setShowMoveInModal(false)}
+  onConfirm={handleMoveInConfirm}
+/>
+
       {/* Rent Payment Modal */}
       <RentPaymentModal
         isOpen={isModalOpen}
@@ -345,6 +360,7 @@ export default function EssentialDetailsSub({ property }) {
         property={{ ...property, pricingOptions }}
         selectedLocking={selectedLocking}
         displayedRent={displayedRent}
+        moveInDate={moveInDate}
         onPaymentSuccess={handlePaymentSuccess}
       />
 

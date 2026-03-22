@@ -10,6 +10,7 @@ export default function RentPaymentModal({
   property,
   onPaymentSuccess,
   selectedLocking: parentLocking,
+  moveInDate,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [selectedOccupancy, setSelectedOccupancy] = useState("");
@@ -223,6 +224,7 @@ export default function RentPaymentModal({
                   occupancy: selectedOccupancy,
                   locking_period: selectedLocking?.period || null,
                   deduction: selectedLocking?.deduction || 0,
+                  move_in_date: moveInDate,
                 }}
                 onSuccess={() => {
                   onPaymentSuccess?.(

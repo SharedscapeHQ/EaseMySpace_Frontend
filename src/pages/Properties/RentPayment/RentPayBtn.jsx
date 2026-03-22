@@ -46,7 +46,9 @@ export default function RentPayBtn({ property, rentDetails, onSuccess }) {
       deposit,
       deduction,
       locking_period,
+      move_in_date: rentDetails.move_in_date,
     });
+    
 
     const options = {
       key: "rzp_live_5kR19yQxcQHzsv",

@@ -19,6 +19,7 @@ export const createRentOrder = async ({
   deposit,
   deduction,
   locking_period,
+  move_in_date,
 }) => {
   try {
     const res = await api.post("/create-order", {
@@ -33,6 +34,7 @@ export const createRentOrder = async ({
       deposit,
       deduction,
       locking_period,
+      move_in_date,
     });
     return res.data;
   } catch (err) {

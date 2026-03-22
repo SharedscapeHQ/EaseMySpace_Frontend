@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { FiCheckCircle, FiClock } from "react-icons/fi";
+import { FiCheckCircle, FiClock, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 export default function BookingCalendar({ onConfirm, loading }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(new Date()); // Month being displayed
   const [selectedTime, setSelectedTime] = useState("09:00");
 
   const times = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
 
+  // Generate all dates for the given month
   const getMonthDates = (date) => {
     const start = new Date(date.getFullYear(), date.getMonth(), 1);
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -17,15 +19,22 @@ export default function BookingCalendar({ onConfirm, loading }) {
     return dates;
   };
 
-  const monthDates = getMonthDates(selectedDate);
+  const monthDates = getMonthDates(currentMonth);
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   const handleConfirm = () => {
     const [hours, minutes] = selectedTime.split(":");
     const finalDate = new Date(selectedDate);
     finalDate.setHours(parseInt(hours), parseInt(minutes));
-
     if (onConfirm) onConfirm(finalDate);
+  };
+
+  const prevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
   };
 
   return (
@@ -34,28 +43,39 @@ export default function BookingCalendar({ onConfirm, loading }) {
 
         {/* Calendar */}
         <div className="flex-1">
+          {/* Month Navigation */}
           <div className="flex justify-between items-center mb-2">
+            <button onClick={prevMonth} className="p-1 rounded hover:bg-gray-100">
+              <FiChevronLeft />
+            </button>
             <span className="font-medium text-gray-700">
-              {selectedDate.toLocaleString("default", { month: "long", year: "numeric" })}
+              {currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}
             </span>
+            <button onClick={nextMonth} className="p-1 rounded hover:bg-gray-100">
+              <FiChevronRight />
+            </button>
           </div>
 
+          {/* Weekday Names */}
           <div className="grid grid-cols-7 text-center text-[10px] font-semibold text-gray-500 mb-1">
             {dayNames.map((d) => (
               <div key={d}>{d}</div>
             ))}
           </div>
 
+          {/* Dates */}
           <div className="grid grid-cols-7 gap-1">
             {monthDates.map((date, idx) => {
               const isSelected = date.toDateString() === selectedDate.toDateString();
-              const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const isPast = date < today;
 
               return (
                 <button
                   key={idx}
                   disabled={isPast}
-                  onClick={() => setSelectedDate(date)}
+                  onClick={() => setSelectedDate(new Date(date))}
                   className={`py-2 px-1 rounded-lg text-[12px] w-full transition-all ${
                     isSelected
                       ? "bg-indigo-600 text-white shadow"
