@@ -3,7 +3,6 @@ import { MdVerified } from "react-icons/md";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
-import PropertyDetailsBox from "./PropertyDetailsBox";
 import EaseMySpaceProtection from "./EaseMySpaceProtection";
 
 const PLACEHOLDER_IMG = "https://imgs.search.brave.com/m5jHohAkzrVAxMl5d5AwPtOFIgWGGxv2V6c5BQQNous/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvNS9Qcm9m/aWxlLVBORy1GcmVl/LURvd25sb2FkLnBu/Zw"; 
