@@ -69,7 +69,7 @@ function BottomTitle({ property }) {
           "
         >
           <FaTag className="text-green-500 lg:text-[15px]" />
-          <span>Zero Brokrage</span>
+          <span>Zero Brokerage</span>
         </div>
       </div>
 
