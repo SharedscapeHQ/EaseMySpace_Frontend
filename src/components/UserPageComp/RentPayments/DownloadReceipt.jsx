@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FiFileText } from "react-icons/fi";
 import { getPropertiesWithPayments } from "../../../api/userApi";
-import jsPDF from "jspdf";
-import logo from "/navbar-assets/brand-logo.png";
+import { toast } from "react-hot-toast";
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
 
 export default function DownloadReceipt() {
   const [receipts, setReceipts] = useState([]);
@@ -14,34 +17,40 @@ export default function DownloadReceipt() {
         setLoading(true);
         const properties = await getPropertiesWithPayments();
 
-        const allReceipts = [];
+        const allReceipts = properties.flatMap((property) => {
+          const sortedPayments =
+            property.payments?.sort((a, b) => {
+              if (a.payment_year === b.payment_year) {
+                return a.payment_month - b.payment_month;
+              }
+              return a.payment_year - b.payment_year;
+            }) || [];
 
-        properties.forEach((property) => {
-          const sortedPayments = property.payments?.sort((a, b) => {
-            if (a.payment_year === b.payment_year) return a.payment_month - b.payment_month;
-            return a.payment_year - b.payment_year;
-          }) || [];
-
-          sortedPayments.forEach((p, idx) => {
-            allReceipts.push({
-              id: `${property.property_id}-${p.id}`,
-              tenant: p.tenant_name || "—",
-              property: property.property_name,
-              room: p.room_label || "—",
-              occupancy: p.occupancy || "—",
-              amount: p.amount,
-              deposit: idx === 0 ? p.deposit || 0 : 0,
-              paymentMonth: p.payment_month,
-              paymentYear: p.payment_year,
-              date: new Date(p.payment_date).toLocaleDateString("en-IN"),
-              nextDueDate: p.next_due_date ? new Date(p.next_due_date).toLocaleDateString("en-IN") : "—",
-            });
-          });
+          return sortedPayments.map((p, idx) => ({
+            id: `${property.property_id}-${p.id}`,
+            tenant: p.tenant_name || "—",
+            property: property.property_name,
+            room: p.room_label || "—",
+            occupancy: p.occupancy || "—",
+            amount: p.amount,
+            deposit: idx === 0 ? p.deposit || 0 : 0,
+            paymentMonth: p.payment_month,
+            paymentYear: p.payment_year,
+paymentDate: p.payment_date
+  ? new Date(p.payment_date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+  : "—",
+            receipt_url: p.receipt_url || null,
+          }));
         });
 
         setReceipts(allReceipts);
       } catch (err) {
-        console.error("Failed to fetch receipts:", err);
+        console.error(err);
+        toast.error("Failed to load receipts");
       } finally {
         setLoading(false);
       }
@@ -50,124 +59,110 @@ export default function DownloadReceipt() {
     fetchReceipts();
   }, []);
 
-  const generatePDF = (r) => {
-    const doc = new jsPDF("p", "pt", "a4");
-    const pageWidth = doc.internal.pageSize.getWidth();
+  const handleDownload = async (r) => {
+    if (!r.receipt_url) {
+      toast.error("Receipt not available");
+      return;
+    }
 
-    const img = new Image();
-    img.src = logo;
-    img.onload = () => {
-      const logoWidth = 120;
-      const logoHeight = (img.height / img.width) * logoWidth;
-      doc.addImage(img, "PNG", 40, 30, logoWidth, logoHeight);
+    try {
+      toast.loading("Downloading...");
 
-      doc.setFontSize(20);
-      doc.setFont("helvetica", "bold");
-      const title = "Rent Payment Receipt";
-      const titleWidth = doc.getTextWidth(title);
-      doc.text(title, (pageWidth - titleWidth) / 2, 80);
+      const response = await fetch(r.receipt_url);
+      const blob = await response.blob();
 
-      const startY = 130;
-      const lineHeight = 22;
-      let currentY = startY;
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
 
-      const details = [
-        ["Tenant Name", r.tenant],
-        ["Property", r.property],
-        ["Room", r.room],
-        ["Occupancy", r.occupancy],
-        ["Month/Year", `${r.paymentMonth}/${r.paymentYear}`],
-        ["Payment Date", r.date],
-        ["Next Due Date", r.nextDueDate],
-        ["Amount Paid", `Rs ${r.amount}`],
-      ];
+      link.href = url;
+      link.download = `Receipt_${r.property}_${r.paymentMonth}_${r.paymentYear}.pdf`;
 
-      if (r.deposit > 0) details.push(["Deposit Paid", `Rs ${r.deposit}`]);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
 
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "normal");
-      details.forEach(([label, value]) => {
-        doc.text(`${label}: ${value}`, 40, currentY);
-        currentY += lineHeight;
-      });
+      window.URL.revokeObjectURL(url);
 
-      doc.setDrawColor(0);
-      doc.setLineWidth(0.5);
-      doc.line(40, currentY + 10, pageWidth - 40, currentY + 10);
-      currentY += 30;
-
-      doc.setFontSize(10);
-      doc.text(
-        "Thank you for your payment. Please retain this receipt for your records.",
-        40,
-        currentY
-      );
-
-      doc.save(`Rent_Receipt_${r.property}_${r.paymentMonth}_${r.paymentYear}.pdf`);
-    };
+      toast.dismiss();
+      toast.success("Downloaded successfully");
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Download failed");
+    }
   };
 
-return (
-  <div className=" mx-auto">
+  return (
+    <div className="w-full px-4 md:px-8 lg:px-16 py-6">
+      {/* Header */}
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+        Your Receipts
+      </h2>
 
+      {/* Loading */}
+      {loading ? (
+        <div className="space-y-4">
+          {Array(4)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="h-24 bg-gray-100 rounded-xl animate-pulse"
+              />
+            ))}
+        </div>
+      ) : receipts.length ? (
+        <div className="space-y-4">
+          {receipts.map((r) => {
+            const paidFor = `${MONTH_NAMES[r.paymentMonth - 1]} ${r.paymentYear}`;
 
-    {/* Loading State */}
-    {loading ? (
-      <div className="space-y-4">
-        {Array(4)
-          .fill(0)
-          .map((_, idx) => (
-            <div
-              key={idx}
-              className="border border-gray-200 p-4 rounded-xl shadow-sm animate-pulse"
-            >
-              <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-            </div>
-          ))}
-      </div>
-    ) : receipts.length ? (
-      <div className="space-y-4">
-        {receipts.map((r) => (
-          <div
-            key={r.id}
-            className="border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer bg-white"
-          >
-            <div className="flex justify-between items-start">
-              <div className="space-y-1">
-                <p className=" text-gray-800">{r.property}</p>
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium text-gray-700">Tenant:</span> {r.tenant}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {r.paymentMonth}/{r.paymentYear} | Paid on: {r.date}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Rent: <span className="font-medium">₹{r.amount}</span>
-                  {r.deposit > 0 && (
-                    <> | Deposit: <span className="font-medium">₹{r.deposit}</span></>
-                  )}
-                </p>
-              </div>
-
-              <button
-                onClick={() => generatePDF(r)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm shadow-md transition-all"
+            return (
+              <div
+                key={r.id}
+                className="flex flex-col md:flex-row md:items-center md:justify-between bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-lg transition"
               >
-                Download PDF
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="text-center text-gray-500 mt-8">
-        <div className="text-6xl mb-4">📄</div>
-        <p className="text-lg font-medium">No receipts available yet</p>
-        <p className="text-sm mt-1">Generate receipts once your tenant makes rent payments.</p>
-      </div>
-    )}
-  </div>
-);
+                {/* Left */}
+                <div className="space-y-2">
+                  <p className="text-lg font-semibold text-gray-800">
+                    {r.property}
+                  </p>
 
+                  <p className="text-sm text-indigo-600 font-medium">
+                    Paid for {paidFor}
+                  </p>
+
+                  <p className="text-sm text-gray-500">
+                    Payment Date: {r.paymentDate}
+                  </p>
+
+                  <p className="text-sm text-gray-700 font-medium">
+                    ₹{r.amount}
+                    {r.deposit > 0 && (
+                      <span className="text-gray-500 font-normal">
+                        {" "}+ ₹{r.deposit} deposit
+                      </span>
+                    )}
+                  </p>
+                </div>
+
+                {/* Button */}
+                <button
+                  onClick={() => handleDownload(r)}
+                  className="mt-4 md:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition"
+                >
+                  Download Receipt
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="text-center mt-20 text-gray-500">
+          <p className="text-lg font-medium">No receipts found</p>
+          <p className="text-sm">
+            Receipts will appear after successful payments
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }

@@ -97,41 +97,73 @@ export default function Agreement() {
   if (!properties.length)
     return <p className="text-center text-gray-500 mt-10">No agreements found.</p>;
 
-  return (
-    <div className=" space-y-6">
+  // return (
+  //   <div className=" space-y-6">
       
-      <div className="space-y-4">
-        {properties.map((property) => (
-          <div
-            key={property.property_id}
-            className="border rounded-2xl p-5 bg-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center"
-          >
-            <div>
-              <p className=" text-gray-800">{property.property_name}</p>
-              <p className="text-gray-600 text-sm">{property.address}</p>
-              <p className="text-gray-600 text-sm">
-                Tenant: {property.tenant_name || "N/A"}
-              </p>
-              <p className="text-gray-600 text-sm">
-                Lease:{" "}
-                {property.lastPayment?.lease_start_date
-                  ? new Date(property.lastPayment.lease_start_date).toLocaleDateString()
-                  : "N/A"}{" "}
-                -{" "}
-                {property.lastPayment?.lease_end_date
-                  ? new Date(property.lastPayment.lease_end_date).toLocaleDateString()
-                  : "N/A"}
-              </p>
-            </div>
-            <button
-              onClick={() => generatePDF(property)}
-              className="mt-3 md:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-            >
-              <FiDownload /> Download Agreement
-            </button>
-          </div>
-        ))}
+  //     <div className="space-y-4">
+  //       {properties.map((property) => (
+  //         <div
+  //           key={property.property_id}
+  //           className="border rounded-2xl p-5 bg-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center"
+  //         >
+  //           <div>
+  //             <p className=" text-gray-800">{property.property_name}</p>
+  //             <p className="text-gray-600 text-sm">{property.address}</p>
+  //             <p className="text-gray-600 text-sm">
+  //               Tenant: {property.tenant_name || "N/A"}
+  //             </p>
+  //             <p className="text-gray-600 text-sm">
+  //               Lease:{" "}
+  //               {property.lastPayment?.lease_start_date
+  //                 ? new Date(property.lastPayment.lease_start_date).toLocaleDateString()
+  //                 : "N/A"}{" "}
+  //               -{" "}
+  //               {property.lastPayment?.lease_end_date
+  //                 ? new Date(property.lastPayment.lease_end_date).toLocaleDateString()
+  //                 : "N/A"}
+  //             </p>
+  //           </div>
+  //           <button
+  //             onClick={() => generatePDF(property)}
+  //             className="mt-3 md:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+  //           >
+  //             <FiDownload /> Download Agreement
+  //           </button>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
+
+  return (
+  <div className="w-full flex items-center justify-center py-20 px-4">
+    <div className="text-center max-w-md">
+      {/* Icon */}
+      <div className="flex justify-center mb-6">
+        <div className="bg-indigo-100 text-indigo-600 p-5 rounded-full text-3xl">
+          🚧
+        </div>
       </div>
+
+      {/* Title */}
+      <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+        Agreements Coming Soon
+      </h2>
+
+      {/* Subtitle */}
+      <p className="text-gray-500 text-sm mb-6">
+        We're working on making agreement downloads available here.
+        This feature will be live shortly 🚀
+      </p>
+
+      {/* Optional Button */}
+      <button
+        disabled
+        className="bg-gray-200 text-gray-500 px-5 py-2.5 rounded-xl text-sm cursor-not-allowed"
+      >
+        Download Agreement
+      </button>
     </div>
-  );
+  </div>
+);
 }
