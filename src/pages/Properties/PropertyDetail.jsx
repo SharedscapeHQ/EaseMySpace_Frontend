@@ -277,7 +277,7 @@ function PropertyDetail() {
             <SavePropertyButton propertyId={property.id} />
           </div>
 
-          {property.source === "subdomain" ? (
+          {/* {property.source === "subdomain" ? ( */}
             <PropertyHeaderSectionSub
               property={property}
               setLightboxIdx={setLightboxIdx}
@@ -286,8 +286,8 @@ function PropertyDetail() {
               setHasPaid={setHasPaid}
               setShowPlanPopup={setShowPlanPopup}
             />
-          ) : (
-            <PropertyHeaderSection
+          {/* ) : ( */}
+            {/* <PropertyHeaderSection
               property={property}
               lightboxIdx={lightboxIdx}
               setLightboxIdx={setLightboxIdx}
@@ -296,12 +296,12 @@ function PropertyDetail() {
               userMobile={loggedInUser?.phone}
               setHasPaid={setHasPaid}
               setShowPlanPopup={setShowPlanPopup}
-            />
-          )}
+            /> */}
+          {/* )} */}
 
 <BottomTitle property={property} />
 
-          {property.source === "subdomain" ? (
+          {/* {property.source === "subdomain" ? ( */}
             <EssentialDetailsSub
               property={property}
               onPaymentSuccess={(roomLabel, occupancy) => {
@@ -322,8 +322,8 @@ function PropertyDetail() {
                 }));
               }}
             />
-          ) : (
-            <EssentialDetails
+          {/* ) : ( */}
+            {/* <EssentialDetails
               property={property}
               onPaymentSuccess={(roomLabel, occupancy) => {
                 setProperty((prev) => ({
@@ -343,7 +343,7 @@ function PropertyDetail() {
                 }));
               }}
             />
-          )}
+          )} */}
           <PropertyDescription property={property} />
           
 
