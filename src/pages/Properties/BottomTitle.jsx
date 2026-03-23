@@ -65,13 +65,11 @@ function BottomTitle({ property }) {
             text-[10px] lg:text-sm
             font-medium
             text-gray-700
-            shadow-sm
-            hover:shadow-md
-            transition
+            shadow-md
           "
         >
           <FaTag className="text-green-500 lg:text-[15px]" />
-          <span>Filling Fast</span>
+          <span>Zero Brokrage</span>
         </div>
       </div>
 
