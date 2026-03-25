@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useContext} from "react";
 import { FaHome } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../context/AuthContextV1";
+
 import { addProperty } from "../../api/propertiesApi";
 
 import PropertyBasicInfo from "../../components/AddPropertyPageComp/PropertyBasicInfo";
@@ -9,6 +11,7 @@ import PricingSection from "../../components/AddPropertyPageComp/PricingSection"
 import AmenitiesMediaDescription from "../../components/AddPropertyPageComp/AmenitiesMediaDescription";
 
 const AddProperty = () => {
+  const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -90,7 +93,6 @@ const AddProperty = () => {
       return;
     }
 
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const owner_code = user?.owner_code;
     if (!owner_code) {
       toast.error("Owner code missing. Please log in again.");
@@ -113,7 +115,7 @@ const AddProperty = () => {
       setFormData({
         title: "",
         location: "",
-         pincode: "",
+        pincode: "",
         gender: "",
         looking_for: "",
         bhk_type: "",

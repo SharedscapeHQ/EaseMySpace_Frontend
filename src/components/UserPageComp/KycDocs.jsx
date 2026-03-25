@@ -199,6 +199,11 @@ return (
       </div>
 
      {!allDocsAvailable && (
+      <>
+       <p className="text-xs text-gray-500 mb-2">
+    Please submit your documents carefully. You won’t be able to edit them later. <br />
+    For any issues, contact <a href="mailto:support@easemyspace.in" className="underline">support@easemyspace.in</a> or call <a href="tel:+919004463371" className="underline">+91 9004463371</a>.
+  </p>
   <button
     type="submit"
     disabled={!allFieldsFilled || isSubmitting || submitted}
@@ -217,6 +222,7 @@ return (
       "Submit KYC"
     )}
   </button>
+      </>
 )}
     </form>
   </div>

@@ -110,7 +110,7 @@ const fetchCurrentLocation = () => {
         const { latitude, longitude } = position.coords;
 
         const res = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyARyFU8-dg2b25qj4bq8Vhp3K4-LCoL57U`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyA7eEHeUbXgAcQpRh9Drs0lXetq7VB8N4A`
         );
 
         if (!res.ok) throw new Error("Failed to fetch location");
