@@ -302,7 +302,7 @@ const removeOccupancy = (roomIdx, occIdx) => {
                 "select",
                 ["flatmate", "vacant", "pg"],
               ],
-              ["gender", "Gender", "select", ["male", "female", "Any"]],
+              ["gender", "Gender", "select", ["male", "female", "any"]],
               [
                 "food_preference",
                 "Food Preference",
