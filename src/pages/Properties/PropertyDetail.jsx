@@ -274,7 +274,7 @@ function PropertyDetail() {
 
             {/* Right side */}
 
-            <SavePropertyButton propertyId={property.id} />
+            <SavePropertyButton propertyId={property.id} property={property} />
           </div>
 
           {/* {property.source === "subdomain" ? ( */}

@@ -8,10 +8,10 @@ import {
   fetchLeadSavedProperties,
 } from "../../api/leadApi";
 import axiosInstance, { saveProperty, removeSavedProperty, getSavedProperties } from "../../api/userApi";
-import { AuthContext } from "../../context/AuthContextV1"; // <-- AuthContext import
+import { AuthContext } from "../../context/AuthContextV1"; 
 
 export default function LikeButton({ propertyId, initiallyLiked = false }) {
-  const { user } = useContext(AuthContext); // <-- get login from context
+  const { user } = useContext(AuthContext); 
   const isLoggedIn = !!user;
 
   const [liked, setLiked] = useState(initiallyLiked);

@@ -114,7 +114,7 @@ function PropertyAmenities({ amenities = [], property }) {
   const mobileLimited = allAmenities.slice(0, 6);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 w-full">
+    <div className="flex flex-col lg:my-3 lg:flex-row gap-6 w-full">
 
       {/* Amenities */}
       <div className="bg-white rounded-xl border p-4 shadow-md flex-1">

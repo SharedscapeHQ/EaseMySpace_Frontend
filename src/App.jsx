@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
-import { AuthProvider } from "./context/AuthContextV1"; // ✅ import context
+import { AuthProvider } from "./context/AuthContextV1";
 
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";

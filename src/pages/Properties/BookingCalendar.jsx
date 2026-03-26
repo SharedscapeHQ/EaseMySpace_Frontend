@@ -38,7 +38,7 @@ export default function BookingCalendar({ onConfirm, loading }) {
   };
 
   return (
-    <div className="bg-white rounded-xl border p-4 w-full shadow-md">
+    <div className="bg-white rounded-xl border p-4 w-full lg:h-full shadow-md">
       <div className="flex flex-col lg:flex-row gap-4">
 
         {/* Calendar */}
