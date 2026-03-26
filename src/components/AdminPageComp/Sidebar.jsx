@@ -4,7 +4,6 @@ import {
   FiHome,
   FiStar,
   FiLogOut,
-  FiMapPin,
   FiTrash2,
   FiMessageCircle,
   FiUserPlus,
@@ -16,7 +15,6 @@ import {
   FiChevronDown,
   FiChevronRight,
   FiDollarSign,
-  FiPhone,
   FiFlag,
   FiImage,
   FiCalendar,
@@ -76,11 +74,7 @@ export default function Sidebar({
       items: [
         { label: "Properties", value: "Properties", icon: <FiHome /> },
         { label: "Featured Property", value: "NewlyListed", icon: <FiStar /> },
-        {
-          label: "Top Locations",
-          value: "ManageLocations",
-          icon: <FiMapPin />,
-        },
+       { label: "Top PGs", value: "TopPG", icon: <FiStar /> },
         { label: "Old Properties", value: "OldProperties", icon: <FiClock /> },
         {
           label: "Posted Requirement",
@@ -193,7 +187,7 @@ export default function Sidebar({
           icon: <FiMessageCircle />,
           badge: pendingCount,
         },
-        { label: "Send SMS", value: "SendSMS", icon: <FaCommentSms /> },
+        // { label: "Send SMS", value: "SendSMS", icon: <FaCommentSms /> },
         // { label: "Marketing", value: "Marketing", icon: <FiStar /> },
       ],
     },

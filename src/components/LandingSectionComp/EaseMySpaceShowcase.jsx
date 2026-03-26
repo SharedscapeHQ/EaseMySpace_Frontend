@@ -11,6 +11,7 @@ import RecentAddedProperties from "./RecentAddedProperties";
 import AndheriProperties from "./AndheriProperties";
 import Banner from "./Banner";
 import Hero_v2 from "./Hero_v2";
+import TopPGProperties from "./TopPGProperties";
 
 
 const EaseMySpaceShowcase = () => {
@@ -33,6 +34,7 @@ const EaseMySpaceShowcase = () => {
 
         <RecentlyViewedProperties/>
         <NewlyListedProperties />
+        <TopPGProperties />
         <RecentAddedProperties />
         <AndheriProperties/>
         <Banner />

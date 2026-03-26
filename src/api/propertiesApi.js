@@ -16,6 +16,9 @@ export const getMyProperties = () =>
 export const newlyListedProperties = () =>
   api.get("/properties/newly-listed-properties");
 
+export const topPGProperties = () =>
+  api.get("/properties/top-pg-properties");
+
 export const addProperty = data =>
   api.post("/properties/add-property", data, authHeaders());
 

@@ -76,6 +76,18 @@ export const markNewlyListed = async (id, isNewlyListed, position) => {
   });
 };
 
+export const markTopPG = async (id, isTopPG, position) => {
+  const finalPosition =
+    position === "" || position === null || position === undefined
+      ? null
+      : Number(position);
+
+  return await adminAxios.patch(`/properties/${id}/top-pg`, {
+    is_top_pg: isTopPG,
+    top_pg_position: finalPosition,
+  });
+};
+
 export const fetchAllEditQueries = () => {
   return adminAxios.get("/queries/all");
 };

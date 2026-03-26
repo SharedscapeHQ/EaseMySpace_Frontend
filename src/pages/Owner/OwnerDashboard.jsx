@@ -7,6 +7,7 @@ import {
   approveProperty,
   editProperty,
   markNewlyListed,
+  markTopPG,
   fetchPendingQueries,
 } from "../../api/adminApi";
 import { getDeletedProperties, restorePropertyById } from "../../api/ownerApi";
@@ -16,7 +17,7 @@ import { toast } from "react-hot-toast";
 import Sidebar from "../../components/AdminPageComp/Sidebar";
 import EditModal from "../../components/AdminPageComp/EditModal";
 import PropertyCard from "../../components/AdminPageComp/PropertyCard";
-import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
+import NewlyListedCard from "../../components/AdminPageComp/FeaturePropertyCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import DeletedPropertyCard from "../../components/OwnerPageComp/DeletedProperties";
@@ -33,9 +34,6 @@ import RMAssignments from "../../components/OwnerPageComp/RMAssignments";
 import VisitorsTable from "../../components/OwnerPageComp/VisitorsTable";
 import Marketing from "../../components/AdminPageComp/Marketing";
 import WithdrawalRequests from "../../components/OwnerPageComp/WithdrawalRequests";
-import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
-import WithdrawalRequestsAgent from "../../components/OwnerPageComp/WithdrawalRequestsAgent";
-import AllMaidBookings from "../../components/AdminPageComp/Maid_profiles/AllMaidBookings";
 import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
 import LandlordWithdrawals from "../../components/OwnerPageComp/LandlordWithdrawals";
 import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
@@ -43,12 +41,11 @@ import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedger
 import RequestsTableLandlord from "../../components/AdminPageComp/RequestPageLandlord";
 import ContactSalesTable from "../../components/AdminPageComp/ContactSalesTable";
 import PlatformRevenueTable from "../../components/OwnerPageComp/PlatformRevenueTable";
-import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport"
+import ManagePropertyReport from "../../components/AdminPageComp/ManagePropertyReport";
 import MyProfile from "../../components/UserPageComp/MyProfile";
 import BookingSchedule from "../../components/RmUserComp/BookingSchedule";
-
-
-
+import FeaturedListings from "../../components/AdminPageComp/FeaturePropertySection";
+import FeaturePropertySection from "../../components/AdminPageComp/FeaturePropertySection";
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -145,29 +142,28 @@ export default function OwnerDashboard() {
   };
 
   const fetchProperties = async () => {
-  try {
-    setLoadingProps(true);
+    try {
+      setLoadingProps(true);
 
-    const { data } = await getAllProperties();
+      const { data } = await getAllProperties();
 
-    // Ensure always an array, and normalize pricing
-    const safeData = Array.isArray(data)
-      ? data.map((prop) => ({
-          ...prop,
-          pricing: Array.isArray(prop.pricing) ? prop.pricing : [],
-        }))
-      : [];
+      // Ensure always an array, and normalize pricing
+      const safeData = Array.isArray(data)
+        ? data.map((prop) => ({
+            ...prop,
+            pricing: Array.isArray(prop.pricing) ? prop.pricing : [],
+          }))
+        : [];
 
-    setProperties(safeData);
-  } catch (err) {
-    console.error("Error loading properties:", err);
-    toast.error("Error loading properties");
-    setProperties([]);
-  } finally {
-    setLoadingProps(false);
-  }
-};
-
+      setProperties(safeData);
+    } catch (err) {
+      console.error("Error loading properties:", err);
+      toast.error("Error loading properties");
+      setProperties([]);
+    } finally {
+      setLoadingProps(false);
+    }
+  };
 
   const handleApprove = async (id) => {
     await approveProperty(id);
@@ -184,24 +180,23 @@ export default function OwnerDashboard() {
   };
 
   const openEditModal = (property) => {
-  setEditingProperty(property);
+    setEditingProperty(property);
 
-  setEditForm({
-    ...property,
-    // Pull price and deposit from first pricing entry
-    price: property.pricing?.[0]?.price ?? "",       // fallback to empty string
-    deposit: property.pricing?.[0]?.deposit ?? "",   // fallback to empty string
+    setEditForm({
+      ...property,
+      // Pull price and deposit from first pricing entry
+      price: property.pricing?.[0]?.price ?? "", // fallback to empty string
+      deposit: property.pricing?.[0]?.deposit ?? "", // fallback to empty string
 
-    amenities: Array.isArray(property.amenities)
-      ? property.amenities
-      : (property.amenities || "").split(",").map((a) => a.trim()),
+      amenities: Array.isArray(property.amenities)
+        ? property.amenities
+        : (property.amenities || "").split(",").map((a) => a.trim()),
 
-    is_newly_listed: property.is_newly_listed || false,
-    verified: property.verified === true || property.verified === "true",
-    newly_listed_position: property.newly_listed_position || "",
-  });
-};
-
+      is_newly_listed: property.is_newly_listed || false,
+      verified: property.verified === true || property.verified === "true",
+      newly_listed_position: property.newly_listed_position || "",
+    });
+  };
 
   const handleEditChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -211,58 +206,63 @@ export default function OwnerDashboard() {
     }));
   };
 
-const handleEditSubmit = async () => {
-  try {
-    const updateData = {
-      ...editForm,
-      deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
-      price: editForm.price === "" ? null : Number(editForm.price),
-      newly_listed_position: editForm.is_newly_listed
-        ? Number(editForm.newly_listed_position)
-        : null,
-      amenities: Array.isArray(editForm.amenities)
-        ? editForm.amenities
-        : (editForm.amenities || "").split(",").map((a) => a.trim()),
-      remove_image_urls: editForm.remove_image_urls || [],
-      remove_video_urls: editForm.remove_video_urls || [],
-      image_base64: editForm.image_base64 || [],
-      video_base64: editForm.video_base64 || [],
-    };
+  const handleEditSubmit = async () => {
+    try {
+      const updateData = {
+        ...editForm,
+        deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
+        price: editForm.price === "" ? null : Number(editForm.price),
+        newly_listed_position: editForm.is_newly_listed
+          ? Number(editForm.newly_listed_position)
+          : null,
+        amenities: Array.isArray(editForm.amenities)
+          ? editForm.amenities
+          : (editForm.amenities || "").split(",").map((a) => a.trim()),
+        remove_image_urls: editForm.remove_image_urls || [],
+        remove_video_urls: editForm.remove_video_urls || [],
+        image_base64: editForm.image_base64 || [],
+        video_base64: editForm.video_base64 || [],
+      };
 
-    // Check for newly listed conflicts
-    if (
-      editForm.is_newly_listed &&
-      updateData.newly_listed_position !== null
-    ) {
-      const conflict = properties.find(
-        (p) =>
-          p.is_newly_listed &&
-          Number(p.newly_listed_position) ===
-            Number(updateData.newly_listed_position) &&
-          p.id !== editingProperty.id,
-      );
-      if (conflict) {
-        const confirmReplace = window.confirm(
-          `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Replace it?`
+      // Check for newly listed conflicts
+      if (
+        editForm.is_newly_listed &&
+        updateData.newly_listed_position !== null
+      ) {
+        const conflict = properties.find(
+          (p) =>
+            p.is_newly_listed &&
+            Number(p.newly_listed_position) ===
+              Number(updateData.newly_listed_position) &&
+            p.id !== editingProperty.id,
         );
-        if (!confirmReplace) return;
+        if (conflict) {
+          const confirmReplace = window.confirm(
+            `Position ${updateData.newly_listed_position} is already assigned to "${conflict.title}". Replace it?`,
+          );
+          if (!confirmReplace) return;
+        }
       }
+
+      const updatedProperty = await editProperty(
+        editingProperty.id,
+        updateData,
+      );
+
+      // ✅ Optimistically update the properties array
+      setProperties((prev) =>
+        prev.map((p) =>
+          p.id === editingProperty.id ? updatedProperty.data : p,
+        ),
+      );
+
+      toast.success("Property updated successfully");
+      setEditingProperty(null);
+    } catch (err) {
+      console.error("Edit submit error:", err);
+      toast.error("Failed to update property");
     }
-
-    const updatedProperty = await editProperty(editingProperty.id, updateData);
-
-    // ✅ Optimistically update the properties array
-    setProperties((prev) =>
-      prev.map((p) => (p.id === editingProperty.id ? updatedProperty.data : p))
-    );
-
-    toast.success("Property updated successfully");
-    setEditingProperty(null);
-  } catch (err) {
-    console.error("Edit submit error:", err);
-    toast.error("Failed to update property");
-  }
-};
+  };
 
   const handleRestore = async (id) => {
     try {
@@ -288,13 +288,13 @@ const handleEditSubmit = async () => {
     statusFilter === "all"
       ? properties
       : properties.filter(
-          (p) => p.status?.toLowerCase() === statusFilter.toLowerCase()
+          (p) => p.status?.toLowerCase() === statusFilter.toLowerCase(),
         );
 
   const searchedProperties = filteredProperties.filter((p) =>
     `${p.title} ${p.location} ${p.description || ""}`
       .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+      .includes(searchQuery.toLowerCase()),
   );
 
   const approved = properties.filter((p) => p.status === "approved");
@@ -322,19 +322,19 @@ const handleEditSubmit = async () => {
         handleLogout={handleLogout}
         pendingCount={
           pendingQueries.filter(
-            (q) => q.resolved === false || q.resolved === "false"
+            (q) => q.resolved === false || q.resolved === "false",
           ).length
         }
       />
       <main ref={mainRef} className="flex-1 bg-gray-50 lg:ml-64">
         <div className="p-6">
-          
-
           {activeTab === "Users" && <UserAccessControl />}
 
           {activeTab === "Leads" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Leads</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
+                Leads
+              </h2>
               {loadingLeads ? (
                 <p>Loading leads...</p>
               ) : (
@@ -343,35 +343,36 @@ const handleEditSubmit = async () => {
             </section>
           )}
 
-           {activeTab === "Requests" && (
-                      <section>
-                        <RequestsTable />
-                      </section>
-                    )}
+          {activeTab === "Requests" && (
+            <section>
+              <RequestsTable />
+            </section>
+          )}
 
-                    {activeTab === "RMAssignments" && (
-                      <section>
-                        <RMAssignments />
-                      </section>
-                    )}
+          {activeTab === "RMAssignments" && (
+            <section>
+              <RMAssignments />
+            </section>
+          )}
 
-                     {activeTab === "SendSMS" && (
-                                <section> 
-                                  <SendSMSForm />
-                                </section>
-                              )}
+          {activeTab === "SendSMS" && (
+            <section>
+              <SendSMSForm />
+            </section>
+          )}
 
-                    {activeTab === "PostRequirement" && (
+          {activeTab === "PostRequirement" && (
             <section>
               <RequirementReq />
             </section>
           )}
-          
 
           {activeTab === "Properties" && (
             <section>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h2 style={{ fontFamily: "para_font" }} className="text-xl ">Properties</h2>
+                <h2 style={{ fontFamily: "para_font" }} className="text-xl ">
+                  Properties
+                </h2>
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                   <div className="relative w-full sm:w-64">
@@ -413,57 +414,37 @@ const handleEditSubmit = async () => {
             </section>
           )}
 
-
           {activeTab === "AllBookings" && <BookingSchedule />}
 
-          {activeTab === "NewlyListed" && (
-            <section>
-              <h2
-                style={{ fontFamily: "para_font" }}
-                className="text-xl mb-4"
-              >
-                Featured Listings
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {approved
-                  .slice() // to avoid mutating original array
-                  .sort((a, b) => {
-                    const aListed = a.is_newly_listed;
-                    const bListed = b.is_newly_listed;
-
-                    if (aListed && bListed) {
-                      return (
-                        (a.newly_listed_position || 9999) -
-                        (b.newly_listed_position || 9999)
-                      );
-                    }
-
-                    if (aListed) return -1; // listed first
-                    if (bListed) return 1;
-
-                    return 0; // keep others as-is
-                  })
-                  .map((property) => (
-                    <NewlyListedCard
-                      key={property.id}
-                      property={property}
-                      markNewlyListed={markNewlyListed}
-                      fetchProperties={fetchProperties}
-                      allProperties={properties}
-                    />
-                  ))}
-              </div>
-            </section>
-          )}
-
-          {activeTab === "ManageLocations" && (
-            <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
-                Manage Top Locations
-              </h2>
-              <ManageTopLocations />
-            </section>
-          )}
+         {activeTab === "NewlyListed" && (
+           <>
+             <FeaturePropertySection
+               properties={properties}
+               markFn={markNewlyListed}
+               fetchProperties={fetchProperties}
+               title="Newly Listed Properties"
+               type="newly_listed"
+             />
+         
+             <FeaturePropertySection
+               properties={properties}
+               markFn={markTopPG}
+               fetchProperties={fetchProperties}
+               title="Top PG Properties"
+               type="top_pg"
+             />
+           </>
+         )}
+         
+         {activeTab === "TopPG" && (
+           <FeaturePropertySection
+             properties={properties}
+             markFn={markTopPG}
+             fetchProperties={fetchProperties}
+             title="Top PG Properties"
+             type="top_pg"
+           />
+         )}
 
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (
@@ -481,7 +462,9 @@ const handleEditSubmit = async () => {
 
           {activeTab === "DeletedProperties" && (
             <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">Deleted Properties</h2>
+              <h2 style={{ fontFamily: "para_font" }} className="text-xl  mb-4">
+                Deleted Properties
+              </h2>
               {loadingDeletedProps ? (
                 <p>Loading deleted properties...</p>
               ) : (
@@ -511,29 +494,27 @@ const handleEditSubmit = async () => {
 
           {activeTab === "Careers" && <CareersPage />}
 
-           {activeTab === "OldProperties" && (
-                      <section>
-                        <OldProperties />
-                      </section>
-                    )}
+          {activeTab === "OldProperties" && (
+            <section>
+              <OldProperties />
+            </section>
+          )}
 
-                              {activeTab === "Marketing" && <Marketing />}
-                              {activeTab === "Withdrawals" && <WithdrawalRequests />}
-                                        {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}
+          {activeTab === "Marketing" && <Marketing />}
+          {activeTab === "Withdrawals" && <WithdrawalRequests />}
+          {/* {activeTab === "allWorkerProfiles" && <Maid_profiles />}
                                         {activeTab === "AgentWithdrawals" && <WithdrawalRequestsAgent />}
                                         {activeTab === "maidBookings" && <AllMaidBookings />} */}
-                                                  {activeTab === "allAccounts" && <LandlordAgents />}
-                              
-                 {activeTab === "RentPayments" && <RentPaymentsDashboard />}
+          {activeTab === "allAccounts" && <LandlordAgents />}
+
+          {activeTab === "RentPayments" && <RentPaymentsDashboard />}
           {activeTab === "RentWithdrawals" && <LandlordWithdrawals />}
-                                        {activeTab === "TallyReports" && <LandlordLedgerSummary />}
-                                        {activeTab === "RequestsLandlord" && <ContactSalesTable />}
-                                        {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
-                                        {activeTab === "platformRevenue" && <PlatformRevenueTable />}
-                                        {activeTab === "PropertyReports" && <ManagePropertyReport />}
-                                        {activeTab === "MyProfile" && <MyProfile />}
-                                        
-                    
+          {activeTab === "TallyReports" && <LandlordLedgerSummary />}
+          {activeTab === "RequestsLandlord" && <ContactSalesTable />}
+          {activeTab === "ComplaintLandlord" && <RequestsTableLandlord />}
+          {activeTab === "platformRevenue" && <PlatformRevenueTable />}
+          {activeTab === "PropertyReports" && <ManagePropertyReport />}
+          {activeTab === "MyProfile" && <MyProfile />}
 
           <EditModal
             editForm={editForm}

@@ -279,7 +279,6 @@ export default function HeroSearchBar() {
     };
     document.body.appendChild(script);
   } else {
-    console.log("Google already exists");
     initAutocomplete();
   }
 }, []);

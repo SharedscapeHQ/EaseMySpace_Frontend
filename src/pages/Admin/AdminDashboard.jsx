@@ -7,6 +7,7 @@ import {
   approveProperty,
   editProperty,
   markNewlyListed,
+  markTopPG,
   fetchPendingQueries,
 } from "../../api/adminApi";
 import { getAllUsers } from "../../api/ownerApi";
@@ -18,19 +19,15 @@ import { FiSearch } from "react-icons/fi";
 import Sidebar from "../../components/AdminPageComp/Sidebar";
 import EditModal from "../../components/AdminPageComp/EditModal";
 import PropertyCard from "../../components/AdminPageComp/PropertyCard";
-import NewlyListedCard from "../../components/AdminPageComp/NewlyListedCard";
 import LeadsTable from "../../components/AdminPageComp/LeadsTable";
 import PendingQueries from "../../components/AdminPageComp/PendingQueries";
 import ManageTopLocations from "../../components/AdminPageComp/ManageTopLocations";
 import UltimateSubscribers from "../../components/AdminPageComp/UltimateSubscribers";
-// import CareersPage from "../../components/HrUserComp/CareersPage";
 import OldProperties from "../../components/AdminPageComp/OldProperties";
 import RequestsTable from "../../components/AdminPageComp/RequestsPage";
 import RequirementReq from "../../components/AdminPageComp/RequirementReq";
 import SendSMSForm from "../../components/AdminPageComp/SendSMSForm";
 import Marketing from "../../components/AdminPageComp/Marketing";
-import Maid_profiles from "../../components/AdminPageComp/Maid_profiles/Maid_profiles";
-import AdminQueries from "../../components/AdminPageComp/Maid_profiles/AdminQueries";
 import RentPaymentsDashboard from "../../components/OwnerPageComp/RentPaymentsDashboard";
 import LandlordAgents from "../../components/AdminPageComp/LandlordAgents";
 import LandlordLedgerSummary from "../../components/AdminPageComp/LandlordLedgerSummary";
@@ -41,6 +38,7 @@ import MyProfile from "../../components/UserPageComp/MyProfile";
 import PostPermissionRequests from "../../components/AdminPageComp/PostPermissionRequests";
 import BookingSchedule from "../../components/RmUserComp/BookingSchedule";
 import UsersTable from "../../components/AdminPageComp/UsersTable";
+import FeaturePropertySection from "../../components/AdminPageComp/FeaturePropertySection";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -165,20 +163,20 @@ export default function AdminDashboard() {
   };
 
   const handleApprove = async (propertyId) => {
-  try {
-    await approveProperty(propertyId);
+    try {
+      await approveProperty(propertyId);
 
-    toast.success("Property approved successfully");
-    fetchProperties();
-  } catch (err) {
-    const message =
-      err.response?.data?.message ||
-      err.response?.data?.error ||
-      "Failed to approve property";
+      toast.success("Property approved successfully");
+      fetchProperties();
+    } catch (err) {
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Failed to approve property";
 
-    toast.error(message);
-  }
-};
+      toast.error(message);
+    }
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm("Delete this property?")) {
@@ -188,40 +186,40 @@ export default function AdminDashboard() {
     }
   };
 
-const openEditModal = (property) => {
-  setRemovedOccupancies([]);
+  const openEditModal = (property) => {
+    setRemovedOccupancies([]);
 
-  // ✅ Group flat pricing rows by room_name
-  const roomMap = {};
-  if (Array.isArray(property.pricing)) {
-    property.pricing.forEach((p) => {
-      const key = p.room_name || "default";
-      if (!roomMap[key]) {
-        roomMap[key] = { room_name: key, occupancies: [] };
-      }
-      roomMap[key].occupancies.push({
-        occupancy: p.occupancy,
-        price: p.price,
-        deposit: p.deposit,
+    // ✅ Group flat pricing rows by room_name
+    const roomMap = {};
+    if (Array.isArray(property.pricing)) {
+      property.pricing.forEach((p) => {
+        const key = p.room_name || "default";
+        if (!roomMap[key]) {
+          roomMap[key] = { room_name: key, occupancies: [] };
+        }
+        roomMap[key].occupancies.push({
+          occupancy: p.occupancy,
+          price: p.price,
+          deposit: p.deposit,
+        });
       });
-    });
-  }
-  const groupedPricing = Object.values(roomMap);
+    }
+    const groupedPricing = Object.values(roomMap);
 
-  setEditingProperty(property);
-  setEditForm({
-    ...property,
-    pricing: groupedPricing,
-    price: property.pricing?.[0]?.price ?? "",
-    deposit: property.pricing?.[0]?.deposit ?? "",
-    amenities: Array.isArray(property.amenities)
-      ? property.amenities
-      : (property.amenities || "").split(",").map((a) => a.trim()),
-    is_newly_listed: property.is_newly_listed || false,
-    verified: property.verified === true || property.verified === "true",
-    newly_listed_position: property.newly_listed_position || "",
-  });
-};
+    setEditingProperty(property);
+    setEditForm({
+      ...property,
+      pricing: groupedPricing,
+      price: property.pricing?.[0]?.price ?? "",
+      deposit: property.pricing?.[0]?.deposit ?? "",
+      amenities: Array.isArray(property.amenities)
+        ? property.amenities
+        : (property.amenities || "").split(",").map((a) => a.trim()),
+      is_newly_listed: property.is_newly_listed || false,
+      verified: property.verified === true || property.verified === "true",
+      newly_listed_position: property.newly_listed_position || "",
+    });
+  };
 
   const handleEditChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -313,25 +311,6 @@ const openEditModal = (property) => {
       return createdDate <= monthsAgo;
     });
 
-  const approved = properties.filter((p) => p.status === "approved");
-
-  const pieData = [
-    {
-      name: "Approved",
-      value: approved.length,
-      color: "#16a34a",
-    },
-    {
-      name: "Pending",
-      value: properties.filter((p) => p.status === "pending").length,
-      color: "#facc15",
-    },
-    {
-      name: "Rejected",
-      value: properties.filter((p) => p.status === "rejected").length,
-      color: "#dc2626",
-    },
-  ];
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -358,11 +337,11 @@ const openEditModal = (property) => {
                 Users
               </h2>
 
-            {loadingUsers ? (
-  <p className="text-gray-500">Loading users...</p>
-) : (
-  <UsersTable users={users} />
-)}
+              {loadingUsers ? (
+                <p className="text-gray-500">Loading users...</p>
+              ) : (
+                <UsersTable users={users} />
+              )}
 
               {/* Referrer Modal */}
               {modalUser && (
@@ -524,42 +503,35 @@ const openEditModal = (property) => {
 
           {activeTab === "AllBookings" && <BookingSchedule />}
 
-          {activeTab === "NewlyListed" && (
-            <section>
-              <h2 style={{ fontFamily: "para_font" }} className="text-xl mb-4">
-                Featured Listings
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {approved
-                  .slice()
-                  .sort((a, b) => {
-                    const aListed = a.is_newly_listed;
-                    const bListed = b.is_newly_listed;
+       {activeTab === "NewlyListed" && (
+  <>
+    <FeaturePropertySection
+      properties={properties}
+      markFn={markNewlyListed}
+      fetchProperties={fetchProperties}
+      title="Newly Listed Properties"
+      type="newly_listed"
+    />
 
-                    if (aListed && bListed) {
-                      return (
-                        (a.newly_listed_position || 9999) -
-                        (b.newly_listed_position || 9999)
-                      );
-                    }
+    <FeaturePropertySection
+      properties={properties}
+      markFn={markTopPG}
+      fetchProperties={fetchProperties}
+      title="Top PG Properties"
+      type="top_pg"
+    />
+  </>
+)}
 
-                    if (aListed) return -1; // listed first
-                    if (bListed) return 1;
-
-                    return 0; // keep others as-is
-                  })
-                  .map((property) => (
-                    <NewlyListedCard
-                      key={property.id}
-                      property={property}
-                      markNewlyListed={markNewlyListed}
-                      fetchProperties={fetchProperties}
-                      allProperties={properties}
-                    />
-                  ))}
-              </div>
-            </section>
-          )}
+{activeTab === "TopPG" && (
+  <FeaturePropertySection
+    properties={properties}
+    markFn={markTopPG}
+    fetchProperties={fetchProperties}
+    title="Top PG Properties"
+    type="top_pg"
+  />
+)}
 
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (
@@ -617,8 +589,8 @@ const openEditModal = (property) => {
             setEditingProperty={setEditingProperty}
             handleEditChange={handleEditChange}
             handleEditSubmit={handleEditSubmit}
-            removedOccupancies={removedOccupancies}     
-  setRemovedOccupancies={setRemovedOccupancies}
+            removedOccupancies={removedOccupancies}
+            setRemovedOccupancies={setRemovedOccupancies}
           />
         </div>
       </main>
