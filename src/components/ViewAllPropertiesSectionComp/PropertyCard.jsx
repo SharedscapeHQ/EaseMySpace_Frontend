@@ -4,7 +4,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import LikeButton from "../LandingSectionComp/LikeButton";
 
 const PropertyCard = ({ p }) => {
-  console.log("PropertyCard data:", p);
   const images = [
     ...(p.images || []),
     ...(p.bedroom_images || []),

@@ -40,13 +40,17 @@ const bhkNumber = (val = "") => {
 
 const applyFiltersSort = (list, f, sort) => {
   let l = [...list];
-  if (f.location.trim())
-    l = l.filter((p) =>
-      p.location.toLowerCase().includes(f.location.toLowerCase())
-    );
-  if (f.gender) l = l.filter((p) => p.gender?.toLowerCase() === f.gender);
-  if (f.occupancy)
-    l = l.filter((p) => p.occupancy?.toLowerCase() === f.occupancy);
+ if (f.location.trim()) {
+  l = l.filter((p) =>
+    (p.location || "").toLowerCase().includes(f.location.toLowerCase())
+  );
+}
+
+if (f.gender)
+  l = l.filter((p) => (p.gender || "").toLowerCase() === f.gender.toLowerCase());
+
+if (f.occupancy)
+  l = l.filter((p) => (p.occupancy || "").toLowerCase() === f.occupancy.toLowerCase());
   if (f.bhk) {
     const want = parseFloat(f.bhk);
     l = l.filter((p) => {
@@ -124,7 +128,7 @@ const [locationSuggestions, setLocationSuggestions] = useState([]);
         );
         const ready = data.map((p) => {
           const imgs = parseImages(p.image);
-          return { ...p, images: imgs, cover: pickCover(imgs) };
+          return { ...p, images: imgs, cover: pickCover(imgs), location: p.display_location };
         });
         setProperties(ready);
         setFiltered(ready);
