@@ -175,14 +175,35 @@ function PropertyDetail() {
       });
   }, [id]);
 
-  const stepLightbox = useCallback(
-    (dir) => {
-      if (!property) return;
-      const total = property.images.length + (property.video ? 1 : 0);
-      setLightboxIdx((idx) => (idx + dir + total) % total);
-    },
-    [property],
-  );
+const stepLightbox = useCallback(
+  (dir) => {
+    if (!property) return;
+
+    // ✅ SAME parsing as Lightbox (VERY IMPORTANT)
+    const videos = property.video
+      ? property.video
+          .replace(/[{}]/g, "")
+          .split(",")
+          .map((v) => v.trim())
+          .filter(Boolean)
+      : [];
+
+    const total = (property.images?.length || 0) + videos.length;
+
+    setLightboxIdx((prev) => {
+      if (prev === null) return 0;
+
+      let next = prev + dir;
+
+      // ✅ SAFE LOOP (NO % BUG)
+      if (next < 0) next = total - 1;
+      if (next >= total) next = 0;
+
+      return next;
+    });
+  },
+  [property]
+);
 
   useEffect(() => {
     const handleKey = (e) => {

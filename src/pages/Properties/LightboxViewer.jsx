@@ -1,16 +1,37 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 
 function LightboxViewer({ property, lightboxIdx, setLightboxIdx, stepLightbox }) {
-  if (lightboxIdx === null || !property?.images?.length) return null;
+  if (lightboxIdx === null || !property) return null;
 
-  const media = [...(property.images || [])];
-if (property.video) {
-  media.push(property.video);
-}
+  // ✅ Normalize + memoize media (VERY IMPORTANT)
+  const media = useMemo(() => {
+    const images = property.images || [];
 
-  const index = lightboxIdx;
+    const videos = property.video
+      ? property.video
+          .replace(/[{}]/g, "") // remove { }
+          .split(",")
+          .map((v) => v.trim())
+          .filter((v) => v && v.startsWith("http")) // extra safety
+      : [];
+
+    return [...images, ...videos];
+  }, [property]);
+
   const total = media.length;
+
+  // ✅ Safe index (no crash / no mismatch)
+  const index = total > 0
+    ? ((lightboxIdx % total) + total) % total
+    : 0;
+
+  const current = media[index];
+
+  // ✅ Better detection
+  const isVideo =
+    typeof current === "string" &&
+    (current.includes(".mp4") || current.includes("video"));
 
 
   return (
@@ -18,7 +39,7 @@ if (property.video) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
       onClick={() => setLightboxIdx(null)}
     >
-      {/* LEFT BUTTON */}
+      {/* LEFT */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -29,29 +50,36 @@ if (property.video) {
         <FaChevronLeft />
       </button>
 
-      <div className="relative">
-       {media[index].endsWith(".mp4") ? (
-  <video
-    src={media[index]}
-    controls
-    autoPlay
-    className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
-  />
-) : (
-  <img
-    src={media[index]}
-    alt=""
-    className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
-  />
-)}
+      {/* MEDIA */}
+      <div key={current} className="relative">
+        {isVideo ? (
+          <video
+            key={current} // 🔥 force reload
+            src={current}
+            controls
+            autoPlay
+            muted
+            playsInline
+            onLoadedData={(e) => {
+              e.target.play().catch(() => {});
+            }}
+            className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+          />
+        ) : (
+          <img
+            src={current}
+            alt=""
+            className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+          />
+        )}
 
-
+        {/* COUNTER */}
         <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-3 py-1 rounded-full">
           {index + 1} / {total}
         </div>
       </div>
 
-      {/* RIGHT BUTTON */}
+      {/* RIGHT */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -62,7 +90,7 @@ if (property.video) {
         <FaChevronRight />
       </button>
 
-      {/* CLOSE BUTTON */}
+      {/* CLOSE */}
       <button
         onClick={(e) => {
           e.stopPropagation();

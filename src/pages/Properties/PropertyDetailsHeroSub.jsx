@@ -1,120 +1,104 @@
 function PropertyHeaderSection({ property, setLightboxIdx }) {
   if (!property) return null;
 
-  const totalMedia = property.images.length + (property.video ? 1 : 0);
+  // ✅ FIX: normalize videos
+  const videos = property.video
+    ? property.video
+        .replace(/[{}]/g, "")
+        .split(",")
+        .map((v) => v.trim())
+        .filter(Boolean)
+    : [];
+
+  const totalMedia = property.images.length + videos.length;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-3 w-full rounded-xl ">
+    <div className="flex flex-col lg:flex-row gap-3 w-full rounded-xl">
       
-      {/* Left Big Image */}
+      {/* LEFT */}
       <div
         className="w-full lg:w-3/5 h-80 sm:h-[26rem] rounded-lg overflow-hidden cursor-pointer"
         onClick={() => setLightboxIdx(0)}
       >
-        <img
-          src={property.cover}
-          alt="main"
-          className="w-full h-full object-cover"
-        />
+        <img src={property.cover} className="w-full h-full object-cover" />
       </div>
 
-      {/* Right Stacked Media */}
+      {/* RIGHT */}
       <div className="hidden lg:flex flex-col w-full lg:w-2/5 gap-3 h-[26rem]">
-        {/* Top Media */}
-        {property.images[1] || property.video ? (
+        
+        {/* TOP */}
+        {(property.images[1] || videos[0]) && (
           <div
             className="flex-1 relative rounded-lg overflow-hidden cursor-pointer"
             onClick={() => setLightboxIdx(1)}
           >
             {property.images[1] ? (
-              <img
-                src={property.images[1]}
-                alt="media-1"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            ) : property.video ? (
+              <img src={property.images[1]} className="w-full h-full object-cover" />
+            ) : (
               <video
-                src={property.video}
+                src={videos[0]}
                 muted
-                loop
                 autoPlay
+                loop
                 playsInline
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-cover"
               />
-            ) : null}
+            )}
           </div>
-        ) : null}
+        )}
 
-        {/* Bottom Media / Overlay */}
+        {/* BOTTOM */}
         <div
           className="flex-1 relative rounded-lg overflow-hidden cursor-pointer"
-          onClick={() =>
-            setLightboxIdx(
-              property.video ? property.images.length : property.images.length - 1
-            )
-          }
+          onClick={() => setLightboxIdx(property.images.length)}
         >
           {property.images[2] ? (
-            <img
-              src={property.images[2]}
-              alt="media-2"
-              className="w-full h-full object-cover rounded-lg brightness-90"
-            />
-          ) : property.video ? (
+            <img src={property.images[2]} className="w-full h-full object-cover" />
+          ) : videos[1] ? (
             <video
-              src={property.video}
+              src={videos[1]}
               muted
-              loop
               autoPlay
+              loop
               playsInline
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-gray-300 rounded-lg" />
+            <div className="w-full h-full bg-gray-300" />
           )}
 
-          {/* Overlay for additional media */}
           {totalMedia > 3 && (
-            <div className="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-xl font-semibold rounded-lg">
+            <div className="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-xl">
               +{totalMedia - 3}
             </div>
           )}
         </div>
       </div>
 
-      {/* Mobile Thumbnails */}
+      {/* MOBILE */}
       <div className="flex lg:hidden gap-3 mt-3 overflow-x-auto">
         {property.images.slice(1).map((item, idx) => (
           <div
             key={idx}
-            className="h-24 w-1/3 rounded-lg overflow-hidden cursor-pointer flex-shrink-0"
+            className="h-24 w-1/3 rounded-lg overflow-hidden"
             onClick={() => setLightboxIdx(idx + 1)}
           >
-            <img
-              src={item}
-              alt={`thumb-${idx + 1}`}
-              className="w-full h-full object-cover"
-            />
+            <img src={item} className="w-full h-full object-cover" />
           </div>
         ))}
-        {property.video && (
+
+        {videos.map((vid, idx) => (
           <div
-            key="video"
-            className="h-24 w-1/3 relative rounded-lg overflow-hidden cursor-pointer flex-shrink-0"
-            onClick={() => setLightboxIdx(property.images.length)}
+            key={idx}
+            className="h-24 w-1/3 relative rounded-lg overflow-hidden"
+            onClick={() => setLightboxIdx(property.images.length + idx)}
           >
-            <video
-              src={property.video}
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40 text-white flex items-center justify-center text-xs sm:text-sm">
-              📹 Video
+            <video src={vid} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40 text-white flex items-center justify-center">
+              📹
             </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
