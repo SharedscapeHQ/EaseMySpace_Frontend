@@ -1,14 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   FaWifi, FaParking, FaSnowflake, FaTv, FaChair, FaLock, FaPuzzlePiece, FaShower
 } from "react-icons/fa";
+import { FiLock, FiCheckCircle, FiXCircle, FiMapPin } from "react-icons/fi";
 import { FaFire } from "react-icons/fa6";
 import { GiCctvCamera, GiIceCube } from "react-icons/gi";
 import { MdOutlineLocalLaundryService, MdOutlineElevator, MdOutlinePower } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 import BookingCalendar from "./BookingCalendar";
-import { createBooking } from "../../api/userApi";
+import { createBooking, getMyBookings } from "../../api/userApi";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../context/AuthContextV1"; 
 
@@ -75,8 +76,12 @@ function PropertyAmenities({ amenities = [], property }) {
   const [loading, setLoading] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [confirmBooking, setConfirmBooking] = useState(null);
+  const [myBookings, setMyBookings] = useState([]);
 
-  const { user } = useContext(AuthContext); // Get user from global AuthContext
+
+  
+
+  const { user } = useContext(AuthContext); 
   const navigate = useNavigate();
 
   const handleBooking = (dateTime) => {
@@ -87,31 +92,65 @@ function PropertyAmenities({ amenities = [], property }) {
     setConfirmBooking(dateTime);
   };
 
-  const confirmBookingSubmit = async () => {
-    try {
-      setLoading(true);
-      const booking_date = confirmBooking.toISOString().split("T")[0];
-      const booking_time = confirmBooking.toTimeString().slice(0, 5);
+const confirmBookingSubmit = async () => {
+  try {
+    setLoading(true);
+    const booking_date = confirmBooking.toISOString().split("T")[0];
+    const booking_time = confirmBooking.toTimeString().slice(0, 5);
 
-      const res = await createBooking(property.id, booking_date, booking_time);
-      console.log("Booking created:", res);
-      toast.success("Visit scheduled successfully");
-      setConfirmBooking(null);
-    } catch (err) {
-      console.error("Booking failed:", err);
-      toast.error("❌ Booking failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const res = await createBooking(property.id, booking_date, booking_time);
+    toast.success("Visit scheduled successfully");
+
+// ✅ instantly update UI
+setMyBookings((prev) => [
+  ...prev,
+  {
+    property_id: property.id,
+    booking_date,
+    booking_time,
+  },
+]);
+
+setConfirmBooking(null);
+  } catch (err) {
+    console.error("Booking failed:", err.message);
+    // show the backend message
+    toast.error(`${err.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleLoginRedirect = () => {
     const currentPath = window.location.pathname + window.location.search;
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
   };
 
+  
+
   const allAmenities = buildAmenities(property?.amenities, amenities);
   const mobileLimited = allAmenities.slice(0, 6);
+
+  useEffect(() => {
+  if (!user?.id) return;
+
+  const fetchBookings = async () => {
+    try {
+      const bookings = await getMyBookings();
+      // Keep only future bookings for this property
+      const futurePropertyBookings = bookings.filter(
+        (b) => b.property_id === property.id && new Date(b.booking_date) >= new Date()
+      );
+      setMyBookings(futurePropertyBookings);
+    } catch (err) {
+      console.error("Failed to fetch bookings:", err.message);
+    }
+  };
+
+  fetchBookings();
+}, [user?.id, property?.id]);
+
+const existingBooking = myBookings.length > 0 ? myBookings[0] : null;
 
   return (
     <div className="flex flex-col lg:my-3 lg:flex-row gap-6 w-full">
@@ -144,12 +183,59 @@ function PropertyAmenities({ amenities = [], property }) {
       </div>
 
       {/* Booking Calendar */}
-      <div className="flex-1">
-        <BookingCalendar
-          onConfirm={handleBooking}
-          loading={loading}
-        />
-      </div>
+     <div className="flex-1">
+  {existingBooking ? (
+   <div className="bg-white rounded-xl border p-6 shadow-md text-center space-y-3">
+  <h2 className="text-lg font-semibold mb-2 text-indigo-600">Booking Scheduled</h2>
+
+  {/* Date */}
+  <p className="text-gray-700 text-sm">
+    <span className="font-medium">Date:</span>{" "}
+    {new Date(existingBooking.booking_date).toLocaleDateString("en-US", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })}
+  </p>
+
+  {/* Time */}
+  <p className="text-gray-700 text-sm">
+    <span className="font-medium">Time:</span>{" "}
+   {new Date(`1970-01-01T${existingBooking.booking_time}`).toLocaleTimeString("en-US", {
+  hour: "numeric",
+  minute: "2-digit",
+  hour12: true,
+})}
+  </p>
+
+  {/* Pre-visit info */}
+<div className="text-left text-gray-700 text-sm space-y-2 mt-3">
+  <p className="flex items-center gap-2">
+    <FiMapPin className="text-indigo-600" />
+    We'll share the <span className="font-medium">full address & owner contact</span> 1 hr before your visit.
+  </p>
+
+  <p className="flex items-center gap-2">
+    <FiCheckCircle className="text-green-500" />
+    <span className="font-medium">Visit is free</span> no charges ever.
+  </p>
+
+
+  <p className="flex items-center gap-2">
+    <FiXCircle className="text-red-500" />
+    <span className="font-medium">Never pay cash directly.</span> Platform payments = your guarantee.
+  </p>
+</div>
+</div>
+  ) : (
+    <BookingCalendar
+      onConfirm={handleBooking}
+      loading={loading}
+      disabledBookings={myBookings}
+    />
+  )}
+</div>
 
       {/* Login Popup */}
       {showLoginPopup && (

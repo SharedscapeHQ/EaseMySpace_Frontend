@@ -34,7 +34,7 @@ export default function GlobalPopups() {
     const appTimer = setTimeout(() => {
       setShowAppInstall(true);
       sessionStorage.setItem("appInstallPopupShown", "true");
-    }, 15000);
+    }, 20000);
 
     window.__appInstallTimer = appTimer;
   }

@@ -24,12 +24,12 @@ export default function NavbarRightActions() {
   </a>
 </div>
     <div className="hidden lg:inline-block group">
-  <Link
+  {/* <Link
     to="demand-form"
     className="inline-block text-center px-4 py-2 rounded-full lg:text-base text-xs bg-white hover:bg-blue-600 hover:text-white transition-all duration-200"
   >
     Post Requirement
-  </Link>
+  </Link> */}
 </div>
 
 <div className="hidden lg:inline-block group">

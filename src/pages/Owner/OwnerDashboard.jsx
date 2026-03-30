@@ -68,6 +68,9 @@ export default function OwnerDashboard() {
   // Deleted properties state
   const [deletedProperties, setDeletedProperties] = useState([]);
   const [loadingDeletedProps, setLoadingDeletedProps] = useState(false);
+  const [sourceFilter, setSourceFilter] = useState("all");
+const [lookingForFilter, setLookingForFilter] = useState("all");
+const [ageFilter, setAgeFilter] = useState("all");
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -284,34 +287,34 @@ export default function OwnerDashboard() {
     navigate("/");
   };
 
-  const filteredProperties =
-    statusFilter === "all"
-      ? properties
-      : properties.filter(
-          (p) => p.status?.toLowerCase() === statusFilter.toLowerCase(),
-        );
+ const searchedProperties = properties.filter((p) => {
+  const query = searchQuery.toLowerCase();
 
-  const searchedProperties = filteredProperties.filter((p) =>
-    `${p.title} ${p.location} ${p.description || ""}`
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()),
+  return (
+    p.title?.toLowerCase().includes(query) ||
+    p.location?.toLowerCase().includes(query)
   );
+});
 
-  const approved = properties.filter((p) => p.status === "approved");
+const finalProperties = searchedProperties
+  .filter((p) => (statusFilter === "all" ? true : p.status === statusFilter))
+  .filter((p) => (sourceFilter === "all" ? true : p.source === sourceFilter))
+  .filter((p) =>
+    lookingForFilter === "all"
+      ? true
+      : p.looking_for?.toLowerCase() === lookingForFilter
+  )
+  .filter((p) => {
+    if (ageFilter === "all") return true;
 
-  const pieData = [
-    { name: "Approved", value: approved.length, color: "#16a34a" },
-    {
-      name: "Pending",
-      value: properties.filter((p) => p.status === "pending").length,
-      color: "#facc15",
-    },
-    {
-      name: "Rejected",
-      value: properties.filter((p) => p.status === "rejected").length,
-      color: "#dc2626",
-    },
-  ];
+    const createdDate = new Date(p.created_at);
+    const now = new Date();
+
+    const monthsAgo = new Date();
+    monthsAgo.setMonth(now.getMonth() - Number(ageFilter));
+
+    return createdDate <= monthsAgo;
+  });
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -374,34 +377,99 @@ export default function OwnerDashboard() {
                   Properties
                 </h2>
 
-                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-                  <div className="relative w-full sm:w-64">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                      <FiSearch />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Search by title, location..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
-                    />
-                  </div>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="border rounded px-3 py-1"
-                  >
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </div>
+               <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:items-center">
+
+  {/* Search */}
+  <div className="relative w-full sm:w-64">
+    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+      <FiSearch />
+    </span>
+    <input
+      type="text"
+      placeholder="Search by title, location..."
+      value={searchQuery}
+      onChange={(e) => {
+        setSearchQuery(e.target.value);
+        setAgeFilter("all");
+      }}
+      className="pl-10 pr-3 py-1 border border-gray-300 rounded w-full outline-blue-500"
+    />
+  </div>
+
+  {/* Status */}
+  <div className="flex items-center gap-2">
+    <label>Status:</label>
+    <select
+      value={statusFilter}
+      onChange={(e) => {
+        setStatusFilter(e.target.value);
+        setAgeFilter("all");
+      }}
+      className="border rounded px-3 py-1"
+    >
+      <option value="all">All</option>
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+  </div>
+
+  {/* Looking For */}
+  <div className="flex items-center gap-2">
+    <label>Looking For:</label>
+    <select
+      value={lookingForFilter}
+      onChange={(e) => setLookingForFilter(e.target.value)}
+      className="border rounded px-3 py-1"
+    >
+      <option value="all">All</option>
+      <option value="pg">PG</option>
+      <option value="flatmate">Flatmate</option>
+      <option value="vacant">Vacant</option>
+    </select>
+  </div>
+
+  {/* Source */}
+  <div className="flex items-center gap-2">
+    <label>Source:</label>
+    <select
+      value={sourceFilter}
+      onChange={(e) => {
+        setSourceFilter(e.target.value);
+        setAgeFilter("all");
+      }}
+      className="border rounded px-3 py-1"
+    >
+      <option value="all">All</option>
+      <option value="mainwebsite">Main Website</option>
+      <option value="subdomain">Subdomain</option>
+      <option value="app">Mobile App</option>
+    </select>
+  </div>
+
+  {/* Age */}
+  <div className="flex items-center gap-2">
+    <label>Age:</label>
+    <select
+      value={ageFilter}
+      onChange={(e) => setAgeFilter(e.target.value)}
+      className="border rounded px-3 py-1"
+    >
+      <option value="all">All</option>
+      <option value="1">Older than 1 Month</option>
+      <option value="2">Older than 2 Months</option>
+      <option value="3">Older than 3 Months</option>
+      <option value="4">Older than 4 Months</option>
+      <option value="5">Older than 5 Months</option>
+      <option value="6">Older than 6 Months</option>
+    </select>
+  </div>
+
+</div>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {searchedProperties.map((property) => (
+              {finalProperties.map((property) => (
                   <PropertyCard
                     key={property.id}
                     property={property}

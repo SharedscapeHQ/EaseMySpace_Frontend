@@ -127,7 +127,6 @@ export const fetchBookingLimitInfo = async () => {
   }
 };
 
-// Create a new booking
 export const createBooking = async (property_id, booking_date, booking_time) => {
   try {
     const res = await axiosInstance.post("/create-booking", { 
@@ -137,8 +136,11 @@ export const createBooking = async (property_id, booking_date, booking_time) => 
     });
     return res.data;
   } catch (err) {
-    console.error("❌ Error creating booking:", err.response?.data || err.message);
-    throw err;
+    // Check if backend sent a message
+    const msg = err?.response?.data?.msg || err.message || "Unknown error";
+    console.error("❌ Error creating booking:", msg);
+    // Throw the message itself for the frontend
+    throw new Error(msg);
   }
 };
 

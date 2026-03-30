@@ -63,6 +63,7 @@ export default function AdminDashboard() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [ageFilter, setAgeFilter] = useState("all");
+  const [lookingForFilter, setLookingForFilter] = useState("all");
 
   const [editingProperty, setEditingProperty] = useState(null);
   const [removedOccupancies, setRemovedOccupancies] = useState([]);
@@ -299,7 +300,11 @@ export default function AdminDashboard() {
   const finalProperties = searchedProperties
     .filter((p) => (statusFilter === "all" ? true : p.status === statusFilter))
     .filter((p) => (sourceFilter === "all" ? true : p.source === sourceFilter))
-    .filter((p) => {
+    .filter((p) =>
+      lookingForFilter === "all"
+      ? true
+      : p.looking_for?.toLowerCase() === lookingForFilter
+  )   .filter((p) => {
       if (ageFilter === "all") return true;
 
       const createdDate = new Date(p.created_at);
@@ -403,7 +408,7 @@ export default function AdminDashboard() {
 
           {activeTab === "Properties" && (
             <section>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <div className="flex flex-col md:flex-row flex-wrap md:items-center md:justify-between gap-4 mb-6">
                 <div className="flex items-center gap-3">
                   <h2 style={{ fontFamily: "para_font" }} className="text-xl">
                     Properties
@@ -448,6 +453,20 @@ export default function AdminDashboard() {
                       <option value="rejected">Rejected</option>
                     </select>
                   </div>
+
+               <div className="flex items-center gap-2">
+  <label className="text-gray-700 font-medium">Looking For:</label>
+  <select
+    value={lookingForFilter}
+    onChange={(e) => setLookingForFilter(e.target.value)}
+    className="border rounded px-3 py-1"
+  >
+    <option value="all">All</option>
+    <option value="pg">PG</option>
+    <option value="flatmate">Flatmate</option>
+    <option value="vacant">Vacant</option>
+  </select>
+</div>
 
                   {/* Source Filter with Label */}
                   <div className="flex items-center gap-2">
