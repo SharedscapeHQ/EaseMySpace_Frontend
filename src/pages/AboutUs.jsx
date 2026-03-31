@@ -36,7 +36,7 @@ function AboutUs() {
         {/* Meta Keywords */}
         <meta
           name="keywords"
-          content="EaseMySpace, About Us, Our Story, Our Team, Careers, Verified Flatmates, PG in India, Vacant Rooms, Room Rentals, Shared Flats"
+          content="EaseMySpace, About Us, Our Story, Our Team, Careers, Verified Flatmates, PG in India, Vacant Rooms, Room Rentals, Shared Rooms"
         />
 
         {/* Open Graph */}

@@ -13,7 +13,7 @@ import HeroSearchBar from "./HeroSearchBar";
 const cards = [
   { title: "PGs", value: "pg", img: pgImg },
   { title: "Shared rooms", value: "flatmate", img: sharedImg },
-  { title: "Flats", value: "vacant", img: vacantImg },
+  { title: "Vacant Flats", value: "vacant", img: vacantImg },
 ];
 
 function Hero_v2() {
