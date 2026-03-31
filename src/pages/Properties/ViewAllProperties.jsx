@@ -450,7 +450,7 @@ const handleSelectLocation = (description) => {
             >
               <option value="">{filters.looking_for ? "Reset" : "Products"}</option>
               <option value="pg">PG</option>
-              <option value="flatmate">Flatmate</option>
+              <option value="flatmate">Shared rooms</option>
               <option value="vacant">Vacant Flat</option>
             </select>
 

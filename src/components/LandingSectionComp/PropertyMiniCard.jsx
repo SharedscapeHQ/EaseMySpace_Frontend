@@ -10,6 +10,8 @@ export default function PropertyMiniCard({ property }) {
 const lookingForLabel =
   property.looking_for?.toLowerCase() === "pg"
     ? "PG"
+    : property.looking_for?.toLowerCase() === "flatmate"
+    ? "Shared room" 
     : property.looking_for
     ? property.looking_for.charAt(0).toUpperCase() + property.looking_for.slice(1)
     : "-";

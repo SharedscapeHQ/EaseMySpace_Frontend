@@ -1,7 +1,12 @@
-export default function ProductSelect({ name, filters, handleChange, className = "" }) {
+export default function ProductSelect({
+  name,
+  filters,
+  handleChange,
+  className = "",
+}) {
   const opts = [
     ["pg", "PGs"],
-    ["flatmate", "Flatmate"],
+    ["flatmate", "Shared rooms"],
     ["vacant", "Vacant"],
   ];
 

@@ -39,7 +39,7 @@ const PropertyBasicInfo = ({ formData, setFormData }) => {
     { name: "bhk_type", label: "BHK & RK Type", options: bhkOptions, required: true },
     { name: "looking_for", label: "Looking For", options: [
       { label: "Flat", value: "vacant" },
-      { label: "Flatmate", value: "flatmate" },
+      { label: "Shared flat", value: "flatmate" },
       { label: "PGs", value: "pg" },
     ], required: true },
     {
