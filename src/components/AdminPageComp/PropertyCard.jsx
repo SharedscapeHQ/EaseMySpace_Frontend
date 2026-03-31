@@ -7,18 +7,19 @@ export default function PropertyCard({
   onEdit,
   onDelete,
 }) {
-  const sourceLabelMap = {
-    mainwebsite: "Main Website",
-    subdomain: "Subdomain",
-    app: "Mobile App",
-  };
+ const sourceLabelMap = {
+  mainwebsite: "Main Website",
+  subdomain: "Web",   
+  app: "Mobile App",
+  web: "Web",       
+};
 
-  const sourceColorMap = {
-    mainwebsite: "bg-blue-500",
-    subdomain: "bg-yellow-500",
-    app: "bg-purple-600",
-  };
-
+const sourceColorMap = {
+  mainwebsite: "bg-blue-500",
+  subdomain: "bg-teal-500", 
+  app: "bg-purple-600",
+  web: "bg-teal-500",
+};
   const [showConfirm, setShowConfirm] = useState(false);
 
   // Format property created/posted time
