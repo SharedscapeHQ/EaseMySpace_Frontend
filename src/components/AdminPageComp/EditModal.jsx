@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+
 
 export default function EditModal({
   editForm,
@@ -248,6 +250,11 @@ const removeOccupancy = (roomIdx, occIdx) => {
   ];
 
   const handleSave = async () => {
+
+     if (!editForm.display_location || !editForm.display_location.trim()) {
+    toast.error("Display location is required");
+    return;
+  }
     if (isSaving) return;
 
     try {
