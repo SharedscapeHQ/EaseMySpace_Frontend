@@ -316,7 +316,8 @@ const removeOccupancy = (roomIdx, occIdx) => {
                 "select",
                 ["any", "veg", "nonveg", "vegan"],
               ],
-              ["owner_code", "Owner Code"],
+              // ["owner_code", "Owner Code"],
+              ["added_by_email", "Owner Email"],
               ["owner_phone", "Owner Phone"],
               ["bathrooms", "Bathrooms"],
               ["distance_from_station", "Distance from Station"],
@@ -345,9 +346,9 @@ const removeOccupancy = (roomIdx, occIdx) => {
                     name={field}
                     value={editForm[field] || ""}
                     onChange={handleEditChange}
-                    disabled={field === "owner_code"}
+                    disabled={field === "added_by_email"}
                     className={`w-full border px-3 py-2 rounded ${
-                      field === "owner_code"
+                      field === "added_by_email"
                         ? "bg-gray-100 text-gray-500 cursor-not-allowed"
                         : ""
                     }`}
