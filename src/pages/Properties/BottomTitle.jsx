@@ -4,10 +4,16 @@ import { FaTag } from "react-icons/fa";
 function BottomTitle({ property }) {
   if (!property) return null;
 
+  const lookingForMap = {
+    pg: "PG",
+    flatmate: "Shared Room",
+    vacant: "Vacant Flat",
+  };
+
   const lookingFor =
-    property.looking_for?.toLowerCase() === "pg"
-      ? "PG"
-      : property.looking_for;
+    lookingForMap[property.looking_for?.toLowerCase()] ||
+    property.looking_for;
+
 
   return (
     <div className="w-full flex items-start justify-between gap-4">
