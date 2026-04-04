@@ -202,6 +202,10 @@ export default function AdminDashboard() {
           occupancy: p.occupancy,
           price: p.price,
           deposit: p.deposit,
+          locking_options: (p.locking_options || []).map((l) => ({
+    lockin: l.period,       // 👈 IMPORTANT
+    deduction: l.deduction ?? 0,
+  })),
         });
       });
     }

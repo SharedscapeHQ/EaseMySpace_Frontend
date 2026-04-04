@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 
-
 export default function EditModal({
   editForm,
   setEditForm,
@@ -9,8 +8,8 @@ export default function EditModal({
   setEditingProperty,
   handleEditChange,
   handleEditSubmit,
-  removedOccupancies,       
-  setRemovedOccupancies
+  removedOccupancies,
+  setRemovedOccupancies,
 }) {
   if (!editingProperty) return null;
 
@@ -101,22 +100,22 @@ export default function EditModal({
     }));
   };
 
-const removeRoom = (roomIdx) => {
-  const roomToRemove = editForm.pricing[roomIdx];
+  const removeRoom = (roomIdx) => {
+    const roomToRemove = editForm.pricing[roomIdx];
 
-  if (roomToRemove?.occupancies?.length) {
-    const newRemoved = roomToRemove.occupancies.map((occ) => ({
-      room_name: roomToRemove.room_name,
-      occupancy: occ.occupancy,
-    }));
-    setRemovedOccupancies((prevRemoved) => [...prevRemoved, ...newRemoved]);
-  }
+    if (roomToRemove?.occupancies?.length) {
+      const newRemoved = roomToRemove.occupancies.map((occ) => ({
+        room_name: roomToRemove.room_name,
+        occupancy: occ.occupancy,
+      }));
+      setRemovedOccupancies((prevRemoved) => [...prevRemoved, ...newRemoved]);
+    }
 
-  setEditForm((prev) => {
-    const updated = prev.pricing.filter((_, i) => i !== roomIdx);
-    return { ...prev, pricing: updated };
-  });
-};
+    setEditForm((prev) => {
+      const updated = prev.pricing.filter((_, i) => i !== roomIdx);
+      return { ...prev, pricing: updated };
+    });
+  };
 
   const handleRoomNameChange = (roomIdx, value) => {
     setEditForm((prev) => {
@@ -133,39 +132,40 @@ const removeRoom = (roomIdx) => {
         occupancy: "",
         price: "",
         deposit: "",
+        locking_options: [],
       });
       return { ...prev, pricing: updated };
     });
   };
 
-const removeOccupancy = (roomIdx, occIdx) => {
-  // ✅ Read the value BEFORE setEditForm, not inside it
-  const pricing = editForm.pricing || [];
-  const room = pricing[roomIdx];
-  const removedOcc = room?.occupancies?.[occIdx];
+  const removeOccupancy = (roomIdx, occIdx) => {
+    // ✅ Read the value BEFORE setEditForm, not inside it
+    const pricing = editForm.pricing || [];
+    const room = pricing[roomIdx];
+    const removedOcc = room?.occupancies?.[occIdx];
 
-  if (removedOcc?.occupancy) {
-    setRemovedOccupancies((prev) => [
-      ...prev,
-      {
-        room_name: room.room_name,
-        occupancy: removedOcc.occupancy,
-      },
-    ]);
-  }
+    if (removedOcc?.occupancy) {
+      setRemovedOccupancies((prev) => [
+        ...prev,
+        {
+          room_name: room.room_name,
+          occupancy: removedOcc.occupancy,
+        },
+      ]);
+    }
 
-  // Now safely update the form
-  setEditForm((prev) => {
-    const updated = prev.pricing.map((r, rIdx) => {
-      if (rIdx !== roomIdx) return r;
-      return {
-        ...r,
-        occupancies: r.occupancies.filter((_, i) => i !== occIdx),
-      };
+    // Now safely update the form
+    setEditForm((prev) => {
+      const updated = prev.pricing.map((r, rIdx) => {
+        if (rIdx !== roomIdx) return r;
+        return {
+          ...r,
+          occupancies: r.occupancies.filter((_, i) => i !== occIdx),
+        };
+      });
+      return { ...prev, pricing: updated };
     });
-    return { ...prev, pricing: updated };
-  });
-};
+  };
 
   const handleOccupancyChange = (roomIdx, occIdx, field, value) => {
     setEditForm((prev) => {
@@ -174,6 +174,21 @@ const removeOccupancy = (roomIdx, occIdx) => {
         field === "price" || field === "deposit"
           ? value.replace(/[^0-9]/g, "")
           : value;
+      return { ...prev, pricing: updated };
+    });
+  };
+
+  const handleLockingChange = (roomIdx, occIdx, values) => {
+    setEditForm((prev) => {
+      const updated = [...(prev.pricing || [])];
+
+      updated[roomIdx].occupancies[occIdx].locking_options = values.map(
+        (val) => ({
+          period: val,
+          deduction: 0,
+        }),
+      );
+
       return { ...prev, pricing: updated };
     });
   };
@@ -250,11 +265,10 @@ const removeOccupancy = (roomIdx, occIdx) => {
   ];
 
   const handleSave = async () => {
-
-     if (!editForm.display_location || !editForm.display_location.trim()) {
-    toast.error("Display location is required");
-    return;
-  }
+    if (!editForm.display_location || !editForm.display_location.trim()) {
+      toast.error("Display location is required");
+      return;
+    }
     if (isSaving) return;
 
     try {
@@ -354,7 +368,6 @@ const removeOccupancy = (roomIdx, occIdx) => {
                     }`}
                   />
                 )}
-                
               </div>
             ))}
             <div className="mt-4 flex items-center gap-3">
@@ -444,6 +457,90 @@ const removeOccupancy = (roomIdx, occIdx) => {
                     }
                     className="border px-2 py-2 rounded w-32"
                   />
+                {/* 🔽 Lock-in UI BELOW rent & deposit */}
+<div className="w-full mt-2">
+  {(occ.locking_options || []).length > 0 ? (
+    <div className="flex flex-wrap gap-2 items-center">
+      {(occ.locking_options || []).map((lock, idx) => (
+        <div
+          key={idx}
+          className="flex items-center gap-2 border px-3 py-1 rounded-full bg-gray-100"
+        >
+          {/* Dropdown */}
+          <select
+            value={lock.period || lock.lockin}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+
+              setEditForm((prev) => {
+                const updated = [...prev.pricing];
+                updated[roomIdx].occupancies[occIdx].locking_options[idx].period =
+                  val;
+                return { ...prev, pricing: updated };
+              });
+            }}
+            className="bg-transparent text-sm outline-none"
+          >
+            {[3, 6, 9, 11].map((val) => (
+              <option key={val} value={val}>
+                {val} months
+              </option>
+            ))}
+          </select>
+
+          {/* Remove button */}
+          <button
+            onClick={() => {
+              setEditForm((prev) => {
+                const updated = [...prev.pricing];
+                updated[roomIdx].occupancies[occIdx].locking_options =
+                  updated[roomIdx].occupancies[occIdx].locking_options.filter(
+                    (_, i) => i !== idx
+                  );
+                return { ...prev, pricing: updated };
+              });
+            }}
+            className="text-red-500 text-xs"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+
+      {/* Add more */}
+      <button
+        onClick={() => {
+          setEditForm((prev) => {
+            const updated = [...prev.pricing];
+            updated[roomIdx].occupancies[occIdx].locking_options.push({
+              period: 6,
+              deduction: 0,
+            });
+            return { ...prev, pricing: updated };
+          });
+        }}
+        className="text-sm text-blue-600 hover:underline ml-2"
+      >
+        + Add
+      </button>
+    </div>
+  ) : (
+    <button
+      onClick={() => {
+        setEditForm((prev) => {
+          const updated = [...prev.pricing];
+          updated[roomIdx].occupancies[occIdx].locking_options = [
+            { period: 6, deduction: 0 },
+          ];
+          return { ...prev, pricing: updated };
+        });
+      }}
+      className="text-sm text-blue-600 hover:underline"
+    >
+      + Add Lock-in
+    </button>
+  )}
+</div>
                   <button
                     onClick={() => removeOccupancy(roomIdx, occIdx)}
                     className="text-red-500 text-sm hover:underline"
