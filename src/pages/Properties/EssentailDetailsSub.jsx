@@ -325,11 +325,30 @@ export default function EssentialDetailsSub({ property }) {
               </span>
             </div>
           </div>
-          {property.additional_charges && (
-            <span className="text-gray-700 text-sm mt-5 w-full">
-              Additional Charges: {property.additional_charges}
+         {property.additional_charges && (
+  <div className="w-full my-5 bg-gray-50 border border-gray-200 rounded-xl p-4">
+    
+    {/* Header Capsule */}
+    <div className="inline-block mb-3 px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">
+      Additional Charges
+    </div>
+
+    {/* Charges List */}
+    <div className="space-y-2">
+      {property.additional_charges
+        .split(/\d+\./) // split on 1. 2. 3.
+        .filter((item) => item.trim() !== "")
+        .map((charge, idx) => (
+          <div key={idx} className="flex items-start gap-2 text-sm text-gray-700">
+            <span className="text-indigo-600 font-semibold">
+              {idx + 1}.
             </span>
-          )}
+            <span className="leading-snug">{charge.trim()}</span>
+          </div>
+        ))}
+    </div>
+  </div>
+)}
 
           {/* Book Now Button */}
           <button
