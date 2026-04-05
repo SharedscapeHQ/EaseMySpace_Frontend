@@ -160,31 +160,19 @@ export default function RentPaymentModal({
             )}
 
             {/* Locking Period */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
-              <span className="font-medium text-gray-700">Locking Period:</span>
+           <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
+  <span className="font-medium text-gray-700">Locking Period:</span>
 
-              {pricing.locking_options?.length > 0 ? (
-                <select
-                  value={selectedLocking?.period || ""}
-                  onChange={(e) => {
-                    const selected = pricing.locking_options.find(
-                      (opt) => String(opt.period) === e.target.value,
-                    );
-                    setSelectedLocking(selected || null); // keep null if nothing
-                  }}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="">Select locking period (optional)</option>
-                  {pricing.locking_options.map((opt, idx) => (
-                    <option key={idx} value={opt.period}>
-                      {opt.period} months
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <span className="text-gray-400 italic text-sm">Optional</span>
-              )}
-            </div>
+  {pricing.locking_options && pricing.locking_options.length > 0 ? (
+    <span className="text-gray-900">
+      {pricing.locking_options
+        .map((opt) => `${opt.period || "N/A"} months`)
+        .join(", ")}
+    </span>
+  ) : (
+    <span className="text-gray-400 italic text-sm">Optional</span>
+  )}
+</div>
 
             {/* Summary Section */}
             <div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">
@@ -231,7 +219,7 @@ export default function RentPaymentModal({
                     selectedRoom?.room_label,
                     selectedOccupancy,
                   );
-                  onClose(); 
+                  onClose();
                 }}
               />
             </div>

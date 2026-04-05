@@ -102,6 +102,7 @@ export default function EssentialDetailsSub({ property }) {
     filled_count: 0,
     availability: "available",
     locking_options: [],
+    additional_charges: "",
   };
 
   const totalCapacity = getCapacity(currentDataRaw.occupancy);
@@ -169,19 +170,19 @@ export default function EssentialDetailsSub({ property }) {
   };
 
   const handleBookNowClick = () => {
-  if (!user) {
-    setShowLoginPopup(true);
-    return;
-  }
-  setShowMoveInModal(true); // step 1: ask for move-in date
-};
+    if (!user) {
+      setShowLoginPopup(true);
+      return;
+    }
+    setShowMoveInModal(true); // step 1: ask for move-in date
+  };
 
-// callback from MoveInDateModal
-const handleMoveInConfirm = (date) => {
-  setMoveInDate(date);
-  setShowMoveInModal(false);
-  setIsModalOpen(true); // step 2: open rent payment modal
-};
+  // callback from MoveInDateModal
+  const handleMoveInConfirm = (date) => {
+    setMoveInDate(date);
+    setShowMoveInModal(false);
+    setIsModalOpen(true); // step 2: open rent payment modal
+  };
   const handleLoginRedirect = () => {
     const currentPath = window.location.pathname + window.location.search;
     navigate(`/login?redirect=${encodeURIComponent(currentPath)}`);
@@ -192,6 +193,10 @@ const handleMoveInConfirm = (date) => {
       (occupancyOrder[a.occupancy?.toLowerCase()] || 99) -
       (occupancyOrder[b.occupancy?.toLowerCase()] || 99),
   );
+
+  useEffect(() => {
+  console.log("Locking options for selected occupancy:", currentData.locking_options);
+}, [currentData]);
 
   return (
     <>
@@ -294,22 +299,11 @@ const handleMoveInConfirm = (date) => {
             </span>
 
             {currentData.locking_options?.length > 0 ? (
-              <select
-                value={selectedLocking?.period || ""}
-                onChange={(e) => {
-                  const selected = currentData.locking_options.find(
-                    (opt) => opt.period === e.target.value,
-                  );
-                  setSelectedLocking(selected);
-                }}
-                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2664eb]"
-              >
-                {currentData.locking_options.map((opt) => (
-                  <option key={opt.period} value={opt.period}>
-                    {opt.period} Months
-                  </option>
-                ))}
-              </select>
+              <span className="text-sm text-gray-900">
+                {currentData.locking_options
+                  .map((opt) => `${opt.period} Months`)
+                  .join(", ")}
+              </span>
             ) : (
               <span className="text-sm text-gray-400 italic">Optional</span>
             )}
@@ -331,6 +325,11 @@ const handleMoveInConfirm = (date) => {
               </span>
             </div>
           </div>
+          {property.additional_charges && (
+            <span className="text-gray-700 text-sm mt-5 w-full">
+              Additional Charges: {property.additional_charges}
+            </span>
+          )}
 
           {/* Book Now Button */}
           <button
@@ -348,10 +347,10 @@ const handleMoveInConfirm = (date) => {
       </div>
 
       <MoveInDateModal
-  isOpen={showMoveInModal}
-  onClose={() => setShowMoveInModal(false)}
-  onConfirm={handleMoveInConfirm}
-/>
+        isOpen={showMoveInModal}
+        onClose={() => setShowMoveInModal(false)}
+        onConfirm={handleMoveInConfirm}
+      />
 
       {/* Rent Payment Modal */}
       <RentPaymentModal

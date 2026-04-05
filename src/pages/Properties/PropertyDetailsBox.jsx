@@ -40,6 +40,11 @@ export default function PropertyDetailsBox({ property }) {
       label: "Gender Preference",
       value: property.gender || "Unavailable",
     },
+    {
+      icon: <FaHome className="text-gray-400 text-base" />, // you can choose another icon if you like
+      label: "Meals Included",
+      value: property.meals_included ? "Yes" : "No",
+    },
   ];
 
   return (

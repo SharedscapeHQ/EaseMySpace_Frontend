@@ -74,6 +74,8 @@ export default function AdminDashboard() {
     status: "pending",
     is_newly_listed: false,
     newly_listed_position: "",
+    meals_included: false,
+    additional_charges: "",
   });
 
   // Scroll to top on tab change
@@ -203,9 +205,9 @@ export default function AdminDashboard() {
           price: p.price,
           deposit: p.deposit,
           locking_options: (p.locking_options || []).map((l) => ({
-    lockin: l.period,       // 👈 IMPORTANT
-    deduction: l.deduction ?? 0,
-  })),
+            lockin: l.period, // 👈 IMPORTANT
+            deduction: l.deduction ?? 0,
+          })),
         });
       });
     }
@@ -306,9 +308,10 @@ export default function AdminDashboard() {
     .filter((p) => (sourceFilter === "all" ? true : p.source === sourceFilter))
     .filter((p) =>
       lookingForFilter === "all"
-      ? true
-      : p.looking_for?.toLowerCase() === lookingForFilter
-  )   .filter((p) => {
+        ? true
+        : p.looking_for?.toLowerCase() === lookingForFilter,
+    )
+    .filter((p) => {
       if (ageFilter === "all") return true;
 
       const createdDate = new Date(p.created_at);
@@ -319,7 +322,6 @@ export default function AdminDashboard() {
 
       return createdDate <= monthsAgo;
     });
-
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -458,19 +460,21 @@ export default function AdminDashboard() {
                     </select>
                   </div>
 
-               <div className="flex items-center gap-2">
-  <label className="text-gray-700 font-medium">Looking For:</label>
-  <select
-    value={lookingForFilter}
-    onChange={(e) => setLookingForFilter(e.target.value)}
-    className="border rounded px-3 py-1"
-  >
-    <option value="all">All</option>
-    <option value="pg">PG</option>
-    <option value="flatmate">Flatmate</option>
-    <option value="vacant">Vacant</option>
-  </select>
-</div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-gray-700 font-medium">
+                      Looking For:
+                    </label>
+                    <select
+                      value={lookingForFilter}
+                      onChange={(e) => setLookingForFilter(e.target.value)}
+                      className="border rounded px-3 py-1"
+                    >
+                      <option value="all">All</option>
+                      <option value="pg">PG</option>
+                      <option value="flatmate">Flatmate</option>
+                      <option value="vacant">Vacant</option>
+                    </select>
+                  </div>
 
                   {/* Source Filter with Label */}
                   <div className="flex items-center gap-2">
@@ -526,35 +530,35 @@ export default function AdminDashboard() {
 
           {activeTab === "AllBookings" && <BookingSchedule />}
 
-       {activeTab === "NewlyListed" && (
-  <>
-    <FeaturePropertySection
-      properties={properties}
-      markFn={markNewlyListed}
-      fetchProperties={fetchProperties}
-      title="Newly Listed Properties"
-      type="newly_listed"
-    />
+          {activeTab === "NewlyListed" && (
+            <>
+              <FeaturePropertySection
+                properties={properties}
+                markFn={markNewlyListed}
+                fetchProperties={fetchProperties}
+                title="Newly Listed Properties"
+                type="newly_listed"
+              />
 
-    <FeaturePropertySection
-      properties={properties}
-      markFn={markTopPG}
-      fetchProperties={fetchProperties}
-      title="Top PG Properties"
-      type="top_pg"
-    />
-  </>
-)}
+              <FeaturePropertySection
+                properties={properties}
+                markFn={markTopPG}
+                fetchProperties={fetchProperties}
+                title="Top PG Properties"
+                type="top_pg"
+              />
+            </>
+          )}
 
-{activeTab === "TopPG" && (
-  <FeaturePropertySection
-    properties={properties}
-    markFn={markTopPG}
-    fetchProperties={fetchProperties}
-    title="Top PG Properties"
-    type="top_pg"
-  />
-)}
+          {activeTab === "TopPG" && (
+            <FeaturePropertySection
+              properties={properties}
+              markFn={markTopPG}
+              fetchProperties={fetchProperties}
+              title="Top PG Properties"
+              type="top_pg"
+            />
+          )}
 
           {/* pending queries  */}
           {activeTab === "PendingQueries" && (

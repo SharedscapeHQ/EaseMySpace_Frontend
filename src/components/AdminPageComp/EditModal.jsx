@@ -457,90 +457,96 @@ export default function EditModal({
                     }
                     className="border px-2 py-2 rounded w-32"
                   />
-                {/* 🔽 Lock-in UI BELOW rent & deposit */}
-<div className="w-full mt-2">
-  {(occ.locking_options || []).length > 0 ? (
-    <div className="flex flex-wrap gap-2 items-center">
-      {(occ.locking_options || []).map((lock, idx) => (
-        <div
-          key={idx}
-          className="flex items-center gap-2 border px-3 py-1 rounded-full bg-gray-100"
-        >
-          {/* Dropdown */}
-          <select
-            value={lock.period || lock.lockin}
-            onChange={(e) => {
-              const val = Number(e.target.value);
+                  {/* 🔽 Lock-in UI BELOW rent & deposit */}
+                  <div className="w-full mt-2">
+                    {(occ.locking_options || []).length > 0 ? (
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {(occ.locking_options || []).map((lock, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-2 border px-3 py-1 rounded-full bg-gray-100"
+                          >
+                            {/* Dropdown */}
+                            <select
+                              value={lock.period || lock.lockin}
+                              onChange={(e) => {
+                                const val = Number(e.target.value);
 
-              setEditForm((prev) => {
-                const updated = [...prev.pricing];
-                updated[roomIdx].occupancies[occIdx].locking_options[idx].period =
-                  val;
-                return { ...prev, pricing: updated };
-              });
-            }}
-            className="bg-transparent text-sm outline-none"
-          >
-            {[3, 6, 9, 11].map((val) => (
-              <option key={val} value={val}>
-                {val} months
-              </option>
-            ))}
-          </select>
+                                setEditForm((prev) => {
+                                  const updated = [...prev.pricing];
+                                  updated[roomIdx].occupancies[
+                                    occIdx
+                                  ].locking_options[idx].period = val;
+                                  return { ...prev, pricing: updated };
+                                });
+                              }}
+                              className="bg-transparent text-sm outline-none"
+                            >
+                              {[3, 6, 9, 11].map((val) => (
+                                <option key={val} value={val}>
+                                  {val} months
+                                </option>
+                              ))}
+                            </select>
 
-          {/* Remove button */}
-          <button
-            onClick={() => {
-              setEditForm((prev) => {
-                const updated = [...prev.pricing];
-                updated[roomIdx].occupancies[occIdx].locking_options =
-                  updated[roomIdx].occupancies[occIdx].locking_options.filter(
-                    (_, i) => i !== idx
-                  );
-                return { ...prev, pricing: updated };
-              });
-            }}
-            className="text-red-500 text-xs"
-          >
-            ✕
-          </button>
-        </div>
-      ))}
+                            {/* Remove button */}
+                            <button
+                              onClick={() => {
+                                setEditForm((prev) => {
+                                  const updated = [...prev.pricing];
+                                  updated[roomIdx].occupancies[
+                                    occIdx
+                                  ].locking_options = updated[
+                                    roomIdx
+                                  ].occupancies[occIdx].locking_options.filter(
+                                    (_, i) => i !== idx,
+                                  );
+                                  return { ...prev, pricing: updated };
+                                });
+                              }}
+                              className="text-red-500 text-xs"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
 
-      {/* Add more */}
-      <button
-        onClick={() => {
-          setEditForm((prev) => {
-            const updated = [...prev.pricing];
-            updated[roomIdx].occupancies[occIdx].locking_options.push({
-              period: 6,
-              deduction: 0,
-            });
-            return { ...prev, pricing: updated };
-          });
-        }}
-        className="text-sm text-blue-600 hover:underline ml-2"
-      >
-        + Add
-      </button>
-    </div>
-  ) : (
-    <button
-      onClick={() => {
-        setEditForm((prev) => {
-          const updated = [...prev.pricing];
-          updated[roomIdx].occupancies[occIdx].locking_options = [
-            { period: 6, deduction: 0 },
-          ];
-          return { ...prev, pricing: updated };
-        });
-      }}
-      className="text-sm text-blue-600 hover:underline"
-    >
-      + Add Lock-in
-    </button>
-  )}
-</div>
+                        {/* Add more */}
+                        <button
+                          onClick={() => {
+                            setEditForm((prev) => {
+                              const updated = [...prev.pricing];
+                              updated[roomIdx].occupancies[
+                                occIdx
+                              ].locking_options.push({
+                                period: 6,
+                                deduction: 0,
+                              });
+                              return { ...prev, pricing: updated };
+                            });
+                          }}
+                          className="text-sm text-blue-600 hover:underline ml-2"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setEditForm((prev) => {
+                            const updated = [...prev.pricing];
+                            updated[roomIdx].occupancies[
+                              occIdx
+                            ].locking_options = [{ period: 6, deduction: 0 }];
+                            return { ...prev, pricing: updated };
+                          });
+                        }}
+                        className="text-sm text-blue-600 hover:underline"
+                      >
+                        + Add Lock-in
+                      </button>
+                    )}
+                  </div>
                   <button
                     onClick={() => removeOccupancy(roomIdx, occIdx)}
                     className="text-red-500 text-sm hover:underline"
@@ -700,6 +706,42 @@ export default function EditModal({
               <span className="text-gray-700">Hide Owner Phone</span>
             )}
           </label>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="meals_included"
+              checked={!!editForm.meals_included}
+              onChange={(e) =>
+                setEditForm((prev) => ({
+                  ...prev,
+                  meals_included: e.target.checked,
+                }))
+              }
+            />
+            Meal Included
+          </label>
+        </div>
+
+        <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Additional Charges Text */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium mb-1">
+              Additional Charges
+            </label>
+            <input
+              type="text"
+              placeholder="E.g., Parking ₹500, Electricity extra"
+              value={editForm.additional_charges || ""}
+              onChange={(e) =>
+                setEditForm((prev) => ({
+                  ...prev,
+                  additional_charges: e.target.value,
+                }))
+              }
+              className="border px-3 py-2 rounded w-full"
+            />
+          </div>
         </div>
 
         {/* === Main Images Section === */}
