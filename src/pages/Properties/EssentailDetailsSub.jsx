@@ -330,7 +330,7 @@ export default function EssentialDetailsSub({ property }) {
     
     {/* Header Capsule */}
     <div className="inline-block mb-3 px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">
-      Additional Charges
+      Additional Charges (Charged by owner) 
     </div>
 
     {/* Charges List */}
