@@ -255,6 +255,27 @@ export default function AdminDashboard() {
         removed_occupancies: removedOccupancies,
       };
 
+      updateData.pricing = (editForm.pricing || []).map((room) => ({
+  ...room,
+  occupancies: (room.occupancies || []).map((occ) => ({
+    ...occ,
+
+    // ✅ ONLY send locking if it exists
+    ...(occ.locking_options && occ.locking_options.length > 0
+      ? {
+          locking_options: occ.locking_options.map((lock) => ({
+            period: lock.period || lock.lockin,
+
+            // ✅ ONLY include deduction if it already exists
+            ...(lock.deduction !== undefined && lock.deduction !== null
+              ? { deduction: lock.deduction }
+              : {}),
+          })),
+        }
+      : {}), 
+  })),
+}));
+
       if (
         editForm.is_newly_listed &&
         updateData.newly_listed_position !== null
