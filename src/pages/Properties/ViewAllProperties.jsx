@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 
 // Components
 import PropertyCard from "../../components/ViewAllPropertiesSectionComp/PropertyCard.jsx";
+import PropertyCardMobile from "../../components/ViewAllPropertiesSectionComp/PropertyCardMobile.jsx";
 import Pagination from "../../components/ViewAllPropertiesSectionComp/Pagination.jsx";
 import SalesPersonCard from "../../components/ViewAllPropertiesSectionComp/SalesPersonCard.jsx";
 import PropertyCardSkeleton from "../../components/ViewAllPropertiesSectionComp/PropertyCardSkeleton.jsx";
@@ -89,6 +90,8 @@ export default function ViewAllProperties() {
   const autocompleteServiceRef = React.useRef(null);
 const sessionTokenRef = React.useRef(null);
 const [locationSuggestions, setLocationSuggestions] = useState([]);
+const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
 
 
   const [filters, setFilters] = useState({
@@ -228,6 +231,12 @@ const handleSelectLocation = (description) => {
     setFiltered(applyFiltersSort(properties, filters, sort));
     setCurrentPage(1);
   }, [filters, sort, properties]);
+
+  useEffect(() => {
+  const handleResize = () => setIsMobile(window.innerWidth < 1024);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   return (
     <>
@@ -594,26 +603,26 @@ const handleSelectLocation = (description) => {
     </p>
   ) : (
 <div className="flex flex-wrap justify-center lg:justify-start gap-10">
-      {paginatedProperties.map((p, index) => (
-        <React.Fragment key={p.id}>
-          <div className="flex-shrink-0">
-            <PropertyCard p={p} />
-          </div>
+  {paginatedProperties.map((p, index) => (
+    <React.Fragment key={p.id}>
+      <div className="flex-shrink-0">
+        {isMobile ? <PropertyCardMobile p={p} /> : <PropertyCard p={p} />}
+      </div>
 
-          {/* SalesPersonCard Placement */}
-          {index === 8 && (
-            <div className="hidden lg:block flex-shrink-0">
-              <SalesPersonCard />
-            </div>
-          )}
-          {index === 2 && (
-            <div className="block lg:hidden flex-shrink-0">
-              <SalesPersonCard />
-            </div>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
+      {/* SalesPersonCard Placement */}
+      {index === 8 && !isMobile && (
+        <div className="flex-shrink-0">
+          <SalesPersonCard />
+        </div>
+      )}
+      {index === 2 && isMobile && (
+        <div className="flex-shrink-0">
+          <SalesPersonCard />
+        </div>
+      )}
+    </React.Fragment>
+  ))}
+</div>
   )}
 
   {/* Post Requirements Box */}
