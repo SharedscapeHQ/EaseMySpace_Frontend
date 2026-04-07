@@ -74,7 +74,7 @@ const occupancyText = p.occupancies?.length > 0
 return (
   <div className="bg-white rounded-[18px] overflow-hidden shadow-sm border border-zinc-100 
                   hover:shadow-md transition-shadow duration-300 
-                  w-full max-w-[22rem] mx-2">
+                  w-full max-w-xs mx-2">
 
     {/* IMAGE SECTION */}
     <div 
@@ -230,7 +230,7 @@ return (
           </div>
 
           <span className="text-[10px] text-zinc-400">
-            {timeAgo(p.created_at || new Date())}
+           Listed {timeAgo(p.created_at || new Date())}
           </span>
         </div>
 
