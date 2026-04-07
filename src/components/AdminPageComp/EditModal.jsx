@@ -296,6 +296,7 @@ export default function EditModal({
               ["location", "Location"],
               ["pincode", "Pincode"],
               ["display_location", "Display Location"],
+              ["commission_percent", "Commission %"],
               [
                 "status",
                 "Status",

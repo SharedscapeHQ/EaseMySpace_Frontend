@@ -240,6 +240,10 @@ export default function AdminDashboard() {
     try {
       const updateData = {
         ...editForm,
+        commission_percent:
+          editForm.commission_percent === ""
+            ? null
+            : Number(editForm.commission_percent),
         deposit: editForm.deposit === "" ? null : Number(editForm.deposit),
         price: editForm.price === "" ? null : Number(editForm.price),
         newly_listed_position: editForm.is_newly_listed
@@ -256,25 +260,25 @@ export default function AdminDashboard() {
       };
 
       updateData.pricing = (editForm.pricing || []).map((room) => ({
-  ...room,
-  occupancies: (room.occupancies || []).map((occ) => ({
-    ...occ,
+        ...room,
+        occupancies: (room.occupancies || []).map((occ) => ({
+          ...occ,
 
-    // ✅ ONLY send locking if it exists
-    ...(occ.locking_options && occ.locking_options.length > 0
-      ? {
-          locking_options: occ.locking_options.map((lock) => ({
-            period: lock.period || lock.lockin,
+          // ✅ ONLY send locking if it exists
+          ...(occ.locking_options && occ.locking_options.length > 0
+            ? {
+                locking_options: occ.locking_options.map((lock) => ({
+                  period: lock.period || lock.lockin,
 
-            // ✅ ONLY include deduction if it already exists
-            ...(lock.deduction !== undefined && lock.deduction !== null
-              ? { deduction: lock.deduction }
-              : {}),
-          })),
-        }
-      : {}), 
-  })),
-}));
+                  // ✅ ONLY include deduction if it already exists
+                  ...(lock.deduction !== undefined && lock.deduction !== null
+                    ? { deduction: lock.deduction }
+                    : {}),
+                })),
+              }
+            : {}),
+        })),
+      }));
 
       if (
         editForm.is_newly_listed &&
