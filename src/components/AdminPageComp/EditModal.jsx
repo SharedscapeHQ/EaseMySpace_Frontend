@@ -482,11 +482,13 @@ export default function EditModal({
                               }}
                               className="bg-transparent text-sm outline-none"
                             >
-                              {[3, 6, 9, 11].map((val) => (
-                                <option key={val} value={val}>
-                                  {val} months
-                                </option>
-                              ))}
+                              {Array.from({ length: 12 }, (_, i) => i + 1).map(
+                                (val) => (
+                                  <option key={val} value={val}>
+                                    {val} month{val > 1 ? "s" : ""}
+                                  </option>
+                                ),
+                              )}
                             </select>
 
                             {/* Remove button */}

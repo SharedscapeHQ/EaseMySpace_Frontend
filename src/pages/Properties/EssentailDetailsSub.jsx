@@ -194,9 +194,6 @@ export default function EssentialDetailsSub({ property }) {
       (occupancyOrder[b.occupancy?.toLowerCase()] || 99),
   );
 
-  useEffect(() => {
-  console.log("Locking options for selected occupancy:", currentData.locking_options);
-}, [currentData]);
 
   return (
     <>

@@ -15,7 +15,6 @@ import PropertyCardSkeleton from "../../components/ViewAllPropertiesSectionComp/
 
 import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import Footer from "../../components/Footer.jsx";
-import DummyCarousel from "../../components/ViewAllPropertiesSectionComp/DummyCarousel.jsx";
 
 // --- helpers ---
 const parseImages = (raw) =>

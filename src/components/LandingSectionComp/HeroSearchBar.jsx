@@ -274,7 +274,6 @@ export default function HeroSearchBar() {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES_API_KEY}&libraries=places`;
     script.async = true;
     script.onload = () => {
-      console.log("Google script loaded");
       initAutocomplete();
     };
     document.body.appendChild(script);

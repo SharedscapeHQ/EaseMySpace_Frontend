@@ -87,7 +87,6 @@ useEffect(() => {
       const res = await uploadKycDocs(formData);
       toast.success("KYC submitted successfully");
       setSubmitted(true);
-      console.log("Uploaded URLs:", res.data.uploadedUrls);
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Submission failed");

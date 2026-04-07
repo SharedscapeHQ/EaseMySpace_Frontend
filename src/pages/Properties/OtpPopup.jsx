@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"; 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { sendOtp, verifyOtp } from "../../api/mobileAuthApi";
 import { useContext } from "react";
@@ -92,148 +92,143 @@ const verifyOtpHandler = async () => {
   }
 };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-      <div className="relative bg-white w-full max-w-lg rounded-3xl p-8 shadow-2xl flex flex-col gap-6">
-        {/* Top bar */}
-        <div className="relative flex items-center">
-          <button
-            onClick={onClose}
-            className="absolute left-0 text-2xl text-gray-400 hover:text-gray-600"
-          >
-            ×
-          </button>
-          <span className="mx-auto text-sm font-medium text-gray-500">
-            Login / Signup
-          </span>
-        </div>
+return (
+  <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center px-3">
+    
+    <div className="relative bg-white w-full max-w-md sm:max-w-lg 
+                    rounded-2xl sm:rounded-3xl 
+                    p-4 sm:p-8 shadow-2xl flex flex-col gap-4 sm:gap-6">
 
-        <div className="w-full h-px bg-gray-200" />
-
-        <h3 className="text-2xl  text-gray-900 text-left">
-          Welcome to EaseMySpace 
-        </h3>
-
-        {!otpSent ? (
-          <>
-            <input
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(formatName(e.target.value))}
-              className="w-full border rounded-xl px-4 py-3 focus:outline-none"
-            />
-
-            <input
-              placeholder="Mobile Number"
-              value={phone}
-              maxLength={10}
-              onChange={(e) =>
-                /^\d*$/.test(e.target.value) && setPhone(e.target.value)
-              }
-              className="w-full border rounded-xl px-4 py-3 focus:outline-none"
-            />
-
-            <div className="flex items-center gap-2">
-      <input
-        type="checkbox"
-        id="consent"
-        checked={consentChecked}
-        onChange={(e) => setConsentChecked(e.target.checked)}
-        className="w-4 h-4"
-      />
-      <label htmlFor="consent" className="text-sm text-gray-600">
-        I agree to the{" "}
-        <a
-          href="/privacy-policy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
+      {/* Top bar */}
+      <div className="relative flex items-center">
+        <button
+          onClick={onClose}
+          className="absolute left-0 text-xl sm:text-2xl text-gray-400 hover:text-gray-600"
         >
-          Privacy Policy
-        </a>
-      </label>
-    </div>
+          ×
+        </button>
+        <span className="mx-auto text-xs sm:text-sm font-medium text-gray-500">
+          Login / Signup
+        </span>
+      </div>
 
-            <p className="text-xs text-gray-500 leading-relaxed">
-              We will send an OTP to your WhatsApp number. Please ensure this
-              number is registered on WhatsApp. Do not share OTP with anyone.{" "}
-              <a href="/privacy-policy" className="text-blue-600 hover:underline">
+      <div className="w-full h-px bg-gray-200" />
+
+      <h3 className="text-lg sm:text-2xl text-gray-900 text-left">
+        Welcome to EaseMySpace
+      </h3>
+
+      {!otpSent ? (
+        <>
+          <input
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(formatName(e.target.value))}
+            className="w-full border rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none"
+          />
+
+          <input
+            placeholder="Mobile Number"
+            value={phone}
+            maxLength={10}
+            onChange={(e) =>
+              /^\d*$/.test(e.target.value) && setPhone(e.target.value)
+            }
+            className="w-full border rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none"
+          />
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="consent"
+              checked={consentChecked}
+              onChange={(e) => setConsentChecked(e.target.checked)}
+              className="w-4 h-4"
+            />
+            <label htmlFor="consent" className="text-xs sm:text-sm text-gray-600">
+              I agree to the{" "}
+              <a
+                href="/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
                 Privacy Policy
               </a>
-            </p>
+            </label>
+          </div>
+
+          <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed">
+            We will send an OTP to your WhatsApp number. Please ensure this
+            number is registered on WhatsApp. Do not share OTP with anyone.{" "}
+            <a href="/privacy-policy" className="text-blue-600 hover:underline">
+              Privacy Policy
+            </a>
+          </p>
 
           <button
-  onClick={sendOtpHandler}
-  disabled={loading}
-  className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
->
-  {loading ? "Sending OTP..." : "Continue"}
-</button>
+            onClick={sendOtpHandler}
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm font-medium hover:bg-blue-700 transition"
+          >
+            {loading ? "Sending OTP..." : "Continue"}
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="text-xs sm:text-sm text-gray-600">
+            We have sent a 4-digit OTP on your WhatsApp number. Please check.
+          </p>
 
-
-
-
-          </>
-        ) : (
-          <>
-            <p className="text-sm text-gray-600">
-              We have sent a 4-digit OTP on your WhatsApp number. Please check.
-            </p>
-
-            <input
-              placeholder="Enter OTP"
-              value={otp}
-              maxLength={4}
-              onChange={(e) =>
-                /^\d*$/.test(e.target.value) && setOtp(e.target.value)
-              }
-              className="w-full border rounded-xl px-4 py-3 focus:outline-none"
-            />
-
-           
-            <button
-              onClick={verifyOtpHandler}
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
-            >
-              {loading ? "Verifying..." : "Verify OTP"}
-            </button>
+          <input
+            placeholder="Enter OTP"
+            value={otp}
+            maxLength={4}
+            onChange={(e) =>
+              /^\d*$/.test(e.target.value) && setOtp(e.target.value)
+            }
+            className="w-full border rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none"
+          />
 
           <button
-  disabled={resendTimer > 0}
-  onClick={sendOtpHandler}
-  className="text-sm text-blue-600 self-end disabled:text-gray-400"
->
-  {resendTimer ? `Resend in ${resendTimer}s` : "Resend OTP"}
-</button>
+            onClick={verifyOtpHandler}
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm font-medium hover:bg-blue-700 transition"
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
 
-          </>
-        )}
+          <button
+            disabled={resendTimer > 0}
+            onClick={sendOtpHandler}
+            className="text-xs sm:text-sm text-blue-600 self-end disabled:text-gray-400"
+          >
+            {resendTimer ? `Resend in ${resendTimer}s` : "Resend OTP"}
+          </button>
+        </>
+      )}
 
-        <div className="text-center text-gray-400">——— OR ———</div>
+      <div className="text-center text-gray-400 text-xs sm:text-sm">
+        ——— OR ———
+      </div>
 
-        {/* Improved Login/Register Links */}
-        <div className="text-center text-sm text-gray-600 space-y-2">
-          <div>
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-blue-600  hover:underline"
-            >
-              Login
-            </Link>
-          </div>
-          <div>
-            <Link
-              to="/register"
-              className="text-blue-600  hover:underline"
-              >
-              Register
-            </Link>
-              {" "}with full details?
-          </div>
+      {/* Links */}
+      <div className="text-center text-xs sm:text-sm text-gray-600 space-y-1 sm:space-y-2">
+        <div>
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </div>
+        <div>
+          <Link to="/register" className="text-blue-600 hover:underline">
+            Register
+          </Link>{" "}
+          with full details?
         </div>
       </div>
+
     </div>
-  );
+  </div>
+);
 }
