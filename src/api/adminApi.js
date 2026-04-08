@@ -184,4 +184,18 @@ export const getUserKYCDocs = (userId) => {
   return adminAxios.get(`/kyc-docs/${userId}`);
 };
 
+export const getAllUsersServiceFee = () => {
+  return adminAxios.get("/service-fee/users/service-fee");
+};
+
+// 🔹 PATCH update single user's service fee
+export const updateUserServiceFee = (userId, serviceFee) => {
+  return adminAxios.patch(`/service-fee/users/${userId}/service-fee`, { serviceFee });
+};
+
+// 🔹 PATCH update all users service fee (except custom)
+export const updateAllServiceFees = (serviceFee) => {
+  return adminAxios.patch("/service-fee/users/service-fee", { serviceFee });
+};
+
 

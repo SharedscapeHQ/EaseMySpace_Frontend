@@ -1,17 +1,48 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import AdminKycUploadModal from "./AdminKycUploadModal";
 import AdminKycViewModal from "./AdminKycViewModal";
-import { adminUploadKycForm, getUserKYCDocs } from "../../api/adminApi";
+import {
+  adminUploadKycForm,
+  getUserKYCDocs,
+  getAllUsersServiceFee,
+  updateUserServiceFee,
+  updateAllServiceFees,
+} from "../../api/adminApi";
 
 export default function UsersTable({ users }) {
-  const [modalUser, setModalUser] = useState(null); 
-  const [viewUser, setViewUser] = useState(null);   
+  const [modalUser, setModalUser] = useState(null);
+  const [viewUser, setViewUser] = useState(null);
   const [showKycModal, setShowKycModal] = useState(false);
   const [showKycViewModal, setShowKycViewModal] = useState(false);
   const [selectedKycData, setSelectedKycData] = useState(null);
   const [search, setSearch] = useState("");
   const [showKycUploaded, setShowKycUploaded] = useState(false);
 
+  // --- Service Fee States ---
+  const [serviceFees, setServiceFees] = useState({}); // { userId: fee }
+  const [allServiceFee, setAllServiceFee] = useState("");
+
+  // --- Fetch initial service fees ---
+ useEffect(() => {
+  const fetchFees = async () => {
+    try {
+      const res = await getAllUsersServiceFee();
+
+      const fees = {};
+      res.data.data.forEach((u) => {
+        // Use service_fee_percent from backend
+        fees[u.id] = u.service_fee_percent ? Number(u.service_fee_percent) : 0;
+      });
+
+      setServiceFees(fees);
+    } catch (err) {
+      console.error("Failed to fetch service fees", err);
+    }
+  };
+  fetchFees();
+}, [users]);
+
+  // --- Filter users based on search and KYC ---
   const filteredUsers = useMemo(() => {
     let filtered = users;
     if (search.trim()) {
@@ -31,6 +62,7 @@ export default function UsersTable({ users }) {
     return filtered;
   }, [users, search, showKycUploaded]);
 
+  // --- KYC Handlers ---
   const handleUploadKyc = (user) => {
     setModalUser(user);
     setShowKycModal(true);
@@ -57,9 +89,9 @@ export default function UsersTable({ users }) {
 
   const handleViewKyc = async (user) => {
     try {
-      const res = await getUserKYCDocs(user.id); // ✅ use adminAxios helper
-      setSelectedKycData(res.data.data); // adjust based on your API
-      setViewUser(user);                 // set the correct user for view
+      const res = await getUserKYCDocs(user.id);
+      setSelectedKycData(res.data.data);
+      setViewUser(user);
       setShowKycViewModal(true);
     } catch (err) {
       console.error(err);
@@ -67,9 +99,45 @@ export default function UsersTable({ users }) {
     }
   };
 
+  // --- Service Fee Handlers ---
+  const handleUpdateUserFee = async (userId) => {
+    const fee = Number(serviceFees[userId]);
+    if (isNaN(fee) || fee < 0 || fee > 100) {
+      alert("Service fee must be a number between 0 and 100");
+      return;
+    }
+    try {
+      await updateUserServiceFee(userId, fee);
+      alert("Service fee updated successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update service fee");
+    }
+  };
+
+  const handleUpdateAllFees = async () => {
+    const fee = Number(allServiceFee);
+    if (isNaN(fee) || fee < 0 || fee > 100) {
+      alert("Service fee must be a number between 0 and 100");
+      return;
+    }
+    try {
+      await updateAllServiceFees(fee);
+      alert("All service fees updated!");
+      const updatedFees = {};
+      filteredUsers.forEach((u) => {
+        updatedFees[u.id] = fee;
+      });
+      setServiceFees(updatedFees);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update all service fees");
+    }
+  };
+
   return (
     <div>
-      {/* Search + Filter */}
+      {/* Search + Filter + Service Fee All */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
         <input
           type="text"
@@ -87,6 +155,23 @@ export default function UsersTable({ users }) {
           />
           Show only users with KYC uploaded
         </label>
+        <div className="flex items-center gap-2">
+          <input
+            type="number"
+            placeholder="Service fee % for all"
+            value={allServiceFee}
+            min={0}
+            max={100}
+            onChange={(e) => setAllServiceFee(e.target.value)}
+            className="w-32 border border-gray-300 rounded-lg px-2 py-1 text-sm"
+          />
+          <button
+            onClick={handleUpdateAllFees}
+            className="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 text-sm"
+          >
+            Update All
+          </button>
+        </div>
       </div>
 
       {filteredUsers.length === 0 ? (
@@ -100,6 +185,7 @@ export default function UsersTable({ users }) {
                 <th className="px-3 py-2 text-indigo-700 uppercase">Contact</th>
                 <th className="px-3 py-2 text-indigo-700 uppercase">Referred By</th>
                 <th className="px-3 py-2 text-indigo-700 uppercase">KYC</th>
+                <th className="px-3 py-2 text-indigo-700 uppercase">Service Fee %</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -137,6 +223,27 @@ export default function UsersTable({ users }) {
                         Upload
                       </button>
                     )}
+                  </td>
+                  <td className="px-3 py-2 text-sm flex items-center gap-2">
+                    <input
+                      type="number"
+                      value={serviceFees[u.id] ?? 0}
+                      min={0}
+                      max={100}
+                      onChange={(e) => {
+                        let val = Number(e.target.value);
+                        if (val < 0) val = 0;
+                        if (val > 100) val = 100;
+                        setServiceFees({ ...serviceFees, [u.id]: val });
+                      }}
+                      className="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
+                    />
+                    <button
+                      onClick={() => handleUpdateUserFee(u.id)}
+                      className="bg-indigo-600 text-white px-2 py-0.5 rounded hover:bg-indigo-700 text-xs"
+                    >
+                      Update
+                    </button>
                   </td>
                 </tr>
               ))}

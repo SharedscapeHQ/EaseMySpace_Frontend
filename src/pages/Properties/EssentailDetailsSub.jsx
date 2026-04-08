@@ -377,6 +377,8 @@ export default function EssentialDetailsSub({ property }) {
         displayedRent={displayedRent}
         moveInDate={moveInDate}
         onPaymentSuccess={handlePaymentSuccess}
+        selectedRoom={selected} 
+  selectedOccupancy={selected.occupancy} 
       />
 
       {/* Login Popup */}

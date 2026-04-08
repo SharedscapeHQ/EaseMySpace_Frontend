@@ -1,2 +1,4 @@
-export const SERVICE_CHARGE = 1599; 
-export const getGst = (charge = SERVICE_CHARGE) => Number((charge * 0.18).toFixed(2));
+export const getGst = (charge) => {
+  if (!charge || charge <= 0) return 0;
+  return Number((charge * 0.18).toFixed(2));
+};

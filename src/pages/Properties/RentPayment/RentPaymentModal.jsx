@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineClose } from "react-icons/ai";
 import RentPayBtn from "./RentPayBtn";
-import { SERVICE_CHARGE, getGst } from "./RentPayHelpers";
+import { getGst } from "./RentPayHelpers";
+import { getCurrentUser } from "../../../api/authAPI";
 
 export default function RentPaymentModal({
   isOpen,
@@ -11,10 +12,26 @@ export default function RentPaymentModal({
   onPaymentSuccess,
   selectedLocking: parentLocking,
   moveInDate,
+  selectedRoom: initialRoom,
+  selectedOccupancy: initialOccupancy,
 }) {
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedOccupancy, setSelectedOccupancy] = useState("");
+const [selectedRoom, setSelectedRoom] = useState(initialRoom || null);
+  const [selectedOccupancy, setSelectedOccupancy] = useState(initialOccupancy || "");
+  
   const [selectedLocking, setSelectedLocking] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        setUser(res.user || res);
+      } catch (err) {
+        console.error("Failed to fetch user", err);
+      }
+    };
+    fetchUser();
+  }, []);
   const [pricing, setPricing] = useState({
     rent: 0,
     deposit: 0,
@@ -42,14 +59,18 @@ export default function RentPaymentModal({
       ];
 
   // Initialize defaults
-  useEffect(() => {
-    if (!property || !property.pricingOptions?.length) return;
-    const defaultRoom = property.pricingOptions[0];
-    const defaultOcc = defaultRoom.occupancies[0];
-    setSelectedRoom(defaultRoom);
-    setSelectedOccupancy(defaultOcc?.occupancy || "N/A");
-    setSelectedLocking(parentLocking || null);
-  }, [property, parentLocking]);
+ useEffect(() => {
+  if (!property?.pricingOptions?.length) return;
+
+  const defaultRoom = initialRoom || property.pricingOptions[0];
+  const defaultOcc = initialOccupancy
+    ? defaultRoom.occupancies.find(o => o.occupancy === initialOccupancy)
+    : defaultRoom.occupancies[0];
+
+  setSelectedRoom(defaultRoom);
+  setSelectedOccupancy(defaultOcc?.occupancy || "N/A");
+  setSelectedLocking(parentLocking || null);
+}, [property, initialRoom, initialOccupancy, parentLocking]);
 
   // Update pricing when room or occupancy changes
   useEffect(() => {
@@ -74,8 +95,9 @@ export default function RentPaymentModal({
     setDisplayedRent(baseRent - deduction > 0 ? baseRent - deduction : 0);
   }, [pricing, selectedLocking]);
 
-  const gst = getGst(SERVICE_CHARGE);
-  const totalPayable = displayedRent + pricing.deposit + SERVICE_CHARGE + gst;
+const serviceFee = displayedRent * ((user?.service_fee_percent || 15) / 100);
+const gst = getGst(serviceFee);
+const totalPayable = displayedRent + pricing.deposit + serviceFee + gst;
 
   return (
     <AnimatePresence>
@@ -160,19 +182,19 @@ export default function RentPaymentModal({
             )}
 
             {/* Locking Period */}
-           <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
-  <span className="font-medium text-gray-700">Locking Period:</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 mb-4">
+              <span className="font-medium text-gray-700">Locking Period:</span>
 
-  {pricing.locking_options && pricing.locking_options.length > 0 ? (
-    <span className="text-gray-900">
-      {pricing.locking_options
-        .map((opt) => `${opt.period || "N/A"} months`)
-        .join(", ")}
-    </span>
-  ) : (
-    <span className="text-gray-400 italic text-sm">Optional</span>
-  )}
-</div>
+              {pricing.locking_options && pricing.locking_options.length > 0 ? (
+                <span className="text-gray-900">
+                  {pricing.locking_options
+                    .map((opt) => `${opt.period || "N/A"} months`)
+                    .join(", ")}
+                </span>
+              ) : (
+                <span className="text-gray-400 italic text-sm">Optional</span>
+              )}
+            </div>
 
             {/* Summary Section */}
             <div className="mt-3 bg-blue-50 rounded-xl p-4 text-center space-y-1">
@@ -183,10 +205,10 @@ export default function RentPaymentModal({
                 Deposit: ₹{pricing.deposit.toLocaleString()}
               </p>
               <hr className="my-2 border-gray-300" />
-              <p className="text-sm text-gray-700">
-                Service Fee: ₹{SERVICE_CHARGE.toLocaleString()}{" "}
-                <span className="text-xs text-gray-500">(one-time)</span>
-              </p>
+             <p className="text-sm text-gray-700">
+  Service Fee ({user?.service_fee_percent || 0}%): ₹{serviceFee.toLocaleString()}{" "}
+  <span className="text-xs text-gray-500">(one-time)</span>
+</p>
               <p className="text-sm text-gray-700">
                 GST (18%): ₹{gst.toFixed(2)}
               </p>
