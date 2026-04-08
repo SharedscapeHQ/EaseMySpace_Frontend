@@ -3,6 +3,8 @@ import LikeButton from "./LikeButton";
 
 export default function PropertyMiniCard({ property }) {
 
+  console.log("Property object:", property);
+
   
   const img = property.bedroom_image || null;
   const displayLocation = property.display_location || "Mumbai, Maharashtra";
@@ -15,6 +17,17 @@ const lookingForLabel =
     : property.looking_for
     ? property.looking_for.charAt(0).toUpperCase() + property.looking_for.slice(1)
     : "-";
+
+    const genderLabel =
+  property.gender?.toLowerCase() === "male"
+    ? "Male"
+    : property.gender?.toLowerCase() === "female"
+    ? "Female"
+    : property.gender
+    ? property.gender.charAt(0).toUpperCase() + property.gender.slice(1)
+    : "-";
+
+    console.log("Gender label:", genderLabel);
 
   return (
     <div
@@ -72,7 +85,7 @@ const lookingForLabel =
 
         {/* BHK | Looking For */}
         <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
-         {property.bhk_type || "-"} | {lookingForLabel}
+         {property.bhk_type || "-"} | {lookingForLabel} | {genderLabel}
         </div>
 
         {/* Rent | Deposit */}
