@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AiOutlineClose } from "react-icons/ai";
 import RentPayBtn from "./RentPayBtn";
 import { getGst } from "./RentPayHelpers";
-import { getCurrentUser } from "../../../api/authAPI";
+import { getCurrentUser } from "../../../api/authApi";
 
 export default function RentPaymentModal({
   isOpen,
