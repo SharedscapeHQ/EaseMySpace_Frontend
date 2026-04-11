@@ -58,7 +58,7 @@ function Hero_v2() {
       style={{ fontFamily: "universal_font" }}
       className="lg:block hidden mt-5 text-[16px] lg:text-base leading-[1.7] text-slate-600 dark:text-zinc-400"
     >
-      Find verified flatmates, PGs & flats with zero brokerage.
+      Find verified flatmates, PGs & flats with zero brokerage
      
     </p>
 
