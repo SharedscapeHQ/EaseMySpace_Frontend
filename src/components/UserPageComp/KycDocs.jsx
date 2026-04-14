@@ -15,37 +15,53 @@ export default function KycVerification() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [allDocsAvailable, setAllDocsAvailable] = useState(false);
 
-useEffect(() => {
-  const fetchKycDocs = async () => {
-    try {
-      const res = await getKycDocs();
-      const { kycData } = res.data;
+  useEffect(() => {
+    const fetchKycDocs = async () => {
+      try {
+        const res = await getKycDocs();
+        const { kycData } = res.data;
 
-      if (kycData) {
-        const { aadhaar_front, aadhaar_back, pan_card, passport_photo, work_location } = kycData;
+        if (kycData) {
+          const {
+            aadhaar_front,
+            aadhaar_back,
+            pan_card,
+            passport_photo,
+            work_location,
+          } = kycData;
 
-        setWorkLocation(work_location || "");
+          setWorkLocation(work_location || "");
 
-        setFiles({
-          aadhaarFront: aadhaar_front ? { name: "Uploaded", preview: aadhaar_front } : null,
-          aadhaarBack: aadhaar_back ? { name: "Uploaded", preview: aadhaar_back } : null,
-          panCard: pan_card ? { name: "Uploaded", preview: pan_card } : null,
-          passportPhoto: passport_photo ? { name: "Uploaded", preview: passport_photo } : null,
-        });
+          setFiles({
+            aadhaarFront: aadhaar_front
+              ? { name: "Uploaded", preview: aadhaar_front }
+              : null,
+            aadhaarBack: aadhaar_back
+              ? { name: "Uploaded", preview: aadhaar_back }
+              : null,
+            panCard: pan_card
+              ? { name: "Uploaded", preview: pan_card }
+              : null,
+            passportPhoto: passport_photo
+              ? { name: "Uploaded", preview: passport_photo }
+              : null,
+          });
 
-        const allAvailable = aadhaar_front && aadhaar_back && pan_card && passport_photo;
-        if (allAvailable) {
-          setSubmitted(true);
-          setAllDocsAvailable(true); // <-- hide submit button
+          const allAvailable =
+            aadhaar_front && aadhaar_back && pan_card && passport_photo;
+
+          if (allAvailable) {
+            setSubmitted(true);
+            setAllDocsAvailable(true);
+          }
         }
+      } catch (err) {
+        console.error("Failed to fetch KYC docs:", err);
       }
-    } catch (err) {
-      console.error("Failed to fetch KYC docs:", err);
-    }
-  };
+    };
 
-  fetchKycDocs();
-}, []);
+    fetchKycDocs();
+  }, []);
 
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
@@ -70,21 +86,27 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const allFilesFilled = Object.values(files).every((file) => file !== null);
-    if (!allFilesFilled || !workLocation) {
-      toast.error("Please fill all required fields");
+    const hasAadhaar = files.aadhaarFront && files.aadhaarBack;
+    const hasPan = files.panCard;
+
+    if (!hasAadhaar && !hasPan) {
+      toast.error("Upload Aadhaar (front & back) OR PAN card");
       return;
     }
 
     try {
       setIsSubmitting(true);
       const formData = new FormData();
+
       Object.keys(files).forEach((key) => {
-        if (files[key] && files[key].preview === undefined) formData.append(key, files[key]);
+        if (files[key] && files[key].preview === undefined) {
+          formData.append(key, files[key]);
+        }
       });
+
       formData.append("workLocation", workLocation);
 
-      const res = await uploadKycDocs(formData);
+      await uploadKycDocs(formData);
       toast.success("KYC submitted successfully");
       setSubmitted(true);
     } catch (err) {
@@ -96,134 +118,140 @@ useEffect(() => {
   };
 
   const documents = [
-    { key: "aadhaarFront", label: "Aadhaar Front" },
-    { key: "aadhaarBack", label: "Aadhaar Back" },
-    { key: "panCard", label: "PAN Card" },
-    { key: "passportPhoto", label: "Passport Photo" },
+    {
+      key: "aadhaarFront",
+      label: "Aadhaar Front",
+    },
+    {
+      key: "aadhaarBack",
+      label: "Aadhaar Back",
+    },
+    {
+      key: "panCard",
+      label: "PAN Card",
+    },
+    {
+      key: "passportPhoto",
+      label: "Passport Photo",
+    },
   ];
 
-  // Check if all required fields are filled
-  const allFieldsFilled = Object.values(files).every((f) => f !== null) && workLocation;
+  const hasAadhaar = files.aadhaarFront && files.aadhaarBack;
+  const hasPan = files.panCard;
+  const isValidKyc = hasAadhaar || hasPan;
 
-return (
-  <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-    <div className="flex items-center gap-2 mb-6">
-      <h2 className="text-xl font-bold text-gray-800">KYC Verification</h2>
-      {submitted && <MdVerified className="text-green-500" size={20} />}
-    </div>
+  return (
+    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+      <div className="flex items-center gap-2 mb-4">
+        <h2 className="text-xl font-bold text-gray-800">
+          KYC Verification
+        </h2>
+        {submitted && <MdVerified className="text-green-500" size={20} />}
+      </div>
 
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {documents.map((doc) => {
-          const file = files[doc.key];
-          const isImage = file && (file.preview ? file.preview.startsWith("http") : file.type.startsWith("image"));
 
-          return (
-            <div
-              key={doc.key}
-              className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all min-h-[160px] ${
-                file ? "border-indigo-200 bg-indigo-50/30" : "border-gray-200 hover:border-indigo-400"
-              }`}
-            >
-              <p className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-tight">
-                {doc.label} <span className="text-red-500">*</span>
-              </p>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {documents.map((doc) => {
+            const file = files[doc.key];
+            const isImage =
+              file &&
+              (file.preview
+                ? file.preview.startsWith("http")
+                : file.type.startsWith("image"));
 
-              {!file ? (
-                <div className="flex flex-col items-center">
-                  <input
-                    type="file"
-                    className="hidden"
-                    id={doc.key}
-                    accept="image/*,.pdf"
-                    disabled={submitted || isSubmitting}
-                    onChange={(e) => handleFileChange(e, doc.key)}
-                  />
-                  <label
-                    htmlFor={doc.key}
-                    className="flex flex-col items-center cursor-pointer group"
-                  >
-                    <MdCloudUpload className="text-gray-400 group-hover:text-indigo-500 mb-2 transition-colors" size={30} />
-                    <span className="px-4 py-1.5 text-xs font-medium rounded-lg bg-white border border-gray-300 shadow-sm group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-all">
-                      Upload File
-                    </span>
-                  </label>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-3 w-full animate-in fade-in zoom-in duration-200">
-                  {isImage ? (
-                    <div className="relative group">
+            return (
+              <div
+                key={doc.key}
+                className={`border-2 justify-center border-dashed rounded-xl p-4 flex flex-col items-center text-center transition-all min-h-[170px] ${
+                  file
+                    ? "border-indigo-200 bg-indigo-50/30"
+                    : "border-gray-200 hover:border-indigo-400"
+                }`}
+              >
+                {!file ? (
+                  <>
+                    <input
+                      type="file"
+                      className="hidden"
+                      id={doc.key}
+                      accept="image/*,.pdf"
+                      disabled={submitted || isSubmitting}
+                      onChange={(e) => handleFileChange(e, doc.key)}
+                    />
+                    <label
+                      htmlFor={doc.key}
+                      className="cursor-pointer flex flex-col items-center"
+                    >
+                      <MdCloudUpload size={28} className="mb-2 text-gray-400" />
+                      <span className="text-xs bg-white border px-3 py-1 rounded-md shadow-sm">
+                        Upload File
+                      </span>
+                    </label>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    {isImage ? (
                       <img
                         src={file.preview || URL.createObjectURL(file)}
                         alt="preview"
-                        className="w-20 h-20 object-cover rounded-lg border-2 border-white shadow-md"
+                        className="w-20 h-20 object-cover rounded-lg"
                       />
-                    </div>
-                  ) : (
-                    <div className="p-3 bg-white border rounded-lg text-[10px] text-gray-600 truncate max-w-[150px] shadow-sm">
-                      📄 {file.name || "Uploaded"}
-                    </div>
-                  )}
+                    ) : (
+                      <div className="text-xs">📄 {file.name}</div>
+                    )}
 
-                  {!file.preview && (
-                    <button
-                      type="button"
-                      disabled={submitted || isSubmitting}
-                      onClick={() => removeFile(doc.key)}
-                      className="flex items-center gap-1 text-red-500 text-xs font-bold hover:bg-red-50 px-2 py-1 rounded transition-colors"
-                    >
-                      <MdDelete size={14} /> Remove
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                    {!file.preview && (
+                      <button
+                        type="button"
+                        onClick={() => removeFile(doc.key)}
+                        className="text-red-500 text-xs"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
 
-      <div className="space-y-1">
-        <label className="text-sm font-semibold text-gray-700 block">
-          Work Location <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          required
-          value={workLocation}
-          disabled={submitted || isSubmitting}
-          onChange={(e) => setWorkLocation(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-gray-400"
-          placeholder="e.g. HSR Layout, Bangalore"
-        />
-      </div>
+        {/* Validation hint */}
+        {!isValidKyc && (
+          <p className="text-xs text-red-500">
+            Upload Aadhaar (front & back) OR PAN card to continue.
+          </p>
+        )}
 
-     {!allDocsAvailable && (
-      <>
-       <p className="text-xs text-gray-500 mb-2">
-    Please submit your documents carefully. You won’t be able to edit them later. <br />
-    For any issues, contact <a href="mailto:support@easemyspace.in" className="underline">support@easemyspace.in</a> or call <a href="tel:+919004463371" className="underline">+91 9004463371</a>.
-  </p>
-  <button
-    type="submit"
-    disabled={!allFieldsFilled || isSubmitting || submitted}
-    className={`w-full md:w-auto px-8 py-3 rounded-xl transition-all text-white font-bold shadow-md flex items-center justify-center gap-2 ${
-      !allFieldsFilled || isSubmitting || submitted
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-indigo-600 hover:bg-indigo-700 active:scale-95"
-    }`}
-  >
-    {isSubmitting ? (
-      <>
-        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-        Submitting...
-      </>
-    ) : (
-      "Submit KYC"
-    )}
-  </button>
-      </>
-)}
-    </form>
-  </div>
-);
+        <div>
+          <label className="text-sm font-semibold text-gray-700 block mb-1">
+            Work Location
+          </label>
+          <input
+            type="text"
+            value={workLocation}
+            disabled={submitted || isSubmitting}
+            onChange={(e) => setWorkLocation(e.target.value)}
+            className="w-full border rounded-lg px-4 py-2"
+            placeholder="e.g. HSR Layout, Bangalore"
+          />
+        </div>
+
+        {!allDocsAvailable && (
+          <button
+            type="submit"
+            disabled={!isValidKyc || isSubmitting || submitted}
+            className={`w-1/2 py-3 rounded-lg text-white font-semibold  ${
+              !isValidKyc || isSubmitting || submitted
+                ? "bg-gray-400"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+          >
+            {isSubmitting ? "Submitting..." : "Submit KYC"}
+          </button>
+        )}
+      </form>
+    </div>
+  );
 }
