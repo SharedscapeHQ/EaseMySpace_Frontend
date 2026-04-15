@@ -660,6 +660,54 @@ export default function EditModal({
 
         {/* === Toggles === */}
         <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Listing Payment Required */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium mb-1">
+              Listing Payment Required
+            </label>
+
+            <select
+              value={editForm.listing_payment_required ? "yes" : "no"}
+              onChange={(e) => {
+                const isRequired = e.target.value === "yes";
+
+                setEditForm((prev) => ({
+                  ...prev,
+                  listing_payment_required: isRequired,
+                  listing_fee_percent: isRequired
+                    ? prev.listing_fee_percent || 5
+                    : null,
+                }));
+              }}
+              className="border px-3 py-2 rounded"
+            >
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+
+          {/* Percentage field (only if YES) */}
+          {editForm.listing_payment_required && (
+            <div className="flex flex-col">
+              <label className="text-sm font-medium mb-1">
+                Listing Fee (%)
+              </label>
+
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={editForm.listing_fee_percent ?? ""}
+                onChange={(e) =>
+                  setEditForm((prev) => ({
+                    ...prev,
+                    listing_fee_percent: e.target.value.replace(/[^0-9]/g, ""),
+                  }))
+                }
+                className="border px-3 py-2 rounded"
+              />
+            </div>
+          )}
           <label className="flex items-center gap-2">
             <input
               type="checkbox"

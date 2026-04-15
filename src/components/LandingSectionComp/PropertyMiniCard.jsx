@@ -27,8 +27,6 @@ const lookingForLabel =
     ? property.gender.charAt(0).toUpperCase() + property.gender.slice(1)
     : "-";
 
-    console.log("Gender label:", genderLabel);
-
   return (
     <div
       className="flex-shrink-0 text-left relative w-44"
