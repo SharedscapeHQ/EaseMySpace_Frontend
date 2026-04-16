@@ -76,30 +76,39 @@ function PropertyHeaderSection({ property, setLightboxIdx }) {
       </div>
 
       {/* MOBILE */}
-      <div className="flex lg:hidden gap-3 mt-3 overflow-x-auto">
-        {property.images.slice(1).map((item, idx) => (
-          <div
-            key={idx}
-            className="h-24 w-1/3 rounded-lg overflow-hidden"
-            onClick={() => setLightboxIdx(idx + 1)}
-          >
-            <img src={item} className="w-full h-full object-cover" />
-          </div>
-        ))}
+      <div className="flex lg:hidden gap-3 mt-3 overflow-x-auto pb-2">
+  {property.images.slice(1).map((item, idx) => (
+    <div
+      key={idx}
+      className="flex-shrink-0 w-28 h-20 rounded-lg overflow-hidden cursor-pointer"
+      onClick={() => setLightboxIdx(idx + 1)}
+    >
+      <img
+        src={item}
+        className="w-full h-full object-cover"
+        alt={`img-${idx}`}
+      />
+    </div>
+  ))}
 
-        {videos.map((vid, idx) => (
-          <div
-            key={idx}
-            className="h-24 w-1/3 relative rounded-lg overflow-hidden"
-            onClick={() => setLightboxIdx(property.images.length + idx)}
-          >
-            <video src={vid} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/40 text-white flex items-center justify-center">
-              📹
-            </div>
-          </div>
-        ))}
+  {videos.map((vid, idx) => (
+    <div
+      key={idx}
+      className="flex-shrink-0 w-28 h-20 relative rounded-lg overflow-hidden cursor-pointer"
+      onClick={() => setLightboxIdx(property.images.length + idx)}
+    >
+      <video
+        src={vid}
+        className="w-full h-full object-cover"
+        muted
+        playsInline
+      />
+      <div className="absolute inset-0 bg-black/40 text-white flex items-center justify-center text-xs">
+        📹
       </div>
+    </div>
+  ))}
+</div>
     </div>
   );
 }
