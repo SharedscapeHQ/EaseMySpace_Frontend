@@ -5,6 +5,7 @@ import YogitaImg from "/TeamImg/YogitaR.webp";
 import TaniyaImg from "/TeamImg/TaniyaS.webp";
 import ArvindImg from "/TeamImg/ArvindV.webp";
 import ShaileshImg from "/TeamImg/ShaileshD.webp";
+import AntaraImg from "/TeamImg/AntaraW.webp";
 import { motion } from "framer-motion";
 
 const teamMembers = [
@@ -52,6 +53,15 @@ const teamMembers = [
     imageSrc: ShaileshImg,
     linkedin: "https://www.linkedin.com/in/shailesh-d-a4434047/",
     email: "shailesh.dubey@easemyspace.in",
+  },
+  {
+    name: "Antara Warang",
+    role: "Business Development Executive",
+    description:
+    "A proactive business development executive focused on identifying new opportunities, nurturing client relationships, and contributing to EaseMySpace™ growth through strategic outreach and engagement.",
+    imageSrc: AntaraImg,
+    linkedin: "https://www.linkedin.com/in/antara-warang-8b87bb2a0/",
+    email: "antara.warang@easemyspace.in",
   },
 ];
 
