@@ -687,27 +687,57 @@ export default function EditModal({
           </div>
 
           {/* Percentage field (only if YES) */}
-          {editForm.listing_payment_required && (
-            <div className="flex flex-col">
-              <label className="text-sm font-medium mb-1">
-                Listing Fee (%)
-              </label>
+         {editForm.listing_payment_required && (
+  <>
+    <div className="flex flex-col">
+      <label className="text-sm font-medium mb-1">Fee Type</label>
+      <select
+        value={editForm.listing_fee_type || "percent"}
+        onChange={(e) =>
+          setEditForm((prev) => ({ ...prev, listing_fee_type: e.target.value }))
+        }
+        className="border px-3 py-2 rounded"
+      >
+        <option value="percent">% of Rent</option>
+        <option value="fixed">Fixed Amount (₹)</option>
+      </select>
+    </div>
 
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={editForm.listing_fee_percent ?? ""}
-                onChange={(e) =>
-                  setEditForm((prev) => ({
-                    ...prev,
-                    listing_fee_percent: e.target.value.replace(/[^0-9]/g, ""),
-                  }))
-                }
-                className="border px-3 py-2 rounded"
-              />
-            </div>
-          )}
+    {editForm.listing_fee_type === "fixed" ? (
+      <div className="flex flex-col">
+        <label className="text-sm font-medium mb-1">Listing Fee (₹)</label>
+        <input
+          type="number" min="0"
+          value={editForm.listing_fee_amount ?? ""}
+          onChange={(e) =>
+            setEditForm((prev) => ({
+              ...prev,
+              listing_fee_amount: e.target.value.replace(/[^0-9]/g, ""),
+            }))
+          }
+          className="border px-3 py-2 rounded"
+          placeholder="e.g. 399"
+        />
+      </div>
+    ) : (
+      <div className="flex flex-col">
+        <label className="text-sm font-medium mb-1">Listing Fee (%)</label>
+        <input
+          type="number" min="0" max="100"
+          value={editForm.listing_fee_percent ?? ""}
+          onChange={(e) =>
+            setEditForm((prev) => ({
+              ...prev,
+              listing_fee_percent: e.target.value.replace(/[^0-9]/g, ""),
+            }))
+          }
+          className="border px-3 py-2 rounded"
+          placeholder="e.g. 5"
+        />
+      </div>
+    )}
+  </>
+)}
           <label className="flex items-center gap-2">
             <input
               type="checkbox"

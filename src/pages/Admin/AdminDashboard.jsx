@@ -240,6 +240,11 @@ export default function AdminDashboard() {
     try {
       const updateData = {
         ...editForm,
+        listing_fee_type: editForm.listing_fee_type || "percent",
+        listing_fee_amount:
+          editForm.listing_fee_amount === ""
+            ? 0
+            : Number(editForm.listing_fee_amount),
         commission_percent:
           editForm.commission_percent === ""
             ? null
